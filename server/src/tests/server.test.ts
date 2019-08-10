@@ -20,15 +20,18 @@ const createPlayer = `
     }
 `;
 
-const addProjection = `
-    mutation {
-        addProjection(playerId: "${projection.playerId}", platform: "${projection.platform}", 
-            completions: ${projection.completions}, attempts: ${projection.attempts}, passYards: ${projection.passYards}, passTd: ${projection.passTd}, 
-            interception: ${projection.interception}, carries: ${projection.carries}, rushYards: ${projection.rushYards}, rushTd: ${projection.rushTd}, 
-            fumbles: ${projection.fumbles}, targets: ${projection.targets}, receptions: ${projection.receptions}, receivingYards: ${projection.receivingYards}, 
-            receivingTd: ${projection.receivingTd})
-    }
-`;
+const addProjection = (playerId: string): string => {
+    let mutation = `
+            mutation {
+                addProjection(playerId: "${playerId}", platform: "${projection.platform}", 
+                    completions: ${projection.completions}, attempts: ${projection.attempts}, passYards: ${projection.passYards}, passTd: ${projection.passTd}, 
+                    interception: ${projection.interception}, carries: ${projection.carries}, rushYards: ${projection.rushYards}, rushTd: ${projection.rushTd}, 
+                    fumbles: ${projection.fumbles}, targets: ${projection.targets}, receptions: ${projection.receptions}, receivingYards: ${projection.receivingYards}, 
+                    receivingTd: ${projection.receivingTd})
+            }
+        `
+    return mutation;
+};
 
 test('Create Player', async () => {
     const firstName = player.firstName;
@@ -63,7 +66,7 @@ test('Add Projection', async () => {
 
     const playerId = projection.playerId;
 
-    const response2 = await request(getHost(), addProjection);
+    const response2 = await request(getHost(), addProjection(playerId));
     
     expect(response2).toEqual({ addProjection: true });
 
@@ -76,12 +79,12 @@ test('Add Projection', async () => {
     expect(projTest.completions).toEqual(projection.completions);
     expect(projTest.attempts).toEqual(projection.attempts);
     expect(projTest.passYards).toEqual(projection.passYards);
-    expect(projTest.passTd).not.toEqual(projection.passTd)
+    expect(projTest.passTd).toEqual(projection.passTd)
     expect(projTest.interception).toEqual(projection.interception);
     expect(projTest.carries).toEqual(projection.carries);
     expect(projTest.rushYards).toEqual(projection.rushYards);
     expect(projTest.rushTd).toEqual(projection.rushTd);
-    expect(projTest.fumbles).not.toEqual(projection.fumbles)
+    expect(projTest.fumbles).toEqual(projection.fumbles)
     expect(projTest.targets).toEqual(projection.targets);
     expect(projTest.targets).toEqual(projection.receptions);
     expect(projTest.receivingYards).toEqual(projection.receivingYards);
