@@ -1,0 +1,13 @@
+type Query {
+    hello(name: String): String!
+}
+
+type Mutation {
+    createPlayer(firstName: String!, lastName: String!, team: String!, 
+        position: String!): Boolean!,
+    addProjection(playerId: String!, platform: String!, completions: Int!, 
+        attempts: Int!, passYards: Int!, passTd: Int!, interception: Int!, 
+        carries: Int!, rushYards: Int!, rushTd: Int!, fumbles: Int!, 
+        targets: Int!, receptions: Int!, receivingYards: Int!, 
+        receivingTd: Int!): Boolean
+}
