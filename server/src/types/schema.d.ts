@@ -23,10 +23,56 @@ declare namespace GQL {
   interface IQuery {
     __typename: 'Query';
     hello: string;
+    getPlayerById: IPlayer | null;
+    getPlayers: Array<IPlayer | null> | null;
+    getProjections: Array<IProjection | null> | null;
+    getProjectionsByPlatform: Array<IProjection | null> | null;
+    getProjectionsByPlayer: Array<IProjection | null> | null;
   }
 
   interface IHelloOnQueryArguments {
     name?: string | null;
+  }
+
+  interface IGetPlayerByIdOnQueryArguments {
+    id?: string | null;
+  }
+
+  interface IGetProjectionsByPlatformOnQueryArguments {
+    platform?: string | null;
+  }
+
+  interface IGetProjectionsByPlayerOnQueryArguments {
+    playerId?: string | null;
+  }
+
+  interface IPlayer {
+    __typename: 'Player';
+    id: string | null;
+    firstName: string | null;
+    lastName: string | null;
+    team: string | null;
+    position: string | null;
+  }
+
+  interface IProjection {
+    __typename: 'Projection';
+    id: string | null;
+    playerId: string | null;
+    platform: string | null;
+    completions: number | null;
+    attempts: number | null;
+    passYards: number | null;
+    passTd: number | null;
+    interception: number | null;
+    carries: number | null;
+    rushYards: number | null;
+    rushTd: number | null;
+    fumbles: number | null;
+    targets: number | null;
+    receptions: number | null;
+    receivingYards: number | null;
+    receivingTd: number | null;
   }
 
   interface IMutation {
