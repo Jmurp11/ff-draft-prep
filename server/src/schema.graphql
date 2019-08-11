@@ -1,5 +1,36 @@
+type Player {
+    id: String,
+    firstName: String,
+    lastName: String,
+    team: String,
+    position: String
+}
+
+type Projection {
+    id: String,
+    playerId: String,
+    platform: String,
+    completions: Int,
+    attempts: Int,
+    passYards: Int,
+    passTd: Int,
+    interception: Int,
+    carries: Int,
+    rushYards: Int,
+    rushTd: Int,
+    fumbles: Int,
+    targets: Int,
+    receptions: Int,
+    receivingYards: Int,
+    receivingTd: Int
+}
+
 type Query {
-    hello(name: String): String!
+    getPlayerById(id: String): Player,
+    getPlayers: [Player],
+    getProjections: [Projection],
+    getProjectionsByPlatform(platform: String): [Projection],
+    getProjectionsByPlayer(playerId: String): [Projection]
 }
 
 type Mutation {

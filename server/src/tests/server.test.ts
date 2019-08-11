@@ -3,7 +3,13 @@ import { request } from 'graphql-request';
 import { startServer } from '../start-server';
 import { AddressInfo } from 'net';
 import { Player, Projection } from '../entity';
-import { player, projection } from './constants';
+import { 
+    player, projection, 
+    createPlayer, addProjection,
+    getPlayerById, getPlayers,
+    getProjections, getProjectionsByPlatform,
+    getProjectionsByPlayer
+} from './constants';
 
 let getHost = () => '';
 
@@ -13,32 +19,11 @@ beforeAll(async () => {
     getHost = () => `http://127.0.0.1:${port}`;
 });
 
-const createPlayer = `
-    mutation {
-        createPlayer(firstName: "${player.firstName}", lastName: "${player.lastName}", 
-            team: "${player.team}", position: "${player.position}")
-    }
-`;
-
-const addProjection = (playerId: string): string => {
-    let mutation = `
-            mutation {
-                addProjection(playerId: "${playerId}", platform: "${projection.platform}", 
-                    completions: ${projection.completions}, attempts: ${projection.attempts}, passYards: ${projection.passYards}, passTd: ${projection.passTd}, 
-                    interception: ${projection.interception}, carries: ${projection.carries}, rushYards: ${projection.rushYards}, rushTd: ${projection.rushTd}, 
-                    fumbles: ${projection.fumbles}, targets: ${projection.targets}, receptions: ${projection.receptions}, receivingYards: ${projection.receivingYards}, 
-                    receivingTd: ${projection.receivingTd})
-            }
-        `
-    return mutation;
-};
-
 test('Create Player', async () => {
     const firstName = player.firstName;
     const lastName = player.lastName;
 
     const response = await request(getHost(), createPlayer);
-    console.log(`Response: ${JSON.stringify(response)}`);
     expect(response).toEqual({ createPlayer: true });
 
     const players = await Player.find({ where: { firstName, lastName } });
@@ -46,7 +31,6 @@ test('Create Player', async () => {
     expect(players).toHaveLength(1);
 
     const playerTest = players[0];
-    console.log(`Player: ${JSON.stringify(playerTest)}`);
 
     expect(playerTest.firstName).toEqual(player.firstName);
     expect(playerTest.lastName).toEqual(player.lastName)
@@ -67,7 +51,7 @@ test('Add Projection', async () => {
     const playerId = projection.playerId;
 
     const response2 = await request(getHost(), addProjection(playerId));
-    
+
     expect(response2).toEqual({ addProjection: true });
 
     const projections = await Projection.find({ where: { playerId } });
@@ -89,4 +73,160 @@ test('Add Projection', async () => {
     expect(projTest.targets).toEqual(projection.receptions);
     expect(projTest.receivingYards).toEqual(projection.receivingYards);
     expect(projTest.receivingTd).toEqual(projection.receivingTd);
+});
+
+test('Get Player By ID', async () => {
+    const response = await request(getHost(), createPlayer);
+    expect(response).toEqual({ createPlayer: true });
+
+    console.log(JSON.stringify(response));
+
+    const players = await Player.find();
+
+    const playerTest = players[0];
+
+    console.log(JSON.stringify(`Player ID: ${playerTest.id}`));
+
+    console.log(JSON.stringify(getPlayerById(playerTest.id)));
+    const response2 = await request(getHost(), getPlayerById(playerTest.id));
+    
+    console.log(`Response: ${JSON.stringify(response2.getPlayerById)}`);
+
+    const result = response2.getPlayerById;
+
+    expect(result.firstName).toEqual(player.firstName);
+    expect(result.lastName).toEqual(player.lastName);
+    expect(result.team).toEqual(player.team);
+    expect(result.position).toEqual(player.position);
+});
+
+test('Get Players', async () => {
+    const response = await request(getHost(), createPlayer);
+    expect(response).toEqual({ createPlayer: true });
+
+    const response2 = await request(getHost(), getPlayers);
+    const result = response2.getPlayers[0];
+
+    expect(result.firstName).toEqual(player.firstName);
+    expect(result.lastName).toEqual(player.lastName);
+    expect(result.team).toEqual(player.team);
+    expect(result.position).toEqual(player.position);
+});
+
+test('Get Projections', async () => {
+    const firstName = player.firstName;
+    const lastName = player.lastName;
+
+    const players = await Player.find({ where: { firstName, lastName } });
+    const playerTest = players[0];
+
+    projection.playerId = playerTest.id;
+
+    const playerId = projection.playerId;
+
+    const response2 = await request(getHost(), addProjection(playerId));
+
+    expect(response2).toEqual({ addProjection: true });
+
+    const response3 = await request(getHost(), getProjections);
+
+    const result = response3.getProjections[0];
+
+    expect(result.playerId).toEqual(projection.playerId);
+    expect(result.platform).toEqual(projection.platform);
+    expect(result.completions).toEqual(projection.completions);
+    expect(result.attempts).toEqual(projection.attempts);
+    expect(result.passYards).toEqual(projection.passYards);
+    expect(result.passTd).toEqual(projection.passTd);
+    expect(result.interception).toEqual(projection.interception);
+    expect(result.carries).toEqual(projection.carries);
+    expect(result.rushYards).toEqual(projection.rushYards);
+    expect(result.rushTd).toEqual(projection.rushTd);
+    expect(result.fumbles).toEqual(projection.fumbles);
+    expect(result.targets).toEqual(projection.targets);
+    expect(result.receivingYards).toEqual(projection.receivingYards);
+    expect(result.receptions).toEqual(projection.receptions);
+    expect(result.receivingTd).toEqual(projection.receivingTd);
+});
+
+test('Get Projections By Platform', async () => {
+    const firstName = player.firstName;
+    const lastName = player.lastName;
+
+    const players = await Player.find({ where: { firstName, lastName } });
+
+    const playerTest = players[0];
+
+    projection.playerId = playerTest.id;
+
+    const playerId = projection.playerId;
+
+    const response2 = await request(getHost(), addProjection(playerId));
+
+    expect(response2).toEqual({ addProjection: true });
+
+    const projections = await Projection.find({ where: { playerId } });
+
+    const projTest = projections[0];
+
+    const response3 = await request(getHost(), getProjectionsByPlatform(projTest.platform));
+
+    const result = response3.getProjectionsByPlatform[0];
+
+    expect(result.playerId).toEqual(projection.playerId);
+    expect(result.platform).toEqual(projection.platform);
+    expect(result.completions).toEqual(projection.completions);
+    expect(result.attempts).toEqual(projection.attempts);
+    expect(result.passYards).toEqual(projection.passYards);
+    expect(result.passTd).toEqual(projection.passTd);
+    expect(result.interception).toEqual(projection.interception);
+    expect(result.carries).toEqual(projection.carries);
+    expect(result.rushYards).toEqual(projection.rushYards);
+    expect(result.rushTd).toEqual(projection.rushTd);
+    expect(result.fumbles).toEqual(projection.fumbles);
+    expect(result.targets).toEqual(projection.targets);
+    expect(result.receivingYards).toEqual(projection.receivingYards);
+    expect(result.receptions).toEqual(projection.receptions);
+    expect(result.receivingTd).toEqual(projection.receivingTd);
+});
+
+test('Get Projections By Player', async () => {
+    const firstName = player.firstName;
+    const lastName = player.lastName;
+
+    const players = await Player.find({ where: { firstName, lastName } });
+
+    const playerTest = players[0];
+
+    projection.playerId = playerTest.id;
+
+    const playerId = projection.playerId;
+
+    const response2 = await request(getHost(), addProjection(playerId));
+
+    expect(response2).toEqual({ addProjection: true });
+
+    const projections = await Projection.find({ where: { playerId } });
+
+    const projTest = projections[0];
+
+    const response3 = await request(getHost(), getProjectionsByPlayer(projTest.playerId));
+
+    const result = response3.getProjectionsByPlayer[0];
+    
+    expect(result.playerId).toEqual(projection.playerId);
+    expect(result.platform).toEqual(projection.platform);
+    expect(result.completions).toEqual(projection.completions);
+    expect(result.attempts).toEqual(projection.attempts);
+    expect(result.passYards).toEqual(projection.passYards);
+    expect(result.passTd).toEqual(projection.passTd);
+    expect(result.interception).toEqual(projection.interception);
+    expect(result.carries).toEqual(projection.carries);
+    expect(result.rushYards).toEqual(projection.rushYards);
+    expect(result.rushTd).toEqual(projection.rushTd);
+    expect(result.fumbles).toEqual(projection.fumbles);
+    expect(result.targets).toEqual(projection.targets);
+    expect(result.receivingYards).toEqual(projection.receivingYards);
+    expect(result.receptions).toEqual(projection.receptions);
+    expect(result.receivingTd).toEqual(projection.receivingTd);
 });
