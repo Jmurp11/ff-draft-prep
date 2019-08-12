@@ -1,14 +1,21 @@
+type Team {
+    id: String,
+    city: String,
+    nickname: String,
+    abbreviation: String
+}
+
 type Player {
     id: String,
     firstName: String,
     lastName: String,
-    team: String,
+    teamId: Team,
     position: String
 }
 
 type Projection {
     id: String,
-    playerId: String,
+    playerId: Player,
     platform: String,
     completions: Int,
     attempts: Int,
@@ -26,6 +33,8 @@ type Projection {
 }
 
 type Query {
+    getTeamById(id: String): Team,
+    getTeams: [Team],
     getPlayerById(id: String): Player,
     getPlayers: [Player],
     getProjections: [Projection],
@@ -34,7 +43,8 @@ type Query {
 }
 
 type Mutation {
-    createPlayer(firstName: String!, lastName: String!, team: String!, 
+    createTeam(city: String!, nickname: String!, abbreviation: String!): Boolean!,
+    createPlayer(firstName: String!, lastName: String!, teamId: String!, 
         position: String!): Boolean!,
     addProjection(playerId: String!, platform: String!, completions: Int!, 
         attempts: Int!, passYards: Int!, passTd: Int!, interception: Int!, 

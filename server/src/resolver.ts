@@ -1,11 +1,22 @@
 import { ResolverMap } from "./types/graphql-utils";
 import {
     Player,
-    Projection
+    Projection,
+    Team
 } from './entity';
 
 export const resolvers: ResolverMap = {
     Query: {
+        getTeams: async (_: any) => {
+            const teams = await Team.find();
+
+            return teams;
+        },
+        getTeamById: async (_: any, { id }: GQL.IGetTeamByIdOnQueryArguments) => {
+            const teams = await Team.find({ where: { id } });
+
+            return teams;
+        },
         getPlayerById: async (_: any, { id }: GQL.IGetPlayerByIdOnQueryArguments) => {
             const player = await Player.find({ where: { id } });
 
@@ -35,12 +46,24 @@ export const resolvers: ResolverMap = {
         },
     },
     Mutation: {
-        createPlayer: async (_: any, { firstName, lastName, team, position }:
+        createTeam: async (_: any, { city, nickname, abbreviation }:
+            GQL.ICreateTeamOnMutationArguments) => {
+            const team = Team.create({
+                city,
+                nickname,
+                abbreviation
+            });
+
+            await team.save();
+
+            return true;
+        },
+        createPlayer: async (_: any, { firstName, lastName, teamId, position }:
             GQL.ICreatePlayerOnMutationArguments) => {
             const player = Player.create({
                 firstName,
                 lastName,
-                team,
+                teamId,
                 position
             });
 

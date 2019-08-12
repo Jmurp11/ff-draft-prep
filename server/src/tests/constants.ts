@@ -1,9 +1,14 @@
 export const host = 'http://localhost:4000';
 
+export const team = {
+    city: 'New York',
+    nickname: 'Jets',
+    abbreviation: 'NYJ'
+}
+
 export const player = {
     firstName: 'Leveon',
     lastName: 'Bell',
-    team: 'NYJ',
     position: 'RB'
 };
 
@@ -25,15 +30,27 @@ export const projection = {
     receivingTd: 0
 }
 
-export const createPlayer = `
+export const createTeam = `
     mutation {
-        createPlayer(firstName: "${player.firstName}", lastName: "${player.lastName}", 
-            team: "${player.team}", position: "${player.position}")
+        createTeam(city: "${team.city}", nickname: "${team.nickname}", 
+            abbreviation: "${team.abbreviation}")
     }
 `;
 
+
+export const createPlayer = (teamId: string) => {
+    const mutation = `
+        mutation {
+            createPlayer(firstName: "${player.firstName}", lastName: "${player.lastName}", 
+                teamId: "${teamId}", position: "${player.position}")
+        }
+    `;
+
+    return mutation
+};
+
 export const addProjection = (playerId: string): string => {
-    let mutation = `
+    const mutation = `
             mutation {
                 addProjection(playerId: "${playerId}", platform: "${projection.platform}", 
                     completions: ${projection.completions}, attempts: ${projection.attempts}, passYards: ${projection.passYards}, passTd: ${projection.passTd}, 
@@ -45,14 +62,45 @@ export const addProjection = (playerId: string): string => {
     return mutation;
 };
 
+export const getTeamById = (id: string): string => {
+    const query = `
+        query {
+            getTeamById(id: "${id}") {
+                id,
+                city,
+                nickname,
+                abbreviation
+            }
+        }
+    `;
+
+    return query;
+}
+
+export const getTeams = `
+    query {
+        getTeams {
+            id,
+            city,
+            nickname,
+            abbreviation
+        }
+    }
+`;
+
 export const getPlayerById = (id: string): string => {
-    let query = `
+    const query = `
         query {
             getPlayerById(id: "${id}") {
                 id,
                 firstName,
                 lastName,
-                team,
+                teamId {
+                    id,
+                    city,
+                    nickname,
+                    abbreviation
+                },
                 position
             }
         }
@@ -67,7 +115,12 @@ export const getPlayers = `
             id,
             firstName,
             lastName,
-            team,
+            teamId {
+                id,
+                city,
+                nickname,
+                abbreviation
+            },
             position
         }
     }
@@ -77,7 +130,18 @@ export const getProjections = `
     query {
         getProjections {
             id,
-            playerId,
+            playerId {
+                id,
+                firstName,
+                lastName,
+                teamId {
+                    id,
+                    city,
+                    nickname,
+                    abbreviation
+                },
+                position
+            },
             platform, 
             completions,             
             attempts,
@@ -97,11 +161,22 @@ export const getProjections = `
 `;
 
 export const getProjectionsByPlatform = (platform: string): string => {
-    let query = `
+    const query = `
         query {
             getProjectionsByPlatform(platform: "${platform}") {
                 id,
-                playerId,
+                playerId {
+                    id,
+                    firstName,
+                    lastName,
+                    teamId {
+                        id,
+                        city,
+                        nickname,
+                        abbreviation
+                    },
+                    position
+                },
                 platform, 
                 completions,             
                 attempts,
@@ -124,11 +199,22 @@ export const getProjectionsByPlatform = (platform: string): string => {
 };
 
 export const getProjectionsByPlayer = (playerId: string): string => {
-    let query = `
+    const query = `
         query {
             getProjectionsByPlayer(playerId: "${playerId}") {
                 id,
-                playerId,
+                playerId {
+                    id,
+                    firstName,
+                    lastName,
+                    teamId {
+                        id,
+                        city,
+                        nickname,
+                        abbreviation
+                    },
+                    position
+                },
                 platform, 
                 completions,             
                 attempts,

@@ -7,22 +7,19 @@ import {
 } from "typeorm";
 import uuidv4 = require('uuid/v4');
 
-@Entity("players")
-export class Player extends BaseEntity {
+@Entity("teams")
+export class Team extends BaseEntity {
     @PrimaryColumn("uuid")
     id!: string;
 
     @Column("text")
-    firstName!: string;
+    city!: string;
 
     @Column("text")
-    lastName!: string;
+    nickname!: string;
 
     @Column("text")
-    teamId!: string;
-
-    @Column("text")
-    position!: string;
+    abbreviation!: string;
 
     @BeforeInsert()
     addId() {

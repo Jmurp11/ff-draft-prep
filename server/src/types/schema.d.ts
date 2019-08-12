@@ -22,7 +22,8 @@ declare namespace GQL {
 
   interface IQuery {
     __typename: 'Query';
-    hello: string;
+    getTeamById: ITeam | null;
+    getTeams: Array<ITeam | null> | null;
     getPlayerById: IPlayer | null;
     getPlayers: Array<IPlayer | null> | null;
     getProjections: Array<IProjection | null> | null;
@@ -30,8 +31,8 @@ declare namespace GQL {
     getProjectionsByPlayer: Array<IProjection | null> | null;
   }
 
-  interface IHelloOnQueryArguments {
-    name?: string | null;
+  interface IGetTeamByIdOnQueryArguments {
+    id?: string | null;
   }
 
   interface IGetPlayerByIdOnQueryArguments {
@@ -46,19 +47,27 @@ declare namespace GQL {
     playerId?: string | null;
   }
 
+  interface ITeam {
+    __typename: 'Team';
+    id: string | null;
+    city: string | null;
+    nickname: string | null;
+    abbreviation: string | null;
+  }
+
   interface IPlayer {
     __typename: 'Player';
     id: string | null;
     firstName: string | null;
     lastName: string | null;
-    team: string | null;
+    team: ITeam | null;
     position: string | null;
   }
 
   interface IProjection {
     __typename: 'Projection';
     id: string | null;
-    playerId: string | null;
+    player: IPlayer | null;
     platform: string | null;
     completions: number | null;
     attempts: number | null;
@@ -77,14 +86,21 @@ declare namespace GQL {
 
   interface IMutation {
     __typename: 'Mutation';
+    createTeam: boolean;
     createPlayer: boolean;
     addProjection: boolean | null;
+  }
+
+  interface ICreateTeamOnMutationArguments {
+    city: string;
+    nickname: string;
+    abbreviation: string;
   }
 
   interface ICreatePlayerOnMutationArguments {
     firstName: string;
     lastName: string;
-    team: string;
+    teamId: string;
     position: string;
   }
 
