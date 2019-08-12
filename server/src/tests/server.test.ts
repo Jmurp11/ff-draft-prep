@@ -126,7 +126,7 @@ test('Get Team By ID', async () => {
     const teams = await Team.find({ where: { city } });
 
     const teamTest = teams[0];
-    console.log(JSON.stringify(teamTest.id));
+    console.log(JSON.stringify(teamTest));
     const response = await request(getHost(), getTeamById(teamTest.id));
     console.log(JSON.stringify(response));
     const result = response.getTeamById;
@@ -152,6 +152,8 @@ test('Get Player By ID', async () => {
     const players = await Player.find({ where: { firstName, lastName } });
 
     const playerTest = players[0];
+    console.log(playerTest);
+    console.log(playerTest.id);
 
     const response3 = await request(getHost(), getPlayerById(playerTest.id));
 
@@ -180,7 +182,7 @@ test('Get Players', async () => {
 
     expect(result.firstName).toEqual(player.firstName);
     expect(result.lastName).toEqual(player.lastName);
-    expect(result.teamId).toEqual(teamTest.id);
+    expect(result.teamId).toEqual(teamTest);
     expect(result.position).toEqual(player.position);
 });
 
@@ -212,7 +214,7 @@ test('Get Projections', async () => {
     
     const result = response4.getProjections[0];
 
-    expect(result.playerId).toEqual(playerId);
+    expect(result.playerId).toEqual(playerTest);
     expect(result.platform).toEqual(projection.platform);
     expect(result.completions).toEqual(projection.completions);
     expect(result.attempts).toEqual(projection.attempts);
@@ -260,7 +262,7 @@ test('Get Projections By Platform', async () => {
 
     const result = response4.getProjectionsByPlatform[0];
 
-    expect(result.playerId).toEqual(projection.playerId);
+    expect(result.playerId).toEqual(playerTest);
     expect(result.platform).toEqual(projection.platform);
     expect(result.completions).toEqual(projection.completions);
     expect(result.attempts).toEqual(projection.attempts);
@@ -307,7 +309,7 @@ test('Get Projections By Player', async () => {
 
     const result = response4.getProjectionsByPlayer[0];
     
-    expect(result.playerId).toEqual(projection.playerId);
+    expect(result.playerId).toEqual(playerTest);
     expect(result.platform).toEqual(projection.platform);
     expect(result.completions).toEqual(projection.completions);
     expect(result.attempts).toEqual(projection.attempts);
