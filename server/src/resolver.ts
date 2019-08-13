@@ -8,7 +8,7 @@ export const resolvers: ResolverMap = {
     Query: {
         playerById: async (_: any, { id }: GQL.IPlayerByIdOnQueryArguments) => {
             const player = await Player.find({ where: { id } });
-            console.log(JSON.stringify(player));
+
             return player;
         },
         players: async (_: any) => {

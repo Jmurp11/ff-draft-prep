@@ -23,8 +23,7 @@ test('Create Player', async () => {
     const firstName = playerData.firstName;
     const lastName = playerData.lastName;
 
-    const response = await request(getHost(), createPlayer);
-    expect(response).toEqual({ createPlayer: true });
+    await callCreatePlayerMutation();
 
     const result = await Player.find({ where: { firstName, lastName } });
 
@@ -42,21 +41,15 @@ test('Add Projection', async () => {
     const firstName = playerData.firstName;
     const lastName = playerData.lastName;
 
-    const players = await Player.find({ where: { firstName, lastName } });
+    const playerId = await getPlayerId(firstName, lastName);
 
-    const playerTest = players[0];
-
-    const playerId = playerTest.id;
-
-    const response2 = await request(getHost(), addProjection(playerId));
-
-    expect(response2).toEqual({ addProjection: true });
+    await callAddProjection(playerId);
 
     const result = await Projection.find({ where: { playerId } });
 
     const projTest = result[0];
 
-    expect(projTest.player).toEqual(playerTest.id);
+    expect(projTest.player).toEqual(playerId);
     expect(projTest.platform).toEqual(projectionData.platform)
     expect(projTest.completions).toEqual(projectionData.completions);
     expect(projTest.attempts).toEqual(projectionData.attempts);
@@ -74,24 +67,17 @@ test('Add Projection', async () => {
 });
 
 test('Get Player By ID', async () => {
-    const response = await request(getHost(), createPlayer);
-    expect(response).toEqual({ createPlayer: true });
-
-    console.log(JSON.stringify(response));
+    await callCreatePlayerMutation();
 
     const playerResult = await Player.find();
 
     const playerTest = playerResult[0];
 
-    console.log(JSON.stringify(`Player ID: ${playerTest.id}`));
+    console.log(JSON.stringify(`Player ID: ${JSON.stringify(playerTest)}`));
 
-    console.log(JSON.stringify(playerById(playerTest.id)));
-    const response2 = await request(getHost(), playerById(playerTest.id));
-    
-    console.log(`Response: ${JSON.stringify(response2.playerById)}`);
+    const result = await callPlayerById(playerTest.id);
 
-    const result = response2.playerById;
-
+    console.log(JSON.stringify(result));
     expect(result.firstName).toEqual(playerData.firstName);
     expect(result.lastName).toEqual(playerData.lastName);
     expect(result.team).toEqual(playerData.team);
@@ -99,8 +85,7 @@ test('Get Player By ID', async () => {
 });
 
 test('Get Players', async () => {
-    const response = await request(getHost(), createPlayer);
-    expect(response).toEqual({ createPlayer: true });
+    await callCreatePlayerMutation();
 
     const response2 = await request(getHost(), players);
     const result = response2.players[0];
@@ -115,20 +100,15 @@ test('Get Projections', async () => {
     const firstName = playerData.firstName;
     const lastName = playerData.lastName;
 
-    const playersResult = await Player.find({ where: { firstName, lastName } });
-    const playerTest = playersResult[0];
+    const playerId = await getPlayerId(firstName, lastName);
 
-    const playerId = playerTest.id;
+    await callAddProjection(playerId); 
 
-    const response2 = await request(getHost(), addProjection(playerId));
+    const response = await request(getHost(), projections);
 
-    expect(response2).toEqual({ addProjection: true });
+    const result = response.projections[0];
 
-    const response3 = await request(getHost(), projections);
-
-    const result = response3.projections[0];
-
-    expect(result.player).toEqual(playerTest.id);
+    expect(result.player).toEqual(playerId);
     expect(result.platform).toEqual(projectionData.platform);
     expect(result.completions).toEqual(projectionData.completions);
     expect(result.attempts).toEqual(projectionData.attempts);
@@ -149,25 +129,17 @@ test('Get Projections By Platform', async () => {
     const firstName = playerData.firstName;
     const lastName = playerData.lastName;
 
-    const playersResult = await Player.find({ where: { firstName, lastName } });
+    const playerId = await getPlayerId(firstName, lastName);
 
-    const playerTest = playersResult[0];
+    await callAddProjection(playerId);
 
-    const playerId = playerTest.id;
+    const projTest = await getProjectionByPlayerId(playerId);
 
-    const response2 = await request(getHost(), addProjection(playerId));
+    const response = await request(getHost(), projectionsByPlatform(projTest.platform));
 
-    expect(response2).toEqual({ addProjection: true });
+    const result = response.projectionsByPlatform[0];
 
-    const projectionsResult = await Projection.find({ where: { playerId } });
-
-    const projTest = projectionsResult[0];
-
-    const response3 = await request(getHost(), projectionsByPlatform(projTest.platform));
-
-    const result = response3.projectionsByPlatform[0];
-
-    expect(result.player).toEqual(playerTest.id);
+    expect(result.player).toEqual(playerId);
     expect(result.platform).toEqual(projectionData.platform);
     expect(result.completions).toEqual(projectionData.completions);
     expect(result.attempts).toEqual(projectionData.attempts);
@@ -188,25 +160,17 @@ test('Get Projections By Player', async () => {
     const firstName = playerData.firstName;
     const lastName = playerData.lastName;
 
-    const players = await Player.find({ where: { firstName, lastName } });
+    const playerId = await getPlayerId(firstName, lastName);
 
-    const playerTest = players[0];
+    await callAddProjection(playerId);
 
-    const playerId = playerTest.id;
-
-    const response2 = await request(getHost(), addProjection(playerId));
-
-    expect(response2).toEqual({ addProjection: true });
-
-    const projectionsResult = await Projection.find({ where: { playerId } });
-
-    const projTest = projectionsResult[0];
+    const projTest = await getProjectionByPlayerId(playerId);
 
     const response3 = await request(getHost(), projectionsByPlayer(projTest.player));
 
     const result = response3.projectionsByPlayer[0];
     
-    expect(result.player).toEqual(playerTest.id);
+    expect(result.player).toEqual(playerId);
     expect(result.platform).toEqual(projectionData.platform);
     expect(result.completions).toEqual(projectionData.completions);
     expect(result.attempts).toEqual(projectionData.attempts);
@@ -222,3 +186,32 @@ test('Get Projections By Player', async () => {
     expect(result.receptions).toEqual(projectionData.receptions);
     expect(result.receivingTd).toEqual(projectionData.receivingTd);
 });
+
+const callCreatePlayerMutation = async () => {
+    const response = await request(getHost(), createPlayer);
+    expect(response).toEqual({ createPlayer: true });
+};
+
+const callAddProjection = async (playerId: string) => {
+    const response = await request(getHost(), addProjection(playerId));
+    expect(response).toEqual({ addProjection: true });
+};
+
+const callPlayerById = async (id: string) => {
+    const response = await request(getHost(), playerById(id));
+
+    return response.playerById;
+};
+
+const getPlayerId = async (firstName: string, lastName: string) => {
+    const playersResult = await Player.find({ where: { firstName, lastName } });
+    const playerTest = playersResult[0];
+    const playerId = playerTest.id;
+
+    return playerId;
+};
+
+const getProjectionByPlayerId = async (id: string) => {
+    const result = await Projection.find({ where: { player: id } });
+    return result[0];
+};
