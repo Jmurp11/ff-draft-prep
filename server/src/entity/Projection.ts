@@ -11,9 +11,8 @@ import uuidv4 = require('uuid/v4');
 export class Projection extends BaseEntity {
     @PrimaryColumn("uuid")
     id!: string;
-
     @Column("text")
-    playerId!: string;
+    player!: string;
 
     @Column("text")
     platform!: string;

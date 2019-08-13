@@ -1,19 +1,13 @@
 export const host = 'http://localhost:4000';
 
-export const team = {
-    city: 'New York',
-    nickname: 'Jets',
-    abbreviation: 'NYJ'
-}
-
-export const player = {
+export const playerData = {
     firstName: 'Leveon',
     lastName: 'Bell',
+    team: 'NYJ',
     position: 'RB'
 };
 
-export const projection = {
-    playerId: '',
+export const projectionData = {
     platform: 'ESPN',
     completions: 0,
     attempts: 0,
@@ -30,77 +24,34 @@ export const projection = {
     receivingTd: 0
 }
 
-export const createTeam = `
+export const createPlayer = `
     mutation {
-        createTeam(city: "${team.city}", nickname: "${team.nickname}", 
-            abbreviation: "${team.abbreviation}")
+        createPlayer(firstName: "${playerData.firstName}", lastName: "${playerData.lastName}", 
+            team: "${playerData.team}", position: "${playerData.position}")
     }
 `;
 
-
-export const createPlayer = (teamId: string) => {
-    const mutation = `
-        mutation {
-            createPlayer(firstName: "${player.firstName}", lastName: "${player.lastName}", 
-                teamId: "${teamId}", position: "${player.position}")
-        }
-    `;
-
-    return mutation
-};
-
-export const addProjection = (playerId: string): string => {
+export const addProjection = (player: string): string => {
     const mutation = `
             mutation {
-                addProjection(playerId: "${playerId}", platform: "${projection.platform}", 
-                    completions: ${projection.completions}, attempts: ${projection.attempts}, passYards: ${projection.passYards}, passTd: ${projection.passTd}, 
-                    interception: ${projection.interception}, carries: ${projection.carries}, rushYards: ${projection.rushYards}, rushTd: ${projection.rushTd}, 
-                    fumbles: ${projection.fumbles}, targets: ${projection.targets}, receptions: ${projection.receptions}, receivingYards: ${projection.receivingYards}, 
-                    receivingTd: ${projection.receivingTd})
+                addProjection(player: "${player}", platform: "${projectionData.platform}", 
+                    completions: ${projectionData.completions}, attempts: ${projectionData.attempts}, passYards: ${projectionData.passYards}, passTd: ${projectionData.passTd}, 
+                    interception: ${projectionData.interception}, carries: ${projectionData.carries}, rushYards: ${projectionData.rushYards}, rushTd: ${projectionData.rushTd}, 
+                    fumbles: ${projectionData.fumbles}, targets: ${projectionData.targets}, receptions: ${projectionData.receptions}, receivingYards: ${projectionData.receivingYards}, 
+                    receivingTd: ${projectionData.receivingTd})
             }
         `
     return mutation;
 };
 
-export const getTeamById = (id: string): string => {
+export const playerById = (id: string): string => {
     const query = `
         query {
-            getTeamById(id: "${id}") {
-                id,
-                city,
-                nickname,
-                abbreviation
-            }
-        }
-    `;
-
-    return query;
-}
-
-export const getTeams = `
-    query {
-        getTeams {
-            id,
-            city,
-            nickname,
-            abbreviation
-        }
-    }
-`;
-
-export const getPlayerById = (id: string): string => {
-    const query = `
-        query {
-            getPlayerById(id: "${id}") {
+            playerById(id: "${id}") {
                 id,
                 firstName,
                 lastName,
-                teamId {
-                    id,
-                    city,
-                    nickname,
-                    abbreviation
-                },
+                team,
                 position
             }
         }
@@ -109,39 +60,23 @@ export const getPlayerById = (id: string): string => {
     return query;
 }
 
-export const getPlayers = `
+export const players = `
     query {
-        getPlayers {
+        players {
             id,
             firstName,
             lastName,
-            teamId {
-                id,
-                city,
-                nickname,
-                abbreviation
-            },
+            team,
             position
         }
     }
 `;
 
-export const getProjections = `
+export const projections = `
     query {
-        getProjections {
+        projections {
             id,
-            playerId {
-                id,
-                firstName,
-                lastName,
-                teamId {
-                    id,
-                    city,
-                    nickname,
-                    abbreviation
-                },
-                position
-            },
+            player,
             platform, 
             completions,             
             attempts,
@@ -160,23 +95,12 @@ export const getProjections = `
     }
 `;
 
-export const getProjectionsByPlatform = (platform: string): string => {
+export const projectionsByPlatform = (platform: string): string => {
     const query = `
         query {
-            getProjectionsByPlatform(platform: "${platform}") {
+            projectionsByPlatform(platform: "${platform}") {
                 id,
-                playerId {
-                    id,
-                    firstName,
-                    lastName,
-                    teamId {
-                        id,
-                        city,
-                        nickname,
-                        abbreviation
-                    },
-                    position
-                },
+                player,
                 platform, 
                 completions,             
                 attempts,
@@ -198,23 +122,12 @@ export const getProjectionsByPlatform = (platform: string): string => {
     return query;
 };
 
-export const getProjectionsByPlayer = (playerId: string): string => {
+export const projectionsByPlayer = (player: string): string => {
     const query = `
         query {
-            getProjectionsByPlayer(playerId: "${playerId}") {
+            projectionsByPlayer(player: "${player}") {
                 id,
-                playerId {
-                    id,
-                    firstName,
-                    lastName,
-                    teamId {
-                        id,
-                        city,
-                        nickname,
-                        abbreviation
-                    },
-                    position
-                },
+                player,
                 platform, 
                 completions,             
                 attempts,

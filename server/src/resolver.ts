@@ -1,69 +1,46 @@
 import { ResolverMap } from "./types/graphql-utils";
 import {
     Player,
-    Projection,
-    Team
+    Projection
 } from './entity';
 
 export const resolvers: ResolverMap = {
     Query: {
-        getTeams: async (_: any) => {
-            const teams = await Team.find();
-
-            return teams;
-        },
-        getTeamById: async (_: any, { id }: GQL.IGetTeamByIdOnQueryArguments) => {
-            const teams = await Team.find({ where: { id } });
-
-            return teams;
-        },
-        getPlayerById: async (_: any, { id }: GQL.IGetPlayerByIdOnQueryArguments) => {
+        playerById: async (_: any, { id }: GQL.IPlayerByIdOnQueryArguments) => {
             const player = await Player.find({ where: { id } });
-
+            console.log(JSON.stringify(player));
             return player;
         },
-        getPlayers: async (_: any) => {
+        players: async (_: any) => {
             const players = await Player.find();
 
             return players;
         },
-        getProjections: async (_: any) => {
+        projections: async (_: any) => {
             const projections = await Projection.find();
 
             return projections;
         },
-        getProjectionsByPlatform: async (_: any, { platform }:
-            GQL.IGetProjectionsByPlatformOnQueryArguments) => {
+        projectionsByPlatform: async (_: any, { platform }:
+            GQL.IProjectionsByPlatformOnQueryArguments) => {
             const projections = await Projection.find({ where: { platform } });
 
             return projections;
         },
-        getProjectionsByPlayer: async (_: any, { playerId }:
-            GQL.IGetProjectionsByPlayerOnQueryArguments) => {
-            const projections = await Projection.find({ where: { playerId } });
+        projectionsByPlayer: async (_: any, { player }:
+            GQL.IProjectionsByPlayerOnQueryArguments) => {
+            const projections = await Projection.find({ where: { player } });
 
             return projections;
         },
     },
     Mutation: {
-        createTeam: async (_: any, { city, nickname, abbreviation }:
-            GQL.ICreateTeamOnMutationArguments) => {
-            const team = Team.create({
-                city,
-                nickname,
-                abbreviation
-            });
-
-            await team.save();
-
-            return true;
-        },
-        createPlayer: async (_: any, { firstName, lastName, teamId, position }:
+        createPlayer: async (_: any, { firstName, lastName, team, position }:
             GQL.ICreatePlayerOnMutationArguments) => {
             const player = Player.create({
                 firstName,
                 lastName,
-                teamId,
+                team,
                 position
             });
 
@@ -71,13 +48,13 @@ export const resolvers: ResolverMap = {
 
             return true;
         },
-        addProjection: async (_: any, { playerId, platform, completions, attempts,
+        addProjection: async (_: any, { player, platform, completions, attempts,
             passTd, passYards, interception, carries, rushYards, rushTd, fumbles,
             targets, receptions, receivingYards,
             receivingTd }:
             GQL.IAddProjectionOnMutationArguments) => {
             const projection = Projection.create({
-                playerId,
+                player,
                 platform,
                 completions,
                 attempts,

@@ -19,7 +19,7 @@ export class Player extends BaseEntity {
     lastName!: string;
 
     @Column("text")
-    teamId!: string;
+    team!: string;
 
     @Column("text")
     position!: string;

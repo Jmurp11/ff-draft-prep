@@ -22,37 +22,23 @@ declare namespace GQL {
 
   interface IQuery {
     __typename: 'Query';
-    getTeamById: ITeam | null;
-    getTeams: Array<ITeam | null> | null;
-    getPlayerById: IPlayer | null;
-    getPlayers: Array<IPlayer | null> | null;
-    getProjections: Array<IProjection | null> | null;
-    getProjectionsByPlatform: Array<IProjection | null> | null;
-    getProjectionsByPlayer: Array<IProjection | null> | null;
+    playerById: IPlayer | null;
+    players: Array<IPlayer | null> | null;
+    projections: Array<IProjection | null> | null;
+    projectionsByPlatform: Array<IProjection | null> | null;
+    projectionsByPlayer: Array<IProjection | null> | null;
   }
 
-  interface IGetTeamByIdOnQueryArguments {
+  interface IPlayerByIdOnQueryArguments {
     id?: string | null;
   }
 
-  interface IGetPlayerByIdOnQueryArguments {
-    id?: string | null;
-  }
-
-  interface IGetProjectionsByPlatformOnQueryArguments {
+  interface IProjectionsByPlatformOnQueryArguments {
     platform?: string | null;
   }
 
-  interface IGetProjectionsByPlayerOnQueryArguments {
-    playerId?: string | null;
-  }
-
-  interface ITeam {
-    __typename: 'Team';
-    id: string | null;
-    city: string | null;
-    nickname: string | null;
-    abbreviation: string | null;
+  interface IProjectionsByPlayerOnQueryArguments {
+    player?: string | null;
   }
 
   interface IPlayer {
@@ -60,14 +46,14 @@ declare namespace GQL {
     id: string | null;
     firstName: string | null;
     lastName: string | null;
-    team: ITeam | null;
+    team: string | null;
     position: string | null;
   }
 
   interface IProjection {
     __typename: 'Projection';
     id: string | null;
-    player: IPlayer | null;
+    player: string | null;
     platform: string | null;
     completions: number | null;
     attempts: number | null;
@@ -86,26 +72,19 @@ declare namespace GQL {
 
   interface IMutation {
     __typename: 'Mutation';
-    createTeam: boolean;
     createPlayer: boolean;
     addProjection: boolean | null;
-  }
-
-  interface ICreateTeamOnMutationArguments {
-    city: string;
-    nickname: string;
-    abbreviation: string;
   }
 
   interface ICreatePlayerOnMutationArguments {
     firstName: string;
     lastName: string;
-    teamId: string;
+    team: string;
     position: string;
   }
 
   interface IAddProjectionOnMutationArguments {
-    playerId: string;
+    player: string;
     platform: string;
     completions: number;
     attempts: number;
