@@ -2,11 +2,15 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import {animate, state, style, transition, trigger} from '@angular/animations';
 
 export interface PlayerData {
   playerName: string;
   team: string;
   position: string;
+  rank: number,
+  tier: number,
+  bye: number;
   completions: number;
   attempts: number;
   passYards: number;
@@ -39,14 +43,25 @@ const POSITIONS: string[] = [
 @Component({
   selector: 'app-player-table',
   templateUrl: './player-table.component.html',
-  styleUrls: ['./player-table.component.css']
+  styleUrls: ['./player-table.component.css'],
+  animations: [
+    trigger('detailExpand', [
+      state('collapsed', style({height: '0px', minHeight: '0'})),
+      state('expanded', style({height: '*'})),
+      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+    ]),
+  ],
 })
+
 export class PlayerTableComponent implements OnInit {
 
   displayedColumns: string[] = [
+    'rank',
     'playerName',
-    'team',
     'position',
+    'tier',
+    'team',
+    'bye',
     'passAC',
     'passYards',
     'passTd',
@@ -55,10 +70,10 @@ export class PlayerTableComponent implements OnInit {
     'rushYards',
     'rushTd',
     'fumbles',
-    'receptions',
     'targets',
-    'receivingTd',
+    'receptions',
     'receivingYards',
+    'receivingTd',
   ];
   dataSource: MatTableDataSource<PlayerData>;
 
@@ -108,6 +123,9 @@ function createPlayer(id: number): PlayerData {
     receptions: 0,
     targets: 0,
     receivingTd: 0,
-    receivingYards: 0
+    receivingYards: 0,
+    rank: Math.round(Math.random() * 500),
+    tier: Math.round(Math.random() * 11),
+    bye: Math.round(Math.random() * 16),
   };
 }
