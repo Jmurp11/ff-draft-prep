@@ -24,6 +24,15 @@ export class Player extends BaseEntity {
     @Column("text")
     position!: string;
 
+    @Column("int")
+    rank!: number;
+
+    @Column("int")
+    tier!: number;
+
+    @Column("int")
+    bye!: number;
+    
     @BeforeInsert()
     addId() {
         this.id = uuidv4();

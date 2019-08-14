@@ -35,6 +35,9 @@ test('Create Player', async () => {
     expect(playerTest.lastName).toEqual(playerData.lastName)
     expect(playerTest.team).toEqual(playerData.team);
     expect(playerTest.position).toEqual(playerData.position);
+    expect(playerTest.rank).toEqual(playerData.rank);
+    expect(playerTest.tier).toEqual(playerData.tier);
+    expect(playerTest.bye).toEqual(playerData.bye);
 });
 
 test('Add Projection', async () => {

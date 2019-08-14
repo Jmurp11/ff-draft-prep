@@ -35,13 +35,17 @@ export const resolvers: ResolverMap = {
         },
     },
     Mutation: {
-        createPlayer: async (_: any, { firstName, lastName, team, position }:
+        createPlayer: async (_: any, { firstName, lastName, team, position,
+            rank, tier, bye }:
             GQL.ICreatePlayerOnMutationArguments) => {
             const player = Player.create({
                 firstName,
                 lastName,
                 team,
-                position
+                position,
+                rank,
+                tier,
+                bye
             });
 
             await player.save();

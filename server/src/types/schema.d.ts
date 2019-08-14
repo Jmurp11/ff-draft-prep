@@ -48,6 +48,9 @@ declare namespace GQL {
     lastName: string | null;
     team: string | null;
     position: string | null;
+    rank: number | null;
+    tier: number | null;
+    bye: number | null;
   }
 
   interface IProjection {
@@ -81,6 +84,9 @@ declare namespace GQL {
     lastName: string;
     team: string;
     position: string;
+    rank: number;
+    tier: number;
+    bye: number;
   }
 
   interface IAddProjectionOnMutationArguments {

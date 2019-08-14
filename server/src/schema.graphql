@@ -3,7 +3,10 @@ type Player {
     firstName: String,
     lastName: String,
     team: String,
-    position: String
+    position: String,
+    rank: Int,
+    tier: Int,
+    bye: Int
 }
 
 type Projection {
@@ -35,7 +38,7 @@ type Query {
 
 type Mutation {
     createPlayer(firstName: String!, lastName: String!, team: String!, 
-        position: String!): Boolean!,
+        position: String!, rank: Int!, tier: Int!, bye: Int!): Boolean!,
     addProjection(player: String!, platform: String!, completions: Int!, 
         attempts: Int!, passYards: Int!, passTd: Int!, interception: Int!, 
         carries: Int!, rushYards: Int!, rushTd: Int!, fumbles: Int!, 

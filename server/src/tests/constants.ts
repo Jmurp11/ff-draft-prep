@@ -4,7 +4,10 @@ export const playerData = {
     firstName: 'Leveon',
     lastName: 'Bell',
     team: 'NYJ',
-    position: 'RB'
+    position: 'RB',
+    rank: 7,
+    tier: 2,
+    bye: 11
 };
 
 export const projectionData = {
@@ -27,7 +30,8 @@ export const projectionData = {
 export const createPlayer = `
     mutation {
         createPlayer(firstName: "${playerData.firstName}", lastName: "${playerData.lastName}", 
-            team: "${playerData.team}", position: "${playerData.position}")
+            team: "${playerData.team}", position: "${playerData.position}", rank: ${playerData.rank},
+            tier: ${playerData.tier}, bye: ${playerData.bye})
     }
 `;
 
@@ -52,7 +56,10 @@ export const playerById = (id: string): string => {
                 firstName,
                 lastName,
                 team,
-                position
+                position,
+                rank,
+                tier,
+                bye
             }
         }
     `;
@@ -67,7 +74,10 @@ export const players = `
             firstName,
             lastName,
             team,
-            position
+            position,
+            rank,
+            tier,
+            bye
         }
     }
 `;
