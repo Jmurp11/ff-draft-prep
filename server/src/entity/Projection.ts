@@ -1,18 +1,22 @@
 import { 
     Entity,
     Column,
-    PrimaryColumn,
-    BeforeInsert, 
-    BaseEntity
+    BaseEntity,
+    OneToOne,
+    JoinColumn,
+    PrimaryGeneratedColumn
 } from "typeorm";
-import uuidv4 = require('uuid/v4');
+import { Player } from "./Player";
 
 @Entity("projections")
 export class Projection extends BaseEntity {
-    @PrimaryColumn("uuid")
-    id!: string;
+    @PrimaryGeneratedColumn()
+    id!: number;
+    
+    @OneToOne(() => Player)
+    @JoinColumn()
     @Column("text")
-    player!: string;
+    player!: number;
 
     @Column("text")
     platform!: string;
@@ -55,9 +59,4 @@ export class Projection extends BaseEntity {
 
     @Column("int")
     receivingTd!: number;
-
-    @BeforeInsert()
-    addId() {
-        this.id = uuidv4();
-    }
 }

@@ -1,5 +1,11 @@
 export const host = 'http://localhost:4000';
 
+export const teamData = {
+    city: 'New York',
+    nickname: 'Jets',
+    abbreviation: 'NYJ'
+};
+
 export const playerData = {
     firstName: 'Leveon',
     lastName: 'Bell',
@@ -27,18 +33,28 @@ export const projectionData = {
     receivingTd: 0
 }
 
-export const createPlayer = `
+export const createTeam = `
     mutation {
-        createPlayer(firstName: "${playerData.firstName}", lastName: "${playerData.lastName}", 
-            team: "${playerData.team}", position: "${playerData.position}", rank: ${playerData.rank},
-            tier: ${playerData.tier}, bye: ${playerData.bye})
+        createTeam(city: "${teamData.city}", nickname: "${teamData.nickname}", 
+            abbreviation: "${teamData.abbreviation}")
     }
 `;
 
-export const addProjection = (player: string): string => {
+export const createPlayer = (team: number) => {
+    const mutation = `
+        mutation {
+            createPlayer(firstName: "${playerData.firstName}", lastName: "${playerData.lastName}", 
+                team: ${team}, position: "${playerData.position}", rank: ${playerData.rank},
+                tier: ${playerData.tier}, bye: ${playerData.bye})
+        }
+    `;
+    return mutation;
+};
+
+export const addProjection = (player: number): string => {
     const mutation = `
             mutation {
-                addProjection(player: "${player}", platform: "${projectionData.platform}", 
+                addProjection(player: ${player}, platform: "${projectionData.platform}", 
                     completions: ${projectionData.completions}, attempts: ${projectionData.attempts}, passYards: ${projectionData.passYards}, passTd: ${projectionData.passTd}, 
                     interception: ${projectionData.interception}, carries: ${projectionData.carries}, rushYards: ${projectionData.rushYards}, rushTd: ${projectionData.rushTd}, 
                     fumbles: ${projectionData.fumbles}, targets: ${projectionData.targets}, receptions: ${projectionData.receptions}, receivingYards: ${projectionData.receivingYards}, 
@@ -48,14 +64,61 @@ export const addProjection = (player: string): string => {
     return mutation;
 };
 
-export const playerById = (id: string): string => {
+export const teams = `
+    query {
+        teams {
+            id,
+            city,
+            nickname,
+            abbreviation
+        }
+    }
+`;
+
+export const teamById = (id: number) => {
     const query = `
         query {
-            playerById(id: "${id}") {
+            teamById(id: ${id}) {
+                id,
+                city,
+                nickname,
+                abbreviation
+            }
+        }
+    `;
+
+    return query;
+};
+
+export const teamByAbbreviation = (abbreviation: string) => {
+    const query = `
+        query {
+            teamByAbbreviation(abbreviation: "${abbreviation}") {
+                id,
+                city,
+                nickname,
+                abbreviation
+            }
+        }
+    `;
+
+    return query;
+};
+
+export const playerById = (id: number): string => {
+    console.log(id);
+    const query = `
+        query {
+            playerById(id: ${id}) {
                 id,
                 firstName,
                 lastName,
-                team,
+                team {
+                    id,
+                    city,
+                    nickname,
+                    abbreviation
+                },
                 position,
                 rank,
                 tier,
@@ -73,7 +136,12 @@ export const players = `
             id,
             firstName,
             lastName,
-            team,
+            team {
+                id,
+                city,
+                nickname,
+                abbreviation
+            },
             position,
             rank,
             tier,
@@ -86,7 +154,21 @@ export const projections = `
     query {
         projections {
             id,
-            player,
+            player {
+                id,
+                firstName,
+                lastName,
+                team {
+                    id,
+                    city,
+                    nickname,
+                    abbreviation
+                }
+                position,
+                rank,
+                tier,
+                bye
+            },
             platform, 
             completions,             
             attempts,
@@ -110,7 +192,21 @@ export const projectionsByPlatform = (platform: string): string => {
         query {
             projectionsByPlatform(platform: "${platform}") {
                 id,
-                player,
+                player {
+                    id,
+                    firstName,
+                    lastName,
+                    team {
+                        id,
+                        city,
+                        nickname,
+                        abbreviation
+                    }
+                    position,
+                    rank,
+                    tier,
+                    bye
+                },
                 platform, 
                 completions,             
                 attempts,
@@ -132,12 +228,26 @@ export const projectionsByPlatform = (platform: string): string => {
     return query;
 };
 
-export const projectionsByPlayer = (player: string): string => {
+export const projectionsByPlayer = (player: number): string => {
     const query = `
         query {
-            projectionsByPlayer(player: "${player}") {
+            projectionsByPlayer(player: ${player}) {
                 id,
-                player,
+                player { 
+                    id,
+                    firstName,
+                    lastName,
+                    team {
+                        id,
+                        city,
+                        nickname,
+                        abbreviation
+                    }
+                    position,
+                    rank,
+                    tier,
+                    bye
+                },
                 platform, 
                 completions,             
                 attempts,

@@ -1,19 +1,52 @@
 import { ResolverMap } from "./types/graphql-utils";
 import {
     Player,
-    Projection
+    Projection,
+    Team
 } from './entity';
+import { getRepository } from "typeorm";
 
 export const resolvers: ResolverMap = {
     Query: {
-        playerById: async (_: any, { id }: GQL.IPlayerByIdOnQueryArguments) => {
-            const player = await Player.find({ where: { id } });
+        teamById: async (_: any, { id }: GQL.ITeamByIdOnQueryArguments) => {
+            const team = await Team.find({ where: { id } });
 
+            return team[0];
+        },
+        teamByAbbreviation: async (_: any, { abbreviation }: GQL.ITeamByAbbreviationOnQueryArguments) => {
+            const team = await Team.find({ where: { abbreviation } });
+
+            return team[0];
+        },
+        teams: async (_: any) => {
+            const team = await Team.find();
+
+            return team;
+        },
+        playerById: async (_: any, { id }: GQL.IPlayerByIdOnQueryArguments) => {
+            const playerRepository = await getRepository(Player);
+            const player = await playerRepository.find({
+                join: {
+                    alias: "player",
+                    leftJoinAndSelect: {
+                        team: "player.team",
+                    }
+                }, where: { id }
+            });
+            console.log(`PLAYER: ${JSON.stringify(player)}`);
             return player;
         },
         players: async (_: any) => {
-            const players = await Player.find();
-
+            const playerRepository = await getRepository(Player);
+            const players = await playerRepository.find({
+                join: {
+                    alias: "player",
+                    leftJoinAndSelect: {
+                        team: "player.team",
+                    }
+                }
+            });
+            console.log(players);
             return players;
         },
         projections: async (_: any) => {
@@ -35,6 +68,18 @@ export const resolvers: ResolverMap = {
         },
     },
     Mutation: {
+        createTeam: async (_: any, { city, nickname, abbreviation }:
+            GQL.ICreateTeamOnMutationArguments) => {
+            const team = Team.create({
+                city,
+                nickname,
+                abbreviation
+            });
+
+            await team.save();
+
+            return true;
+        },
         createPlayer: async (_: any, { firstName, lastName, team, position,
             rank, tier, bye }:
             GQL.ICreatePlayerOnMutationArguments) => {
@@ -78,6 +123,20 @@ export const resolvers: ResolverMap = {
             await projection.save();
 
             return true;
+        }
+    },
+    Player: {
+        team: async (_: any, { id }: GQL.ITeamByIdOnQueryArguments) => {
+            const team = Team.find({ where: { id } });
+
+            return team;
+        }
+    },
+    Projection: {
+        player: async (_: any, { id }: GQL.IPlayerByIdOnQueryArguments) => {
+            const player = await Player.find({ where: { id } });
+
+            return player;
         }
     }
 };

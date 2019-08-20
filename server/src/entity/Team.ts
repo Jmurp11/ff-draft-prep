@@ -1,16 +1,14 @@
 import { 
     Entity,
     Column,
-    PrimaryColumn,
-    BeforeInsert, 
+    PrimaryGeneratedColumn,
     BaseEntity
 } from "typeorm";
-import uuidv4 = require('uuid/v4');
 
 @Entity("teams")
 export class Team extends BaseEntity {
-    @PrimaryColumn("uuid")
-    id!: string;
+    @PrimaryGeneratedColumn()
+    id!: number;
 
     @Column("text")
     city!: string;
@@ -20,9 +18,4 @@ export class Team extends BaseEntity {
 
     @Column("text")
     abbreviation!: string;
-
-    @BeforeInsert()
-    addId() {
-        this.id = uuidv4();
-    }
 }

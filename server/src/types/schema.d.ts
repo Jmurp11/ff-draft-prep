@@ -22,11 +22,22 @@ declare namespace GQL {
 
   interface IQuery {
     __typename: 'Query';
+    teamById: ITeam | null;
+    teamByAbbreviation: ITeam | null;
+    teams: Array<ITeam | null> | null;
     playerById: IPlayer | null;
     players: Array<IPlayer | null> | null;
     projections: Array<IProjection | null> | null;
     projectionsByPlatform: Array<IProjection | null> | null;
     projectionsByPlayer: Array<IProjection | null> | null;
+  }
+
+  interface ITeamByIdOnQueryArguments {
+    id?: string | null;
+  }
+
+  interface ITeamByAbbreviationOnQueryArguments {
+    abbreviation?: string | null;
   }
 
   interface IPlayerByIdOnQueryArguments {
@@ -41,12 +52,20 @@ declare namespace GQL {
     player?: string | null;
   }
 
+  interface ITeam {
+    __typename: 'Team';
+    id: number | null;
+    city: string | null;
+    nickname: string | null;
+    abbreviation: string | null;
+  }
+
   interface IPlayer {
     __typename: 'Player';
-    id: string | null;
+    id: number | null;
     firstName: string | null;
     lastName: string | null;
-    team: string | null;
+    team: ITeam | null;
     position: string | null;
     rank: number | null;
     tier: number | null;
@@ -55,8 +74,8 @@ declare namespace GQL {
 
   interface IProjection {
     __typename: 'Projection';
-    id: string | null;
-    player: string | null;
+    id: number | null;
+    player: IPlayer | null;
     platform: string | null;
     completions: number | null;
     attempts: number | null;
@@ -75,14 +94,21 @@ declare namespace GQL {
 
   interface IMutation {
     __typename: 'Mutation';
+    createTeam: boolean;
     createPlayer: boolean;
     addProjection: boolean | null;
+  }
+
+  interface ICreateTeamOnMutationArguments {
+    city: string;
+    nickname: string;
+    abbreviation: string;
   }
 
   interface ICreatePlayerOnMutationArguments {
     firstName: string;
     lastName: string;
-    team: string;
+    team: number;
     position: string;
     rank: number;
     tier: number;
@@ -90,7 +116,7 @@ declare namespace GQL {
   }
 
   interface IAddProjectionOnMutationArguments {
-    player: string;
+    player: number;
     platform: string;
     completions: number;
     attempts: number;

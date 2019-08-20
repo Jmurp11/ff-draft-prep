@@ -1,16 +1,18 @@
 import { 
     Entity,
     Column,
-    PrimaryColumn,
-    BeforeInsert, 
-    BaseEntity
+    PrimaryGeneratedColumn,
+   // BeforeInsert, 
+    BaseEntity,
+    OneToOne,
+   JoinColumn
 } from "typeorm";
-import uuidv4 = require('uuid/v4');
+import { Team } from "./Team";
 
 @Entity("players")
 export class Player extends BaseEntity {
-    @PrimaryColumn("uuid")
-    id!: string;
+    @PrimaryGeneratedColumn()
+    id!: number;
 
     @Column("text")
     firstName!: string;
@@ -18,8 +20,10 @@ export class Player extends BaseEntity {
     @Column("text")
     lastName!: string;
 
+    @OneToOne(() => Team)
+    @JoinColumn()
     @Column("text")
-    team!: string;
+    team!: number;
 
     @Column("text")
     position!: string;
@@ -32,9 +36,4 @@ export class Player extends BaseEntity {
 
     @Column("int")
     bye!: number;
-    
-    @BeforeInsert()
-    addId() {
-        this.id = uuidv4();
-    }
 }
