@@ -2,103 +2,49 @@
   <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
 </mat-form-field>
 
-<div class="mat-elevation-z8">
-  <table mat-table [dataSource]="dataSource" matSort>
+<table mat-table [dataSource]="dataSource" multiTemplateDataRows class="mat-elevation-z8" matSort>
+  <ng-container matColumnDef="{{column}}" *ngFor="let column of columnsToDisplay">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> {{column}} </th>
+    <td mat-cell *matCellDef="let element"> {{element[column]}} </td>
+  </ng-container>
 
-    <ng-container matColumnDef="rank">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Rank </th>
-      <td mat-cell *matCellDef="let row"> {{row.rank}} </td>
-    </ng-container>
+  <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+  <ng-container matColumnDef="expandedDetail">
+    <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplay.length">
+      <div class="element-detail" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+        <div class="element-description">
+          <span class="team-info-col team-logo">
 
-    <ng-container matColumnDef="playerName">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
-      <td mat-cell *matCellDef="let row"> {{row.playerName}} </td>
-    </ng-container>
+          </span>
+          <span class="team-info-col">
+            <div class="team-info"><span class="label">Total Points: </span>{{element.pointsFor}}</div>
+            <div class="team-info"><span class="label">Total Yards: </span>{{element.yards}}</div>
+            <div class="team-info"><span class="label">Total Plays: </span>{{element.plays}}</div>
+          </span>
+          <span class="team-info-col">
+            <div class="team-info"><span class="label">Score Percentage: </span>{{element.scorePercentage}}</div>
+            <div class="team-info"><span class="label">Turnover Percentage:
+              </span>{{element.turnoverPercentage}}</div>
+            <div class="team-info"><span class="label">Net Yards Per Pass: </span>{{element.netYardsPerPass}}</div>
+            <div class="team-info"><span class="label">Total INT: </span>{{element.interceptionTeam}}</div>
+          </span>
+          <span class="team-info-col">
+            <div class="team-info"><span class="label">Team Rush Attempts: </span>{{element.rushAttemptTeam}}</div>
+            <div class="team-info"><span class="label">Team Rush Yards: </span>{{element.rushYardsTeam}}</div>
+            <div class="team-info"><span class="label">Team Rush TD: </span>{{element.rushTdTeam}}</div>
+            <div class="team-info"><span class="label">Yards Per Rush: </span>{{element.yardsPerRush}}</div>
+          </span>
+        </div>
+      </div>
+    </td>
+  </ng-container>
 
-    <ng-container matColumnDef="position">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Position </th>
-      <td mat-cell *matCellDef="let row"> {{row.position}} </td>
-    </ng-container>
+  <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+  <tr mat-row *matRowDef="let element; columns: columnsToDisplay;" class="element-row"
+    [class.expanded-row]="expandedElement === element"
+    (click)="expandedElement = expandedElement === element ? null : element">
+  </tr>
+  <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="detail-row"></tr>
+</table>
 
-    <ng-container matColumnDef="tier">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Tier </th>
-      <td mat-cell *matCellDef="let row"> {{row.tier}} </td>
-    </ng-container>
-
-    <ng-container matColumnDef="team">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Team </th>
-      <td mat-cell *matCellDef="let row"> {{row.team}} </td>
-    </ng-container>
-
-    <ng-container matColumnDef="bye">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Bye </th>
-      <td mat-cell *matCellDef="let row"> {{row.bye}} </td>
-    </ng-container>
-
-    <ng-container matColumnDef="passAC">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Pass A/C </th>
-      <td mat-cell *matCellDef="let row" [style.color]="row.color"> {{row.completions}} / {{row.attempts}} </td>
-    </ng-container>
-
-    <ng-container matColumnDef="passYards">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Pass Yards </th>
-      <td mat-cell *matCellDef="let row" [style.color]="row.color"> {{row.passYards}} </td>
-    </ng-container>
-
-    <ng-container matColumnDef="passTd">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Pass TD </th>
-      <td mat-cell *matCellDef="let row" [style.color]="row.color"> {{row.passTd}} </td>
-    </ng-container>
-
-    <ng-container matColumnDef="interception">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> INT </th>
-      <td mat-cell *matCellDef="let row" [style.color]="row.color"> {{row.interception}} </td>
-    </ng-container>
-
-    <ng-container matColumnDef="carries">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Carries </th>
-      <td mat-cell *matCellDef="let row" [style.color]="row.color"> {{row.carries}} </td>
-    </ng-container>
-
-    <ng-container matColumnDef="rushYards">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Rush Yards </th>
-      <td mat-cell *matCellDef="let row" [style.color]="row.color"> {{row.rushYards}} </td>
-    </ng-container>
-
-    <ng-container matColumnDef="rushTd">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Rush TD </th>
-      <td mat-cell *matCellDef="let row" [style.color]="row.color"> {{row.rushTd}} </td>
-    </ng-container>
-
-    <ng-container matColumnDef="fumbles">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Fumbles </th>
-      <td mat-cell *matCellDef="let row" [style.color]="row.color"> {{row.fumbles}} </td>
-    </ng-container>
-
-    <ng-container matColumnDef="targets">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Targets </th>
-      <td mat-cell *matCellDef="let row" [style.color]="row.color"> {{row.targets}} </td>
-    </ng-container>
-
-    <ng-container matColumnDef="receptions">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Receptions </th>
-      <td mat-cell *matCellDef="let row" [style.color]="row.color"> {{row.receptions}} </td>
-    </ng-container>
-
-    <ng-container matColumnDef="receivingYards">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Receiving Yards </th>
-      <td mat-cell *matCellDef="let row" [style.color]="row.color"> {{row.receivingYards}} </td>
-    </ng-container>
-
-    <ng-container matColumnDef="receivingTd">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Receiving TD </th>
-      <td mat-cell *matCellDef="let row" [style.color]="row.color"> {{row.receivingTd}} </td>
-    </ng-container>
-
-    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true;"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;">
-    </tr>
-  </table>
-
-  <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
-</div>
+<mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
