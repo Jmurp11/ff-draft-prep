@@ -1,3 +1,17 @@
 .fill-space {
   flex: 1 1 auto;
 }
+
+.title {
+  color: white;
+  font-size: 36px;
+  font-weight: bold;
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+}
+
+.title-logo {
+  fill: white;
+  height: 100px;
+  width: 100px;
+  padding: 5px;
+}
