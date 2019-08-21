@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<svg xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:svg="http://www.w3.org/2000/svg" id="svg2" viewBox="0 0 666.23 395.3" version="1.0" fill="white">
+  <g id="layer1" transform="translate(-72.722 -100.55)">
+    <path id="path3278" d="m410.8 100.56c-57.67 23.25-86.95 55.22-120.35 103.32-3.87 4.47-11.48 25.34-21.94 31.18-40.45 34.53-83.76 63.28-92.22 147.14-72.84 14.3-101.49-42.14-103.57 15.23-0.273 7.63 38.9 19.19 84.6 25.6-27.5 21.54-57.703 44.11-62.853 57.46-4.448 11.53 80.633-14.7 113.57-45.4 37.28 14.78 79.53 5.78 95.18-3.82 49.94 28.54 117.48 64.46 121.92 64.58 13.72 0.37-22.55-41.7-62.6-71.95 48.16-1.24 91.19-1.71 92.73-8.94 11.77-55.37-66.28-8.92-92.67-23.69 100.9-33.23 24.66 1.71 127.94-5.84 0.31-0.29-42.35-40.5-34.35-44.71 6.2-3.25 20.66-9.06 27.43-12.38 9.58 4.32 48.85 14.55 53.38 15.11 3.32 0.42-13.11-14.29-17.26-26.3-3.69-10.71 5.93-17.98 7.57-19.38 6.44-5.52 7.86-7.21 13.03-10.91-1.22 19.52 130.25 66.85 123.09 48.13-27.39-12.44-73.62-58.37-62.17-61.52 32.52-63.7 111.54-156.28 133.21-155.79-44.92-20.68-140.89 79.73-199.23 113.9-14.47 8.48-23.44 15.36-47.64 7.21-8.97-3.02 16-46.91 14.74-51.72-13.98 2.21-39.4 19.85-52.12 28.37-23.37 15.64-37.97 12.23-72.74 6.43-7.69-0.98-5.61-2.75-7.57-17.37 9.37-36.31 49.15-104.69 40.89-103.94zm323.67 17.12c1.55 0.71 3.05 1.57 4.48 2.59-0.94-1.73-2.48-2.55-4.48-2.59z"/>
+  </g>
+  <metadata>
+    <rdf:RDF>
+      <cc:Work>
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+        <cc:license rdf:resource="http://creativecommons.org/licenses/publicdomain/"/>
+        <dc:publisher>
+          <cc:Agent rdf:about="http://openclipart.org/">
+            <dc:title>Openclipart</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:title>hammerhead shark</dc:title>
+        <dc:date>2008-11-17T17:36:11</dc:date>
+        <dc:description>A hammerhead shark silhouette</dc:description>
+        <dc:source>http://openclipart.org/detail/20224/hammerhead-shark-by-wsnaccad-20224</dc:source>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>wsnaccad</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:subject>
+          <rdf:Bag>
+            <rdf:li>clip art</rdf:li>
+            <rdf:li>clipart</rdf:li>
+            <rdf:li>hammerhead</rdf:li>
+            <rdf:li>image</rdf:li>
+            <rdf:li>media</rdf:li>
+            <rdf:li>png</rdf:li>
+            <rdf:li>public domain</rdf:li>
+            <rdf:li>shark</rdf:li>
+            <rdf:li>silhouette</rdf:li>
+            <rdf:li>svg</rdf:li>
+          </rdf:Bag>
+        </dc:subject>
+      </cc:Work>
+      <cc:License rdf:about="http://creativecommons.org/licenses/publicdomain/">
+        <cc:permits rdf:resource="http://creativecommons.org/ns#Reproduction"/>
+        <cc:permits rdf:resource="http://creativecommons.org/ns#Distribution"/>
+        <cc:permits rdf:resource="http://creativecommons.org/ns#DerivativeWorks"/>
+      </cc:License>
+    </rdf:RDF>
+  </metadata>
+</svg>
