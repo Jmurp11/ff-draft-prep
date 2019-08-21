@@ -154,10 +154,11 @@ test('Get Players', async () => {
 
     const response2 = await request(getHost(), players);
     const result = response2.players[0];
+    console.log(JSON.stringify(result));
 
     expect(result.firstName).toEqual(playerData.firstName);
     expect(result.lastName).toEqual(playerData.lastName);
-    expect(result.team).toEqual(newTeam.id);
+    expect(result.team.id).toEqual(newTeam.id);
     expect(result.position).toEqual(playerData.position);
 });
 
@@ -172,8 +173,9 @@ test('Get Projections', async () => {
     const response = await request(getHost(), projections);
 
     const result = response.projections[0];
+    console.log(JSON.stringify(result));
 
-    expect(result.player).toEqual(playerResult.id);
+    expect(result.player.id).toEqual(playerResult.id);
     expect(result.platform).toEqual(projectionData.platform);
     expect(result.completions).toEqual(projectionData.completions);
     expect(result.attempts).toEqual(projectionData.attempts);
@@ -202,8 +204,9 @@ test('Get Projections By Platform', async () => {
     const response = await request(getHost(), projectionsByPlatform(projTest.platform));
 
     const result = response.projectionsByPlatform[0];
+    console.log(JSON.stringify(result));
 
-    expect(result.player).toEqual(playerResult.id);
+    expect(result.player.id).toEqual(playerResult.id);
     expect(result.platform).toEqual(projectionData.platform);
     expect(result.completions).toEqual(projectionData.completions);
     expect(result.attempts).toEqual(projectionData.attempts);
@@ -231,8 +234,8 @@ test('Get Projections By Player', async () => {
     const response3 = await request(getHost(), projectionsByPlayer(playerResult.id));
 
     const result = response3.projectionsByPlayer[0];
-    
-    expect(result.player).toEqual(playerResult.id);
+    console.log(JSON.stringify(result));
+    expect(result.player.id).toEqual(playerResult.id);
     expect(result.platform).toEqual(projectionData.platform);
     expect(result.completions).toEqual(projectionData.completions);
     expect(result.attempts).toEqual(projectionData.attempts);
@@ -266,7 +269,7 @@ const callAddProjection = async (player: number) => {
 
 const callPlayerById = async (id: number) => {
     const response = await request(getHost(), playerById(id));
-
+    console.log(JSON.stringify(response));
     return response.playerById;
 };
 

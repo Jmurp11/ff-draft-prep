@@ -50,30 +50,88 @@ export const resolvers: ResolverMap = {
             return players;
         },
         projections: async (_: any) => {
-            const projections = await Projection.find();
-
+            const projectionRepository = await getRepository(Projection);
+            const projections = await projectionRepository.find({
+                join: {
+                    alias: "projection",
+                    leftJoinAndSelect: {
+                        player: "projection.player",
+                    }
+                }
+            });
             return projections;
         },
         projectionsByPlatform: async (_: any, { platform }:
             GQL.IProjectionsByPlatformOnQueryArguments) => {
-            const projections = await Projection.find({ where: { platform } });
-
+            const projectionRepository = await getRepository(Projection);
+            const projections = await projectionRepository.find({
+                join: {
+                    alias: "projection",
+                    leftJoinAndSelect: {
+                        player: "projection.player",
+                    }
+                }, where: { platform }
+            });
             return projections;
         },
         projectionsByPlayer: async (_: any, { player }:
             GQL.IProjectionsByPlayerOnQueryArguments) => {
-            const projections = await Projection.find({ where: { player } });
-
+            const projectionRepository = await getRepository(Projection);
+            const projections = await projectionRepository.find({
+                join: {
+                    alias: "projection",
+                    leftJoinAndSelect: {
+                        player: "projection.player",
+                    }
+                }, where: { player }
+            });
             return projections;
         },
     },
     Mutation: {
-        createTeam: async (_: any, { city, nickname, abbreviation }:
-            GQL.ICreateTeamOnMutationArguments) => {
+        createTeam: async (_: any, {
+            city,
+            nickname,
+            abbreviation,
+            pointsFor,
+            yards,
+            plays,
+            yardsPerPlay,
+            turnovers,
+            passAttempts,
+            passCompletions,
+            passYards,
+            passTd,
+            interception,
+            netYardsPerPass,
+            rushAttempt,
+            rushYards,
+            rushTd,
+            yardsPerRush,
+            scorePercentage,
+            turnoverPercentage
+        }: GQL.ICreateTeamOnMutationArguments) => {
             const team = Team.create({
                 city,
                 nickname,
-                abbreviation
+                abbreviation,
+                pointsFor,
+                yards,
+                plays,
+                yardsPerPlay,
+                turnovers,
+                passAttempts,
+                passCompletions,
+                passYards,
+                passTd,
+                interception,
+                netYardsPerPass,
+                rushAttempt,
+                rushYards,
+                rushTd,
+                yardsPerRush,
+                scorePercentage,
+                turnoverPercentage
             });
 
             await team.save();

@@ -25,7 +25,7 @@ declare namespace GQL {
     teamById: ITeam | null;
     teamByAbbreviation: ITeam | null;
     teams: Array<ITeam | null> | null;
-    playerById: IPlayer | null;
+    playerById: Array<IPlayer | null> | null;
     players: Array<IPlayer | null> | null;
     projections: Array<IProjection | null> | null;
     projectionsByPlatform: Array<IProjection | null> | null;
@@ -33,7 +33,7 @@ declare namespace GQL {
   }
 
   interface ITeamByIdOnQueryArguments {
-    id?: string | null;
+    id?: number | null;
   }
 
   interface ITeamByAbbreviationOnQueryArguments {
@@ -41,7 +41,7 @@ declare namespace GQL {
   }
 
   interface IPlayerByIdOnQueryArguments {
-    id?: string | null;
+    id?: number | null;
   }
 
   interface IProjectionsByPlatformOnQueryArguments {
@@ -49,7 +49,7 @@ declare namespace GQL {
   }
 
   interface IProjectionsByPlayerOnQueryArguments {
-    player?: string | null;
+    player?: number | null;
   }
 
   interface ITeam {
@@ -58,6 +58,23 @@ declare namespace GQL {
     city: string | null;
     nickname: string | null;
     abbreviation: string | null;
+    pointsFor: number | null;
+    yards: number | null;
+    plays: number | null;
+    yardsPerPlay: number | null;
+    turnovers: number | null;
+    passAttempts: number | null;
+    passCompletions: number | null;
+    passYards: number | null;
+    passTd: number | null;
+    interception: number | null;
+    netYardsPerPass: number | null;
+    rushAttempt: number | null;
+    rushYards: number | null;
+    rushTd: number | null;
+    yardsPerRush: number | null;
+    scorePercentage: number | null;
+    turnoverPercentage: number | null;
   }
 
   interface IPlayer {
@@ -103,6 +120,23 @@ declare namespace GQL {
     city: string;
     nickname: string;
     abbreviation: string;
+    pointsFor: number;
+    yards: number;
+    plays: number;
+    yardsPerPlay: number;
+    turnovers: number;
+    passAttempts: number;
+    passCompletions: number;
+    passYards: number;
+    passTd: number;
+    interception: number;
+    netYardsPerPass: number;
+    rushAttempt: number;
+    rushYards: number;
+    rushTd: number;
+    yardsPerRush: number;
+    scorePercentage: number;
+    turnoverPercentage: number;
   }
 
   interface ICreatePlayerOnMutationArguments {

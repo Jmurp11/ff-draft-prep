@@ -3,7 +3,24 @@ export const host = 'http://localhost:4000';
 export const teamData = {
     city: 'New York',
     nickname: 'Jets',
-    abbreviation: 'NYJ'
+    abbreviation: 'NYJ',
+    pointsFor: 0,
+    yards: 0,
+    plays: 0,
+    yardsPerPlay: 0.0,
+    turnovers: 0,
+    passAttempts: 0,
+    passCompletions: 0,
+    passYards: 0,
+    passTd: 0,
+    interception: 0,
+    netYardsPerPass: 0,
+    rushAttempt: 0,
+    rushYards: 0,
+    rushTd: 0,
+    yardsPerRush: 0,
+    scorePercentage: 0.0,
+    turnoverPercentage: 0.0
 };
 
 export const playerData = {
@@ -36,7 +53,14 @@ export const projectionData = {
 export const createTeam = `
     mutation {
         createTeam(city: "${teamData.city}", nickname: "${teamData.nickname}", 
-            abbreviation: "${teamData.abbreviation}")
+            abbreviation: "${teamData.abbreviation}", pointsFor: ${teamData.pointsFor},
+            yards: ${teamData.yards}, plays: ${teamData.plays}, yardsPerPlay: ${teamData.yardsPerPlay},
+            turnovers: ${teamData.turnovers}, passAttempts: ${teamData.passAttempts},
+            passCompletions: ${teamData.passCompletions}, passYards: ${teamData.passYards},
+            passTd: ${teamData.passTd}, interception: ${teamData.interception},
+            netYardsPerPass: ${teamData.netYardsPerPass}, rushAttempt: ${teamData.rushAttempt},
+            rushYards: ${teamData.rushYards}, rushTd: ${teamData.rushTd}, yardsPerRush: ${teamData.yardsPerRush},
+            scorePercentage: ${teamData.scorePercentage}, turnoverPercentage: ${teamData.turnoverPercentage})
     }
 `;
 
@@ -70,7 +94,24 @@ export const teams = `
             id,
             city,
             nickname,
-            abbreviation
+            abbreviation,
+            pointsFor,
+            yards,
+            plays,
+            yardsPerPlay,
+            turnovers,
+            passAttempts,
+            passCompletions,
+            passYards,
+            passTd,
+            interception,
+            netYardsPerPass,
+            rushAttempt,
+            rushYards,
+            rushTd,
+            yardsPerRush,
+            scorePercentage,
+            turnoverPercentage
         }
     }
 `;
@@ -82,7 +123,24 @@ export const teamById = (id: number) => {
                 id,
                 city,
                 nickname,
-                abbreviation
+                abbreviation,
+                pointsFor,
+                yards,
+                plays,
+                yardsPerPlay,
+                turnovers,
+                passAttempts,
+                passCompletions,
+                passYards,
+                passTd,
+                interception,
+                netYardsPerPass,
+                rushAttempt,
+                rushYards,
+                rushTd,
+                yardsPerRush,
+                scorePercentage,
+                turnoverPercentage
             }
         }
     `;
@@ -97,7 +155,24 @@ export const teamByAbbreviation = (abbreviation: string) => {
                 id,
                 city,
                 nickname,
-                abbreviation
+                abbreviation,
+                pointsFor,
+                yards,
+                plays,
+                yardsPerPlay,
+                turnovers,
+                passAttempts,
+                passCompletions,
+                passYards,
+                passTd,
+                interception,
+                netYardsPerPass,
+                rushAttempt,
+                rushYards,
+                rushTd,
+                yardsPerRush,
+                scorePercentage,
+                turnoverPercentage
             }
         }
     `;
@@ -117,7 +192,24 @@ export const playerById = (id: number): string => {
                     id,
                     city,
                     nickname,
-                    abbreviation
+                    abbreviation,
+                    pointsFor,
+                    yards,
+                    plays,
+                    yardsPerPlay,
+                    turnovers,
+                    passAttempts,
+                    passCompletions,
+                    passYards,
+                    passTd,
+                    interception,
+                    netYardsPerPass,
+                    rushAttempt,
+                    rushYards,
+                    rushTd,
+                    yardsPerRush,
+                    scorePercentage,
+                    turnoverPercentage
                 },
                 position,
                 rank,
@@ -140,7 +232,24 @@ export const players = `
                 id,
                 city,
                 nickname,
-                abbreviation
+                abbreviation,
+                pointsFor,
+                yards,
+                plays,
+                yardsPerPlay,
+                turnovers,
+                passAttempts,
+                passCompletions,
+                passYards,
+                passTd,
+                interception,
+                netYardsPerPass,
+                rushAttempt,
+                rushYards,
+                rushTd,
+                yardsPerRush,
+                scorePercentage,
+                turnoverPercentage
             },
             position,
             rank,
@@ -162,7 +271,24 @@ export const projections = `
                     id,
                     city,
                     nickname,
-                    abbreviation
+                    abbreviation,
+                    pointsFor,
+                    yards,
+                    plays,
+                    yardsPerPlay,
+                    turnovers,
+                    passAttempts,
+                    passCompletions,
+                    passYards,
+                    passTd,
+                    interception,
+                    netYardsPerPass,
+                    rushAttempt,
+                    rushYards,
+                    rushTd,
+                    yardsPerRush,
+                    scorePercentage,
+                    turnoverPercentage
                 }
                 position,
                 rank,
@@ -200,7 +326,24 @@ export const projectionsByPlatform = (platform: string): string => {
                         id,
                         city,
                         nickname,
-                        abbreviation
+                        abbreviation,
+                        pointsFor,
+                        yards,
+                        plays,
+                        yardsPerPlay,
+                        turnovers,
+                        passAttempts,
+                        passCompletions,
+                        passYards,
+                        passTd,
+                        interception,
+                        netYardsPerPass,
+                        rushAttempt,
+                        rushYards,
+                        rushTd,
+                        yardsPerRush,
+                        scorePercentage,
+                        turnoverPercentage
                     }
                     position,
                     rank,
@@ -241,7 +384,24 @@ export const projectionsByPlayer = (player: number): string => {
                         id,
                         city,
                         nickname,
-                        abbreviation
+                        abbreviation,
+                        pointsFor,
+                        yards,
+                        plays,
+                        yardsPerPlay,
+                        turnovers,
+                        passAttempts,
+                        passCompletions,
+                        passYards,
+                        passTd,
+                        interception,
+                        netYardsPerPass,
+                        rushAttempt,
+                        rushYards,
+                        rushTd,
+                        yardsPerRush,
+                        scorePercentage,
+                        turnoverPercentage
                     }
                     position,
                     rank,
