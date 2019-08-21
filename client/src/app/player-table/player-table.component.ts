@@ -66,7 +66,7 @@ export class PlayerTableComponent implements OnInit {
   columnsToDisplay = ['rank', 'playerName', 'team', 'position', 'tier', 'completions', 'attempts',
     'passYards', 'passTd', 'interception', 'carries', 'rushYards', 'rushTd', 'fumbles', 'targets', 'receptions',
     'receivingYards', 'receivingTd'];
-  expandedElement: PlayerData | null;
+  expandedPlayer: PlayerData | null;
 
 
   constructor() {
