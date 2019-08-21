@@ -8,6 +8,7 @@ export interface PlayerData {
   playerName: string;
   team: string;
   position: string;
+  imageUrl: string;
   rank: number,
   tier: number,
   bye: number;
@@ -91,6 +92,7 @@ const PLAYER_DATA: PlayerData[] = [
     playerName: 'Leveon Bell',
     team: 'NYJ',
     position: 'RB',
+    imageUrl: 'http://content.sportslogos.net/logos/7/152/thumbs/15291162019.gif',
     rank: 1,
     tier: 2,
     bye: 11,
@@ -128,6 +130,7 @@ const PLAYER_DATA: PlayerData[] = [
     playerName: 'Todd Gurley',
     team: 'LAR',
     position: 'RB',
+    imageUrl: 'http://content.sportslogos.net/logos/7/5941/thumbs/594179532017.gif',
     rank: 2,
     tier: 2,
     bye: 11,
@@ -165,6 +168,7 @@ const PLAYER_DATA: PlayerData[] = [
     playerName: 'Mike Davis',
     team: 'CHI',
     position: 'RB',
+    imageUrl: 'http://content.sportslogos.net/logos/7/169/thumbs/364.gif',
     rank: 3,
     tier: 2,
     bye: 11,
@@ -202,6 +206,7 @@ const PLAYER_DATA: PlayerData[] = [
     playerName: 'Patrick Mahomes',
     team: 'KC',
     position: 'QB',
+    imageUrl: 'http://content.sportslogos.net/logos/7/162/thumbs/857.gif',
     rank: 4,
     tier: 2,
     bye: 11,
@@ -239,6 +244,7 @@ const PLAYER_DATA: PlayerData[] = [
     playerName: 'Mike Evans',
     team: 'TB',
     position: 'WR',
+    imageUrl: 'http://content.sportslogos.net/logos/7/176/thumbs/17636702014.gif',
     rank: 5,
     tier: 2,
     bye: 11,

@@ -14,7 +14,7 @@
       <div class="element-detail" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
         <div class="element-description">
           <span class="team-info-col team-logo">
-
+            <img [src]=element.imageUrl>
           </span>
           <span class="team-info-col">
             <div class="team-info"><span class="label">Total Points: </span>{{element.pointsFor}}</div>
