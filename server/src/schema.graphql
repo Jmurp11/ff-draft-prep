@@ -17,7 +17,7 @@ type Team {
   rushAttempt: Int
   rushYards: Int
   rushTd: Int
-  yardsPerRush: Int
+  yardsPerRush: Float
   scorePercentage: Float
   turnoverPercentage: Float
 }
@@ -82,7 +82,7 @@ type Mutation {
     rushAttempt: Int!
     rushYards: Int!
     rushTd: Int!
-    yardsPerRush: Int!
+    yardsPerRush: Float!
     scorePercentage: Float!
     turnoverPercentage: Float!
   ): Boolean!

@@ -46,7 +46,7 @@ export const resolvers: ResolverMap = {
                     }
                 }
             });
-            console.log(players);
+            console.log(JSON.stringify(players));
             return players;
         },
         projections: async (_: any) => {
@@ -56,9 +56,11 @@ export const resolvers: ResolverMap = {
                     alias: "projection",
                     leftJoinAndSelect: {
                         player: "projection.player",
+                        team: "player.team"
                     }
                 }
             });
+            console.log(JSON.stringify(projections));
             return projections;
         },
         projectionsByPlatform: async (_: any, { platform }:
@@ -69,6 +71,7 @@ export const resolvers: ResolverMap = {
                     alias: "projection",
                     leftJoinAndSelect: {
                         player: "projection.player",
+                        team: "player.team"
                     }
                 }, where: { platform }
             });
@@ -82,6 +85,7 @@ export const resolvers: ResolverMap = {
                     alias: "projection",
                     leftJoinAndSelect: {
                         player: "projection.player",
+                        team: "player.team"
                     }
                 }, where: { player }
             });
@@ -181,20 +185,6 @@ export const resolvers: ResolverMap = {
             await projection.save();
 
             return true;
-        }
-    },
-    Player: {
-        team: async (_: any, { id }: GQL.ITeamByIdOnQueryArguments) => {
-            const team = Team.find({ where: { id } });
-
-            return team;
-        }
-    },
-    Projection: {
-        player: async (_: any, { id }: GQL.IPlayerByIdOnQueryArguments) => {
-            const player = await Player.find({ where: { id } });
-
-            return player;
         }
     }
 };

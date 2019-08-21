@@ -5,8 +5,7 @@ import { AddressInfo } from 'net';
 import { Player, Projection, Team } from '../entity';
 import { 
     playerData, projectionData, teamData,
-    createTeam, // teams, teamById, teamByAbbreviation,
-    createPlayer, addProjection,
+    createTeam, createPlayer, addProjection,
     playerById, players,
     projections, projectionsByPlatform,
     projectionsByPlayer, teams, teamById, teamByAbbreviation
@@ -127,34 +126,22 @@ test('Get Player By ID', async () => {
     const firstName = playerData.firstName;
     const lastName = playerData.lastName;
 
-    // await callCreateTeamMutation();
-
-    // const newTeam = await getTeams();
-
-    // await callCreatePlayerMutation(newTeam.id);
-
     const result = await Player.find({ where: { firstName, lastName } });
-    console.log(result[0].id);
+    const id = parseInt(result[0].team.toString(), 10);
     const queryResult = await callPlayerById(result[0].id);
-
-    console.log(JSON.stringify(queryResult));
 
     expect(queryResult[0].firstName).toEqual(playerData.firstName);
     expect(queryResult[0].lastName).toEqual(playerData.lastName);
-    expect(queryResult[0].team.id).toEqual(result[0].team);
+    expect(queryResult[0].team.id).toEqual(id);
     expect(queryResult[0].position).toEqual(playerData.position);
 });
 
 test('Get Players', async () => {
-    // await callCreateTeamMutation();
 
     const newTeam = await getTeams();
 
-    // await callCreatePlayerMutation(newTeam.id);
-
     const response2 = await request(getHost(), players);
     const result = response2.players[0];
-    console.log(JSON.stringify(result));
 
     expect(result.firstName).toEqual(playerData.firstName);
     expect(result.lastName).toEqual(playerData.lastName);
@@ -168,12 +155,9 @@ test('Get Projections', async () => {
 
     const playerResult = await getPlayer(firstName, lastName);
 
-    // await callAddProjection(playerResult.id);
-
     const response = await request(getHost(), projections);
 
     const result = response.projections[0];
-    console.log(JSON.stringify(result));
 
     expect(result.player.id).toEqual(playerResult.id);
     expect(result.platform).toEqual(projectionData.platform);
@@ -198,13 +182,11 @@ test('Get Projections By Platform', async () => {
 
     const playerResult = await getPlayer(firstName, lastName);
 
-   //  await callAddProjection(playerResult.id);
     const projTest = await getProjectionByPlayerId(playerResult.id);
 
     const response = await request(getHost(), projectionsByPlatform(projTest.platform));
 
     const result = response.projectionsByPlatform[0];
-    console.log(JSON.stringify(result));
 
     expect(result.player.id).toEqual(playerResult.id);
     expect(result.platform).toEqual(projectionData.platform);
@@ -229,12 +211,10 @@ test('Get Projections By Player', async () => {
 
     const playerResult = await getPlayer(firstName, lastName);
 
-    // await callAddProjection(playerResult.id);
 
     const response3 = await request(getHost(), projectionsByPlayer(playerResult.id));
 
     const result = response3.projectionsByPlayer[0];
-    console.log(JSON.stringify(result));
     expect(result.player.id).toEqual(playerResult.id);
     expect(result.platform).toEqual(projectionData.platform);
     expect(result.completions).toEqual(projectionData.completions);
@@ -269,7 +249,6 @@ const callAddProjection = async (player: number) => {
 
 const callPlayerById = async (id: number) => {
     const response = await request(getHost(), playerById(id));
-    console.log(JSON.stringify(response));
     return response.playerById;
 };
 

@@ -14,7 +14,7 @@ export const teamData = {
     passYards: 0,
     passTd: 0,
     interception: 0,
-    netYardsPerPass: 0,
+    netYardsPerPass: 0.0,
     rushAttempt: 0,
     rushYards: 0,
     rushTd: 0,
