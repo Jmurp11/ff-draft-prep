@@ -185,7 +185,6 @@ export const teamByAbbreviation = (abbreviation: string) => {
 };
 
 export const playerById = (id: number): string => {
-    console.log(id);
     const query = `
         query {
             playerById(id: ${id}) {

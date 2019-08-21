@@ -33,7 +33,6 @@ export const resolvers: ResolverMap = {
                     }
                 }, where: { id }
             });
-            console.log(`PLAYER: ${JSON.stringify(player)}`);
             return player;
         },
         players: async (_: any) => {
@@ -46,7 +45,6 @@ export const resolvers: ResolverMap = {
                     }
                 }
             });
-            console.log(JSON.stringify(players));
             return players;
         },
         projections: async (_: any) => {
@@ -60,7 +58,6 @@ export const resolvers: ResolverMap = {
                     }
                 }
             });
-            console.log(JSON.stringify(projections));
             return projections;
         },
         projectionsByPlatform: async (_: any, { platform }:
