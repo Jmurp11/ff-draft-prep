@@ -1,0 +1,50 @@
+<mat-form-field>
+  <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+</mat-form-field>
+
+<table mat-table [dataSource]="dataSource" multiTemplateDataRows class="mat-elevation-z8" matSort>
+  <ng-container matColumnDef="{{column}}" *ngFor="let column of columnsToDisplay">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> {{column}} </th>
+    <td mat-cell *matCellDef="let player"> {{player[column]}} </td>
+  </ng-container>
+
+  <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+  <ng-container matColumnDef="expandedDetail">
+    <td mat-cell *matCellDef="let player" [attr.colspan]="columnsToDisplay.length">
+      <div class="player-detail" [@detailExpand]="player == expandedPlayer ? 'expanded' : 'collapsed'">
+        <div class="player-description">
+          <span class="team-info-col team-logo">
+            <img [src]=player.imageUrl>
+          </span>
+          <span class="team-info-col">
+            <div class="team-info"><span class="label">Total Points: </span>{{player.pointsFor}}</div>
+            <div class="team-info"><span class="label">Total Yards: </span>{{player.yards}}</div>
+            <div class="team-info"><span class="label">Total Plays: </span>{{player.plays}}</div>
+          </span>
+          <span class="team-info-col">
+            <div class="team-info"><span class="label">Score Percentage: </span>{{player.scorePercentage}}</div>
+            <div class="team-info"><span class="label">Turnover Percentage:
+              </span>{{player.turnoverPercentage}}</div>
+            <div class="team-info"><span class="label">Net Yards Per Pass: </span>{{player.netYardsPerPass}}</div>
+            <div class="team-info"><span class="label">Total INT: </span>{{player.interceptionTeam}}</div>
+          </span>
+          <span class="team-info-col">
+            <div class="team-info"><span class="label">Team Rush Attempts: </span>{{player.rushAttemptTeam}}</div>
+            <div class="team-info"><span class="label">Team Rush Yards: </span>{{player.rushYardsTeam}}</div>
+            <div class="team-info"><span class="label">Team Rush TD: </span>{{player.rushTdTeam}}</div>
+            <div class="team-info"><span class="label">Yards Per Rush: </span>{{player.yardsPerRush}}</div>
+          </span>
+        </div>
+      </div>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+  <tr mat-row *matRowDef="let player; columns: columnsToDisplay;" class="player-row"
+    [class.expanded-row]="expandedPlayer === player"
+    (click)="expandedPlayer = expandedPlayer === player ? null : player">
+  </tr>
+  <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="detail-row"></tr>
+</table>
+
+<mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>

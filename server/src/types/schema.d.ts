@@ -22,43 +22,78 @@ declare namespace GQL {
 
   interface IQuery {
     __typename: 'Query';
-    hello: string;
-    getPlayerById: IPlayer | null;
-    getPlayers: Array<IPlayer | null> | null;
-    getProjections: Array<IProjection | null> | null;
-    getProjectionsByPlatform: Array<IProjection | null> | null;
-    getProjectionsByPlayer: Array<IProjection | null> | null;
+    teamById: ITeam | null;
+    teamByAbbreviation: ITeam | null;
+    teams: Array<ITeam | null> | null;
+    playerById: Array<IPlayer | null> | null;
+    players: Array<IPlayer | null> | null;
+    projections: Array<IProjection | null> | null;
+    projectionsByPlatform: Array<IProjection | null> | null;
+    projectionsByPlayer: Array<IProjection | null> | null;
   }
 
-  interface IHelloOnQueryArguments {
-    name?: string | null;
+  interface ITeamByIdOnQueryArguments {
+    id?: number | null;
   }
 
-  interface IGetPlayerByIdOnQueryArguments {
-    id?: string | null;
+  interface ITeamByAbbreviationOnQueryArguments {
+    abbreviation?: string | null;
   }
 
-  interface IGetProjectionsByPlatformOnQueryArguments {
+  interface IPlayerByIdOnQueryArguments {
+    id?: number | null;
+  }
+
+  interface IProjectionsByPlatformOnQueryArguments {
     platform?: string | null;
   }
 
-  interface IGetProjectionsByPlayerOnQueryArguments {
-    playerId?: string | null;
+  interface IProjectionsByPlayerOnQueryArguments {
+    player?: number | null;
+  }
+
+  interface ITeam {
+    __typename: 'Team';
+    id: number | null;
+    city: string | null;
+    nickname: string | null;
+    abbreviation: string | null;
+    imageUrl: string | null;
+    pointsFor: number | null;
+    yards: number | null;
+    plays: number | null;
+    yardsPerPlay: number | null;
+    turnovers: number | null;
+    passAttempts: number | null;
+    passCompletions: number | null;
+    passYards: number | null;
+    passTd: number | null;
+    interception: number | null;
+    netYardsPerPass: number | null;
+    rushAttempt: number | null;
+    rushYards: number | null;
+    rushTd: number | null;
+    yardsPerRush: number | null;
+    scorePercentage: number | null;
+    turnoverPercentage: number | null;
   }
 
   interface IPlayer {
     __typename: 'Player';
-    id: string | null;
+    id: number | null;
     firstName: string | null;
     lastName: string | null;
-    team: string | null;
+    team: ITeam | null;
     position: string | null;
+    rank: number | null;
+    tier: number | null;
+    bye: number | null;
   }
 
   interface IProjection {
     __typename: 'Projection';
-    id: string | null;
-    playerId: string | null;
+    id: number | null;
+    player: IPlayer | null;
     platform: string | null;
     completions: number | null;
     attempts: number | null;
@@ -77,19 +112,47 @@ declare namespace GQL {
 
   interface IMutation {
     __typename: 'Mutation';
+    createTeam: boolean;
     createPlayer: boolean;
     addProjection: boolean | null;
+  }
+
+  interface ICreateTeamOnMutationArguments {
+    city: string;
+    nickname: string;
+    abbreviation: string;
+    imageUrl: string;
+    pointsFor: number;
+    yards: number;
+    plays: number;
+    yardsPerPlay: number;
+    turnovers: number;
+    passAttempts: number;
+    passCompletions: number;
+    passYards: number;
+    passTd: number;
+    interception: number;
+    netYardsPerPass: number;
+    rushAttempt: number;
+    rushYards: number;
+    rushTd: number;
+    yardsPerRush: number;
+    scorePercentage: number;
+    turnoverPercentage: number;
   }
 
   interface ICreatePlayerOnMutationArguments {
     firstName: string;
     lastName: string;
-    team: string;
+    team: number;
     position: string;
+    rank: number;
+    tier: number;
+    bye: number;
   }
 
   interface IAddProjectionOnMutationArguments {
-    playerId: string;
+    player: number;
     platform: string;
     completions: number;
     attempts: number;

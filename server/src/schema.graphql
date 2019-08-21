@@ -1,44 +1,117 @@
+type Team {
+  id: Int
+  city: String
+  nickname: String
+  abbreviation: String
+  imageUrl: String
+  pointsFor: Int
+  yards: Int
+  plays: Int
+  yardsPerPlay: Float
+  turnovers: Int
+  passAttempts: Int
+  passCompletions: Int
+  passYards: Int
+  passTd: Int
+  interception: Int
+  netYardsPerPass: Float
+  rushAttempt: Int
+  rushYards: Int
+  rushTd: Int
+  yardsPerRush: Float
+  scorePercentage: Float
+  turnoverPercentage: Float
+}
+
 type Player {
-    id: String,
-    firstName: String,
-    lastName: String,
-    team: String,
-    position: String
+  id: Int
+  firstName: String
+  lastName: String
+  team: Team
+  position: String
+  rank: Int
+  tier: Int
+  bye: Int
 }
 
 type Projection {
-    id: String,
-    playerId: String,
-    platform: String,
-    completions: Int,
-    attempts: Int,
-    passYards: Int,
-    passTd: Int,
-    interception: Int,
-    carries: Int,
-    rushYards: Int,
-    rushTd: Int,
-    fumbles: Int,
-    targets: Int,
-    receptions: Int,
-    receivingYards: Int,
-    receivingTd: Int
+  id: Int
+  player: Player
+  platform: String
+  completions: Int
+  attempts: Int
+  passYards: Int
+  passTd: Int
+  interception: Int
+  carries: Int
+  rushYards: Int
+  rushTd: Int
+  fumbles: Int
+  targets: Int
+  receptions: Int
+  receivingYards: Int
+  receivingTd: Int
 }
 
 type Query {
-    getPlayerById(id: String): Player,
-    getPlayers: [Player],
-    getProjections: [Projection],
-    getProjectionsByPlatform(platform: String): [Projection],
-    getProjectionsByPlayer(playerId: String): [Projection]
+  teamById(id: Int): Team
+  teamByAbbreviation(abbreviation: String): Team
+  teams: [Team]
+  playerById(id: Int): [Player]
+  players: [Player]
+  projections: [Projection]
+  projectionsByPlatform(platform: String): [Projection]
+  projectionsByPlayer(player: Int): [Projection]
 }
 
 type Mutation {
-    createPlayer(firstName: String!, lastName: String!, team: String!, 
-        position: String!): Boolean!,
-    addProjection(playerId: String!, platform: String!, completions: Int!, 
-        attempts: Int!, passYards: Int!, passTd: Int!, interception: Int!, 
-        carries: Int!, rushYards: Int!, rushTd: Int!, fumbles: Int!, 
-        targets: Int!, receptions: Int!, receivingYards: Int!, 
-        receivingTd: Int!): Boolean
+  createTeam(
+    city: String!
+    nickname: String!
+    abbreviation: String!
+    imageUrl: String!
+    pointsFor: Int!
+    yards: Int!
+    plays: Int!
+    yardsPerPlay: Float!
+    turnovers: Int!
+    passAttempts: Int!
+    passCompletions: Int!
+    passYards: Int!
+    passTd: Int!
+    interception: Int!
+    netYardsPerPass: Float!
+    rushAttempt: Int!
+    rushYards: Int!
+    rushTd: Int!
+    yardsPerRush: Float!
+    scorePercentage: Float!
+    turnoverPercentage: Float!
+  ): Boolean!
+  createPlayer(
+    firstName: String!
+    lastName: String!
+    team: Int!
+    position: String!
+    rank: Int!
+    tier: Int!
+    bye: Int!
+  ): Boolean!
+  addProjection(
+    player: Int!
+    platform: String!
+    completions: Int!
+    attempts: Int!
+    passYards: Int!
+    passTd: Int!
+    interception: Int!
+    carries: Int!
+    rushYards: Int!
+    rushTd: Int!
+    fumbles: Int!
+    targets: Int!
+    receptions: Int!
+    receivingYards: Int!
+    receivingTd: Int!
+  ): Boolean
 }

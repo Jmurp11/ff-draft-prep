@@ -1,0 +1,55 @@
+table {
+  width: 100%;
+}
+
+tr.detail-row {
+  height: 0;
+}
+
+tr.player-row:not(.expanded-row):hover {
+  background: #777;
+}
+
+tr.player-row:not(.expanded-row):active {
+  background: #efefef;
+}
+
+.player-row td {
+  border-bottom-width: 0;
+}
+
+.player-detail {
+  overflow: hidden;
+  display: flex;
+}
+
+.mat-form-field {
+  font-size: 14px;
+  width: 100%;
+}
+
+.label {
+  font-weight: bold;
+  padding: 2px;
+}
+
+.player-description {
+  width: 100%;
+}
+
+.team-info {
+  padding: 10px;
+}
+
+.team-info-col {
+  padding: 10px;
+  float: left;
+  width: 25%;
+}
+
+.team-logo {
+  padding: 5px;
+  margin-right: 100px;
+  height: 100px;
+  width: 150px;
+}
