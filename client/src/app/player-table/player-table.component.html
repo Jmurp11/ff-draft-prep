@@ -39,7 +39,7 @@
     </td>
   </ng-container>
 
-  <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+  <tr mat-header-row *matHeaderRowDef="columnsToDisplay; sticky: true"></tr>
   <tr mat-row *matRowDef="let player; columns: columnsToDisplay;" class="player-row"
     [class.expanded-row]="expandedPlayer === player"
     (click)="expandedPlayer = expandedPlayer === player ? null : player">
