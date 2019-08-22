@@ -58,6 +58,7 @@ declare namespace GQL {
     city: string | null;
     nickname: string | null;
     abbreviation: string | null;
+    bye: number | null;
     imageUrl: string | null;
     rank: number | null;
     pointsFor: number | null;
@@ -88,7 +89,6 @@ declare namespace GQL {
     position: string | null;
     rank: number | null;
     tier: number | null;
-    bye: number | null;
   }
 
   interface IProjection {
@@ -122,6 +122,7 @@ declare namespace GQL {
     city: string;
     nickname: string;
     abbreviation: string;
+    bye: number;
     imageUrl: string;
     rank: number;
     pointsFor: number;
@@ -150,7 +151,6 @@ declare namespace GQL {
     position: string;
     rank: number;
     tier: number;
-    bye: number;
   }
 
   interface IAddProjectionOnMutationArguments {

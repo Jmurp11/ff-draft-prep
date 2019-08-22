@@ -3,6 +3,7 @@ type Team {
   city: String
   nickname: String
   abbreviation: String
+  bye: Int
   imageUrl: String
   rank: Int
   pointsFor: Int
@@ -32,7 +33,6 @@ type Player {
   position: String
   rank: Int
   tier: Int
-  bye: Int
 }
 
 type Projection {
@@ -70,6 +70,7 @@ type Mutation {
     city: String!
     nickname: String!
     abbreviation: String!
+    bye: Int!
     imageUrl: String!
     rank: Int!
     pointsFor: Int!
@@ -97,7 +98,6 @@ type Mutation {
     position: String!
     rank: Int!
     tier: Int!
-    bye: Int!
   ): Boolean!
   addProjection(
     player: Int!

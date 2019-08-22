@@ -94,6 +94,7 @@ export const resolvers: ResolverMap = {
             city,
             nickname,
             abbreviation,
+            bye,
             imageUrl,
             rank,
             pointsFor,
@@ -118,6 +119,7 @@ export const resolvers: ResolverMap = {
                 city,
                 nickname,
                 abbreviation,
+                bye,
                 imageUrl,
                 rank,
                 pointsFor,
@@ -144,7 +146,7 @@ export const resolvers: ResolverMap = {
             return true;
         },
         createPlayer: async (_: any, { firstName, lastName, team, position,
-            rank, tier, bye }:
+            rank, tier }:
             GQL.ICreatePlayerOnMutationArguments) => {
             const player = Player.create({
                 firstName,
@@ -152,8 +154,7 @@ export const resolvers: ResolverMap = {
                 team,
                 position,
                 rank,
-                tier,
-                bye
+                tier
             });
 
             await player.save();

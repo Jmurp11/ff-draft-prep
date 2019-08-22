@@ -19,6 +19,9 @@ export class Team extends BaseEntity {
     @Column("text")
     abbreviation!: string;
 
+    @Column("int")
+    bye!: number;
+    
     @Column("text")
     imageUrl!: string;
     

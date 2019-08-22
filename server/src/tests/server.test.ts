@@ -27,6 +27,7 @@ test('Create Team', async () => {
     expect(newTeam.city).toEqual(teamData.city);
     expect(newTeam.nickname).toEqual(teamData.nickname);
     expect(newTeam.abbreviation).toEqual(teamData.abbreviation);
+    expect(newTeam.bye).toEqual(playerData.bye);
 });
 
 test('Create Player', async () => {
@@ -51,7 +52,6 @@ test('Create Player', async () => {
     expect(playerTest.position).toEqual(playerData.position);
     expect(playerTest.rank).toEqual(playerData.rank);
     expect(playerTest.tier).toEqual(playerData.tier);
-    expect(playerTest.bye).toEqual(playerData.bye);
 });
 
 test('Add Projection', async () => {

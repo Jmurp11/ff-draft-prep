@@ -55,7 +55,7 @@ export const projectionData = {
 export const createTeam = `
     mutation {
         createTeam(city: "${teamData.city}", nickname: "${teamData.nickname}", 
-            abbreviation: "${teamData.abbreviation}", rank: ${teamData.rank}, imageUrl: "${teamData.imageUrl}", pointsFor: ${teamData.pointsFor},
+            abbreviation: "${teamData.abbreviation}", bye: ${playerData.bye}, rank: ${teamData.rank}, imageUrl: "${teamData.imageUrl}", pointsFor: ${teamData.pointsFor},
             yards: ${teamData.yards}, plays: ${teamData.plays}, yardsPerPlay: ${teamData.yardsPerPlay},
             turnovers: ${teamData.turnovers}, passAttempts: ${teamData.passAttempts},
             passCompletions: ${teamData.passCompletions}, passYards: ${teamData.passYards},
@@ -71,7 +71,7 @@ export const createPlayer = (team: number) => {
         mutation {
             createPlayer(firstName: "${playerData.firstName}", lastName: "${playerData.lastName}", 
                 team: ${team}, position: "${playerData.position}", rank: ${playerData.rank},
-                tier: ${playerData.tier}, bye: ${playerData.bye})
+                tier: ${playerData.tier})
         }
     `;
     return mutation;
@@ -97,6 +97,7 @@ export const teams = `
             city,
             nickname,
             abbreviation,
+            bye,
             imageUrl,
             rank,
             rank,
@@ -129,6 +130,7 @@ export const teamById = (id: number) => {
                 city,
                 nickname,
                 abbreviation,
+                bye,
                 imageUrl,
                 rank,
                 pointsFor,
@@ -163,6 +165,7 @@ export const teamByAbbreviation = (abbreviation: string) => {
                 city,
                 nickname,
                 abbreviation,
+                bye,
                 imageUrl,
                 rank,
                 pointsFor,
@@ -201,6 +204,7 @@ export const playerById = (id: number): string => {
                     city,
                     nickname,
                     abbreviation,
+                    bye,
                     imageUrl,
                     rank,
                     pointsFor,
@@ -223,8 +227,7 @@ export const playerById = (id: number): string => {
                 },
                 position,
                 rank,
-                tier,
-                bye
+                tier
             }
         }
     `;
@@ -243,6 +246,7 @@ export const players = `
                 city,
                 nickname,
                 abbreviation,
+                bye,
                 imageUrl,
                 rank,
                 pointsFor,
@@ -265,8 +269,7 @@ export const players = `
             },
             position,
             rank,
-            tier,
-            bye
+            tier
         }
     }
 `;
@@ -284,6 +287,7 @@ export const projections = `
                     city,
                     nickname,
                     abbreviation,
+                    bye,
                     imageUrl,
                     rank,
                     pointsFor,
@@ -306,8 +310,7 @@ export const projections = `
                 }
                 position,
                 rank,
-                tier,
-                bye
+                tier
             },
             platform, 
             completions,             
@@ -341,6 +344,7 @@ export const projectionsByPlatform = (platform: string): string => {
                         city,
                         nickname,
                         abbreviation,
+                        bye,
                         imageUrl,
                         rank,
                         pointsFor,
@@ -363,8 +367,7 @@ export const projectionsByPlatform = (platform: string): string => {
                     }
                     position,
                     rank,
-                    tier,
-                    bye
+                    tier
                 },
                 platform, 
                 completions,             
@@ -401,6 +404,7 @@ export const projectionsByPlayer = (player: number): string => {
                         city,
                         nickname,
                         abbreviation,
+                        bye,
                         imageUrl,
                         rank,
                         pointsFor,
@@ -423,8 +427,7 @@ export const projectionsByPlayer = (player: number): string => {
                     }
                     position,
                     rank,
-                    tier,
-                    bye
+                    tier
                 },
                 platform, 
                 completions,             
