@@ -14,7 +14,12 @@
       <div class="player-detail" [@detailExpand]="player == expandedPlayer ? 'expanded' : 'collapsed'">
         <div class="player-description">
           <span class="team-info-col team-logo">
-            <img [src]=player.imageUrl>
+            <div>
+              <div class="team-info"><span class="label">Offense Rank: </span>{{player.teamRank}}</div>
+            </div>
+            <div>
+              <img [src]=player.imageUrl>
+            </div>
           </span>
           <span class="team-info-col">
             <div class="team-info"><span class="label">Total Points: </span>{{player.pointsFor}}</div>

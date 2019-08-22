@@ -25,6 +25,7 @@ export interface PlayerData {
   receptions: number;
   receivingYards: number;
   receivingTd: number;
+  teamRank: number;
   pointsFor: number;
   yards: number;
   plays: number;
@@ -63,7 +64,7 @@ export class PlayerTableComponent implements OnInit {
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
-  columnsToDisplay = ['rank', 'playerName', 'team', 'position', 'tier', 'completions', 'attempts',
+  columnsToDisplay = ['rank', 'playerName', 'position', 'team', 'tier', 'completions', 'attempts',
     'passYards', 'passTd', 'interception', 'carries', 'rushYards', 'rushTd', 'fumbles', 'targets', 'receptions',
     'receivingYards', 'receivingTd'];
   expandedPlayer: PlayerData | null;
@@ -110,6 +111,7 @@ const PLAYER_DATA: PlayerData[] = [
     receivingYards: 0,
     receivingTd: 0,
     pointsFor: 100,
+    teamRank: 1,
     yards: 100,
     plays: 100,
     yardsPerPlay: 100.0,
@@ -148,6 +150,7 @@ const PLAYER_DATA: PlayerData[] = [
     receivingYards: 0,
     receivingTd: 0,
     pointsFor: 0,
+    teamRank: 1,
     yards: 0,
     plays: 0,
     yardsPerPlay: 0.0,
@@ -186,6 +189,7 @@ const PLAYER_DATA: PlayerData[] = [
     receivingYards: 0,
     receivingTd: 0,
     pointsFor: 0,
+    teamRank: 1,
     yards: 0,
     plays: 0,
     yardsPerPlay: 0.0,
@@ -224,6 +228,7 @@ const PLAYER_DATA: PlayerData[] = [
     receivingYards: 0,
     receivingTd: 0,
     pointsFor: 0,
+    teamRank: 1,
     yards: 0,
     plays: 0,
     yardsPerPlay: 0.0,
@@ -262,6 +267,7 @@ const PLAYER_DATA: PlayerData[] = [
     receivingYards: 0,
     receivingTd: 0,
     pointsFor: 0,
+    teamRank: 1,
     yards: 0,
     plays: 0,
     yardsPerPlay: 0.0,
