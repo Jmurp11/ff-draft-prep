@@ -23,6 +23,9 @@ export class Team extends BaseEntity {
     imageUrl!: string;
     
     @Column("int")
+    rank!: number;
+    
+    @Column("int")
     pointsFor!: number;
 
     @Column("int")

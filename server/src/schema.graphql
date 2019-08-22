@@ -4,6 +4,7 @@ type Team {
   nickname: String
   abbreviation: String
   imageUrl: String
+  rank: Int
   pointsFor: Int
   yards: Int
   plays: Int
@@ -70,6 +71,7 @@ type Mutation {
     nickname: String!
     abbreviation: String!
     imageUrl: String!
+    rank: Int!
     pointsFor: Int!
     yards: Int!
     plays: Int!
