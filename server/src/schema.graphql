@@ -6,6 +6,8 @@ type Team {
   bye: Int
   imageUrl: String
   rank: Int
+  passRank: Int
+  rushRank: Int
   pointsFor: Int
   yards: Int
   plays: Int
@@ -75,6 +77,8 @@ type Mutation {
     bye: Int!
     imageUrl: String!
     rank: Int!
+    passRank: Int!
+    rushRank: Int!
     pointsFor: Int!
     yards: Int!
     plays: Int!

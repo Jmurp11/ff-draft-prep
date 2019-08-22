@@ -61,6 +61,8 @@ declare namespace GQL {
     bye: number | null;
     imageUrl: string | null;
     rank: number | null;
+    passRank: number | null;
+    rushRank: number | null;
     pointsFor: number | null;
     yards: number | null;
     plays: number | null;
@@ -127,6 +129,8 @@ declare namespace GQL {
     bye: number;
     imageUrl: string;
     rank: number;
+    passRank: number;
+    rushRank: number;
     pointsFor: number;
     yards: number;
     plays: number;

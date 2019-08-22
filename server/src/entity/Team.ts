@@ -29,6 +29,13 @@ export class Team extends BaseEntity {
     rank!: number;
     
     @Column("int")
+    passRank!: number;
+    
+    @Column("int")
+    rushRank!: number;
+    
+
+    @Column("int")
     pointsFor!: number;
 
     @Column("int")
