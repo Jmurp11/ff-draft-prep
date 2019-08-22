@@ -22,7 +22,9 @@ export const teamData = {
     rushTd: 0,
     yardsPerRush: 0,
     scorePercentage: 0.0,
-    turnoverPercentage: 0.0
+    turnoverPercentage: 0.0,
+    offensiveLineRank: 1,
+    runningBackSoS: 1
 };
 
 export const playerData = {
@@ -62,7 +64,8 @@ export const createTeam = `
             passTd: ${teamData.passTd}, interception: ${teamData.interception},
             netYardsPerPass: ${teamData.netYardsPerPass}, rushAttempt: ${teamData.rushAttempt},
             rushYards: ${teamData.rushYards}, rushTd: ${teamData.rushTd}, yardsPerRush: ${teamData.yardsPerRush},
-            scorePercentage: ${teamData.scorePercentage}, turnoverPercentage: ${teamData.turnoverPercentage})
+            scorePercentage: ${teamData.scorePercentage}, turnoverPercentage: ${teamData.turnoverPercentage},
+            offensiveLineRank: ${teamData.offensiveLineRank}, runningBackSoS: ${teamData.runningBackSoS})
     }
 `;
 
@@ -117,7 +120,9 @@ export const teams = `
             rushTd,
             yardsPerRush,
             scorePercentage,
-            turnoverPercentage
+            turnoverPercentage,
+            offensiveLineRank,
+            runningBackSoS
         }
     }
 `;
@@ -149,7 +154,9 @@ export const teamById = (id: number) => {
                 rushTd,
                 yardsPerRush,
                 scorePercentage,
-                turnoverPercentage
+                turnoverPercentage,
+                offensiveLineRank,
+                runningBackSoS
             }
         }
     `;
@@ -184,7 +191,9 @@ export const teamByAbbreviation = (abbreviation: string) => {
                 rushTd,
                 yardsPerRush,
                 scorePercentage,
-                turnoverPercentage
+                turnoverPercentage,
+                offensiveLineRank,
+                runningBackSoS
             }
         }
     `;
@@ -223,7 +232,9 @@ export const playerById = (id: number): string => {
                     rushTd,
                     yardsPerRush,
                     scorePercentage,
-                    turnoverPercentage
+                    turnoverPercentage,
+                    offensiveLineRank,
+                    runningBackSoS
                 },
                 position,
                 rank,
@@ -265,7 +276,9 @@ export const players = `
                 rushTd,
                 yardsPerRush,
                 scorePercentage,
-                turnoverPercentage
+                turnoverPercentage,
+                offensiveLineRank,
+                runningBackSoS
             },
             position,
             rank,
@@ -306,7 +319,9 @@ export const projections = `
                     rushTd,
                     yardsPerRush,
                     scorePercentage,
-                    turnoverPercentage
+                    turnoverPercentage,
+                    offensiveLineRank,
+                    runningBackSoS
                 }
                 position,
                 rank,
@@ -363,7 +378,9 @@ export const projectionsByPlatform = (platform: string): string => {
                         rushTd,
                         yardsPerRush,
                         scorePercentage,
-                        turnoverPercentage
+                        turnoverPercentage,
+                        offensiveLineRank,
+                        runningBackSoS
                     }
                     position,
                     rank,
@@ -423,7 +440,9 @@ export const projectionsByPlayer = (player: number): string => {
                         rushTd,
                         yardsPerRush,
                         scorePercentage,
-                        turnoverPercentage
+                        turnoverPercentage,
+                        offensiveLineRank,
+                        runningBackSoS
                     }
                     position,
                     rank,

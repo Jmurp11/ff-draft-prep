@@ -78,6 +78,8 @@ declare namespace GQL {
     yardsPerRush: number | null;
     scorePercentage: number | null;
     turnoverPercentage: number | null;
+    offensiveLineRank: number | null;
+    runningBackSoS: number | null;
   }
 
   interface IPlayer {
@@ -142,6 +144,8 @@ declare namespace GQL {
     yardsPerRush: number;
     scorePercentage: number;
     turnoverPercentage: number;
+    offensiveLineRank: number;
+    runningBackSoS: number;
   }
 
   interface ICreatePlayerOnMutationArguments {

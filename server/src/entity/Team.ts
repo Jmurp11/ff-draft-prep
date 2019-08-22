@@ -78,4 +78,10 @@ export class Team extends BaseEntity {
 
     @Column("float")
     turnoverPercentage!: number;
+
+    @Column("int")
+    offensiveLineRank!: number;
+
+    @Column("int")
+    runningBackSoS!: number;
 }

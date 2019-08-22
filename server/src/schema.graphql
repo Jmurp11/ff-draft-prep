@@ -23,6 +23,8 @@ type Team {
   yardsPerRush: Float
   scorePercentage: Float
   turnoverPercentage: Float
+  offensiveLineRank: Int
+  runningBackSoS: Int
 }
 
 type Player {
@@ -90,6 +92,8 @@ type Mutation {
     yardsPerRush: Float!
     scorePercentage: Float!
     turnoverPercentage: Float!
+    offensiveLineRank: Int!
+    runningBackSoS: Int!
   ): Boolean!
   createPlayer(
     firstName: String!

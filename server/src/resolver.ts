@@ -113,7 +113,9 @@ export const resolvers: ResolverMap = {
             rushTd,
             yardsPerRush,
             scorePercentage,
-            turnoverPercentage
+            turnoverPercentage,
+            offensiveLineRank,
+            runningBackSoS
         }: GQL.ICreateTeamOnMutationArguments) => {
             const team = Team.create({
                 city,
@@ -138,7 +140,9 @@ export const resolvers: ResolverMap = {
                 rushTd,
                 yardsPerRush,
                 scorePercentage,
-                turnoverPercentage
+                turnoverPercentage,
+                offensiveLineRank,
+                runningBackSoS
             });
 
             await team.save();
