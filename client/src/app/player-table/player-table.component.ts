@@ -26,6 +26,8 @@ export interface PlayerData {
   receivingYards: number;
   receivingTd: number;
   teamRank: number;
+  teamPassRank: number;
+  teamRushRank: number;
   pointsFor: number;
   yards: number;
   plays: number;
@@ -43,6 +45,8 @@ export interface PlayerData {
   yardsPerRush: number;
   scorePercentage: number;
   turnoverPercentage: number;
+  offensiveLineRank: number;
+  runningBackSoS: number;
 }
 
 @Component({
@@ -112,6 +116,8 @@ const PLAYER_DATA: PlayerData[] = [
     receivingTd: 0,
     pointsFor: 100,
     teamRank: 1,
+    teamPassRank: 1,
+    teamRushRank: 1,
     yards: 100,
     plays: 100,
     yardsPerPlay: 100.0,
@@ -127,7 +133,9 @@ const PLAYER_DATA: PlayerData[] = [
     rushTdTeam: 100,
     yardsPerRush: 100,
     scorePercentage: 85.0,
-    turnoverPercentage: 5.0
+    turnoverPercentage: 5.0,
+    offensiveLineRank: 2.5,
+    runningBackSoS: 1
   }, {
     playerName: 'Todd Gurley',
     team: 'LAR',
@@ -151,6 +159,8 @@ const PLAYER_DATA: PlayerData[] = [
     receivingTd: 0,
     pointsFor: 0,
     teamRank: 1,
+    teamPassRank: 1,
+    teamRushRank: 1,
     yards: 0,
     plays: 0,
     yardsPerPlay: 0.0,
@@ -166,7 +176,9 @@ const PLAYER_DATA: PlayerData[] = [
     rushTdTeam: 100,
     yardsPerRush: 100,
     scorePercentage: 85.0,
-    turnoverPercentage: 5.0
+    turnoverPercentage: 5.0,
+    offensiveLineRank: 2.5,
+    runningBackSoS: 1
   }, {
     playerName: 'Mike Davis',
     team: 'CHI',
@@ -190,6 +202,8 @@ const PLAYER_DATA: PlayerData[] = [
     receivingTd: 0,
     pointsFor: 0,
     teamRank: 1,
+    teamPassRank: 1,
+    teamRushRank: 1,
     yards: 0,
     plays: 0,
     yardsPerPlay: 0.0,
@@ -205,7 +219,9 @@ const PLAYER_DATA: PlayerData[] = [
     rushTdTeam: 100,
     yardsPerRush: 100,
     scorePercentage: 85.0,
-    turnoverPercentage: 5.0
+    turnoverPercentage: 5.0,
+    offensiveLineRank: 2.5,
+    runningBackSoS: 1
   }, {
     playerName: 'Patrick Mahomes',
     team: 'KC',
@@ -229,6 +245,8 @@ const PLAYER_DATA: PlayerData[] = [
     receivingTd: 0,
     pointsFor: 0,
     teamRank: 1,
+    teamPassRank: 1,
+    teamRushRank: 1,
     yards: 0,
     plays: 0,
     yardsPerPlay: 0.0,
@@ -244,7 +262,9 @@ const PLAYER_DATA: PlayerData[] = [
     rushTdTeam: 0,
     yardsPerRush: 0,
     scorePercentage: 0.0,
-    turnoverPercentage: 0.0
+    turnoverPercentage: 0.0,
+    offensiveLineRank: 2.5,
+    runningBackSoS: 1
   }, {
     playerName: 'Mike Evans',
     team: 'TB',
@@ -268,6 +288,8 @@ const PLAYER_DATA: PlayerData[] = [
     receivingTd: 0,
     pointsFor: 0,
     teamRank: 1,
+    teamPassRank: 1,
+    teamRushRank: 1,
     yards: 0,
     plays: 0,
     yardsPerPlay: 0.0,
@@ -283,6 +305,8 @@ const PLAYER_DATA: PlayerData[] = [
     rushTdTeam: 0,
     yardsPerRush: 0,
     scorePercentage: 0.0,
-    turnoverPercentage: 0.0
+    turnoverPercentage: 0.0,
+    offensiveLineRank: 2.5,
+    runningBackSoS: 1
   }
 ];
