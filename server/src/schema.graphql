@@ -94,7 +94,7 @@ type Mutation {
   createPlayer(
     firstName: String!
     lastName: String!
-    team: Int!
+    team: String!
     position: String!
     rank: Int!
     tier: Int!

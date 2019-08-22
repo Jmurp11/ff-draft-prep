@@ -148,10 +148,12 @@ export const resolvers: ResolverMap = {
         createPlayer: async (_: any, { firstName, lastName, team, position,
             rank, tier }:
             GQL.ICreatePlayerOnMutationArguments) => {
+            const teamQueryResult = await Team.find({ where: { abbreviation: team } });
+
             const player = Player.create({
                 firstName,
                 lastName,
-                team,
+                team: teamQueryResult[0].id,
                 position,
                 rank,
                 tier

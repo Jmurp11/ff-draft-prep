@@ -38,7 +38,7 @@ test('Create Player', async () => {
     
     const newTeam = await getTeams();
     
-    await callCreatePlayerMutation(newTeam.id);
+    await callCreatePlayerMutation(newTeam.abbreviation);
 
     const result = await Player.find({ where: { firstName, lastName } });
 
@@ -237,7 +237,7 @@ const callCreateTeamMutation = async () => {
     expect(response).toEqual({ createTeam: true });
 };
 
-const callCreatePlayerMutation = async (team: number) => {
+const callCreatePlayerMutation = async (team: string) => {
     const response2 = await request(getHost(), createPlayer(team));
     expect(response2).toEqual({ createPlayer: true });
 };

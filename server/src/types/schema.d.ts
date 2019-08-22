@@ -147,7 +147,7 @@ declare namespace GQL {
   interface ICreatePlayerOnMutationArguments {
     firstName: string;
     lastName: string;
-    team: number;
+    team: string;
     position: string;
     rank: number;
     tier: number;

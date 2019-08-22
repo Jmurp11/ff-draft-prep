@@ -66,11 +66,11 @@ export const createTeam = `
     }
 `;
 
-export const createPlayer = (team: number) => {
+export const createPlayer = (team: string) => {
     const mutation = `
         mutation {
             createPlayer(firstName: "${playerData.firstName}", lastName: "${playerData.lastName}", 
-                team: ${team}, position: "${playerData.position}", rank: ${playerData.rank},
+                team: "${team}", position: "${playerData.position}", rank: ${playerData.rank},
                 tier: ${playerData.tier})
         }
     `;
