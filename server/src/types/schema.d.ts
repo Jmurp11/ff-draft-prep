@@ -109,10 +109,10 @@ declare namespace GQL {
     rushYards: number | null;
     rushTd: number | null;
     fumbles: number | null;
-    targets: number | null;
     receptions: number | null;
     receivingYards: number | null;
     receivingTd: number | null;
+    fantasyPoints: number | null;
   }
 
   interface IMutation {
@@ -163,7 +163,6 @@ declare namespace GQL {
 
   interface IAddProjectionOnMutationArguments {
     player: number;
-    platform: string;
     completions: number;
     attempts: number;
     passYards: number;
@@ -177,6 +176,7 @@ declare namespace GQL {
     receptions: number;
     receivingYards: number;
     receivingTd: number;
+    fantasyPoints: number;
   }
 }
 

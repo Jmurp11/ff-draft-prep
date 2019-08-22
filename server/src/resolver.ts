@@ -171,14 +171,13 @@ export const resolvers: ResolverMap = {
 
             return true;
         },
-        addProjection: async (_: any, { player, platform, completions, attempts,
+        addProjection: async (_: any, { player, completions, attempts,
             passTd, passYards, interception, carries, rushYards, rushTd, fumbles,
-            targets, receptions, receivingYards,
-            receivingTd }:
+            receptions, receivingYards,
+            receivingTd, fantasyPoints }:
             GQL.IAddProjectionOnMutationArguments) => {
             const projection = Projection.create({
                 player,
-                platform,
                 completions,
                 attempts,
                 passTd,
@@ -188,10 +187,10 @@ export const resolvers: ResolverMap = {
                 rushYards,
                 rushTd,
                 fumbles,
-                targets,
                 receptions,
                 receivingYards,
-                receivingTd
+                receivingTd,
+                fantasyPoints
             });
 
             await projection.save();

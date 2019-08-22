@@ -21,10 +21,10 @@ export interface PlayerData {
   rushYards: number;
   rushTd: number;
   fumbles: number;
-  targets: number;
   receptions: number;
   receivingYards: number;
   receivingTd: number;
+  fantasyPoints: number;
   teamRank: number;
   teamPassRank: number;
   teamRushRank: number;
@@ -69,8 +69,8 @@ export class PlayerTableComponent implements OnInit {
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
   columnsToDisplay = ['rank', 'playerName', 'position', 'team', 'tier', 'completions', 'attempts',
-    'passYards', 'passTd', 'interception', 'carries', 'rushYards', 'rushTd', 'fumbles', 'targets', 'receptions',
-    'receivingYards', 'receivingTd'];
+    'passYards', 'passTd', 'interception', 'carries', 'rushYards', 'rushTd', 'fumbles', 'receptions',
+    'receivingYards', 'receivingTd', 'fantasyPoints'];
   expandedPlayer: PlayerData | null;
 
 
@@ -110,7 +110,7 @@ const PLAYER_DATA: PlayerData[] = [
     rushYards: 0,
     rushTd: 0,
     fumbles: 0,
-    targets: 0,
+    fantasyPoints: 0,
     receptions: 0,
     receivingYards: 0,
     receivingTd: 0,
@@ -153,7 +153,7 @@ const PLAYER_DATA: PlayerData[] = [
     rushYards: 0,
     rushTd: 0,
     fumbles: 0,
-    targets: 0,
+    fantasyPoints: 0,
     receptions: 0,
     receivingYards: 0,
     receivingTd: 0,
@@ -196,7 +196,7 @@ const PLAYER_DATA: PlayerData[] = [
     rushYards: 0,
     rushTd: 0,
     fumbles: 0,
-    targets: 0,
+    fantasyPoints: 0,
     receptions: 0,
     receivingYards: 0,
     receivingTd: 0,
@@ -239,7 +239,7 @@ const PLAYER_DATA: PlayerData[] = [
     rushYards: 0,
     rushTd: 0,
     fumbles: 0,
-    targets: 0,
+    fantasyPoints: 0,
     receptions: 0,
     receivingYards: 0,
     receivingTd: 0,
@@ -282,7 +282,7 @@ const PLAYER_DATA: PlayerData[] = [
     rushYards: 0,
     rushTd: 0,
     fumbles: 0,
-    targets: 0,
+    fantasyPoints: 0,
     receptions: 0,
     receivingYards: 0,
     receivingTd: 0,

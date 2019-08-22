@@ -43,19 +43,19 @@ type Projection {
   id: Int
   player: Player
   platform: String
-  completions: Int
-  attempts: Int
-  passYards: Int
-  passTd: Int
-  interception: Int
-  carries: Int
-  rushYards: Int
-  rushTd: Int
-  fumbles: Int
-  targets: Int
-  receptions: Int
-  receivingYards: Int
-  receivingTd: Int
+  completions: Float
+  attempts: Float
+  passYards: Float
+  passTd: Float
+  interception: Float
+  carries: Float
+  rushYards: Float
+  rushTd: Float
+  fumbles: Float
+  receptions: Float
+  receivingYards: Float
+  receivingTd: Float
+  fantasyPoints: Float
 }
 
 type Query {
@@ -109,19 +109,18 @@ type Mutation {
   ): Boolean!
   addProjection(
     player: Int!
-    platform: String!
-    completions: Int!
-    attempts: Int!
-    passYards: Int!
-    passTd: Int!
-    interception: Int!
-    carries: Int!
-    rushYards: Int!
-    rushTd: Int!
-    fumbles: Int!
-    targets: Int!
-    receptions: Int!
-    receivingYards: Int!
-    receivingTd: Int!
+    completions: Float!
+    attempts: Float!
+    passYards: Float!
+    passTd: Float!
+    interception: Float!
+    carries: Float!
+    rushYards: Float!
+    rushTd: Float!
+    fumbles: Float!
+    receptions: Float!
+    receivingYards: Float!
+    receivingTd: Float!
+    fantasyPoints: Float!
   ): Boolean
 }

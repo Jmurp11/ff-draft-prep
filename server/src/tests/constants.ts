@@ -40,7 +40,6 @@ export const playerData = {
 };
 
 export const projectionData = {
-    platform: 'ESPN',
     completions: 0,
     attempts: 0,
     passYards: 0,
@@ -50,10 +49,10 @@ export const projectionData = {
     rushYards: 0,
     rushTd: 0,
     fumbles: 0,
-    targets: 0,
     receptions: 0,
     receivingYards: 0,
-    receivingTd: 0
+    receivingTd: 0,
+    fantasyPoints: 0
 }
 
 export const createTeam = `
@@ -86,11 +85,11 @@ export const createPlayer = (team: string) => {
 export const addProjection = (player: number): string => {
     const mutation = `
             mutation {
-                addProjection(player: ${player}, platform: "${projectionData.platform}", 
-                    completions: ${projectionData.completions}, attempts: ${projectionData.attempts}, passYards: ${projectionData.passYards}, passTd: ${projectionData.passTd}, 
+                addProjection(player: ${player}, completions: ${projectionData.completions}, attempts: ${projectionData.attempts}, 
+                    passYards: ${projectionData.passYards}, passTd: ${projectionData.passTd}, 
                     interception: ${projectionData.interception}, carries: ${projectionData.carries}, rushYards: ${projectionData.rushYards}, rushTd: ${projectionData.rushTd}, 
-                    fumbles: ${projectionData.fumbles}, targets: ${projectionData.targets}, receptions: ${projectionData.receptions}, receivingYards: ${projectionData.receivingYards}, 
-                    receivingTd: ${projectionData.receivingTd})
+                    fumbles: ${projectionData.fumbles}, receptions: ${projectionData.receptions}, receivingYards: ${projectionData.receivingYards}, 
+                    receivingTd: ${projectionData.receivingTd}, fantasyPoints: ${projectionData.fantasyPoints})
             }
         `
     return mutation;
@@ -351,10 +350,10 @@ export const projections = `
             rushYards,
             rushTd,
             fumbles,
-            targets,
             receptions,
             receivingYards,
-            receivingTd
+            receivingTd,
+            fantasyPoints
         }
     }
 `;
@@ -401,8 +400,7 @@ export const projectionsByPlatform = (platform: string): string => {
                     position,
                     rank,
                     tier
-                },
-                platform, 
+                }, 
                 completions,             
                 attempts,
                 passYards,
@@ -412,10 +410,10 @@ export const projectionsByPlatform = (platform: string): string => {
                 rushYards,
                 rushTd,
                 fumbles,
-                targets,
                 receptions,
                 receivingYards,
-                receivingTd
+                receivingTd,
+                fantasyPoints
             }
         }
     `;
@@ -465,8 +463,7 @@ export const projectionsByPlayer = (player: number): string => {
                     position,
                     rank,
                     tier
-                },
-                platform, 
+                }, 
                 completions,             
                 attempts,
                 passYards,
@@ -476,10 +473,10 @@ export const projectionsByPlayer = (player: number): string => {
                 rushYards,
                 rushTd,
                 fumbles,
-                targets,
                 receptions,
                 receivingYards,
-                receivingTd
+                receivingTd,
+                fantasyPoints
             }
         }
     `;
