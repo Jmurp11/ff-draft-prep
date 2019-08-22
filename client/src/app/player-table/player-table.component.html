@@ -14,17 +14,24 @@
       <div class="player-detail" [@detailExpand]="player == expandedPlayer ? 'expanded' : 'collapsed'">
         <div class="player-description">
           <span class="team-info-col team-logo">
-            <img [src]=player.imageUrl>
+            <div>
+              <div class="team-info"><span class="label">Offense Rank: </span>{{player.teamRank}}</div>
+            </div>
+            <div>
+              <img [src]=player.imageUrl>
+            </div>
           </span>
           <span class="team-info-col">
             <div class="team-info"><span class="label">Total Points: </span>{{player.pointsFor}}</div>
             <div class="team-info"><span class="label">Total Yards: </span>{{player.yards}}</div>
             <div class="team-info"><span class="label">Yards Per Play: </span>{{player.yardsPerPlay}}</div>
+            <div class="team-info"><span class="label">Offensive Line Rank: </span>{{player.offensiveLineRank}}</div>
             <div class="team-info"><span class="label">Score Percentage: </span>{{player.scorePercentage}}</div>
             <div class="team-info"><span class="label">Turnover Percentage:
               </span>{{player.turnoverPercentage}}</div>
           </span>
           <span class="team-info-col">
+              <div class="team-info"><span class="label">Pass Rank: </span>{{player.teamPassRank}}</div>
             <div class="team-info"><span class="label">Team Pass Attempts: </span>{{player.passAttempts}}</div>
             <div class="team-info"><span class="label">Team Pass Completions:
               </span>{{player.passCompletions}}</div>
@@ -33,6 +40,8 @@
             <div class="team-info"><span class="label">Net Yards Per Pass: </span>{{player.netYardsPerPass}}</div>
           </span>
           <span class="team-info-col">
+            <div class="team-info"><span class="label">Rush Rank: </span>{{player.teamRushRank}}</div>
+            <div class="team-info"><span class="label">Running Back SoS: </span>{{player.runningBackSoS}}</div>
             <div class="team-info"><span class="label">Team Rush Attempts: </span>{{player.rushAttemptTeam}}</div>
             <div class="team-info"><span class="label">Team Rush Yards: </span>{{player.rushYardsTeam}}</div>
             <div class="team-info"><span class="label">Team Rush TD: </span>{{player.rushTdTeam}}</div>
@@ -51,4 +60,4 @@
   <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="detail-row"></tr>
 </table>
 
-<mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+<mat-paginator [pageSizeOptions]="[14, 28, 42, 100]"></mat-paginator>

@@ -10,8 +10,6 @@ import { AppComponent } from './app.component';
 import { AppMaterialModule } from './app-material.module';
 import { NavbarComponent } from './navbar/navbar.component';
 import { PlayerTableComponent } from './player-table/player-table.component';
-import { TeamComponent } from './team/team.component';
-import { LeagueFormComponent } from './league-form/league-form.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 
 @NgModule({
@@ -19,8 +17,6 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     AppComponent,
     NavbarComponent,
     PlayerTableComponent,
-    TeamComponent,
-    LeagueFormComponent,
     DashboardComponent
   ],
   imports: [

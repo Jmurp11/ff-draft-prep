@@ -58,7 +58,11 @@ declare namespace GQL {
     city: string | null;
     nickname: string | null;
     abbreviation: string | null;
+    bye: number | null;
     imageUrl: string | null;
+    rank: number | null;
+    passRank: number | null;
+    rushRank: number | null;
     pointsFor: number | null;
     yards: number | null;
     plays: number | null;
@@ -76,6 +80,8 @@ declare namespace GQL {
     yardsPerRush: number | null;
     scorePercentage: number | null;
     turnoverPercentage: number | null;
+    offensiveLineRank: number | null;
+    runningBackSoS: number | null;
   }
 
   interface IPlayer {
@@ -87,7 +93,6 @@ declare namespace GQL {
     position: string | null;
     rank: number | null;
     tier: number | null;
-    bye: number | null;
   }
 
   interface IProjection {
@@ -121,7 +126,11 @@ declare namespace GQL {
     city: string;
     nickname: string;
     abbreviation: string;
+    bye: number;
     imageUrl: string;
+    rank: number;
+    passRank: number;
+    rushRank: number;
     pointsFor: number;
     yards: number;
     plays: number;
@@ -139,16 +148,17 @@ declare namespace GQL {
     yardsPerRush: number;
     scorePercentage: number;
     turnoverPercentage: number;
+    offensiveLineRank: number;
+    runningBackSoS: number;
   }
 
   interface ICreatePlayerOnMutationArguments {
     firstName: string;
     lastName: string;
-    team: number;
+    team: string;
     position: string;
     rank: number;
     tier: number;
-    bye: number;
   }
 
   interface IAddProjectionOnMutationArguments {

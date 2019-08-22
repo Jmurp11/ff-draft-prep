@@ -33,7 +33,6 @@ export const resolvers: ResolverMap = {
                     }
                 }, where: { id }
             });
-            console.log(`PLAYER: ${JSON.stringify(player)}`);
             return player;
         },
         players: async (_: any) => {
@@ -46,7 +45,6 @@ export const resolvers: ResolverMap = {
                     }
                 }
             });
-            console.log(JSON.stringify(players));
             return players;
         },
         projections: async (_: any) => {
@@ -60,7 +58,6 @@ export const resolvers: ResolverMap = {
                     }
                 }
             });
-            console.log(JSON.stringify(projections));
             return projections;
         },
         projectionsByPlatform: async (_: any, { platform }:
@@ -97,7 +94,11 @@ export const resolvers: ResolverMap = {
             city,
             nickname,
             abbreviation,
+            bye,
             imageUrl,
+            rank,
+            passRank,
+            rushRank,
             pointsFor,
             yards,
             plays,
@@ -114,13 +115,19 @@ export const resolvers: ResolverMap = {
             rushTd,
             yardsPerRush,
             scorePercentage,
-            turnoverPercentage
+            turnoverPercentage,
+            offensiveLineRank,
+            runningBackSoS
         }: GQL.ICreateTeamOnMutationArguments) => {
             const team = Team.create({
                 city,
                 nickname,
                 abbreviation,
+                bye,
                 imageUrl,
+                rank,
+                passRank,
+                rushRank,
                 pointsFor,
                 yards,
                 plays,
@@ -137,7 +144,9 @@ export const resolvers: ResolverMap = {
                 rushTd,
                 yardsPerRush,
                 scorePercentage,
-                turnoverPercentage
+                turnoverPercentage,
+                offensiveLineRank,
+                runningBackSoS
             });
 
             await team.save();
@@ -145,16 +154,17 @@ export const resolvers: ResolverMap = {
             return true;
         },
         createPlayer: async (_: any, { firstName, lastName, team, position,
-            rank, tier, bye }:
+            rank, tier }:
             GQL.ICreatePlayerOnMutationArguments) => {
+            const teamQueryResult = await Team.find({ where: { abbreviation: team } });
+
             const player = Player.create({
                 firstName,
                 lastName,
-                team,
+                team: teamQueryResult[0].id,
                 position,
                 rank,
-                tier,
-                bye
+                tier
             });
 
             await player.save();

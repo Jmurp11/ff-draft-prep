@@ -27,6 +27,7 @@ test('Create Team', async () => {
     expect(newTeam.city).toEqual(teamData.city);
     expect(newTeam.nickname).toEqual(teamData.nickname);
     expect(newTeam.abbreviation).toEqual(teamData.abbreviation);
+    expect(newTeam.bye).toEqual(playerData.bye);
 });
 
 test('Create Player', async () => {
@@ -37,7 +38,7 @@ test('Create Player', async () => {
     
     const newTeam = await getTeams();
     
-    await callCreatePlayerMutation(newTeam.id);
+    await callCreatePlayerMutation(newTeam.abbreviation);
 
     const result = await Player.find({ where: { firstName, lastName } });
 
@@ -51,7 +52,6 @@ test('Create Player', async () => {
     expect(playerTest.position).toEqual(playerData.position);
     expect(playerTest.rank).toEqual(playerData.rank);
     expect(playerTest.tier).toEqual(playerData.tier);
-    expect(playerTest.bye).toEqual(playerData.bye);
 });
 
 test('Add Projection', async () => {
@@ -237,7 +237,7 @@ const callCreateTeamMutation = async () => {
     expect(response).toEqual({ createTeam: true });
 };
 
-const callCreatePlayerMutation = async (team: number) => {
+const callCreatePlayerMutation = async (team: string) => {
     const response2 = await request(getHost(), createPlayer(team));
     expect(response2).toEqual({ createPlayer: true });
 };

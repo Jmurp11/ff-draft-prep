@@ -19,9 +19,22 @@ export class Team extends BaseEntity {
     @Column("text")
     abbreviation!: string;
 
+    @Column("int")
+    bye!: number;
+    
     @Column("text")
     imageUrl!: string;
     
+    @Column("int")
+    rank!: number;
+    
+    @Column("int")
+    passRank!: number;
+    
+    @Column("int")
+    rushRank!: number;
+    
+
     @Column("int")
     pointsFor!: number;
 
@@ -72,4 +85,10 @@ export class Team extends BaseEntity {
 
     @Column("float")
     turnoverPercentage!: number;
+
+    @Column("int")
+    offensiveLineRank!: number;
+
+    @Column("int")
+    runningBackSoS!: number;
 }

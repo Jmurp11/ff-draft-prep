@@ -33,7 +33,4 @@ export class Player extends BaseEntity {
 
     @Column("int")
     tier!: number;
-
-    @Column("int")
-    bye!: number;
 }

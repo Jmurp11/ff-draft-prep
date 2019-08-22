@@ -3,7 +3,11 @@ type Team {
   city: String
   nickname: String
   abbreviation: String
+  bye: Int
   imageUrl: String
+  rank: Int
+  passRank: Int
+  rushRank: Int
   pointsFor: Int
   yards: Int
   plays: Int
@@ -21,6 +25,8 @@ type Team {
   yardsPerRush: Float
   scorePercentage: Float
   turnoverPercentage: Float
+  offensiveLineRank: Int
+  runningBackSoS: Int
 }
 
 type Player {
@@ -31,7 +37,6 @@ type Player {
   position: String
   rank: Int
   tier: Int
-  bye: Int
 }
 
 type Projection {
@@ -69,7 +74,11 @@ type Mutation {
     city: String!
     nickname: String!
     abbreviation: String!
+    bye: Int!
     imageUrl: String!
+    rank: Int!
+    passRank: Int!
+    rushRank: Int!
     pointsFor: Int!
     yards: Int!
     plays: Int!
@@ -87,15 +96,16 @@ type Mutation {
     yardsPerRush: Float!
     scorePercentage: Float!
     turnoverPercentage: Float!
+    offensiveLineRank: Int!
+    runningBackSoS: Int!
   ): Boolean!
   createPlayer(
     firstName: String!
     lastName: String!
-    team: Int!
+    team: String!
     position: String!
     rank: Int!
     tier: Int!
-    bye: Int!
   ): Boolean!
   addProjection(
     player: Int!
