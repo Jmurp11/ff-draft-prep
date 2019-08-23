@@ -8,8 +8,8 @@
       "password": "",
       "database": "ff-draft-prep",
       "synchronize": true,
-      "logging": true,
-      "dropSchema": true,
+      "logging": false,
+      "dropSchema": false,
       "entities": [
          "src/entity/**/*.ts"
       ],

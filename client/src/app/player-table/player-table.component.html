@@ -3,9 +3,106 @@
 </mat-form-field>
 
 <table mat-table [dataSource]="dataSource" multiTemplateDataRows class="mat-elevation-z8" matSort>
-  <ng-container matColumnDef="{{column}}" *ngFor="let column of columnsToDisplay">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header> {{column}} </th>
-    <td mat-cell *matCellDef="let player"> {{player[column]}} </td>
+  <ng-container matColumnDef="draft">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header></th>
+    <td mat-cell *matCellDef>
+      <button mat-raised-button color="accent">Draft</button>
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="player.rank">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Rank </th>
+    <td mat-cell *matCellDef="let player"> {{player.player.rank}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="player.lastName">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
+    <td mat-cell *matCellDef="let player"> {{player.player.firstName}} {{player.player.lastName}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="player.position">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> POS </th>
+    <td mat-cell *matCellDef="let player"> {{player.player.position}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="player.team.abbreviation">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Team </th>
+    <td mat-cell *matCellDef="let player"> {{player.player.team.abbreviation}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="player.tier">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Tier </th>
+    <td mat-cell *matCellDef="let player"> {{player.player.tier}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="player.team.bye">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Bye </th>
+    <td mat-cell *matCellDef="let player"> {{player.player.team.bye}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="completions">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> CMP </th>
+    <td mat-cell *matCellDef="let player"> {{player.completions}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="attempts">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> ATT </th>
+    <td mat-cell *matCellDef="let player"> {{player.attempts}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="passYards">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Pass YDS </th>
+    <td mat-cell *matCellDef="let player"> {{player.passYards}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="passTd">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Pass TD </th>
+    <td mat-cell *matCellDef="let player"> {{player.passTd}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="interception">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> INT </th>
+    <td mat-cell *matCellDef="let player"> {{player.interception}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="carries">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> CAR </th>
+    <td mat-cell *matCellDef="let player"> {{player.carries}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="rushYards">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Rush YDS </th>
+    <td mat-cell *matCellDef="let player"> {{player.rushYards}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="rushTd">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Rush TD </th>
+    <td mat-cell *matCellDef="let player"> {{player.rushTd}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="fumbles">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> FUM </th>
+    <td mat-cell *matCellDef="let player"> {{player.fumbles}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="receptions">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> REC </th>
+    <td mat-cell *matCellDef="let player"> {{player.receptions}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="receivingYards">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> REC YDS </th>
+    <td mat-cell *matCellDef="let player"> {{player.receivingYards}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="receivingTd">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> REC TD </th>
+    <td mat-cell *matCellDef="let player"> {{player.receivingTd}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="fantasyPoints">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Fantasy PTS </th>
+    <td mat-cell *matCellDef="let player"> {{player.fantasyPoints}} </td>
   </ng-container>
 
   <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
@@ -15,37 +112,43 @@
         <div class="player-description">
           <span class="team-info-col team-logo">
             <div>
-              <div class="team-info"><span class="label">Offense Rank: </span>{{player.teamRank}}</div>
+              <div class="team-info"><span class="label">Offense Rank: </span>{{player.player.team.rank}}</div>
             </div>
             <div>
-              <img [src]=player.imageUrl>
+              <img [src]=player.player.team.imageUrl>
             </div>
           </span>
           <span class="team-info-col">
-            <div class="team-info"><span class="label">Total Points: </span>{{player.pointsFor}}</div>
-            <div class="team-info"><span class="label">Total Yards: </span>{{player.yards}}</div>
-            <div class="team-info"><span class="label">Yards Per Play: </span>{{player.yardsPerPlay}}</div>
-            <div class="team-info"><span class="label">Offensive Line Rank: </span>{{player.offensiveLineRank}}</div>
-            <div class="team-info"><span class="label">Score Percentage: </span>{{player.scorePercentage}}</div>
+            <div class="team-info"><span class="label">Total Points: </span>{{player.player.team.pointsFor}}</div>
+            <div class="team-info"><span class="label">Total Yards: </span>{{player.player.team.yards}}</div>
+            <div class="team-info"><span class="label">Yards Per Play: </span>{{player.player.team.yardsPerPlay}}</div>
+            <div class="team-info"><span class="label">Offensive Line Rank:
+              </span>{{player.player.team.offensiveLineRank}}</div>
+            <div class="team-info"><span class="label">Score Percentage: </span>{{player.player.team.scorePercentage}}
+            </div>
             <div class="team-info"><span class="label">Turnover Percentage:
-              </span>{{player.turnoverPercentage}}</div>
+              </span>{{player.player.team.turnoverPercentage}}</div>
           </span>
           <span class="team-info-col">
-              <div class="team-info"><span class="label">Pass Rank: </span>{{player.teamPassRank}}</div>
-            <div class="team-info"><span class="label">Team Pass Attempts: </span>{{player.passAttempts}}</div>
+            <div class="team-info"><span class="label">Pass Rank: </span>{{player.player.team.passRank}}</div>
+            <div class="team-info"><span class="label">Team Pass Attempts: </span>{{player.player.team.passAttempts}}
+            </div>
             <div class="team-info"><span class="label">Team Pass Completions:
-              </span>{{player.passCompletions}}</div>
-            <div class="team-info"><span class="label">Team Pass Yards: </span>{{player.passYardsTeam}}</div>
-            <div class="team-info"><span class="label">Team Pass TD: </span>{{player.passTdTeam}}</div>
-            <div class="team-info"><span class="label">Net Yards Per Pass: </span>{{player.netYardsPerPass}}</div>
+              </span>{{player.player.team.passCompletions}}</div>
+            <div class="team-info"><span class="label">Team Pass Yards: </span>{{player.player.team.passYards}}</div>
+            <div class="team-info"><span class="label">Team Pass TD: </span>{{player.player.team.passTd}}</div>
+            <div class="team-info"><span class="label">Net Yards Per Pass: </span>{{player.player.team.netYardsPerPass}}
+            </div>
           </span>
           <span class="team-info-col">
-            <div class="team-info"><span class="label">Rush Rank: </span>{{player.teamRushRank}}</div>
-            <div class="team-info"><span class="label">Running Back SoS: </span>{{player.runningBackSoS}}</div>
-            <div class="team-info"><span class="label">Team Rush Attempts: </span>{{player.rushAttemptTeam}}</div>
-            <div class="team-info"><span class="label">Team Rush Yards: </span>{{player.rushYardsTeam}}</div>
-            <div class="team-info"><span class="label">Team Rush TD: </span>{{player.rushTdTeam}}</div>
-            <div class="team-info"><span class="label">Yards Per Rush: </span>{{player.yardsPerRush}}</div>
+            <div class="team-info"><span class="label">Rush Rank: </span>{{player.player.team.rushRank}}</div>
+            <div class="team-info"><span class="label">Running Back SoS: </span>{{player.player.team.runningBackSoS}}
+            </div>
+            <div class="team-info"><span class="label">Team Rush Attempts: </span>{{player.player.team.rushAttempt}}
+            </div>
+            <div class="team-info"><span class="label">Team Rush Yards: </span>{{player.player.team.rushYards}}</div>
+            <div class="team-info"><span class="label">Team Rush TD: </span>{{player.player.team.rushTd}}</div>
+            <div class="team-info"><span class="label">Yards Per Rush: </span>{{player.player.team.yardsPerRush}}</div>
           </span>
         </div>
       </div>

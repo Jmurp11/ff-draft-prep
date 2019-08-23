@@ -60,20 +60,6 @@ export const resolvers: ResolverMap = {
             });
             return projections;
         },
-        projectionsByPlatform: async (_: any, { platform }:
-            GQL.IProjectionsByPlatformOnQueryArguments) => {
-            const projectionRepository = await getRepository(Projection);
-            const projections = await projectionRepository.find({
-                join: {
-                    alias: "projection",
-                    leftJoinAndSelect: {
-                        player: "projection.player",
-                        team: "player.team"
-                    }
-                }, where: { platform }
-            });
-            return projections;
-        },
         projectionsByPlayer: async (_: any, { player }:
             GQL.IProjectionsByPlayerOnQueryArguments) => {
             const projectionRepository = await getRepository(Projection);
@@ -171,32 +157,60 @@ export const resolvers: ResolverMap = {
 
             return true;
         },
-        addProjection: async (_: any, { player, platform, completions, attempts,
+        addProjection: async (_: any, { firstName, lastName, team, completions, attempts,
             passTd, passYards, interception, carries, rushYards, rushTd, fumbles,
-            targets, receptions, receivingYards,
-            receivingTd }:
+            receptions, receivingYards,
+            receivingTd, fantasyPoints }:
             GQL.IAddProjectionOnMutationArguments) => {
-            const projection = Projection.create({
-                player,
-                platform,
-                completions,
-                attempts,
-                passTd,
-                passYards,
-                interception,
-                carries,
-                rushYards,
-                rushTd,
-                fumbles,
-                targets,
-                receptions,
-                receivingYards,
-                receivingTd
+            const teamQueryResult = await Team.find({ where: { abbreviation: team } });
+            const teamId = teamQueryResult[0].id;
+            const playerRepository = await getRepository(Player);
+            const players = await playerRepository.find({
+                join: {
+                    alias: "player",
+                    leftJoinAndSelect: {
+                        team: "player.team",
+                    }
+                },
+                where: [
+                    {
+                        team: teamId
+                    }
+                ]
             });
 
-            await projection.save();
+            let id = 0;
 
-            return true;
+            players.forEach(el => {
+                if (el.firstName === firstName && el.lastName === lastName) {
+                    id = el.id;
+                }
+            });
+
+            if (id !== 0) {
+                const projection = Projection.create({
+                    player: id,
+                    completions,
+                    attempts,
+                    passTd,
+                    passYards,
+                    interception,
+                    carries,
+                    rushYards,
+                    rushTd,
+                    fumbles,
+                    receptions,
+                    receivingYards,
+                    receivingTd,
+                    fantasyPoints
+                });
+
+                await projection.save();
+
+                return true;
+            } else {
+                return false;
+            }
         }
     }
 };

@@ -28,7 +28,6 @@ declare namespace GQL {
     playerById: Array<IPlayer | null> | null;
     players: Array<IPlayer | null> | null;
     projections: Array<IProjection | null> | null;
-    projectionsByPlatform: Array<IProjection | null> | null;
     projectionsByPlayer: Array<IProjection | null> | null;
   }
 
@@ -42,10 +41,6 @@ declare namespace GQL {
 
   interface IPlayerByIdOnQueryArguments {
     id?: number | null;
-  }
-
-  interface IProjectionsByPlatformOnQueryArguments {
-    platform?: string | null;
   }
 
   interface IProjectionsByPlayerOnQueryArguments {
@@ -92,7 +87,7 @@ declare namespace GQL {
     team: ITeam | null;
     position: string | null;
     rank: number | null;
-    tier: number | null;
+    tier: string | null;
   }
 
   interface IProjection {
@@ -109,10 +104,10 @@ declare namespace GQL {
     rushYards: number | null;
     rushTd: number | null;
     fumbles: number | null;
-    targets: number | null;
     receptions: number | null;
     receivingYards: number | null;
     receivingTd: number | null;
+    fantasyPoints: number | null;
   }
 
   interface IMutation {
@@ -158,12 +153,13 @@ declare namespace GQL {
     team: string;
     position: string;
     rank: number;
-    tier: number;
+    tier: string;
   }
 
   interface IAddProjectionOnMutationArguments {
-    player: number;
-    platform: string;
+    firstName: string;
+    lastName: string;
+    team: string;
     completions: number;
     attempts: number;
     passYards: number;
@@ -173,10 +169,10 @@ declare namespace GQL {
     rushYards: number;
     rushTd: number;
     fumbles: number;
-    targets: number;
     receptions: number;
     receivingYards: number;
     receivingTd: number;
+    fantasyPoints: number;
   }
 }
 

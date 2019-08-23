@@ -1,0 +1,51 @@
+export interface Player {
+  player: {
+    firstName: string;
+    lastName: string;
+    team: {
+      city: string;
+      nickname: string;
+      abbreviation: string;
+      bye: number;
+      imageUrl: string;
+      rank: number;
+      passRank: number;
+      rushRank: number;
+      pointsFor: number;
+      yards: number;
+      plays: number;
+      yardsPerPlay: number;
+      turnovers: number;
+      passAttempts: number;
+      passCompletions: number;
+      passYards: number;
+      passTd: number;
+      interception: number;
+      netYardsPerPass: number;
+      rushAttempt: number;
+      rushYards: number;
+      rushTd: number;
+      yardsPerRush: number;
+      scorePercentage: number;
+      turnoverPercentage: number;
+      offensiveLineRank: number;
+      runningBackSoS: number;
+    };
+    tier: string;
+    position: string;
+    rank: number;
+  };
+  completions: number;
+  attempts: number;
+  passYards: number;
+  passTd: number;
+  interception: number;
+  carries: number;
+  rushTd: number;
+  rushYards: number;
+  fumbles: number;
+  receptions: number;
+  receivingYards: number;
+  receivingTd: number;
+  fantasyPoints: number;
+}

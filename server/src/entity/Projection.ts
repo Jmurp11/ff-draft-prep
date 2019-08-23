@@ -2,9 +2,9 @@ import {
     Entity,
     Column,
     BaseEntity,
-    OneToOne,
     JoinColumn,
-    PrimaryGeneratedColumn
+    PrimaryGeneratedColumn,
+    ManyToOne
 } from "typeorm";
 import { Player } from "./Player";
 
@@ -13,50 +13,47 @@ export class Projection extends BaseEntity {
     @PrimaryGeneratedColumn()
     id!: number;
     
-    @OneToOne(() => Player)
+    @ManyToOne(() => Player)
     @JoinColumn()
     @Column("text")
     player!: number;
 
-    @Column("text")
-    platform!: string;
-
-    @Column("int")
+    @Column("float")
     completions!: number;
 
-    @Column("int")
+    @Column("float")
     attempts!: number;
 
-    @Column("int")
+    @Column("float")
     passYards!: number;
 
-    @Column("int")
+    @Column("float")
     passTd!: number;
 
-    @Column("int")
+    @Column("float")
     interception!: number;
 
-    @Column("int")
+    @Column("float")
     carries!: number;
 
-    @Column("int")
+    @Column("float")
     rushYards!: number;
 
-    @Column("int")
+    @Column("float")
     rushTd!: number;
 
-    @Column("int")
+    @Column("float")
     fumbles!: number;
 
-    @Column("int")
-    targets!: number;
-
-    @Column("int")
+    @Column("float")
     receptions!: number;
 
-    @Column("int")
+    @Column("float")
     receivingYards!: number;
 
-    @Column("int")
+    @Column("float")
     receivingTd!: number;
+
+    @Column("float")
+    fantasyPoints!: number;
 }
