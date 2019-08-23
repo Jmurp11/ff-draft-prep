@@ -163,11 +163,33 @@ export const resolvers: ResolverMap = {
             receivingTd, fantasyPoints }:
             GQL.IAddProjectionOnMutationArguments) => {
             const teamQueryResult = await Team.find({ where: { abbreviation: team } });
-            const playerQueryResult = await Player.find({ where: { firstName, lastName, team: teamQueryResult[0].id } });
-            
+            const teamId = teamQueryResult[0].id;
+            const playerRepository = await getRepository(Player);
+            const players = await playerRepository.find({
+                join: {
+                    alias: "player",
+                    leftJoinAndSelect: {
+                        team: "player.team",
+                    }
+                },
+                where: [
+                    {
+                        team: teamId
+                    }
+                ]
+            });
+
+            let id = 0;
+
+            players.forEach(el => {
+                if (el.firstName === firstName && el.lastName === lastName) {
+                    id = el.id;
+                }
+            });
+
             if (teamQueryResult[0]) {
                 const projection = Projection.create({
-                    player: playerQueryResult[0].id,
+                    player: id,
                     completions,
                     attempts,
                     passTd,

@@ -9,7 +9,7 @@
       "database": "ff-draft-prep",
       "synchronize": true,
       "logging": false,
-      "dropSchema": true,
+      "dropSchema": false,
       "entities": [
          "src/entity/**/*.ts"
       ],
