@@ -177,27 +177,32 @@ export const resolvers: ResolverMap = {
             receivingTd, fantasyPoints }:
             GQL.IAddProjectionOnMutationArguments) => {
             const teamQueryResult = await Team.find({ where: { abbreviation: team } });
-            const playerQueryResult = await Player.find({ where: { firstName, lastName, team: teamQueryResult[0].id } })
-            const projection = Projection.create({
-                player: playerQueryResult[0].id,
-                completions,
-                attempts,
-                passTd,
-                passYards,
-                interception,
-                carries,
-                rushYards,
-                rushTd,
-                fumbles,
-                receptions,
-                receivingYards,
-                receivingTd,
-                fantasyPoints
-            });
+            const playerQueryResult = await Player.find({ where: { firstName, lastName, team: teamQueryResult[0].id } });
 
-            await projection.save();
+            if (teamQueryResult[0]) {
+                const projection = Projection.create({
+                    player: playerQueryResult[0].id,
+                    completions,
+                    attempts,
+                    passTd,
+                    passYards,
+                    interception,
+                    carries,
+                    rushYards,
+                    rushTd,
+                    fumbles,
+                    receptions,
+                    receivingYards,
+                    receivingTd,
+                    fantasyPoints
+                });
 
-            return true;
+                await projection.save();
+
+                return true;
+            } else {
+                return false;
+            }
         }
     }
 };
