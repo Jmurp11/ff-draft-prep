@@ -8,24 +8,24 @@ type Team {
   rank: Int
   passRank: Int
   rushRank: Int
-  pointsFor: Int
-  yards: Int
-  plays: Int
+  pointsFor: Float
+  yards: Float
+  plays: Float
   yardsPerPlay: Float
-  turnovers: Int
-  passAttempts: Int
-  passCompletions: Int
-  passYards: Int
-  passTd: Int
-  interception: Int
+  turnovers: Float
+  passAttempts: Float
+  passCompletions: Float
+  passYards: Float
+  passTd: Float
+  interception: Float
   netYardsPerPass: Float
-  rushAttempt: Int
-  rushYards: Int
-  rushTd: Int
+  rushAttempt: Float
+  rushYards: Float
+  rushTd: Float
   yardsPerRush: Float
   scorePercentage: Float
   turnoverPercentage: Float
-  offensiveLineRank: Int
+  offensiveLineRank: Float
   runningBackSoS: Int
 }
 
@@ -79,24 +79,24 @@ type Mutation {
     rank: Int!
     passRank: Int!
     rushRank: Int!
-    pointsFor: Int!
-    yards: Int!
-    plays: Int!
+    pointsFor: Float!
+    yards: Float!
+    plays: Float!
     yardsPerPlay: Float!
-    turnovers: Int!
-    passAttempts: Int!
-    passCompletions: Int!
-    passYards: Int!
-    passTd: Int!
-    interception: Int!
+    turnovers: Float!
+    passAttempts: Float!
+    passCompletions: Float!
+    passYards: Float!
+    passTd: Float!
+    interception: Float!
     netYardsPerPass: Float!
-    rushAttempt: Int!
-    rushYards: Int!
-    rushTd: Int!
+    rushAttempt: Float!
+    rushYards: Float!
+    rushTd: Float!
     yardsPerRush: Float!
     scorePercentage: Float!
     turnoverPercentage: Float!
-    offensiveLineRank: Int!
+    offensiveLineRank: Float!
     runningBackSoS: Int!
   ): Boolean!
   createPlayer(
