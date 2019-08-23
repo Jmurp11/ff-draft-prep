@@ -36,7 +36,7 @@ type Player {
   team: Team
   position: String
   rank: Int
-  tier: Int
+  tier: String
 }
 
 type Projection {
@@ -65,7 +65,6 @@ type Query {
   playerById(id: Int): [Player]
   players: [Player]
   projections: [Projection]
-  projectionsByPlatform(platform: String): [Projection]
   projectionsByPlayer(player: Int): [Projection]
 }
 
@@ -105,7 +104,7 @@ type Mutation {
     team: String!
     position: String!
     rank: Int!
-    tier: Int!
+    tier: String!
   ): Boolean!
   addProjection(
     firstName: String!

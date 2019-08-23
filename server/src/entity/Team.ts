@@ -35,46 +35,46 @@ export class Team extends BaseEntity {
     rushRank!: number;
     
 
-    @Column("int")
+    @Column("float")
     pointsFor!: number;
 
-    @Column("int")
+    @Column("float")
     yards!: number;
 
-    @Column("int")
+    @Column("float")
     plays!: number;
 
     @Column("float")
     yardsPerPlay!: number;
 
-    @Column("int")
+    @Column("float")
     turnovers!: number;
 
-    @Column("int")
+    @Column("float")
     passAttempts!: number;
 
-    @Column("int")
+    @Column("float")
     passCompletions!: number;
 
-    @Column("int")
+    @Column("float")
     passYards!: number;
 
-    @Column("int")
+    @Column("float")
     passTd!: number;
 
-    @Column("int")
+    @Column("float")
     interception!: number;
 
     @Column("float")
     netYardsPerPass!: number;
 
-    @Column("int")
+    @Column("float")
     rushAttempt!: number;
 
-    @Column("int")
+    @Column("float")
     rushYards!: number;
 
-    @Column("int")
+    @Column("float")
     rushTd!: number;
 
     @Column("float")
@@ -86,9 +86,9 @@ export class Team extends BaseEntity {
     @Column("float")
     turnoverPercentage!: number;
 
-    @Column("int")
+    @Column("float")
     offensiveLineRank!: number;
 
-    @Column("int")
+    @Column("float")
     runningBackSoS!: number;
 }

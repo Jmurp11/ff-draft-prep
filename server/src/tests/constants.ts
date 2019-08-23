@@ -35,7 +35,7 @@ export const playerData = {
     team: 'NYJ',
     position: 'RB',
     rank: 7,
-    tier: 2,
+    tier: "Tier 2",
     bye: 11
 };
 
@@ -76,7 +76,7 @@ export const createPlayer = (team: string) => {
         mutation {
             createPlayer(firstName: "${playerData.firstName}", lastName: "${playerData.lastName}", 
                 team: "${team}", position: "${playerData.position}", rank: ${playerData.rank},
-                tier: ${playerData.tier})
+                tier: "${playerData.tier}")
         }
     `;
     return mutation;

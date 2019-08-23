@@ -60,20 +60,6 @@ export const resolvers: ResolverMap = {
             });
             return projections;
         },
-        projectionsByPlatform: async (_: any, { platform }:
-            GQL.IProjectionsByPlatformOnQueryArguments) => {
-            const projectionRepository = await getRepository(Projection);
-            const projections = await projectionRepository.find({
-                join: {
-                    alias: "projection",
-                    leftJoinAndSelect: {
-                        player: "projection.player",
-                        team: "player.team"
-                    }
-                }, where: { platform }
-            });
-            return projections;
-        },
         projectionsByPlayer: async (_: any, { player }:
             GQL.IProjectionsByPlayerOnQueryArguments) => {
             const projectionRepository = await getRepository(Projection);
@@ -178,7 +164,7 @@ export const resolvers: ResolverMap = {
             GQL.IAddProjectionOnMutationArguments) => {
             const teamQueryResult = await Team.find({ where: { abbreviation: team } });
             const playerQueryResult = await Player.find({ where: { firstName, lastName, team: teamQueryResult[0].id } });
-
+            
             if (teamQueryResult[0]) {
                 const projection = Projection.create({
                     player: playerQueryResult[0].id,

@@ -4,7 +4,7 @@ import {
     PrimaryGeneratedColumn,
    // BeforeInsert, 
     BaseEntity,
-    OneToOne,
+    ManyToOne,
    JoinColumn
 } from "typeorm";
 import { Team } from "./Team";
@@ -20,7 +20,7 @@ export class Player extends BaseEntity {
     @Column("text")
     lastName!: string;
 
-    @OneToOne(() => Team)
+    @ManyToOne(() => Team)
     @JoinColumn()
     @Column("text")
     team!: number;
@@ -31,6 +31,6 @@ export class Player extends BaseEntity {
     @Column("int")
     rank!: number;
 
-    @Column("int")
-    tier!: number;
+    @Column("text")
+    tier!: string;
 }
