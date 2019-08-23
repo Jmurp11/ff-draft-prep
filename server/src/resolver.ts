@@ -171,13 +171,15 @@ export const resolvers: ResolverMap = {
 
             return true;
         },
-        addProjection: async (_: any, { player, completions, attempts,
+        addProjection: async (_: any, { firstName, lastName, team, completions, attempts,
             passTd, passYards, interception, carries, rushYards, rushTd, fumbles,
             receptions, receivingYards,
             receivingTd, fantasyPoints }:
             GQL.IAddProjectionOnMutationArguments) => {
+            const teamQueryResult = await Team.find({ where: { abbreviation: team } });
+            const playerQueryResult = await Player.find({ where: { firstName, lastName, team: teamQueryResult[0].id } })
             const projection = Projection.create({
-                player,
+                player: playerQueryResult[0].id,
                 completions,
                 attempts,
                 passTd,

@@ -82,10 +82,10 @@ export const createPlayer = (team: string) => {
     return mutation;
 };
 
-export const addProjection = (player: number): string => {
+export const addProjection = (firstName: string, lastName: string, team: string): string => {
     const mutation = `
             mutation {
-                addProjection(player: ${player}, completions: ${projectionData.completions}, attempts: ${projectionData.attempts}, 
+                addProjection(firstName: "${firstName}", lastName: "${lastName}", team: "${team}", completions: ${projectionData.completions}, attempts: ${projectionData.attempts}, 
                     passYards: ${projectionData.passYards}, passTd: ${projectionData.passTd}, 
                     interception: ${projectionData.interception}, carries: ${projectionData.carries}, rushYards: ${projectionData.rushYards}, rushTd: ${projectionData.rushTd}, 
                     fumbles: ${projectionData.fumbles}, receptions: ${projectionData.receptions}, receivingYards: ${projectionData.receivingYards}, 

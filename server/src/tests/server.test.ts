@@ -60,7 +60,7 @@ test('Add Projection', async () => {
 
     const playerResult = await getPlayer(firstName, lastName);
     
-    await callAddProjection(playerResult.id);
+    await callAddProjection(playerResult.firstName, playerResult.lastName, teamData.abbreviation);
 
     const id = playerResult.id;
 
@@ -211,8 +211,8 @@ const callCreatePlayerMutation = async (team: string) => {
     expect(response2).toEqual({ createPlayer: true });
 };
 
-const callAddProjection = async (player: number) => {
-    const response = await request(getHost(), addProjection(player));
+const callAddProjection = async (firstName: string, lastName: string, team: string) => {
+    const response = await request(getHost(), addProjection(firstName, lastName, team));
     expect(response).toEqual({ addProjection: true });
 };
 

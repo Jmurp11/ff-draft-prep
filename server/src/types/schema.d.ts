@@ -162,7 +162,9 @@ declare namespace GQL {
   }
 
   interface IAddProjectionOnMutationArguments {
-    player: number;
+    firstName: string;
+    lastName: string;
+    team: string;
     completions: number;
     attempts: number;
     passYards: number;
@@ -172,7 +174,6 @@ declare namespace GQL {
     rushYards: number;
     rushTd: number;
     fumbles: number;
-    targets: number;
     receptions: number;
     receivingYards: number;
     receivingTd: number;
