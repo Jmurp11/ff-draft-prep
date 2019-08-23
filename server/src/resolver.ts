@@ -187,7 +187,7 @@ export const resolvers: ResolverMap = {
                 }
             });
 
-            if (teamQueryResult[0]) {
+            if (id !== 0) {
                 const projection = Projection.create({
                     player: id,
                     completions,

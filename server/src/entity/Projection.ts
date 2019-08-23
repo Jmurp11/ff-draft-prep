@@ -2,9 +2,9 @@ import {
     Entity,
     Column,
     BaseEntity,
-    OneToOne,
     JoinColumn,
-    PrimaryGeneratedColumn
+    PrimaryGeneratedColumn,
+    ManyToOne
 } from "typeorm";
 import { Player } from "./Player";
 
@@ -13,7 +13,7 @@ export class Projection extends BaseEntity {
     @PrimaryGeneratedColumn()
     id!: number;
     
-    @OneToOne(() => Player)
+    @ManyToOne(() => Player)
     @JoinColumn()
     @Column("text")
     player!: number;

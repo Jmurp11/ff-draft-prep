@@ -14,7 +14,7 @@ export const startServer = async () => {
         port: process.env.NODE_ENV === 'test' ? 0 : 4000
     });
 
-    console.log(chalk.magentaBright('🏒  Tenders server is running on ') + chalk.greenBright('localhost:4000') + chalk.magentaBright('...'));
+    console.log(chalk.magentaBright('🏈  Draft Shark server is running on ') + chalk.greenBright('localhost:4000') + chalk.magentaBright('...'));
 
     return app;
 };

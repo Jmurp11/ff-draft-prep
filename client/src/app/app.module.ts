@@ -11,6 +11,7 @@ import { AppMaterialModule } from './app-material.module';
 import { NavbarComponent } from './navbar/navbar.component';
 import { PlayerTableComponent } from './player-table/player-table.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { GraphQLModule } from './graphql.module';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     BrowserAnimationsModule,
     AppMaterialModule,
     FlexLayoutModule,
-    FormsModule
+    FormsModule,
+    GraphQLModule
   ],
   providers: [],
   bootstrap: [AppComponent]
