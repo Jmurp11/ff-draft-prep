@@ -1,3 +1,8 @@
+<div class="resetButtonContainer">
+  <button mat-raised-button color="accent" class="resetButton" (click)="undoLastSelection()">Undo Last</button>
+  <button mat-raised-button color="accent" class="resetButton" (click)="resetAll()">Reset All</button>
+</div>
+
 <mat-form-field>
   <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
 </mat-form-field>
@@ -5,8 +10,8 @@
 <table mat-table [dataSource]="dataSource" multiTemplateDataRows class="mat-elevation-z8" matSort>
   <ng-container matColumnDef="draft">
     <th mat-header-cell *matHeaderCellDef mat-sort-header></th>
-    <td mat-cell *matCellDef>
-      <button mat-raised-button color="accent">Draft</button>
+    <td mat-cell *matCellDef="let player">
+      <button mat-raised-button color="accent" (click)="toggleRow(player)">Draft</button>
     </td>
   </ng-container>
 
@@ -17,7 +22,8 @@
 
   <ng-container matColumnDef="player.lastName">
     <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
-    <td mat-cell *matCellDef="let player"> {{player.player.firstName}} {{player.player.lastName}} </td>
+    <td mat-cell *matCellDef="let player" class="bold-font"> {{player.player.firstName}} {{player.player.lastName}}
+    </td>
   </ng-container>
 
   <ng-container matColumnDef="player.position">
@@ -32,7 +38,7 @@
 
   <ng-container matColumnDef="player.tier">
     <th mat-header-cell *matHeaderCellDef mat-sort-header> Tier </th>
-    <td mat-cell *matCellDef="let player"> {{player.player.tier}} </td>
+    <td mat-cell *matCellDef="let player" class="bold-font"> {{player.player.tier}} </td>
   </ng-container>
 
   <ng-container matColumnDef="player.team.bye">
@@ -102,7 +108,7 @@
 
   <ng-container matColumnDef="fantasyPoints">
     <th mat-header-cell *matHeaderCellDef mat-sort-header> Fantasy PTS </th>
-    <td mat-cell *matCellDef="let player"> {{player.fantasyPoints}} </td>
+    <td mat-cell *matCellDef="let player" class="bold-font"> {{player.fantasyPoints}} </td>
   </ng-container>
 
   <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
@@ -112,7 +118,12 @@
         <div class="player-description">
           <span class="team-info-col team-logo">
             <div>
-              <div class="team-info"><span class="label">Offense Rank: </span>{{player.player.team.rank}}</div>
+              <div class="team-info-offense-rank" [ngClass]="{
+                'green-text': player.player.team.rank <= 12,
+                'orange-text': player.player.team.rank > 12 && player.player.team.rank <= 20,
+                'red-text': player.player.team.rank > 20
+              }">
+                <span class="label">Offense Rank: </span>{{player.player.team.rank}}</div>
             </div>
             <div>
               <img [src]=player.player.team.imageUrl>
@@ -122,7 +133,12 @@
             <div class="team-info"><span class="label">Total Points: </span>{{player.player.team.pointsFor}}</div>
             <div class="team-info"><span class="label">Total Yards: </span>{{player.player.team.yards}}</div>
             <div class="team-info"><span class="label">Yards Per Play: </span>{{player.player.team.yardsPerPlay}}</div>
-            <div class="team-info"><span class="label">Offensive Line Rank:
+            <div class="team-info" [ngClass]="{
+              'green-text': player.player.team.offensiveLineRank <= 12,
+              'orange-text': player.player.team.offensiveLineRank > 12 && player.player.team.offensiveLineRank <= 20,
+              'red-text': player.player.team.offensiveLineRank > 20
+            }">
+              <span class="label">Offensive Line Rank:
               </span>{{player.player.team.offensiveLineRank}}</div>
             <div class="team-info"><span class="label">Score Percentage: </span>{{player.player.team.scorePercentage}}
             </div>
@@ -130,7 +146,12 @@
               </span>{{player.player.team.turnoverPercentage}}</div>
           </span>
           <span class="team-info-col">
-            <div class="team-info"><span class="label">Pass Rank: </span>{{player.player.team.passRank}}</div>
+            <div class="team-info" [ngClass]="{
+              'green-text': player.player.team.passRank <= 12,
+              'orange-text': player.player.team.passRank > 12 && player.player.team.passRank <= 20,
+              'red-text': player.player.team.passRank > 20
+            }">
+              <span class="label">Pass Rank: </span>{{player.player.team.passRank}}</div>
             <div class="team-info"><span class="label">Team Pass Attempts: </span>{{player.player.team.passAttempts}}
             </div>
             <div class="team-info"><span class="label">Team Pass Completions:
@@ -141,7 +162,12 @@
             </div>
           </span>
           <span class="team-info-col">
-            <div class="team-info"><span class="label">Rush Rank: </span>{{player.player.team.rushRank}}</div>
+            <div class="team-info" [ngClass]="{
+              'green-text': player.player.team.rushRank <= 12,
+              'orange-text': player.player.team.rushRank > 12 && player.player.team.rushRank <= 20,
+              'red-text': player.player.team.rushRank > 20
+            }">
+              <span class="label">Rush Rank: </span>{{player.player.team.rushRank}}</div>
             <div class="team-info"><span class="label">Running Back SoS: </span>{{player.player.team.runningBackSoS}}
             </div>
             <div class="team-info"><span class="label">Team Rush Attempts: </span>{{player.player.team.rushAttempt}}
@@ -157,8 +183,13 @@
 
   <tr mat-header-row *matHeaderRowDef="columnsToDisplay; sticky: true"></tr>
   <tr mat-row *matRowDef="let player; columns: columnsToDisplay;" class="player-row"
-    [class.expanded-row]="expandedPlayer === player"
-    (click)="expandedPlayer = expandedPlayer === player ? null : player">
+    [class.expanded-row]="expandedPlayer === player" [ngClass]="{
+      'isSelected': player.selected,
+      'isQb': player.player.position === 'QB',
+      'isRb': player.player.position === 'RB',
+      'isWr': player.player.position === 'WR',
+      'isTe': player.player.position === 'TE'
+    }" (click)="expandedPlayer = expandedPlayer === player ? null : player">
   </tr>
   <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="detail-row"></tr>
 </table>
