@@ -54,6 +54,7 @@ export class PlayerTableComponent implements OnInit, OnDestroy {
         this.loading = loading;
         data.projections.forEach(el => {
           el.selected = false;
+          el.buttonText = 'Draft';
           this.players.push(el);
         });
         this.dataSource = new MatTableDataSource(this.players);
@@ -105,15 +106,16 @@ export class PlayerTableComponent implements OnInit, OnDestroy {
     player.selected = !player.selected;
     this.lastSelectedPlayer = player;
     this.selectedPlayers.push(this.lastSelectedPlayer);
-  }
-
-  undoLastSelection() {
-    this.lastSelectedPlayer.selected = !this.lastSelectedPlayer.selected;
+    if (player.selected) {
+      player.buttonText = 'Undo';
+    } else {
+      player.buttonText = 'Draft';
+    }
   }
 
   resetAll() {
     this.selectedPlayers.forEach(player => {
-      player.selected = !player.selected;
+      player.selected = false;
     });
   }
 
