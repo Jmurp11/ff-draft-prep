@@ -116,6 +116,7 @@ export class PlayerTableComponent implements OnInit, OnDestroy {
   resetAll() {
     this.selectedPlayers.forEach(player => {
       player.selected = false;
+      player.buttonText = 'Draft';
     });
   }
 
