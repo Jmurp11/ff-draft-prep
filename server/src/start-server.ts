@@ -7,14 +7,14 @@ import { resolvers } from './resolver';
 export const startServer = async () => {
     const typeDefs = importSchema('./src/schema.graphql');
     const server = new GraphQLServer({ typeDefs, resolvers })
-
+    const port = process.env.NODE_ENV === 'test' ? 0 : 4000
     await createTypeormConn();
 
     const app = await server.start({
-        port: process.env.NODE_ENV === 'test' ? 0 : 4000
+        port
     });
 
-    console.log(chalk.magentaBright('🏈  Draft Shark server is running on ') + chalk.greenBright('localhost:4000') + chalk.magentaBright('...'));
+    console.log(chalk.magentaBright('🏈  Draft Shark server is running on ') + chalk.greenBright(`localhost:${port}`) + chalk.magentaBright('...'));
 
     return app;
 };
