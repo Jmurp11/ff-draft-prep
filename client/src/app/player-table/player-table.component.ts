@@ -27,6 +27,8 @@ export class PlayerTableComponent implements OnInit, OnDestroy {
   players: Player[];
   loading: boolean;
   querySubscription: Subscription;
+  lastSelectedPlayer: Player;
+  selectedPlayers: Player[];
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -43,6 +45,7 @@ export class PlayerTableComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.players = [];
+    this.selectedPlayers = [];
     this.querySubscription = this.apollo.watchQuery<any>({
       query: projections
     })
@@ -50,6 +53,7 @@ export class PlayerTableComponent implements OnInit, OnDestroy {
       .subscribe(({ data, loading }) => {
         this.loading = loading;
         data.projections.forEach(el => {
+          el.selected = false;
           this.players.push(el);
         });
         this.dataSource = new MatTableDataSource(this.players);
@@ -79,7 +83,6 @@ export class PlayerTableComponent implements OnInit, OnDestroy {
         this.dataSource.sortingDataAccessor = this.sortingDataAccessor;
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
-        console.log(this.dataSource.data);
       });
   }
 
@@ -96,6 +99,22 @@ export class PlayerTableComponent implements OnInit, OnDestroy {
         .reduce((object, key) => object[key], item);
     }
     return item[property];
+  }
+
+  toggleRow(player: Player) {
+    player.selected = !player.selected;
+    this.lastSelectedPlayer = player;
+    this.selectedPlayers.push(this.lastSelectedPlayer);
+  }
+
+  undoLastSelection() {
+    this.lastSelectedPlayer.selected = !this.lastSelectedPlayer.selected;
+  }
+
+  resetAll() {
+    this.selectedPlayers.forEach(player => {
+      player.selected = !player.selected;
+    });
   }
 
   ngOnDestroy() {

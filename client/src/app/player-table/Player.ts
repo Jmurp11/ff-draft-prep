@@ -48,4 +48,5 @@ export interface Player {
   receivingYards: number;
   receivingTd: number;
   fantasyPoints: number;
+  selected: boolean;
 }

@@ -37,9 +37,20 @@ tr.player-row:not(.expanded-row):active {
   width: 100%;
 }
 
+.bold-font {
+  font-weight: bold;
+}
+
 .team-info {
   padding: 10px;
 }
+
+.team-info-offense-rank {
+  padding: 10px;
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
 
 .team-info-col {
   padding: 10px;
@@ -52,4 +63,51 @@ tr.player-row:not(.expanded-row):active {
   margin-right: 100px;
   height: 100px;
   width: 150px;
+}
+
+tr.isQb {
+  background-color: lightskyblue;
+}
+
+tr.isRb {
+  background-color: lightgreen
+}
+
+tr.isWr {
+  background-color: lightpink;
+}
+
+tr.isTe {
+  background-color: lightyellow;
+}
+
+tr.isSelected {
+  background-color: gray;
+  text-decoration: line-through red;
+}
+
+div.resetButtonContainer {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.resetButton {
+  margin: 10px;
+  align-self: center;
+}
+
+.green-text {
+  font-weight: bold;
+  color: green;
+}
+
+.red-text {
+  font-weight: bold;
+  color: red;
+}
+
+.orange-text {
+  font-weight: bold;
+  color: orange;
 }
