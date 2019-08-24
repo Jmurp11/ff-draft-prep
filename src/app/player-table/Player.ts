@@ -33,6 +33,7 @@ export interface Player {
     };
     tier: string;
     position: string;
+    adp: number;
     rank: number;
   };
   completions: number;

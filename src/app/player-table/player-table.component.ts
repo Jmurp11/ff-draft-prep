@@ -33,7 +33,7 @@ export class PlayerTableComponent implements OnInit, OnDestroy {
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
-  columnsToDisplay = ['draft', 'player.rank', 'player.lastName', 'player.position', 'player.team.abbreviation',
+  columnsToDisplay = ['draft', 'player.rank', 'player.adp', 'player.lastName', 'player.position', 'player.team.abbreviation',
     'player.tier', 'player.team.bye', 'completions', 'attempts', 'passYards', 'passTd', 'interception', 'carries', 'rushYards',
     'rushTd', 'fumbles', 'receptions', 'receivingYards', 'receivingTd', 'fantasyPoints'];
 
