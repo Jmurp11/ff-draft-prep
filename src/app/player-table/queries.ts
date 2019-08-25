@@ -37,6 +37,7 @@ export const projections = gql
           runningBackSoS
         }
         tier
+        adp
         position
         rank
       }
