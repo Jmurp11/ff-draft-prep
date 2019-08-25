@@ -37,7 +37,9 @@
 
   <ng-container matColumnDef="player.team.abbreviation">
     <th mat-header-cell *matHeaderCellDef mat-sort-header> Team </th>
-    <td mat-cell *matCellDef="let player"> {{player.player.team.abbreviation}} </td>
+    <td mat-cell *matCellDef="let player">
+      <img class="team-logo-small" [src]=player.player.team.imageUrl>
+    </td>
   </ng-container>
 
   <ng-container matColumnDef="player.tier">
