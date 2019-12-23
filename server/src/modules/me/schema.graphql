@@ -1,0 +1,14 @@
+# import Error from "../error/schema.graphql"
+
+type User {
+    id: ID!
+    email: String!
+    password: String
+    username: String
+    confirmed: Boolean 
+    forgotPasswordLock: Boolean
+}
+
+type Query {
+    me: User
+}

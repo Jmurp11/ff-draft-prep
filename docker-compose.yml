@@ -1,10 +1,39 @@
 version: '3'
 services:
-  app:
-    container_name: npc-frontend
+  redis:
+    image: redis
+    container_name: cache
+    ports:
+      - "8080:6379"
+  database:
+    image: postgres
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: ff-draft-prep
+    ports:
+      - "3030:5432"
+  server:
+    container_name: ff-api
     restart: always
     build:
-      context: .
+      context: ./server
+      dockerfile: Dockerfile
+    volumes:
+      - '.:/usr/src/app'
+      - '/usr/src/app/node_modules'
+    ports:
+      - '3000:4000'
+    links:
+      - database
+      - redis
+  client:
+    container_name: ff-frontend
+    restart: always
+    build:
+      context: ./client
       dockerfile: Dockerfile
     volumes:
       - '.:/usr/src/app'
