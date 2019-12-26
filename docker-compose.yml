@@ -1,12 +1,8 @@
 version: '3'
 services:
-  redis:
-    image: redis
-    container_name: cache
-    ports:
-      - "8080:6379"
   database:
-    image: postgres
+    image: postgres:alpine
+    container_name: ff-db
     volumes:
       - ./pgdata:/var/lib/postgresql/data
     environment:
@@ -14,7 +10,12 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_DB: ff-draft-prep
     ports:
-      - "3030:5432"
+      - "5432:5432"
+  redis:
+    image: redis:alpine
+    container_name: ff-cache
+    ports:
+      - "6379:6379"
   server:
     container_name: ff-api
     restart: always
