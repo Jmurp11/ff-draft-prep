@@ -73,7 +73,6 @@ export class AuthComponent implements OnInit {
       console.log(`Error: ${this.errMessage}`);
       this.loading = false;
     }
-    console.log('hit login');
   }
 
   onRegister() {

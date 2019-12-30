@@ -3,7 +3,7 @@ FROM node:12.7-alpine as node
 
 COPY package*.json ./
 
-RUN npm install -g nodemon
+ENV set NODE_OPTIONS=--max_old_space_size=8192
 
 RUN npm install -g typescript
 

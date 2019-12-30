@@ -67,14 +67,12 @@ export const resolvers: ResolverMap = {
         },
         userByEmail: async (_: any, { email }) => {
             const user = await User.findOne({ where: { email } });
-            console.log(`Hit userByEmail: ${email}`);
             return user
         }
     },
     Mutation: {
 
         register: async (_: any, args: GQL.IRegisterOnMutationArguments, { redis, url }) => {
-            console.log('hit register');
             try {
                 await schema.validate(args, { abortEarly: false });
             } catch (err) {
@@ -124,7 +122,6 @@ export const resolvers: ResolverMap = {
         },
         login: async (_: any, { email, password }: GQL.ILoginOnMutationArguments, { session, redis, req }) => {
             const user = await User.findOne({ where: { email } });
-            console.log(`Hit login: ${email}, ${password}`);
             if (!user) {
                 return loginErrorResponse;
             }

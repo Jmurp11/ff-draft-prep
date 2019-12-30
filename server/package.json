@@ -57,7 +57,7 @@
       "yup": "~0.27.0"
    },
    "scripts": {
-      "start": "NODE_ENV=development nodemon --exec ts-node --files src/index.ts",
+      "start": "NODE_ENV=development ts-node --files src/index.ts",
       "start:prod": "NODE_ENV=production ts-node --files src/index.ts",
       "gen-schema-types": "ts-node --files src/scripts/createTypes.ts",
       "test": "NODE_ENV=test TS_NODE_FILES=true jest --runInBand --forceExit"

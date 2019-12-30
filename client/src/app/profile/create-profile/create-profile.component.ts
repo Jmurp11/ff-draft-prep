@@ -56,7 +56,6 @@ export class CreateProfileComponent implements OnInit {
   }
 
   onRegisterSubmit() {
-    console.log('hit register submit')
     this.registerService.register(this.form.get('email').value, this.form.get('password').value, this.form.get('username').value);
   }
 }

@@ -12,7 +12,6 @@ export class RegisterService {
   constructor(private apollo: Apollo) { }
 
   register(email: string, password: string, username: string) {
-    console.log('hit register service');
     return this.apollo.mutate({
       mutation: register,
       variables: {
@@ -21,7 +20,6 @@ export class RegisterService {
         username
       }
     }).subscribe(({ data }) => {
-      console.log(JSON.stringify(data));
       return data;
     }, (error) => {
       console.log(error);
