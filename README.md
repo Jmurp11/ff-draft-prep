@@ -37,7 +37,7 @@ Submit a pull request
 ## Testing
 
 ### Server Tests
-The server's unit tests are written using [Jest] (https://jestjs.io/).  Make sure you are in the server folder and run:
+The server's unit tests are written using Jest (https://jestjs.io/).  Make sure you are in the server folder and run:
 
 ```
 $ npm test
