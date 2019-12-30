@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # FF Draft Prep
 Assist users in prepping for their fantasy sports drafts.  Users can use this application to rank players, keep running notes on players throughout their draft prep, and ultimately use this tool during their drafts to make decisions based on their research.
 
@@ -53,3 +54,6 @@ End to end tests using Selenium are a future task.
 
 ## Author
 * Jim Murphy
+=======
+
+>>>>>>> 34b8bcec86692b3938dc08eea111051754978440
