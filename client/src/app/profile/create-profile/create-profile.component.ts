@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { RegisterService } from './register.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-create-profile',
@@ -14,15 +15,18 @@ export class CreateProfileComponent implements OnInit {
   emailControlIsValid = true;
   passwordControlIsValid = true;
   confirmPasswordControlIsValid = true;
+  passwordEqualConfirmPasswordIsValid = true;
   loading = false;
 
-  constructor(private registerService: RegisterService) { }
+  constructor(
+    private registerService: RegisterService,
+    private router: Router) { }
 
   ngOnInit() {
     this.form = new FormGroup({
       username: new FormControl(null, {
         updateOn: 'blur',
-        validators: [Validators.required]
+        validators: [Validators.required, Validators.minLength(2)]
       }),
       email: new FormControl(null, {
         updateOn: 'blur',
@@ -30,11 +34,11 @@ export class CreateProfileComponent implements OnInit {
       }),
       password: new FormControl(null, {
         updateOn: 'blur',
-        validators: [Validators.required, Validators.minLength(6)]
+        validators: [Validators.required, Validators.minLength(8)]
       }),
       confirmPassword: new FormControl(null, {
         updateOn: 'blur',
-        validators: [Validators.required, Validators.minLength(6)]
+        validators: [Validators.required, Validators.minLength(8)]
       })
     });
 
@@ -56,6 +60,15 @@ export class CreateProfileComponent implements OnInit {
   }
 
   onRegisterSubmit() {
-    this.registerService.register(this.form.get('email').value, this.form.get('password').value, this.form.get('username').value);
+    if (this.form.get('password').value === this.form.get('confirmPassword').value) {
+      this.registerService.register(this.form.get('email').value, this.form.get('password').value, this.form.get('username').value);
+      this.form.reset();
+    } else {
+      this.passwordEqualConfirmPasswordIsValid = false;
+    }
+  }
+
+  onLoginClick() {
+    this.router.navigate(['./login']);
   }
 }

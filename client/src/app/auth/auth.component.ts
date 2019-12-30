@@ -17,7 +17,6 @@ export class AuthComponent implements OnInit {
   errMessage: string;
 
   constructor(
-    private route: ActivatedRoute,
     private router: Router,
     private authService: AuthService,
     private alertService: AlertService
@@ -75,7 +74,7 @@ export class AuthComponent implements OnInit {
     }
   }
 
-  onRegister() {
+  onRegisterClick() {
     this.router.navigate(['./register']);
   }
 }
