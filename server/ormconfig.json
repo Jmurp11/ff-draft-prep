@@ -1,0 +1,80 @@
+[
+   {
+      "name": "production",
+      "type": "postgres",
+      "host": "ec2-23-23-182-18.compute-1.amazonaws.com",
+      "port": 5432,
+      "username": "pcljvsxwbbivhn",
+      "password": "3c87636b3dd7abddd928aac1fab807d57a9078ab5affc9331097ff288f5d5314",
+      "database": "d4qv5k6676vcj8",
+      "synchronize": true,
+      "logging": false,
+      "dropSchema": true,
+      "entities": [
+         "src/entity/**/*.ts"
+      ],
+      "migrations": [
+         "src/migration/**/*.ts"
+      ],
+      "subscribers": [
+         "src/subscriber/**/*.ts"
+      ],
+      "cli": {
+         "entitiesDir": "src/entity",
+         "migrationsDir": "src/migration",
+         "subscribersDir": "src/subscriber"
+      }
+   },
+   {
+      "name": "development",
+      "type": "postgres",
+      "host": "database",
+      "port": 5432,
+      "username": "postgres",
+      "password": "postgres",
+      "database": "ff-db",
+      "synchronize": true,
+      "logging": false,
+      "dropSchema": true,
+      "entities": [
+         "src/entity/**/*.ts"
+      ],
+      "migrations": [
+         "src/migration/**/*.ts"
+      ],
+      "subscribers": [
+         "src/subscriber/**/*.ts"
+      ],
+      "cli": {
+         "entitiesDir": "src/entity",
+         "migrationsDir": "src/migration",
+         "subscribersDir": "src/subscriber"
+      }
+   },
+   {
+      "name": "test",
+      "type": "postgres",
+      "host": "localhost",
+      "port": 5432,
+      "username": "postgres",
+      "password": "",
+      "database": "ff-draft-prep-test",
+      "synchronize": true,
+      "logging": false,
+      "dropSchema": true,
+      "entities": [
+         "src/entity/**/*.ts"
+      ],
+      "migrations": [
+         "src/migration/**/*.ts"
+      ],
+      "subscribers": [
+         "src/subscriber/**/*.ts"
+      ],
+      "cli": {
+         "entitiesDir": "src/entity",
+         "migrationsDir": "src/migration",
+         "subscribersDir": "src/subscriber"
+      }
+   }
+]

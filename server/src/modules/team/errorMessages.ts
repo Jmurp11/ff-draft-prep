@@ -1,0 +1,1 @@
+export const teamAlreadyExists = 'This team already exists!';

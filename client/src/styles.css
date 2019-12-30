@@ -1,0 +1,37 @@
+/* You can add global styles to this file, and also import other style files */
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.auth-btn {
+  margin: 10px;
+}
+
+.form {
+  text-align: center;
+  margin: auto;
+}
+
+.form-container {
+  text-align: center;
+  width: 100%;
+  height: 100%;
+}
+
+.form-card {
+  max-width: 400px;
+  margin: auto;
+  margin-top: 32px;
+}
+
+.form-group {
+  text-align: center;
+}
+
+.card-header {
+  text-align: center;
+}
+
+.invalid-label {
+  color: red;
+}

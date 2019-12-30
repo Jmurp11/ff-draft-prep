@@ -1,0 +1,81 @@
+{
+   "name": "server",
+   "version": "0.0.1",
+   "description": "Fantasy Football Draft Tool.",
+   "devDependencies": {
+      "@types/bcryptjs": "~2.4.2",
+      "@types/connect-redis": "~0.0.11",
+      "@types/express-rate-limit": "~3.3.3",
+      "@types/express-session": "~1.15.14",
+      "@types/graphql": "~14.5.0",
+      "@types/ioredis": "~4.0.17",
+      "@types/jest": "~24.0.16",
+      "@types/node": "~12.6.8",
+      "@types/request-promise": "~4.1.44",
+      "@types/uuid": "~3.4.5",
+      "@types/yup": "~0.26.24",
+      "gql2ts": "~1.10.1",
+      "jest": "~24.8.0",
+      "nodemon": "~1.19.1",
+      "prettier": "~1.18.2",
+      "ts-jest": "~24.0.2",
+      "ts-node": "8.3.0",
+      "typescript": "3.5.3"
+   },
+   "dependencies": {
+      "@gql2ts/from-schema": "~1.10.1",
+      "@types/express": "~4.17.1",
+      "@types/glob": "^7.1.1",
+      "@types/node-fetch": "~2.5.2",
+      "@types/request": "^2.48.3",
+      "bcryptjs": "~2.4.3",
+      "chalk": "~2.4.2",
+      "connect-redis": "~4.0.2",
+      "dataloader": "~1.4.0",
+      "dayjs": "~1.8.17",
+      "express": "~4.17.1",
+      "express-rate-limit": "~5.0.0",
+      "express-session": "~1.16.2",
+      "glob": "~7.1.4",
+      "graphql": "~14.5.7",
+      "graphql-import": "~0.7.1",
+      "graphql-request": "~1.8.2",
+      "graphql-tools": "~4.0.5",
+      "graphql-yoga": "~1.18.3",
+      "ioredis": "~4.14.1",
+      "merge-graphql-schemas": "~1.7.0",
+      "node-fetch": "~2.6.0",
+      "pg": "~7.11.0",
+      "rate-limit-redis": "~1.6.0",
+      "reflect-metadata": "~0.1.13",
+      "request": "^2.88.0",
+      "request-promise": "~4.2.4",
+      "tslint": "~5.18.0",
+      "tslint-config-prettier": "~1.18.0",
+      "typeorm": "0.2.18",
+      "uuid": "~3.3.3",
+      "yup": "~0.27.0"
+   },
+   "scripts": {
+      "start": "NODE_ENV=development ts-node --files src/index.ts",
+      "start:prod": "NODE_ENV=production ts-node --files src/index.ts",
+      "gen-schema-types": "ts-node --files src/scripts/createTypes.ts",
+      "test": "NODE_ENV=test TS_NODE_FILES=true jest --runInBand --forceExit"
+   },
+   "jest": {
+      "globalSetup": "./src/testSetup/callSetup.js",
+      "transform": {
+         "^.+\\.tsx?$": "ts-jest"
+      },
+      "bail": true,
+      "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+      "moduleFileExtensions": [
+         "ts",
+         "tsx",
+         "js",
+         "jsx",
+         "json",
+         "node"
+      ]
+   }
+}
