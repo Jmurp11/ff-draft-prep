@@ -2,7 +2,12 @@ import * as bcrypt from 'bcryptjs';
 import * as yup from 'yup';
 import { ResolverMap } from "../../types/graphql-utils";
 import { User } from '../../entity/index';
-import { formatYupError, createConfirmEmailLink, forgotPasswordLockAccount, createForgotPasswordLink, removeAllUsersSessions } from '../../utils';
+import {
+    formatYupError,
+    createConfirmEmailLink,
+    forgotPasswordLockAccount,
+    createForgotPasswordLink,
+    removeAllUsersSessions } from '../../utils';
 import {
     duplicateEmail,
     emailNotLongEnough,
