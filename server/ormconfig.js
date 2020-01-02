@@ -1,3 +1,7 @@
+// DOCKER VERSION
+// host=database
+// database=ff-db
+
 require('dotenv').config;
 
 module.exports = [
@@ -30,16 +34,16 @@ module.exports = [
    {
       name: 'development',
       type: 'postgres',
-      host: 'database',
+      host: 'localhost',
       port: 5432,
       username: 'postgres',
       password: 'postgres',
-      database: 'ff-db',
+      database: 'ff-draft-prep-dev',
       synchronize: true,
       logging: false,
       dropSchema: true,
       entities: [
-         "src/entity/**/*.ts"
+      "src/entity/**/*.ts"
       ],
       migrations: [
          "src/migration/**/*.ts"
