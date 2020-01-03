@@ -3,6 +3,7 @@
 // database=ff-db
 
 require('dotenv').config;
+require('dotenv-flow').config;
 
 module.exports = [
    {
