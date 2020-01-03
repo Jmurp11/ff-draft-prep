@@ -2,7 +2,14 @@ import * as bcrypt from 'bcryptjs';
 import * as yup from 'yup';
 import { ResolverMap } from "../../types/graphql-utils";
 import { User } from '../../entity/index';
-import { formatYupError, createConfirmEmailLink, forgotPasswordLockAccount, createForgotPasswordLink, removeAllUsersSessions } from '../../utils';
+import {
+    formatYupError,
+    createConfirmEmailLink,
+    forgotPasswordLockAccount,
+    createForgotPasswordLink,
+    removeAllUsersSessions,
+    sendEmail
+} from '../../utils';
 import {
     duplicateEmail,
     emailNotLongEnough,
@@ -115,8 +122,13 @@ export const resolvers: ResolverMap = {
             });
 
             await user.save();
-
-            await createConfirmEmailLink(url, user.id, redis);
+            if (process.env.NODE_ENV !== 'test') {
+                await sendEmail(
+                    email,
+                    username,
+                    await createConfirmEmailLink(url, user.id, redis)
+                );
+            }
 
             return null;
         },

@@ -8,3 +8,4 @@ export { removeAllUsersSessions } from './removeUserSessions';
 export { formatYupError } from './formatYupError';
 export { TestClient } from './TestClient';
 export { genSchema } from './genSchema';
+export { sendEmail } from './sendEmail';
