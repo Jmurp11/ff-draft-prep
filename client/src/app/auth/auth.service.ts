@@ -1,10 +1,11 @@
 
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { Apollo } from 'apollo-angular';
 
-import { User, UserService } from '../user';
+import { User } from '../user';
 import { login } from './queries';
+import { userByEmail } from '../user/queries';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -14,10 +15,10 @@ export class AuthService {
   public message: Observable<string>;
   loading: boolean;
   loginResult: any;
+  querySubscription: Subscription;
 
   constructor(
     private apollo: Apollo,
-    private userService: UserService
   ) {
     let user: User;
     let mess: string;
@@ -39,7 +40,6 @@ export class AuthService {
 
   login(email: string, password: string) {
     let user: User;
-
     return this.apollo.mutate({
       mutation: login,
       variables: {
@@ -48,10 +48,18 @@ export class AuthService {
       }
     }).subscribe(({ data }) => {
       if (data.login === null) {
-        user = this.userService.getUserByEmail(email);
-        localStorage.setItem('currentUser', JSON.stringify(user));
-        this.currentUserSubject.next(user);
-        return user;
+        this.querySubscription = this.apollo.watchQuery<any>({
+          query: userByEmail(email)
+        })
+          .valueChanges
+          .subscribe(({ data, loading }) => {
+            this.loading = loading;
+            user = data.userByEmail;
+            console.log(`UserByEmail Result: ${JSON.stringify(user)}`);
+            localStorage.setItem('currentUser', JSON.stringify(user));
+            this.currentUserSubject.next(user);
+            return user;
+          });
       } else {
         this.messageSubject.next(data.login[0].message);
       }
