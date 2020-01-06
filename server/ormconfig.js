@@ -7,7 +7,7 @@ require('dotenv-flow').config;
 
 module.exports = [
    {
-      name: "production",
+      name: 'production',
       type: process.env.DB_TYPE,
       host: process.env.DB_HOST,
       port: process.env.DB_PORT,
