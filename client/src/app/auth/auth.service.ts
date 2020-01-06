@@ -22,6 +22,7 @@ export class AuthService {
   ) {
     let user: User;
     let mess: string;
+
     if (!localStorage.getItem('currentUser')) {
       user = JSON.parse(localStorage.getItem('currentUser'));
     } else {
@@ -38,38 +39,10 @@ export class AuthService {
     return this.currentUserSubject.value;
   }
 
-  login(email: string, password: string) {
-    let user: User;
-    return this.apollo.mutate({
-      mutation: login,
-      variables: {
-        email,
-        password
-      }
-    }).subscribe(({ data }) => {
-      if (data.login === null) {
-        this.querySubscription = this.apollo.watchQuery<any>({
-          query: userByEmail(email)
-        })
-          .valueChanges
-          .subscribe(({ data, loading }) => {
-            this.loading = loading;
-            user = data.userByEmail;
-            console.log(`UserByEmail Result: ${JSON.stringify(user)}`);
-            localStorage.setItem('currentUser', JSON.stringify(user));
-            this.currentUserSubject.next(user);
-            return user;
-          });
-      } else {
-        this.messageSubject.next(data.login[0].message);
-      }
-    }, (error) => {
-      console.log(error);
-    });
-  }
-
   logout() {
     localStorage.removeItem('currentUser');
     this.currentUserSubject.next(null);
   }
 }
+
+// TODO: rewrite auth.service and auth.guard to account for query moving to component.

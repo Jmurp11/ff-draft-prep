@@ -10,7 +10,8 @@ const uri = 'http://localhost:4000'; // DEV
 export function createApollo(httpLink: HttpLink) {
   return {
     link: httpLink.create({uri}),
-    cache: new InMemoryCache(),
+    withCredentials: true,
+    cache: new InMemoryCache()
   };
 }
 

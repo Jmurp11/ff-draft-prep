@@ -58,11 +58,6 @@ export class AuthComponent implements OnInit {
     this.form.get('password').statusChanges.subscribe(status => {
       this.passwordControlIsValid = status === 'VALID';
     });
-
-    this.authService.message.subscribe(errStr => {
-      this.errMessage = errStr;
-      console.log(this.errMessage);
-    });
   }
 
   onSubmit() {
@@ -79,7 +74,7 @@ export class AuthComponent implements OnInit {
     this.passwordControlIsValid = true;
 
     this.loading = true;
-  
+
     return this.apollo.mutate({
       mutation: login,
       variables: {
@@ -119,7 +114,3 @@ export class AuthComponent implements OnInit {
     this.router.navigate(['./register']);
   }
 }
-
-
-
-// TODO: implement https://www.apollographql.com/docs/angular/recipes/authentication/
