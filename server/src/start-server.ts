@@ -67,7 +67,8 @@ export const startServer = async () => {
     origin:
       process.env.NODE_ENV === "test"
         ? "*"
-        : '*' // (process.env.FRONTEND_HOST as string)
+        : '*' // (process.env.FRONTEND_HOST as string) 
+        // TODO: Change the above line back in prod
   };
 
   server.express.get("/confirm/:id", confirmEmail);

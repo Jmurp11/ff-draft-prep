@@ -122,7 +122,7 @@ export const resolvers: ResolverMap = {
             });
 
             await user.save();
-            if (process.env.NODE_ENV !== 'test') {
+            if (process.env.NODE_ENV !== 'test' && process.env.NODE_ENV !== 'development') {
                 await sendEmail(
                     email,
                     username,
@@ -138,7 +138,7 @@ export const resolvers: ResolverMap = {
                 return loginErrorResponse;
             }
 
-            if (!user.confirmed) {
+            if (!user.confirmed && process.env.NODE_ENV !== 'development') {
                 return [
                     {
                         path: 'email',

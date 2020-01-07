@@ -1,8 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
+import { Apollo } from 'apollo-angular';
 import { AuthService } from './auth.service';
 import { AlertService } from '../shared/alert.service';
+import { User } from '../user';
+import { userByEmail } from '../user/queries';
+import { login } from './queries';
 
 @Component({
   selector: 'app-auth',
@@ -15,13 +20,21 @@ export class AuthComponent implements OnInit {
   passwordControlIsValid = true;
   loading = false;
   errMessage: string;
+  private currentUserSubject: BehaviorSubject<User>;
+  public currentUser: Observable<User>;
+  private messageSubject: BehaviorSubject<string>;
+  public message: Observable<string>;
+  subLoading: boolean;
+  loginResult: any;
+  querySubscription: Subscription;
 
   constructor(
     private router: Router,
     private authService: AuthService,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private apollo: Apollo
   ) {
-    if (this.authService.currentUserValue) {
+    if (this.authService.getCurrentUser()) {
       this.router.navigate(['/dashboard']);
     }
   }
@@ -45,14 +58,11 @@ export class AuthComponent implements OnInit {
     this.form.get('password').statusChanges.subscribe(status => {
       this.passwordControlIsValid = status === 'VALID';
     });
-
-    this.authService.message.subscribe(errStr => {
-      this.errMessage = errStr;
-      console.log(this.errMessage);
-    });
   }
 
   onSubmit() {
+    let user: User;
+
     if (!this.form.valid) {
       return;
     }
@@ -64,14 +74,36 @@ export class AuthComponent implements OnInit {
     this.passwordControlIsValid = true;
 
     this.loading = true;
-    const user = this.authService.login(email, password);
-    if (user) {
-      this.router.navigate(['./dashboard']);
-    } else {
-      this.alertService.error(this.errMessage);
-      console.log(`Error: ${this.errMessage}`);
-      this.loading = false;
-    }
+
+    return this.apollo.mutate({
+      mutation: login,
+      variables: {
+        email,
+        password
+      }
+    }).subscribe(({ data }) => {
+      if (data.login === null) {
+        this.querySubscription = this.apollo.watchQuery<any>({
+          query: userByEmail(email)
+        })
+          .valueChanges
+          .subscribe(({ data, loading }) => {
+            this.subLoading = loading;
+            user = data.userByEmail;
+            localStorage.setItem('currentUser', JSON.stringify(user));
+            this.authService.setCurrentUser(user);
+            if (user) {
+              this.router.navigate(['./dashboard']);
+            } else {
+              this.alertService.error(this.errMessage);
+              this.loading = false;
+            }
+          });
+      } else {
+        this.authService.setMessage(data.login[0].message);
+      }
+    }, (error) => {
+    });
   }
 
   onRegisterClick() {

@@ -9,7 +9,9 @@ import { userByEmail } from './queries';
   providedIn: 'root'
 })
 
+// GET RID OF THIS AND MOVE IT DIRECTLY TO WHERE ITS CALLED
 export class UserService {
+  user: Subscription;
   querySubscription: Subscription;
   loading: boolean;
 
@@ -18,16 +20,13 @@ export class UserService {
   ) { }
 
   getUserByEmail(email: string) {
-    let user: User;
     this.querySubscription = this.apollo.watchQuery<any>({
       query: userByEmail(email)
     })
       .valueChanges
       .subscribe(({ data, loading }) => {
         this.loading = loading;
-        user = data.userByEmail;
+        this.user = data.userByEmail;
       });
-
-    return user;
   }
 }
