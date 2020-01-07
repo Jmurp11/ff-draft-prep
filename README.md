@@ -20,7 +20,7 @@ $ git clone https://github.com/Jmurp11/ff-draft-prep.git
 
 Create your feature branch:
 ```
-$ git checkout -b my-new-feature
+$ git checkout -b feature/my-new-feature
 ```
 Commit your changes:
 ```
@@ -30,7 +30,7 @@ $ git commit -m 'Add some feature'
       will be rejected.  Make the necessary changes and try again.
 Push to the branch:
 ```
-$ git push origin my-new-feature
+$ git push origin feature/my-new-feature
 ```
 Submit a pull request
 
