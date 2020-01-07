@@ -9,40 +9,37 @@ import { userByEmail } from '../user/queries';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private currentUserSubject: BehaviorSubject<User>;
-  public currentUser: Observable<User>;
-  private messageSubject: BehaviorSubject<string>;
-  public message: Observable<string>;
-  loading: boolean;
-  loginResult: any;
-  querySubscription: Subscription;
+  private currentUser: User;
+  message: string;
 
   constructor(
     private apollo: Apollo,
   ) {
-    let user: User;
-    let mess: string;
-
     if (!localStorage.getItem('currentUser')) {
-      user = JSON.parse(localStorage.getItem('currentUser'));
+      this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     } else {
-      console.log('Not Defined Yet');
+      console.log('User Not Set');
     }
-    this.currentUserSubject = new BehaviorSubject<User>(user);
-    this.currentUser = this.currentUserSubject.asObservable();
-
-    this.messageSubject = new BehaviorSubject<string>(mess);
-    this.message = this.messageSubject.asObservable();
   }
 
-  public get currentUserValue(): User {
-    return this.currentUserSubject.value;
+  setCurrentUser(currentUser): void {
+    this.currentUser = currentUser;
+  }
+
+  getCurrentUser() {
+    return this.currentUser;
+  }
+
+  setMessage(message: string) {
+    this.message = message;
+  }
+
+  getMessage() {
+    return this.message;
   }
 
   logout() {
     localStorage.removeItem('currentUser');
-    this.currentUserSubject.next(null);
+    this.currentUser = null;
   }
 }
-
-// TODO: rewrite auth.service and auth.guard to account for query moving to component.

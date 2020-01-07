@@ -34,7 +34,7 @@ export class AuthComponent implements OnInit {
     private alertService: AlertService,
     private apollo: Apollo
   ) {
-    if (this.authService.currentUserValue) {
+    if (this.authService.getCurrentUser()) {
       this.router.navigate(['/dashboard']);
     }
   }
@@ -90,23 +90,19 @@ export class AuthComponent implements OnInit {
           .subscribe(({ data, loading }) => {
             this.subLoading = loading;
             user = data.userByEmail;
-            console.log(`UserByEmail Result: ${JSON.stringify(user)}`);
             localStorage.setItem('currentUser', JSON.stringify(user));
-            this.currentUserSubject.next(user);
+            this.authService.setCurrentUser(user);
             if (user) {
               this.router.navigate(['./dashboard']);
-              console.log('logged in');
             } else {
               this.alertService.error(this.errMessage);
-              console.log(`Error: ${this.errMessage}`);
               this.loading = false;
             }
           });
       } else {
-        this.messageSubject.next(data.login[0].message);
+        this.authService.setMessage(data.login[0].message);
       }
     }, (error) => {
-      console.log(error);
     });
   }
 
