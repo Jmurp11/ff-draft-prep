@@ -69,10 +69,9 @@ export class AuthComponent implements OnInit {
     const email = this.form.get('email').value;
     const password = this.form.get('password').value;
 
-    this.form.reset();
     this.emailControlIsValid = true;
     this.passwordControlIsValid = true;
-
+    
     this.loading = true;
 
     return this.apollo.mutate({
@@ -94,6 +93,7 @@ export class AuthComponent implements OnInit {
             this.authService.setCurrentUser(user);
             if (user) {
               this.router.navigate(['./dashboard']);
+              this.form.reset();
             } else {
               this.alertService.error(this.errMessage);
               this.loading = false;
