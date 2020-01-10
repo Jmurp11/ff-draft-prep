@@ -27,7 +27,7 @@ describe("Register user", () => {
     it("check for duplicate emails", async () => {
         const client = new TestClient(process.env.TEST_HOST as string);
         const email = `${Math.floor((Math.random() * 10000) + 1).toString()}${userData.email}`;
-        // make sure we can register a user
+
         const response = await client.register(email, userData.password, userData.username);
 
         expect(response.data).toEqual({ register: null });
@@ -65,7 +65,6 @@ describe("Register user", () => {
     });
 
     it("check bad password", async () => {
-        // catch bad password
         const client = new TestClient(process.env.TEST_HOST as string);
 
         const response4: any = await client.register(userData.email, 'abcd', userData.username);
