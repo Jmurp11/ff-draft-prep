@@ -1,4 +1,4 @@
-# FF Draft Prep
+# DraftShark
 Assist users in prepping for their fantasy sports drafts.  Users can use this application to rank players, keep running notes on players throughout their draft prep, and ultimately use this tool during their drafts to make decisions based on their research.
 
 ## Project Structure
