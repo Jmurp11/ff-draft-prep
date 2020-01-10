@@ -68,8 +68,6 @@ export class AuthComponent implements OnInit {
     const email = this.form.get('email').value;
     const password = this.form.get('password').value;
 
-    this.resetForm();
-
     this.loading = true;
 
     this.callLoginMutation(email, password);
@@ -101,6 +99,7 @@ export class AuthComponent implements OnInit {
             this.authService.setCurrentUser(user);
             if (user) {
               this.router.navigate(['./dashboard']);
+              this.resetForm();
             } else {
               this.alertService.error(this.errMessage);
               this.loading = false;

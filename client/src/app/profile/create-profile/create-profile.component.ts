@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { RegisterService } from './register.service';
 import { Router } from '@angular/router';
+import { Apollo } from 'apollo-angular';
+import { register } from './queries';
 
 @Component({
   selector: 'app-create-profile',
@@ -19,7 +20,7 @@ export class CreateProfileComponent implements OnInit {
   loading = false;
 
   constructor(
-    private registerService: RegisterService,
+    private apollo: Apollo,
     private router: Router) { }
 
   ngOnInit() {
@@ -61,12 +62,25 @@ export class CreateProfileComponent implements OnInit {
 
   onRegisterSubmit() {
     if (this.form.get('password').value === this.form.get('confirmPassword').value) {
-      this.registerService.register(this.form.get('email').value, this.form.get('password').value, this.form.get('username').value);
-      this.form.reset();
+      return this.apollo.mutate({
+        mutation: register,
+        variables: {
+          email: this.form.get('email').value,
+          password: this.form.get('password').value,
+          username: this.form.get('username').value
+        }
+      }).subscribe(({ data }) => {
+        this.router.navigate(['./login']);
+        this.form.reset();
+        return data;
+      }, (error) => {
+        console.log(error);
+      });
     } else {
       this.passwordEqualConfirmPasswordIsValid = false;
     }
   }
+
 
   onLoginClick() {
     this.router.navigate(['./login']);
