@@ -19,7 +19,7 @@ afterEach(async () => {
 
 describe("projection tests", () => {
     it('add projection', async () => {
-        const client = await new TestClient(process.env.TEST_HOST as string);
+        const client = new TestClient(process.env.TEST_HOST as string);
 
         const response = await client.createTeam(teamData.city, teamData.nickname, teamData.abbreviation,
             teamData.bye, teamData.rank, teamData.passRank, teamData.rushRank, teamData.imageUrl,
@@ -49,7 +49,7 @@ describe("projection tests", () => {
     });
 
     it('get projections', async () => {
-        const client = await new TestClient(process.env.TEST_HOST as string);
+        const client = new TestClient(process.env.TEST_HOST as string);
 
         const response = await client.createTeam(teamData.city, teamData.nickname, teamData.abbreviation,
             teamData.bye, teamData.rank, teamData.passRank, teamData.rushRank, teamData.imageUrl,

@@ -18,7 +18,7 @@ afterEach(async () => {
 
 describe("player tests", () => {
     it('add player', async () => {
-        const client = await new TestClient(process.env.TEST_HOST as string);
+        const client = new TestClient(process.env.TEST_HOST as string);
 
         const response = await client.createTeam(teamData.city, teamData.nickname, teamData.abbreviation,
             teamData.bye, teamData.rank, teamData.passRank, teamData.rushRank, teamData.imageUrl,
@@ -47,7 +47,7 @@ describe("player tests", () => {
     });
 
     it('get players', async () => {
-        const client = await new TestClient(process.env.TEST_HOST as string);
+        const client = new TestClient(process.env.TEST_HOST as string);
 
         const response = await client.createTeam(teamData.city, teamData.nickname, teamData.abbreviation,
             teamData.bye, teamData.rank, teamData.passRank, teamData.rushRank, teamData.imageUrl,
@@ -74,7 +74,7 @@ describe("player tests", () => {
     });
 
     it('get playerById', async () => {
-        const client = await new TestClient(process.env.TEST_HOST as string);
+        const client = new TestClient(process.env.TEST_HOST as string);
 
         const response = await client.createTeam(teamData.city, teamData.nickname, teamData.abbreviation,
             teamData.bye, teamData.rank, teamData.passRank, teamData.rushRank, teamData.imageUrl,

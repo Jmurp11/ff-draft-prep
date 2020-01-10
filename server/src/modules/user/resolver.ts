@@ -58,23 +58,16 @@ const loginErrorResponse = [
 export const resolvers: ResolverMap = {
     Query: {
         users: async (_: any) => {
-            const users = await User.find();
-
-            return users;
+            return User.find();
         },
         user: async (_: any, { id }) => {
-            const user = await User.findOne({ where: { id } });
-
-            return user
+            return User.findOne({ where: { id } });
         },
         userByUsername: async (_: any, { username }) => {
-            const user = await User.findOne({ where: { username } });
-
-            return user
+            return User.findOne({ where: { username } });
         },
         userByEmail: async (_: any, { email }) => {
-            const user = await User.findOne({ where: { email } });
-            return user
+            return User.findOne({ where: { email } });
         }
     },
     Mutation: {
@@ -122,6 +115,7 @@ export const resolvers: ResolverMap = {
             });
 
             await user.save();
+
             if (process.env.NODE_ENV !== 'test' && process.env.NODE_ENV !== 'development') {
                 await sendEmail(
                     email,

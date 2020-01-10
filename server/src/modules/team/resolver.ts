@@ -7,19 +7,13 @@ import { teamAlreadyExists } from "./errorMessages";
 export const resolvers: ResolverMap = {
     Query: {
         teamById: async (_: any, { id }: GQL.ITeamByIdOnQueryArguments) => {
-            const team = await Team.find({ where: { id } });
-
-            return team[0];
+            return Team.findOne({ where: { id } });
         },
         teamByAbbreviation: async (_: any, { abbreviation }: GQL.ITeamByAbbreviationOnQueryArguments) => {
-            const team = await Team.find({ where: { abbreviation } });
-
-            return team[0];
+            return Team.findOne({ where: { abbreviation } });
         },
         teams: async (_: any) => {
-            const team = await Team.find();
-
-            return team;
+            return Team.find();
         }
     },
     Mutation: {
@@ -65,7 +59,8 @@ export const resolvers: ResolverMap = {
                     }
                 ];
             }
-            const team = Team.create({
+
+            await Team.create({
                 city,
                 nickname,
                 abbreviation,
@@ -93,9 +88,7 @@ export const resolvers: ResolverMap = {
                 turnoverPercentage,
                 offensiveLineRank,
                 runningBackSoS
-            });
-
-            await team.save();
+            }).save();
 
             return null;
         },
