@@ -9,27 +9,28 @@ import { playerAlreadyExists } from "./errorMessages";
 export const resolvers: ResolverMap = {
     Query: {
         playerById: async (_: any, { id }: GQL.IPlayerByIdOnQueryArguments) => {
-            const playerRepository = await getRepository(Player);
-            const player = await playerRepository.find({
-                join: {
-                    alias: "player",
-                    leftJoinAndSelect: {
-                        team: "player.team",
-                    }
-                }, where: { id }
-            });
+            const player = await getRepository(Player)
+                .find({
+                    join: {
+                        alias: "player",
+                        leftJoinAndSelect: {
+                            team: "player.team",
+                        }
+                    }, where: { id }
+                });
+
             return player;
         },
         players: async (_: any) => {
-            const playerRepository = await getRepository(Player);
-            const players = await playerRepository.find({
-                join: {
-                    alias: "player",
-                    leftJoinAndSelect: {
-                        team: "player.team",
+            const players = await getRepository(Player)
+                .find({
+                    join: {
+                        alias: "player",
+                        leftJoinAndSelect: {
+                            team: "player.team",
+                        }
                     }
-                }
-            });
+                });
             return players;
         }
     },
@@ -52,7 +53,7 @@ export const resolvers: ResolverMap = {
             }
             const teamQueryResult = await Team.find({ where: { abbreviation: team } });
 
-            const player = Player.create({
+            await Player.create({
                 firstName,
                 lastName,
                 team: teamQueryResult[0].id,
@@ -60,9 +61,7 @@ export const resolvers: ResolverMap = {
                 rank,
                 adp,
                 tier
-            });
-
-            await player.save();
+            }).save();
 
             return true;
         }

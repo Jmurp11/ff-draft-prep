@@ -17,7 +17,7 @@ afterEach(async () => {
 
 describe("team tests", () => {
     it('add team', async () => {
-        const client = await new TestClient(process.env.TEST_HOST as string);
+        const client = new TestClient(process.env.TEST_HOST as string);
 
         const response = await client.createTeam(teamData.city, teamData.nickname, teamData.abbreviation,
             teamData.bye, teamData.rank, teamData.passRank, teamData.rushRank, teamData.imageUrl,
@@ -38,7 +38,7 @@ describe("team tests", () => {
     });
 
     it('get teams', async () => {
-        const client = await new TestClient(process.env.TEST_HOST as string);
+        const client = new TestClient(process.env.TEST_HOST as string);
 
         const response = await client.createTeam(teamData.city, teamData.nickname, teamData.abbreviation,
             teamData.bye, teamData.rank, teamData.passRank, teamData.rushRank, teamData.imageUrl,
@@ -56,7 +56,7 @@ describe("team tests", () => {
     });
 
     it('get teamById', async () => {
-        const client = await new TestClient(process.env.TEST_HOST as string);
+        const client = new TestClient(process.env.TEST_HOST as string);
 
         const response = await client.createTeam(teamData.city, teamData.nickname, teamData.abbreviation,
             teamData.bye, teamData.rank, teamData.passRank, teamData.rushRank, teamData.imageUrl,
@@ -67,7 +67,7 @@ describe("team tests", () => {
             teamData.offensiveLineRank, teamData.runningBackSoS);
 
         expect(response.data).toEqual({ createTeam: null });
-        
+
         const team = await Team.find();
         const id = team[0].id;
 
@@ -77,7 +77,7 @@ describe("team tests", () => {
     });
 
     it('get teamByAbbreviation', async () => {
-        const client = await new TestClient(process.env.TEST_HOST as string);
+        const client = new TestClient(process.env.TEST_HOST as string);
 
         const response = await client.createTeam(teamData.city, teamData.nickname, teamData.abbreviation,
             teamData.bye, teamData.rank, teamData.passRank, teamData.rushRank, teamData.imageUrl,

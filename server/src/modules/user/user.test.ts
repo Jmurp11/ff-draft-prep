@@ -25,7 +25,7 @@ afterEach(async () => {
 
 describe("Register user", () => {
     it("check for duplicate emails", async () => {
-        const client = await new TestClient(process.env.TEST_HOST as string);
+        const client = new TestClient(process.env.TEST_HOST as string);
         const email = `${Math.floor((Math.random() * 10000) + 1).toString()}${userData.email}`;
         // make sure we can register a user
         const response = await client.register(email, userData.password, userData.username);
@@ -47,7 +47,7 @@ describe("Register user", () => {
     });
 
     it("check bad email", async () => {
-        const client = await new TestClient(process.env.TEST_HOST as string);
+        const client = new TestClient(process.env.TEST_HOST as string);
 
         const response3: any = await client.register("b", userData.password, userData.username);
         expect(response3.data).toEqual({
@@ -66,7 +66,7 @@ describe("Register user", () => {
 
     it("check bad password", async () => {
         // catch bad password
-        const client = await new TestClient(process.env.TEST_HOST as string);
+        const client = new TestClient(process.env.TEST_HOST as string);
 
         const response4: any = await client.register(userData.email, 'abcd', userData.username);
         expect(response4.data).toEqual({
@@ -80,7 +80,7 @@ describe("Register user", () => {
     });
 
     it("check bad password and bad email", async () => {
-        const client = await new TestClient(process.env.TEST_HOST as string);
+        const client = new TestClient(process.env.TEST_HOST as string);
 
         const response5: any = await client.register('df', 'abcd', userData.username);
 
@@ -106,7 +106,7 @@ describe("Register user", () => {
         const email = `${Math.floor((Math.random() * 10000) + 1).toString()}${userData.email}`;
         const password = userData.password;
 
-        const client = await new TestClient(process.env.TEST_HOST as string);
+        const client = new TestClient(process.env.TEST_HOST as string);
 
         const response = await client.register(email, userData.password, userData.username);
 
@@ -126,7 +126,7 @@ describe("Register user", () => {
 
 describe('Login User', () => {
     it('test login with invalid credentials returns error', async () => {
-        const client = await new TestClient(process.env.TEST_HOST as string);
+        const client = new TestClient(process.env.TEST_HOST as string);
 
         const response = await client.login('bademail@email.com', 'badpass');
 
@@ -142,7 +142,7 @@ describe('Login User', () => {
 
     it('test login with email not confirmed', async () => {
         const email = userData.email;
-        const client = await new TestClient(process.env.TEST_HOST as string);
+        const client = new TestClient(process.env.TEST_HOST as string);
 
         await client.register(email, userData.password, userData.username);
 
@@ -168,7 +168,7 @@ describe('Login User', () => {
             confirmed: true
         }).save();
 
-        const client = await new TestClient(process.env.TEST_HOST as string);
+        const client = new TestClient(process.env.TEST_HOST as string);
 
         const response = await client.login(email, wrongPassword);
         expect(response.data).toEqual({
@@ -183,7 +183,7 @@ describe('Login User', () => {
 
     it('test login with correct credentials', async () => {
         const email = userData.email;
-        const client = await new TestClient(process.env.TEST_HOST as string);
+        const client = new TestClient(process.env.TEST_HOST as string);
 
         await client.register(email, userData.password, userData.username);
 
@@ -197,7 +197,7 @@ describe('Login User', () => {
 
 describe('user queries', () => {
     it('return all users', async () => {
-        const client = await new TestClient(process.env.TEST_HOST as string);
+        const client = new TestClient(process.env.TEST_HOST as string);
         const email = `${Math.floor((Math.random() * 10000) + 1).toString()}${userData.email}`;
 
         const response = await client.register(email, userData.password, userData.username);
@@ -212,7 +212,7 @@ describe('user queries', () => {
     });
 
     it('return user by id', async () => {
-        const client = await new TestClient(process.env.TEST_HOST as string);
+        const client = new TestClient(process.env.TEST_HOST as string);
         const email = `${Math.floor((Math.random() * 10000) + 1).toString()}${userData.email}`;
 
         const response = await client.register(email, userData.password, userData.username);
@@ -227,7 +227,7 @@ describe('user queries', () => {
     });
 
     it('return by username', async () => {
-        const client = await new TestClient(process.env.TEST_HOST as string);
+        const client = new TestClient(process.env.TEST_HOST as string);
         const email = `${Math.floor((Math.random() * 10000) + 1).toString()}${userData.email}`;
 
         const response = await client.register(email, userData.password, userData.username);
@@ -240,7 +240,7 @@ describe('user queries', () => {
     });
 
     it('return by email', async () => {
-        const client = await new TestClient(process.env.TEST_HOST as string);
+        const client = new TestClient(process.env.TEST_HOST as string);
         const email = `${Math.floor((Math.random() * 10000) + 1).toString()}${userData.email}`;
 
         const response = await client.register(email, userData.password, userData.username);
