@@ -61,19 +61,26 @@ export class AuthComponent implements OnInit {
   }
 
   onSubmit() {
-    let user: User;
-
     if (!this.form.valid) {
       return;
     }
+
     const email = this.form.get('email').value;
     const password = this.form.get('password').value;
 
-    this.form.reset();
-    this.emailControlIsValid = true;
-    this.passwordControlIsValid = true;
+    this.resetForm();
 
     this.loading = true;
+
+    this.callLoginMutation(email, password);
+  }
+
+  onRegisterClick() {
+    this.router.navigate(['./register']);
+  }
+
+  callLoginMutation(email: string, password: string) {
+    let user: User;
 
     return this.apollo.mutate({
       mutation: login,
@@ -103,10 +110,13 @@ export class AuthComponent implements OnInit {
         this.authService.setMessage(data.login[0].message);
       }
     }, (error) => {
+      console.log(error);
     });
   }
 
-  onRegisterClick() {
-    this.router.navigate(['./register']);
+  resetForm() {
+    this.form.reset();
+    this.emailControlIsValid = true;
+    this.passwordControlIsValid = true;
   }
 }
