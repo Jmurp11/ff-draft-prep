@@ -8,8 +8,8 @@ import { playerAlreadyExists } from "./errorMessages";
 
 export const resolvers: ResolverMap = {
     Query: {
-        playerById: async (_: any, { id }: GQL.IPlayerByIdOnQueryArguments) => {
-            const player = await getRepository(Player)
+        player: async (_: any, { id }: GQL.IPlayerOnQueryArguments) => {
+            return getRepository(Player)
                 .find({
                     join: {
                         alias: "player",
@@ -18,11 +18,9 @@ export const resolvers: ResolverMap = {
                         }
                     }, where: { id }
                 });
-
-            return player;
         },
         players: async (_: any) => {
-            const players = await getRepository(Player)
+            return getRepository(Player)
                 .find({
                     join: {
                         alias: "player",
@@ -31,7 +29,6 @@ export const resolvers: ResolverMap = {
                         }
                     }
                 });
-            return players;
         }
     },
     Mutation: {
@@ -51,19 +48,25 @@ export const resolvers: ResolverMap = {
                     }
                 ];
             }
-            const teamQueryResult = await Team.find({ where: { abbreviation: team } });
+            const teamQueryResult = await Team.findOne({
+                where: { abbreviation: team }
+            });
 
-            await Player.create({
-                firstName,
-                lastName,
-                team: teamQueryResult[0].id,
-                position,
-                rank,
-                adp,
-                tier
-            }).save();
+            if (teamQueryResult) {
+                await Player.create({
+                    firstName,
+                    lastName,
+                    team: teamQueryResult.id,
+                    position,
+                    rank,
+                    adp,
+                    tier
+                }).save();
 
-            return true;
+                return true;
+            }
+
+            return false;
         }
     }
 };

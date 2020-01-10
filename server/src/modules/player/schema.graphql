@@ -13,7 +13,7 @@ type Player {
 
 
 type Query {
-  playerById(id: Int): [Player]
+  player(id: Int): [Player]
   players: [Player]
 }
 

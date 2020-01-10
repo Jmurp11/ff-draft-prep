@@ -1,0 +1,38 @@
+# import Player from " ../team/schema.graphql"
+# import Error from "../error/schema.graphql"
+# import User from "../user/schema.graphql"
+
+type Note {
+  id: Int
+  user: User
+  player: Player
+  date: String
+  title: String
+  body: String
+  source: String
+}
+
+type Query {
+  note(id: Int): [Note]
+  notes: [Note]
+}
+
+type Mutation {
+  addNote(
+    user: String!
+    player: Int!
+    date: String!
+    title: String!
+    body: String!
+    source: String!
+  ): [Error!]
+  editNote(
+    user: String!
+    player: Int!
+    date: String!
+    title: String!
+    body: String!
+    source: String!
+  ): [Error!]
+  deleteNote(id: Int!): [Error!]
+}

@@ -24,11 +24,13 @@ declare namespace GQL {
     __typename: 'Query';
     hello: string;
     me: IUser | null;
-    playerById: Array<IPlayer | null> | null;
+    note: Array<INote | null> | null;
+    notes: Array<INote | null> | null;
+    player: Array<IPlayer | null> | null;
     players: Array<IPlayer | null> | null;
     projections: Array<IProjection | null> | null;
-    projectionsByPlayer: Array<IProjection | null> | null;
-    teamById: ITeam | null;
+    projection: Array<IProjection | null> | null;
+    team: ITeam | null;
     teamByAbbreviation: ITeam | null;
     teams: Array<ITeam | null> | null;
     users: Array<IUser | null> | null;
@@ -41,15 +43,19 @@ declare namespace GQL {
     name?: string | null;
   }
 
-  interface IPlayerByIdOnQueryArguments {
+  interface INoteOnQueryArguments {
     id?: number | null;
   }
 
-  interface IProjectionsByPlayerOnQueryArguments {
+  interface IPlayerOnQueryArguments {
+    id?: number | null;
+  }
+
+  interface IProjectionOnQueryArguments {
     player?: number | null;
   }
 
-  interface ITeamByIdOnQueryArguments {
+  interface ITeamOnQueryArguments {
     id?: number | null;
   }
 
@@ -77,6 +83,17 @@ declare namespace GQL {
     username: string | null;
     confirmed: boolean | null;
     forgotPasswordLock: boolean | null;
+  }
+
+  interface INote {
+    __typename: 'Note';
+    id: number | null;
+    user: IUser | null;
+    player: IPlayer | null;
+    date: string | null;
+    title: string | null;
+    body: string | null;
+    source: string | null;
   }
 
   interface IPlayer {
@@ -145,6 +162,9 @@ declare namespace GQL {
 
   interface IMutation {
     __typename: 'Mutation';
+    addNote: Array<IError> | null;
+    editNote: Array<IError> | null;
+    deleteNote: Array<IError> | null;
     createPlayer: Array<IError> | null;
     addProjection: Array<IError> | null;
     createTeam: Array<IError> | null;
@@ -154,6 +174,28 @@ declare namespace GQL {
     sendForgotPasswordEmail: Array<IError> | null;
     forgotPasswordChange: Array<IError> | null;
     editUserEmail: Array<IError> | null;
+  }
+
+  interface IAddNoteOnMutationArguments {
+    user: string;
+    player: number;
+    date: string;
+    title: string;
+    body: string;
+    source: string;
+  }
+
+  interface IEditNoteOnMutationArguments {
+    user: string;
+    player: number;
+    date: string;
+    title: string;
+    body: string;
+    source: string;
+  }
+
+  interface IDeleteNoteOnMutationArguments {
+    id: number;
   }
 
   interface ICreatePlayerOnMutationArguments {

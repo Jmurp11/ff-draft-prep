@@ -22,8 +22,8 @@ export const resolvers: ResolverMap = {
                 });
             return projections;
         },
-        projectionsByPlayer: async (_: any, { player }:
-            GQL.IProjectionsByPlayerOnQueryArguments) => {
+        projection: async (_: any, { player }:
+            GQL.IProjectionOnQueryArguments) => {
             const projections = await getRepository(Projection)
                 .find({
                     join: {
@@ -69,7 +69,7 @@ export const resolvers: ResolverMap = {
             });
 
             if (id !== 0) {
-                const projection = Projection.create({
+                await Projection.create({
                     player: id,
                     completions,
                     attempts,
@@ -84,9 +84,7 @@ export const resolvers: ResolverMap = {
                     receivingYards,
                     receivingTd,
                     fantasyPoints
-                });
-
-                await projection.save();
+                }).save();
 
                 return null;
             } else {
