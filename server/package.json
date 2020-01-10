@@ -63,7 +63,7 @@
       "start": "NODE_ENV=development nodemon --exec ts-node --files src/index.ts",
       "start:prod": "NODE_ENV=production ts-node --files src/index.ts",
       "gen-schema-types": "ts-node --files src/scripts/createTypes.ts",
-      "test": "NODE_ENV=test TS_NODE_FILES=true jest --runInBand --forceExit"
+      "test": "NODE_ENV=test TS_NODE_FILES=true jest --runInBand --coverage --forceExit"
    },
    "jest": {
       "globalSetup": "./src/testSetup/callSetup.js",
