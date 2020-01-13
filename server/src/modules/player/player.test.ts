@@ -73,7 +73,7 @@ describe("player tests", () => {
         expect(response3.data.players[0].firstName).toEqual(playerData.firstName);
     });
 
-    it('get playerById', async () => {
+    it('get player', async () => {
         const client = new TestClient(process.env.TEST_HOST as string);
 
         const response = await client.createTeam(teamData.city, teamData.nickname, teamData.abbreviation,
@@ -98,7 +98,7 @@ describe("player tests", () => {
         const player = await Player.find();
         const id = player[0].id;
 
-        const response3 = await client.playerById(id);
-        expect(response3.data.playerById[0].firstName).toEqual(playerData.firstName);
+        const response3 = await client.player(id);
+        expect(response3.data.player[0].firstName).toEqual(playerData.firstName);
     });
 });

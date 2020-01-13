@@ -6,7 +6,7 @@ import { teamAlreadyExists } from "./errorMessages";
 
 export const resolvers: ResolverMap = {
     Query: {
-        teamById: async (_: any, { id }: GQL.ITeamByIdOnQueryArguments) => {
+        team: async (_: any, { id }: GQL.ITeamOnQueryArguments) => {
             return Team.findOne({ where: { id } });
         },
         teamByAbbreviation: async (_: any, { abbreviation }: GQL.ITeamByAbbreviationOnQueryArguments) => {

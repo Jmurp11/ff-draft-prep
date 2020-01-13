@@ -23,7 +23,7 @@ type Projection {
 
 type Query {
   projections: [Projection]
-  projectionsByPlayer(player: Int): [Projection]
+  projection(player: Int): [Projection]
 }
 
 type Mutation {
