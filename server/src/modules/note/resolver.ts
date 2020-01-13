@@ -1,9 +1,9 @@
 import { ResolverMap } from "./../../types/graphql-utils";
 import { Note } from './../../entity';
-import { getRepository } from "typeorm";
+import { getRepository, getConnection } from "typeorm";
 
 import {
-    titleAlreadyExists
+    titleAlreadyExists, cannotFindNote
 } from "./errorMessages";
 
 
@@ -32,7 +32,19 @@ export const resolvers: ResolverMap = {
                         }
                     }
                 });
-        }
+        },
+        notesByUser: async (_: any, { user }: GQL.INotesByUserOnQueryArguments) => {
+            return getRepository(Note)
+                .find({
+                    join: {
+                        alias: "note",
+                        leftJoinAndSelect: {
+                            user: "note.user",
+                            player: "note.player",
+                        }
+                    }, where: { user }
+                });
+        },
     },
     Mutation: {
         addNote: async (_: any, {
@@ -70,9 +82,10 @@ export const resolvers: ResolverMap = {
                 source
             }).save();
 
-            return true;
+            return null;
         },
         editNote: async (_: any, { // TODO: NEED TO EITHER ADD MORE OPTIONS TO EDIT OR UPDATE THE SCHEMA TYPES
+            id,
             user,
             player,
             date,
@@ -98,8 +111,39 @@ export const resolvers: ResolverMap = {
                 ]
             }
 
-            console.log(title, body, source, date);
-            return true;
+            await Note.update({ id }, {
+                date,
+                title,
+                body,
+                source
+            });
+
+            return null;
+        },
+        deleteNote: async (_: any, { id }: GQL.IDeleteNoteOnMutationArguments) => {
+            const noteExists = await Note.findOne({
+                where: {
+                    id
+                }
+            });
+
+            if (noteExists) {
+                await getConnection()
+                    .createQueryBuilder()
+                    .delete()
+                    .from(Note)
+                    .where("id = id", { id })
+                    .execute();
+
+                return null;
+            }
+
+            return [
+                {
+                    path: 'note',
+                    message: cannotFindNote
+                }
+            ]
         }
     }
 };

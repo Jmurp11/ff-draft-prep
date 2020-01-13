@@ -24,8 +24,9 @@ declare namespace GQL {
     __typename: 'Query';
     hello: string;
     me: IUser | null;
-    note: Array<INote | null> | null;
+    note: INote | null;
     notes: Array<INote | null> | null;
+    notesByUser: Array<INote | null> | null;
     player: Array<IPlayer | null> | null;
     players: Array<IPlayer | null> | null;
     projections: Array<IProjection | null> | null;
@@ -44,7 +45,11 @@ declare namespace GQL {
   }
 
   interface INoteOnQueryArguments {
-    id?: number | null;
+    id?: string | null;
+  }
+
+  interface INotesByUserOnQueryArguments {
+    user?: string | null;
   }
 
   interface IPlayerOnQueryArguments {
@@ -87,7 +92,7 @@ declare namespace GQL {
 
   interface INote {
     __typename: 'Note';
-    id: number | null;
+    id: string | null;
     user: IUser | null;
     player: IPlayer | null;
     date: string | null;
@@ -186,6 +191,7 @@ declare namespace GQL {
   }
 
   interface IEditNoteOnMutationArguments {
+    id: string;
     user: string;
     player: number;
     date: string;
@@ -195,7 +201,7 @@ declare namespace GQL {
   }
 
   interface IDeleteNoteOnMutationArguments {
-    id: number;
+    id: string;
   }
 
   interface ICreatePlayerOnMutationArguments {

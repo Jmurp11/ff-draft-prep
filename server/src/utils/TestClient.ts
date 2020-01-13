@@ -487,4 +487,131 @@ export class TestClient {
             }
         });
     }
+
+    async addNote(user: string, player: number, date: string, title: string,
+        body: string, source: string) {
+        return rp.post(this.url, {
+            ...this.options,
+            body: {
+                query: `
+                        mutation {
+                            addNote(user: "${user}", player: ${player}, date: "${date}", title: "${title}",
+                            body: "${body}", source: "${source}") {
+                                path
+                                message
+                            }
+                        }
+                    `
+            }
+        });
+    }
+
+    async editNote(id: string, user: string, player: number, date: string, title: string,
+        body: string, source: string) {
+        return rp.post(this.url, {
+            ...this.options,
+            body: {
+                query: `
+                        mutation {
+                            editNote(id: "${id}", user: "${user}", player: ${player}, date: "${date}", title: "${title}",
+                            body: "${body}", source: "${source}") {
+                                path
+                                message
+                            }
+                        }
+                    `
+            }
+        });
+    }
+
+    async deleteNote(id: string) {
+        return rp.post(this.url, {
+            ...this.options,
+            body: {
+                query: `
+                        mutation {
+                            deleteNote(id: "${id}") {
+                                path
+                                message
+                            }
+                        }
+                    `
+            }
+        });
+    }
+
+    async note(id: string) {
+        return rp.post(this.url, {
+            ...this.options,
+            body: {
+                query: `
+                    query {
+                        note(id: "${id}") {
+                            id
+                            user {
+                                id
+                            }
+                            player {
+                                id
+                            }
+                            date
+                            title
+                            body
+                            source
+                        }
+                    }
+                `
+            }
+        });
+    }
+
+    async notes() {
+        return rp.post(this.url, {
+            ...this.options,
+            body: {
+                query: `
+                    query {
+                        notes {
+                            id
+                            user {
+                                id
+                            }
+                            player {
+                                id
+                            }
+                            date
+                            title
+                            body
+                            source
+                        }
+                    }
+                `
+            }
+        });
+    }
+
+    async notesByUser(user: string) {
+        return rp.post(this.url, {
+            ...this.options,
+            body: {
+                query: `
+                    query {
+                        notesByUser(user: "${user}") {
+                            id
+                            user {
+                                id
+                            }
+                            player {
+                                id
+                            }
+                            date
+                            title
+                            body
+                            source
+                        }
+                    }
+                `
+            }
+        });
+    }
 }
