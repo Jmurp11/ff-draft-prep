@@ -58,22 +58,22 @@ export class PlayerTableComponent implements OnInit, OnDestroy {
           this.players.push(el);
         });
         this.dataSource = new MatTableDataSource(this.players);
-        this.dataSource.filterPredicate = (data, filter: string) => {
+        this.dataSource.filterPredicate = (filteredData, filter: string) => {
           let valid = false;
 
           const transformedFilter = filter.trim().toLowerCase();
 
-          Object.keys(data).map(key => {
+          Object.keys(filteredData).map(key => {
             if (
               key === 'player' &&
               (
-                data.player.firstName.toLowerCase().includes(transformedFilter)
-                || data.player.lastName.toLowerCase().includes(transformedFilter)
+                filteredData.player.firstName.toLowerCase().includes(transformedFilter)
+                || filteredData.player.lastName.toLowerCase().includes(transformedFilter)
               )
             ) {
               valid = true;
             } else {
-              if (('' + data[key]).toLowerCase().includes(transformedFilter)) {
+              if (('' + filteredData[key]).toLowerCase().includes(transformedFilter)) {
                 valid = true;
               }
             }

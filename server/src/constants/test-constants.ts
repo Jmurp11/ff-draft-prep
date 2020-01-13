@@ -8,7 +8,14 @@ export const user = {
 
 export const messages = {
     text: "This is my message data"
-}
+};
+
+export const noteData = {
+    date: '01/12/2020',
+    title: 'This is my test title',
+    body: 'this is my test body for my notes',
+    source: 'www.sauce.com'
+};
 
 export const teamData = {
     city: 'New York',

@@ -55,7 +55,7 @@ describe("team tests", () => {
         expect(response2.data.teams[0].city).toEqual(teamData.city);
     });
 
-    it('get teamById', async () => {
+    it('get team', async () => {
         const client = new TestClient(process.env.TEST_HOST as string);
 
         const response = await client.createTeam(teamData.city, teamData.nickname, teamData.abbreviation,
@@ -71,9 +71,9 @@ describe("team tests", () => {
         const team = await Team.find();
         const id = team[0].id;
 
-        const response2 = await client.teamById(id);
+        const response2 = await client.team(id);
 
-        expect(response2.data.teamById.city).toEqual(teamData.city);
+        expect(response2.data.team.city).toEqual(teamData.city);
     });
 
     it('get teamByAbbreviation', async () => {

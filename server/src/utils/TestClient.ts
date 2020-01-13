@@ -111,8 +111,8 @@ export class TestClient {
             body: {
                 query: `
                     mutation {
-                        createTeam(city: "${city}", nickname: "${nickname}", 
-                            abbreviation: "${abbreviation}", bye: ${bye}, rank: ${rank}, 
+                        createTeam(city: "${city}", nickname: "${nickname}",
+                            abbreviation: "${abbreviation}", bye: ${bye}, rank: ${rank},
                             passRank: ${passRank}, rushRank: ${rushRank}, imageUrl: "${imageUrl}", pointsFor: ${pointsFor},
                             yards: ${yards}, plays: ${plays}, yardsPerPlay: ${yardsPerPlay},
                             turnovers: ${turnovers}, passAttempts: ${passAttempts},
@@ -139,7 +139,7 @@ export class TestClient {
             body: {
                 query: `
                     mutation {
-                        createPlayer(firstName: "${firstName}", lastName: "${lastName}", 
+                        createPlayer(firstName: "${firstName}", lastName: "${lastName}",
                             team: "${team}", position: "${position}", rank: ${rank},
                             adp: ${adp}, tier: "${tier}") {
                             path
@@ -162,10 +162,10 @@ export class TestClient {
             body: {
                 query: `
                         mutation {
-                            addProjection(firstName: "${firstName}", lastName: "${lastName}", team: "${team}", completions: ${completions}, attempts: ${attempts}, 
-                                passYards: ${passYards}, passTd: ${passTd}, 
-                                interception: ${interception}, carries: ${carries}, rushYards: ${rushYards}, rushTd: ${rushTd}, 
-                                fumbles: ${fumbles}, receptions: ${receptions}, receivingYards: ${receivingYards}, 
+                            addProjection(firstName: "${firstName}", lastName: "${lastName}", team: "${team}", completions: ${completions}, attempts: ${attempts},
+                                passYards: ${passYards}, passTd: ${passTd},
+                                interception: ${interception}, carries: ${carries}, rushYards: ${rushYards}, rushTd: ${rushTd},
+                                fumbles: ${fumbles}, receptions: ${receptions}, receivingYards: ${receivingYards},
                                 receivingTd: ${receivingTd}, fantasyPoints: ${fantasyPoints}) {
                                 path
                                 message
@@ -176,13 +176,13 @@ export class TestClient {
         });
     }
 
-    async playerById(id: number) {
+    async player(id: number) {
         return rp.post(this.url, {
             ...this.options,
             body: {
                 query: `
                         query {
-                            playerById(id: ${id}) {
+                            player(id: ${id}) {
                                 id
                                 firstName
                                 lastName
@@ -263,13 +263,13 @@ export class TestClient {
         });
     }
 
-    async projectionsByPlayer(player: number) {
+    async projection(player: number) {
         return rp.post(this.url, {
             ...this.options,
             body: {
                 query: `
                         query {
-                            projectionsByPlayer(player: "${player}") {
+                            projection(player: "${player}") {
                                 id
                                 player
                                 platform
@@ -375,13 +375,13 @@ export class TestClient {
         });
     }
 
-    async teamById(id: number) {
+    async team(id: number) {
         return rp.post(this.url, {
             ...this.options,
             body: {
                 query: `
                         query {
-                            teamById(id: ${id}) {
+                            team(id: ${id}) {
                                 city
                                 nickname
                                 abbreviation
@@ -481,6 +481,133 @@ export class TestClient {
                             username
                             password
                             username
+                        }
+                    }
+                `
+            }
+        });
+    }
+
+    async addNote(user: string, player: number, date: string, title: string,
+        body: string, source: string) {
+        return rp.post(this.url, {
+            ...this.options,
+            body: {
+                query: `
+                        mutation {
+                            addNote(user: "${user}", player: ${player}, date: "${date}", title: "${title}",
+                            body: "${body}", source: "${source}") {
+                                path
+                                message
+                            }
+                        }
+                    `
+            }
+        });
+    }
+
+    async editNote(id: string, user: string, player: number, date: string, title: string,
+        body: string, source: string) {
+        return rp.post(this.url, {
+            ...this.options,
+            body: {
+                query: `
+                        mutation {
+                            editNote(id: "${id}", user: "${user}", player: ${player}, date: "${date}", title: "${title}",
+                            body: "${body}", source: "${source}") {
+                                path
+                                message
+                            }
+                        }
+                    `
+            }
+        });
+    }
+
+    async deleteNote(id: string) {
+        return rp.post(this.url, {
+            ...this.options,
+            body: {
+                query: `
+                        mutation {
+                            deleteNote(id: "${id}") {
+                                path
+                                message
+                            }
+                        }
+                    `
+            }
+        });
+    }
+
+    async note(id: string) {
+        return rp.post(this.url, {
+            ...this.options,
+            body: {
+                query: `
+                    query {
+                        note(id: "${id}") {
+                            id
+                            user {
+                                id
+                            }
+                            player {
+                                id
+                            }
+                            date
+                            title
+                            body
+                            source
+                        }
+                    }
+                `
+            }
+        });
+    }
+
+    async notes() {
+        return rp.post(this.url, {
+            ...this.options,
+            body: {
+                query: `
+                    query {
+                        notes {
+                            id
+                            user {
+                                id
+                            }
+                            player {
+                                id
+                            }
+                            date
+                            title
+                            body
+                            source
+                        }
+                    }
+                `
+            }
+        });
+    }
+
+    async notesByUser(user: string) {
+        return rp.post(this.url, {
+            ...this.options,
+            body: {
+                query: `
+                    query {
+                        notesByUser(user: "${user}") {
+                            id
+                            user {
+                                id
+                            }
+                            player {
+                                id
+                            }
+                            date
+                            title
+                            body
+                            source
                         }
                     }
                 `

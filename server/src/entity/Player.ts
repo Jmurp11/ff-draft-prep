@@ -1,4 +1,4 @@
-import { 
+import {
     Entity,
     Column,
     PrimaryGeneratedColumn,
@@ -6,7 +6,7 @@ import {
     ManyToOne,
    JoinColumn
 } from "typeorm";
-import { Team } from "./Team";
+import { Team } from "./index";
 
 @Entity("players")
 export class Player extends BaseEntity {

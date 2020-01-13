@@ -1,4 +1,4 @@
-import { 
+import {
     Entity,
     Column,
     BaseEntity,
@@ -6,13 +6,13 @@ import {
     PrimaryGeneratedColumn,
     ManyToOne
 } from "typeorm";
-import { Player } from "./Player";
+import { Player } from "./index";
 
 @Entity("projections")
 export class Projection extends BaseEntity {
     @PrimaryGeneratedColumn()
     id!: number;
-    
+
     @ManyToOne(() => Player)
     @JoinColumn()
     @Column("text")

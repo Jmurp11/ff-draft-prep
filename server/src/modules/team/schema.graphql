@@ -32,7 +32,7 @@ type Team {
 }
 
 type Query {
-  teamById(id: Int): Team
+  team(id: Int): Team
   teamByAbbreviation(abbreviation: String): Team
   teams: [Team]
 }
