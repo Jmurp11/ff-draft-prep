@@ -13,7 +13,7 @@ type Message {
 type Query {
   message(id: String): Message,
   messages(thread: String): [Message],
-  messagesByUser(user: String): [Message]
+  messagesByUser(author: String): [Message]
 }
 
 type Mutation {

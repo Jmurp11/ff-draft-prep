@@ -614,4 +614,218 @@ export class TestClient {
             }
         });
     }
+
+    async createThread(creator: string, dateCreated: string, title: string) {
+        return rp.post(this.url, {
+            ...this.options,
+            body: {
+                query: `
+                        mutation {
+                            createThread(creator: "${creator}", dateCreated: "${dateCreated}", title: "${title}") {
+                                path
+                                message
+                            }
+                        }
+                    `
+            }
+        });
+    }
+
+    async deleteThread(id: string) {
+        return rp.post(this.url, {
+            ...this.options,
+            body: {
+                query: `
+                        mutation {
+                            deleteThread(id: "${id}") {
+                                path
+                                message
+                            }
+                        }
+                    `
+            }
+        });
+    }
+
+    async thread(id: string) {
+        return rp.post(this.url, {
+            ...this.options,
+            body: {
+                query: `
+                    query {
+                        thread(id: "${id}") {
+                            id
+                            creator {
+                                id
+                            }
+                            dateCreated
+                            title
+                            messages {
+                                id
+                                author {
+                                    id
+                                }
+                            }
+                        }
+                    }
+                `
+            }
+        });
+    }
+
+    async threads() {
+        return rp.post(this.url, {
+            ...this.options,
+            body: {
+                query: `
+                    query {
+                        threads {
+                            id
+                            creator {
+                                id
+                            }
+                            dateCreated
+                            title
+                            messages {
+                                id
+                                author {
+                                    id
+                                }
+                            }
+                        }
+                    }
+                `
+            }
+        });
+    }
+
+    async threadsByUser(creator: string) {
+        return rp.post(this.url, {
+            ...this.options,
+            body: {
+                query: `
+                    query {
+                        threadsByUser(creator: "${creator}") {
+                            id
+                            creator {
+                                id
+                            }
+                            dateCreated
+                            title
+                            messages {
+                                id
+                                author {
+                                    id
+                                }
+                            }
+                        }
+                    }
+                `
+            }
+        });
+    }
+
+    async createMessage(author: string, thread: string, dateCreated: string, body: string) {
+        return rp.post(this.url, {
+            ...this.options,
+            body: {
+                query: `
+                        mutation {
+                            createMessage(author: "${author}", thread: "${thread}", dateCreated: "${dateCreated}", body: "${body}") {
+                                path
+                                message
+                            }
+                        }
+                    `
+            }
+        });
+    }
+
+    async deleteMessage(id: string) {
+        return rp.post(this.url, {
+            ...this.options,
+            body: {
+                query: `
+                        mutation {
+                            deleteMessage(id: "${id}") {
+                                path
+                                message
+                            }
+                        }
+                    `
+            }
+        });
+    }
+
+    async message(id: string) {
+        return rp.post(this.url, {
+            ...this.options,
+            body: {
+                query: `
+                    query {
+                        message(id: "${id}") {
+                            id
+                            author {
+                                id
+                            }
+                            thread {
+                                id
+                                title
+                            }
+                            dateCreated
+                            body
+                        }
+                    }
+                `
+            }
+        });
+    }
+
+    async messages(thread: string) {
+        return rp.post(this.url, {
+            ...this.options,
+            body: {
+                query: `
+                    query {
+                        messages(thread: "${thread}") {
+                            id
+                            author {
+                                id
+                            }
+                            thread {
+                                id
+                                title
+                            }
+                            dateCreated
+                            body
+                        }
+                    }
+                `
+            }
+        });
+    }
+
+    async messagesByUser(author: string) {
+        return rp.post(this.url, {
+            ...this.options,
+            body: {
+                query: `
+                    query {
+                        messagesByUser(author: "${author}") {
+                            id
+                            author {
+                                id
+                            }
+                            thread {
+                                id
+                                title
+                            }
+                            dateCreated
+                            body
+                        }
+                    }
+                `
+            }
+        });
+    }
 }

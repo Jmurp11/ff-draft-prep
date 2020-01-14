@@ -59,7 +59,7 @@ declare namespace GQL {
   }
 
   interface IMessagesByUserOnQueryArguments {
-    user?: string | null;
+    author?: string | null;
   }
 
   interface INoteOnQueryArguments {
@@ -91,7 +91,7 @@ declare namespace GQL {
   }
 
   interface IThreadsByUserOnQueryArguments {
-    user?: string | null;
+    creator?: string | null;
   }
 
   interface IUserOnQueryArguments {

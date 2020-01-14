@@ -13,7 +13,7 @@ type Thread {
 type Query {
   thread(id: String): Thread,
   threads: [Thread],
-  threadsByUser(user: String): [Thread]
+  threadsByUser(creator: String): [Thread]
 }
 
 type Mutation {
