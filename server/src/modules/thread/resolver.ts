@@ -16,7 +16,7 @@ export const resolvers: ResolverMap = {
                     join: {
                         alias: "thread",
                         leftJoinAndSelect: {
-                            user: "thread.user",
+                            user: "thread.creator",
                             player: "thread.messages",
                         }
                     }, where: { id }
@@ -79,7 +79,7 @@ export const resolvers: ResolverMap = {
 
             return null;
         },
-        deleteNote: async (_: any, { id }: GQL.IDeleteNoteOnMutationArguments) => {
+        deleteThread: async (_: any, { id }: GQL.IDeleteThreadOnMutationArguments) => {
             const threadExists = await Thread.findOne({
                 where: {
                     id

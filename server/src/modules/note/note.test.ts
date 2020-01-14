@@ -131,7 +131,7 @@ describe("note mutations", () => {
 
     it('can delete note', async () => {
         const client = new TestClient(process.env.TEST_HOST as string);
-
+        
         const response = await client.deleteNote(noteId);
 
         expect(response.data).toEqual({ deleteNote: null });
@@ -147,8 +147,6 @@ describe("note queries", () => {
         const client = new TestClient(process.env.TEST_HOST as string);
 
         const response = await client.note(noteId);
-
-        console.log(JSON.stringify(response));
 
         expect(response.data.note.id).toEqual(noteId);
         expect(response.data.note.title).toEqual('test');

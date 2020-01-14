@@ -709,6 +709,7 @@ export class TestClient {
                             id
                             creator {
                                 id
+                                username
                             }
                             dateCreated
                             title
