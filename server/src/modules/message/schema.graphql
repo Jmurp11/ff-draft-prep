@@ -1,0 +1,22 @@
+# import Error from "../error/schema.graphql"
+# import Thread from "../thread/schema.graphql"
+# import User from "../user/schema.graphql"
+
+type Message {
+  id: String
+  author: User
+  thread: Thread
+  dateCreated: String
+  body: String
+}
+
+type Query {
+  message(id: string): Message,
+  messages(thread: string): [Message],
+  messagesByUser(user: string): [Message]
+}
+
+type Mutation {
+    createMessage(author: String!, thread: String!, dateCreated: String!, body: String!): [Error!],
+    deleteMessage(id: String!)
+}
