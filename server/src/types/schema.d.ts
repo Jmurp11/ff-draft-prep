@@ -24,6 +24,9 @@ declare namespace GQL {
     __typename: 'Query';
     hello: string;
     me: IUser | null;
+    message: IMessage | null;
+    messages: Array<IMessage | null> | null;
+    messagesByUser: Array<IMessage | null> | null;
     note: INote | null;
     notes: Array<INote | null> | null;
     notesByUser: Array<INote | null> | null;
@@ -34,6 +37,9 @@ declare namespace GQL {
     team: ITeam | null;
     teamByAbbreviation: ITeam | null;
     teams: Array<ITeam | null> | null;
+    thread: IThread | null;
+    threads: Array<IThread | null> | null;
+    threadsByUser: Array<IThread | null> | null;
     users: Array<IUser | null> | null;
     user: IUser | null;
     userByUsername: IUser | null;
@@ -42,6 +48,18 @@ declare namespace GQL {
 
   interface IHelloOnQueryArguments {
     name?: string | null;
+  }
+
+  interface IMessageOnQueryArguments {
+    id?: string | null;
+  }
+
+  interface IMessagesOnQueryArguments {
+    thread?: string | null;
+  }
+
+  interface IMessagesByUserOnQueryArguments {
+    user?: string | null;
   }
 
   interface INoteOnQueryArguments {
@@ -68,6 +86,14 @@ declare namespace GQL {
     abbreviation?: string | null;
   }
 
+  interface IThreadOnQueryArguments {
+    id?: string | null;
+  }
+
+  interface IThreadsByUserOnQueryArguments {
+    user?: string | null;
+  }
+
   interface IUserOnQueryArguments {
     id?: string | null;
   }
@@ -88,6 +114,24 @@ declare namespace GQL {
     username: string | null;
     confirmed: boolean | null;
     forgotPasswordLock: boolean | null;
+  }
+
+  interface IMessage {
+    __typename: 'Message';
+    id: string | null;
+    author: IUser | null;
+    thread: IThread | null;
+    dateCreated: string | null;
+    body: string | null;
+  }
+
+  interface IThread {
+    __typename: 'Thread';
+    id: string | null;
+    creator: IUser | null;
+    dateCreated: string | null;
+    title: string | null;
+    messages: Array<IMessage | null> | null;
   }
 
   interface INote {
@@ -167,18 +211,33 @@ declare namespace GQL {
 
   interface IMutation {
     __typename: 'Mutation';
+    createMessage: Array<IError> | null;
+    deleteMessage: Array<IError> | null;
     addNote: Array<IError> | null;
     editNote: Array<IError> | null;
     deleteNote: Array<IError> | null;
     createPlayer: Array<IError> | null;
     addProjection: Array<IError> | null;
     createTeam: Array<IError> | null;
+    createThread: Array<IError> | null;
+    deleteThread: Array<IError> | null;
     register: Array<IError> | null;
     login: Array<IError> | null;
     logout: boolean | null;
     sendForgotPasswordEmail: Array<IError> | null;
     forgotPasswordChange: Array<IError> | null;
     editUserEmail: Array<IError> | null;
+  }
+
+  interface ICreateMessageOnMutationArguments {
+    author: string;
+    thread: string;
+    dateCreated: string;
+    body: string;
+  }
+
+  interface IDeleteMessageOnMutationArguments {
+    id: string;
   }
 
   interface IAddNoteOnMutationArguments {
@@ -261,6 +320,16 @@ declare namespace GQL {
     turnoverPercentage: number;
     offensiveLineRank: number;
     runningBackSoS: number;
+  }
+
+  interface ICreateThreadOnMutationArguments {
+    creator: string;
+    dateCreated: string;
+    title: string;
+  }
+
+  interface IDeleteThreadOnMutationArguments {
+    id: string;
   }
 
   interface IRegisterOnMutationArguments {

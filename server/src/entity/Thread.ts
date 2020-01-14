@@ -9,7 +9,7 @@ import {
 } from "typeorm";
 import { Message, User } from './index';
 
-@Entity("notes")
+@Entity("threads")
 export class Thread extends BaseEntity {
     @PrimaryGeneratedColumn('uuid')
     id!: string;

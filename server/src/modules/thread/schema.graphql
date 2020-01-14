@@ -11,12 +11,12 @@ type Thread {
 }
 
 type Query {
-  thread(id: string): Thread,
+  thread(id: String): Thread,
   threads: [Thread],
-  threadsByUser(user: string): [Thread]
+  threadsByUser(user: String): [Thread]
 }
 
 type Mutation {
     createThread(creator: String!, dateCreated: String!, title: String!): [Error!],
-    deleteThread(id: String!)
+    deleteThread(id: String!): [Error!]
 }

@@ -11,12 +11,12 @@ type Message {
 }
 
 type Query {
-  message(id: string): Message,
-  messages(thread: string): [Message],
-  messagesByUser(user: string): [Message]
+  message(id: String): Message,
+  messages(thread: String): [Message],
+  messagesByUser(user: String): [Message]
 }
 
 type Mutation {
     createMessage(author: String!, thread: String!, dateCreated: String!, body: String!): [Error!],
-    deleteMessage(id: String!)
+    deleteMessage(id: String!): [Error!]
 }

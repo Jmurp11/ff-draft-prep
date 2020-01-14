@@ -8,7 +8,7 @@ import {
 } from "typeorm";
 import { Thread, User } from './index';
 
-@Entity("message")
+@Entity("messages")
 export class Message extends BaseEntity {
     @PrimaryGeneratedColumn('uuid')
     id!: string;
