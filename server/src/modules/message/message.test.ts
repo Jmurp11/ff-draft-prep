@@ -88,8 +88,6 @@ describe("message queries", () => {
 
         expect(response.data.messages[0].id).toEqual(messageId);
         expect(response.data.messages).toHaveLength(1);
-
-        console.log(JSON.stringify(await client.thread(threadId)));
     });
 
     it('return all messages by user', async () => {
@@ -102,10 +100,8 @@ describe("message queries", () => {
             body: messageData.body
         }).save();
 
-        console.log(await Message.find());
-
         const response = await client.messagesByUser(userId2);
-        console.log(JSON.stringify(response));
+
         expect(response.data.messagesByUser[0].author.id).toEqual(userId2);
         expect(response.data.messagesByUser[0].author.username).toEqual('anotherTest');
         expect(response.data.messagesByUser).toHaveLength(1);
