@@ -1,4 +1,4 @@
-import { User, Thread, Note } from '../../entity/index';
+import { User, Thread } from '../../entity/index';
 import {
     user as userData,
     threadData
@@ -59,7 +59,7 @@ describe("thread mutations", () => {
         const response = await client.deleteThread(threadId);
 
         expect(response.data).toEqual({ deleteThread: null });
-        expect(await Note.find()).toHaveLength(0);
+        expect(await Thread.find()).toHaveLength(0);
     });
 });
 

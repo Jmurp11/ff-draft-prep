@@ -65,7 +65,7 @@ export const resolvers: ResolverMap = {
             if (threadExists) {
                 return [
                     {
-                        path: 'note',
+                        path: 'thread',
                         message: threadAlreadyExists
                     }
                 ]
@@ -99,7 +99,7 @@ export const resolvers: ResolverMap = {
 
             return [
                 {
-                    path: 'note',
+                    path: 'thread',
                     message: cannotDeleteThread
                 }
             ]
