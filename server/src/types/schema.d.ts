@@ -22,6 +22,8 @@ declare namespace GQL {
 
   interface IQuery {
     __typename: 'Query';
+    draftPicks: Array<IDraftPick | null> | null;
+    drafts: Array<IDraft | null> | null;
     hello: string;
     me: IUser | null;
     note: INote | null;
@@ -38,6 +40,14 @@ declare namespace GQL {
     user: IUser | null;
     userByUsername: IUser | null;
     userByEmail: IUser | null;
+  }
+
+  interface IDraftPicksOnQueryArguments {
+    draft: string;
+  }
+
+  interface IDraftsOnQueryArguments {
+    draft: string;
   }
 
   interface IHelloOnQueryArguments {
@@ -80,6 +90,25 @@ declare namespace GQL {
     email?: string | null;
   }
 
+  interface IDraftPick {
+    __typename: 'DraftPick';
+    id: string | null;
+    draft: IDraft | null;
+    player: IPlayer | null;
+    picked: number | null;
+  }
+
+  interface IDraft {
+    __typename: 'Draft';
+    id: string | null;
+    user: IUser | null;
+    date: string | null;
+    type: string | null;
+    numberOfTeams: number | null;
+    title: string | null;
+    picked: number | null;
+  }
+
   interface IUser {
     __typename: 'User';
     id: string;
@@ -88,17 +117,6 @@ declare namespace GQL {
     username: string | null;
     confirmed: boolean | null;
     forgotPasswordLock: boolean | null;
-  }
-
-  interface INote {
-    __typename: 'Note';
-    id: string | null;
-    user: IUser | null;
-    player: IPlayer | null;
-    date: string | null;
-    title: string | null;
-    body: string | null;
-    source: string | null;
   }
 
   interface IPlayer {
@@ -145,6 +163,17 @@ declare namespace GQL {
     runningBackSoS: number | null;
   }
 
+  interface INote {
+    __typename: 'Note';
+    id: string | null;
+    user: IUser | null;
+    player: IPlayer | null;
+    date: string | null;
+    title: string | null;
+    body: string | null;
+    source: string | null;
+  }
+
   interface IProjection {
     __typename: 'Projection';
     id: number | null;
@@ -167,6 +196,8 @@ declare namespace GQL {
 
   interface IMutation {
     __typename: 'Mutation';
+    createDraftPick: Array<IError> | null;
+    createDraft: Array<IError> | null;
     addNote: Array<IError> | null;
     editNote: Array<IError> | null;
     deleteNote: Array<IError> | null;
@@ -179,6 +210,20 @@ declare namespace GQL {
     sendForgotPasswordEmail: Array<IError> | null;
     forgotPasswordChange: Array<IError> | null;
     editUserEmail: Array<IError> | null;
+  }
+
+  interface ICreateDraftPickOnMutationArguments {
+    draft: string;
+    player: number;
+    picked: number;
+  }
+
+  interface ICreateDraftOnMutationArguments {
+    user: string;
+    date: number;
+    type: number;
+    numberOfTeams: number;
+    title: string;
   }
 
   interface IAddNoteOnMutationArguments {

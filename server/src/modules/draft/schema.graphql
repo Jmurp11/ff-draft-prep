@@ -1,0 +1,27 @@
+# import Player from " ../team/schema.graphql"
+# import Error from "../error/schema.graphql"
+# import DraftPick from "../draft-pick/schema.graphql"
+
+type Draft {
+  id: String
+  user: User
+  date: String
+  type: String
+  numberOfTeams: Int
+  title: String
+  picked: Int
+}
+
+type Query {
+  drafts(draft: String!): [Draft]
+}
+
+type Mutation {
+  createDraft(
+    user: String!
+    date: Int!
+    type: Int!
+    numberOfTeams: Int!
+    title: String!
+  ): [Error!]
+}
