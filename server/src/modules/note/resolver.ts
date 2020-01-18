@@ -84,7 +84,7 @@ export const resolvers: ResolverMap = {
 
             return null;
         },
-        editNote: async (_: any, { // TODO: NEED TO EITHER ADD MORE OPTIONS TO EDIT OR UPDATE THE SCHEMA TYPES
+        editNote: async (_: any, {
             id,
             user,
             player,

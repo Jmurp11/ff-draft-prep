@@ -17,6 +17,13 @@ export const noteData = {
     source: 'www.sauce.com'
 };
 
+export const draftData = { 
+    date: '01/12/2020',
+    type: 'PPR',
+    numberOfTeams: 14,
+    title: 'Test Draft'
+};
+
 export const teamData = {
     city: 'New York',
     nickname: 'Jets',
