@@ -2,12 +2,10 @@ import {
     Entity,
     Column,
     BaseEntity,
-    JoinColumn,
     PrimaryGeneratedColumn,
-    ManyToOne,
-    OneToMany
+    ManyToOne
 } from "typeorm";
-import { DraftPick, User } from './index';
+import { User } from './index';
 
 @Entity("drafts")
 export class Draft extends BaseEntity {
@@ -15,7 +13,6 @@ export class Draft extends BaseEntity {
     id!: string;
 
     @ManyToOne(() => User)
-    @JoinColumn()
     @Column("uuid")
     user!: string;
 
@@ -30,8 +27,4 @@ export class Draft extends BaseEntity {
 
     @Column("text")
     title!: string;
-
-    @OneToMany(() => DraftPick, picks => picks.draft)
-    @Column("text")
-    picks: DraftPick[] | undefined;
 }

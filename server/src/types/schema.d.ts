@@ -24,6 +24,7 @@ declare namespace GQL {
     __typename: 'Query';
     draftPicks: Array<IDraftPick | null> | null;
     drafts: Array<IDraft | null> | null;
+    draft: IDraft | null;
     hello: string;
     me: IUser | null;
     note: INote | null;
@@ -47,7 +48,11 @@ declare namespace GQL {
   }
 
   interface IDraftsOnQueryArguments {
-    draft: string;
+    user: string;
+  }
+
+  interface IDraftOnQueryArguments {
+    id: string;
   }
 
   interface IHelloOnQueryArguments {
@@ -106,7 +111,6 @@ declare namespace GQL {
     type: string | null;
     numberOfTeams: number | null;
     title: string | null;
-    picked: number | null;
   }
 
   interface IUser {
@@ -220,8 +224,8 @@ declare namespace GQL {
 
   interface ICreateDraftOnMutationArguments {
     user: string;
-    date: number;
-    type: number;
+    date: string;
+    type: string;
     numberOfTeams: number;
     title: string;
   }

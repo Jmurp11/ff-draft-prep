@@ -9,18 +9,18 @@ type Draft {
   type: String
   numberOfTeams: Int
   title: String
-  picked: Int
 }
 
 type Query {
-  drafts(draft: String!): [Draft]
+  drafts(user: String!): [Draft],
+  draft(id: String!): Draft
 }
 
 type Mutation {
   createDraft(
     user: String!
-    date: Int!
-    type: Int!
+    date: String!
+    type: String!
     numberOfTeams: Int!
     title: String!
   ): [Error!]

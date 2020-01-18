@@ -13,7 +13,8 @@ export class DraftPick extends BaseEntity {
     @PrimaryGeneratedColumn('uuid')
     id!: string;
 
-    @ManyToOne(() => Draft, draft => draft.picks)
+    @ManyToOne(() => Draft)
+    @JoinColumn()
     @Column("uuid")
     draft!: string;
 
