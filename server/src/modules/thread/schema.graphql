@@ -7,7 +7,6 @@ type Thread {
   creator: User
   dateCreated: String
   title: String
-  messages: [Message]
 }
 
 type Query {

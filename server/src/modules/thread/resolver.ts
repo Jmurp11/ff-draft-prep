@@ -17,7 +17,6 @@ export const resolvers: ResolverMap = {
                         alias: "thread",
                         leftJoinAndSelect: {
                             user: "thread.creator",
-                            message: "thread.messages",
                         }
                     }, where: { id }
                 });
@@ -29,7 +28,6 @@ export const resolvers: ResolverMap = {
                         alias: "thread",
                         leftJoinAndSelect: {
                             user: "thread.creator",
-                            message: "thread.messages",
                         }
                     }
                 });
@@ -41,7 +39,6 @@ export const resolvers: ResolverMap = {
                         alias: "thread",
                         leftJoinAndSelect: {
                             user: "thread.creator",
-                            message: "thread.messages",
                         }
                     }, where: { creator }
                 });

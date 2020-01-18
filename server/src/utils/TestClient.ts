@@ -660,12 +660,6 @@ export class TestClient {
                             }
                             dateCreated
                             title
-                            messages {
-                                id
-                                author {
-                                    id
-                                }
-                            }
                         }
                     }
                 `
@@ -686,12 +680,6 @@ export class TestClient {
                             }
                             dateCreated
                             title
-                            messages {
-                                id
-                                author {
-                                    id
-                                }
-                            }
                         }
                     }
                 `
@@ -713,12 +701,6 @@ export class TestClient {
                             }
                             dateCreated
                             title
-                            messages {
-                                id
-                                author {
-                                    id
-                                }
-                            }
                         }
                     }
                 `
@@ -768,6 +750,7 @@ export class TestClient {
                             id
                             author {
                                 id
+                                username
                             }
                             thread {
                                 id
@@ -792,6 +775,7 @@ export class TestClient {
                             id
                             author {
                                 id
+                                username
                             }
                             thread {
                                 id
@@ -816,6 +800,7 @@ export class TestClient {
                             id
                             author {
                                 id
+                                username
                             }
                             thread {
                                 id

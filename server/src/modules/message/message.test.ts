@@ -1,7 +1,8 @@
 import { User, Message, Thread } from '../../entity/index';
 import {
     user as userData,
-    messageData
+    messageData,
+    threadData
 } from '../../constants/test-constants';
 import { createTypeormConn, TestClient } from '../../utils';
 import { Connection } from 'typeorm';
@@ -104,6 +105,7 @@ describe("message queries", () => {
 
         expect(response.data.messagesByUser[0].author.id).toEqual(userId2);
         expect(response.data.messagesByUser[0].author.username).toEqual('anotherTest');
+        expect(response.data.messagesByUser[0].thread.title).toEqual(threadData.title);
         expect(response.data.messagesByUser).toHaveLength(1);
     });
 });

@@ -5,9 +5,8 @@ import {
     JoinColumn,
     PrimaryGeneratedColumn,
     ManyToOne,
-    OneToMany
 } from "typeorm";
-import { Message, User } from './index';
+import { User } from './index';
 
 @Entity("threads")
 export class Thread extends BaseEntity {
@@ -24,7 +23,4 @@ export class Thread extends BaseEntity {
 
     @Column("text")
     dateCreated!: string;
-
-    @OneToMany(() => Message, message => message.thread)
-    messages: Message[] | undefined;
 }

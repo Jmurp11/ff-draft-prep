@@ -36,7 +36,7 @@ export const resolvers: ResolverMap = {
                         alias: "message",
                         leftJoinAndSelect: {
                             user: "message.author",
-                            message: "message.thread",
+                            thread: "message.thread",
                         }
                     }, where: { author }
                 });

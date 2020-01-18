@@ -131,7 +131,6 @@ declare namespace GQL {
     creator: IUser | null;
     dateCreated: string | null;
     title: string | null;
-    messages: Array<IMessage | null> | null;
   }
 
   interface INote {
