@@ -26,7 +26,7 @@ export class User extends BaseEntity {
 
     @Column("boolean", { default: false }) 
     forgotPasswordLock!: boolean;
-    
+
     @BeforeInsert()
     async hashPassword() {
         this.password = await bcrypt.hash(this.password, 10);

@@ -614,4 +614,131 @@ export class TestClient {
             }
         });
     }
+
+    async createDraft(user: string,
+        date: string,
+        type: string,
+        numberOfTeams: number,
+        title: string) {
+        return rp.post(this.url, {
+            ...this.options,
+            body: {
+                query: `
+                        mutation {
+                            createDraft(
+                                user: "${user}",
+                                date: "${date}",
+                                type: "${type}",
+                                numberOfTeams: ${numberOfTeams},
+                                title: "${title}"
+                            ) {
+                                path
+                                message
+                            }
+                        }
+                    `
+            }
+        });
+    }
+
+    async drafts(user: string) {
+        return rp.post(this.url, {
+            ...this.options,
+            body: {
+                query: `
+                    query {
+                        drafts(user: "${user}") {
+                            id
+                            user {
+                                id
+                                username
+                            }
+                            date
+                            type
+                            numberOfTeams
+                            title
+                        }
+                    }
+                `
+            }
+        });
+    }
+
+    async draft(id: string) {
+        return rp.post(this.url, {
+            ...this.options,
+            body: {
+                query: `
+                    query {
+                        draft(id: "${id}") {
+                            id
+                            user {
+                                id
+                                username
+                            }
+                            date
+                            type
+                            numberOfTeams
+                            title
+                        }
+                    }
+                `
+            }
+        });
+    }
+
+    async createDraftPick(
+        draft: string,
+        player: number,
+        picked: number
+    ) {
+        return rp.post(this.url, {
+            ...this.options,
+            body: {
+                query: `
+                        mutation {
+                            createDraftPick(
+                                draft: "${draft}",
+                                player: ${player},
+                                picked: ${picked}
+                            ) {
+                                path
+                                message
+                            }
+                        }
+                    `
+            }
+        });
+    }
+
+    async draftPicks(draft: string) {
+        return rp.post(this.url, {
+            ...this.options,
+            body: {
+                query: `
+                    query {
+                        draftPicks(draft: "${draft}") {
+                            id
+                            draft {
+                                id
+                                user {
+                                    username
+                                }
+                                type
+                            }
+                            player {
+                                id
+                                firstName
+                                lastName
+                                team {
+                                    abbreviation
+                                }
+                            }
+                            picked
+                        }
+                    }
+                `
+            }
+        });
+    }
 }
