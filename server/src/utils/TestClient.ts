@@ -624,19 +624,34 @@ export class TestClient {
             ...this.options,
             body: {
                 query: `
-                        mutation {
-                            createDraft(
-                                user: "${user}",
-                                date: "${date}",
-                                type: "${type}",
-                                numberOfTeams: ${numberOfTeams},
-                                title: "${title}"
-                            ) {
-                                path
-                                message
-                            }
+                    mutation {
+                        createDraft(
+                            user: "${user}",
+                            date: "${date}",
+                            type: "${type}",
+                            numberOfTeams: ${numberOfTeams},
+                            title: "${title}"
+                        ) {
+                            path
+                            message
                         }
-                    `
+                    }
+                `
+            }
+        });
+    }
+    async createThread(creator: string, dateCreated: string, title: string) {
+        return rp.post(this.url, {
+            ...this.options,
+            body: {
+                query: `
+                    mutation {
+                        createThread(creator: "${creator}", dateCreated: "${dateCreated}", title: "${title}") {
+                        path
+                        message
+                    }
+                }
+                `
             }
         });
     }
@@ -656,6 +671,41 @@ export class TestClient {
                             date
                             type
                             numberOfTeams
+                            title
+                        }
+                    }
+                `
+            }
+        });
+    }
+    async deleteThread(id: string) {
+        return rp.post(this.url, {
+            ...this.options,
+            body: {
+                query: `
+                    mutation {
+                        deleteThread(id: "${id}") {
+                            path
+                            message
+                        }
+                    }
+                `
+            }
+        });
+    }
+
+    async thread(id: string) {
+        return rp.post(this.url, {
+            ...this.options,
+            body: {
+                query: `
+                    query {
+                        thread(id: "${id}") {
+                            id
+                            creator {
+                                id
+                            }
+                            dateCreated
                             title
                         }
                     }
@@ -686,6 +736,46 @@ export class TestClient {
             }
         });
     }
+    async threads() {
+        return rp.post(this.url, {
+            ...this.options,
+            body: {
+                query: `
+                    query {
+                        threads {
+                            id
+                            creator {
+                                id
+                            }
+                            dateCreated
+                            title
+                        }
+                    }
+                `
+            }
+        });
+    }
+
+    async threadsByUser(creator: string) {
+        return rp.post(this.url, {
+            ...this.options,
+            body: {
+                query: `
+                    query {
+                        threadsByUser(creator: "${creator}") {
+                            id
+                            creator {
+                                id
+                                username
+                            }
+                            dateCreated
+                title
+            }
+        }
+            `
+            }
+        });
+    }
 
     async createDraftPick(
         draft: string,
@@ -696,17 +786,49 @@ export class TestClient {
             ...this.options,
             body: {
                 query: `
-                        mutation {
-                            createDraftPick(
-                                draft: "${draft}",
-                                player: ${player},
-                                picked: ${picked}
-                            ) {
-                                path
-                                message
-                            }
+                    mutation {
+                        createDraftPick(
+                            draft: "${draft}",
+                            player: ${ player},
+                            picked: ${ picked}
+                        ) {
+                            path
+                            message
                         }
-                    `
+                    }
+                `
+            }
+        });
+    }
+
+    async createMessage(author: string, thread: string, dateCreated: string, body: string) {
+        return rp.post(this.url, {
+            ...this.options,
+            body: {
+                query: `
+                        mutation {
+            createMessage(author: "${author}", thread: "${thread}", dateCreated: "${dateCreated}", body: "${body}") {
+                path
+                message
+            }
+        }
+            `
+            }
+        });
+    }
+
+    async deleteMessage(id: string) {
+        return rp.post(this.url, {
+            ...this.options,
+            body: {
+                query: `
+                        mutation {
+                            deleteMessage(id: "${id}") {
+                path
+                message
+            }
+        }
+            `
             }
         });
     }
@@ -738,6 +860,81 @@ export class TestClient {
                         }
                     }
                 `
+            }
+        });
+    }
+    
+    async message(id: string) {
+        return rp.post(this.url, {
+            ...this.options,
+            body: {
+                query: `
+                    query {
+                        message(id: "${id}") {
+                            id
+                            author {
+                                id
+                                username
+                            }
+                            thread {
+                                id
+                                title
+                            }
+                            dateCreated
+                            body
+                        }
+                    }
+                `
+            }
+        });
+    }
+
+    async messages(thread: string) {
+        return rp.post(this.url, {
+            ...this.options,
+            body: {
+                query: `
+                    query {
+                        messages(thread: "${thread}") {
+                            id
+                            author {
+                                id
+                                username
+                            }
+                            thread {
+                                id
+                                title
+                            }
+                            dateCreated
+                            body
+                        }
+                    }
+                `
+            }
+        });
+    }
+
+    async messagesByUser(author: string) {
+        return rp.post(this.url, {
+            ...this.options,
+            body: {
+                query: `
+                    query {
+                        messagesByUser(author: "${author}") {
+                            id
+                            author {
+                                id
+                                username
+                            }
+                            thread {
+                                id
+                                title
+                            }
+                            dateCreated
+                            body
+            }
+        }
+            `
             }
         });
     }

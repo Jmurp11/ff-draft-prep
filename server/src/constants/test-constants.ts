@@ -79,4 +79,14 @@ export const projectionData = {
     receivingYards: 0,
     receivingTd: 0,
     fantasyPoints: 0
+};
+
+export const threadData = {
+    title: 'test',
+    dateCreated: '01/02/2020'
+};
+
+export const messageData = {
+    body: 'test',
+    dateCreated: '01/02/2020'
 }
