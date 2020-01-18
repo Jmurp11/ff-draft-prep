@@ -27,6 +27,9 @@ declare namespace GQL {
     draft: IDraft | null;
     hello: string;
     me: IUser | null;
+    message: IMessage | null;
+    messages: Array<IMessage | null> | null;
+    messagesByUser: Array<IMessage | null> | null;
     note: INote | null;
     notes: Array<INote | null> | null;
     notesByUser: Array<INote | null> | null;
@@ -37,6 +40,9 @@ declare namespace GQL {
     team: ITeam | null;
     teamByAbbreviation: ITeam | null;
     teams: Array<ITeam | null> | null;
+    thread: IThread | null;
+    threads: Array<IThread | null> | null;
+    threadsByUser: Array<IThread | null> | null;
     users: Array<IUser | null> | null;
     user: IUser | null;
     userByUsername: IUser | null;
@@ -57,6 +63,18 @@ declare namespace GQL {
 
   interface IHelloOnQueryArguments {
     name?: string | null;
+  }
+
+  interface IMessageOnQueryArguments {
+    id?: string | null;
+  }
+
+  interface IMessagesOnQueryArguments {
+    thread?: string | null;
+  }
+
+  interface IMessagesByUserOnQueryArguments {
+    author?: string | null;
   }
 
   interface INoteOnQueryArguments {
@@ -81,6 +99,14 @@ declare namespace GQL {
 
   interface ITeamByAbbreviationOnQueryArguments {
     abbreviation?: string | null;
+  }
+
+  interface IThreadOnQueryArguments {
+    id?: string | null;
+  }
+
+  interface IThreadsByUserOnQueryArguments {
+    creator?: string | null;
   }
 
   interface IUserOnQueryArguments {
@@ -121,6 +147,34 @@ declare namespace GQL {
     username: string | null;
     confirmed: boolean | null;
     forgotPasswordLock: boolean | null;
+  }
+
+  interface IMessage {
+    __typename: 'Message';
+    id: string | null;
+    author: IUser | null;
+    thread: IThread | null;
+    dateCreated: string | null;
+    body: string | null;
+  }
+
+  interface IThread {
+    __typename: 'Thread';
+    id: string | null;
+    creator: IUser | null;
+    dateCreated: string | null;
+    title: string | null;
+  }
+
+  interface INote {
+    __typename: 'Note';
+    id: string | null;
+    user: IUser | null;
+    player: IPlayer | null;
+    date: string | null;
+    title: string | null;
+    body: string | null;
+    source: string | null;
   }
 
   interface IPlayer {
@@ -202,12 +256,16 @@ declare namespace GQL {
     __typename: 'Mutation';
     createDraftPick: Array<IError> | null;
     createDraft: Array<IError> | null;
+    createMessage: Array<IError> | null;
+    deleteMessage: Array<IError> | null;
     addNote: Array<IError> | null;
     editNote: Array<IError> | null;
     deleteNote: Array<IError> | null;
     createPlayer: Array<IError> | null;
     addProjection: Array<IError> | null;
     createTeam: Array<IError> | null;
+    createThread: Array<IError> | null;
+    deleteThread: Array<IError> | null;
     register: Array<IError> | null;
     login: Array<IError> | null;
     logout: boolean | null;
@@ -228,6 +286,16 @@ declare namespace GQL {
     type: string;
     numberOfTeams: number;
     title: string;
+  }
+  interface ICreateMessageOnMutationArguments {
+    author: string;
+    thread: string;
+    dateCreated: string;
+    body: string;
+  }
+
+  interface IDeleteMessageOnMutationArguments {
+    id: string;
   }
 
   interface IAddNoteOnMutationArguments {
@@ -310,6 +378,16 @@ declare namespace GQL {
     turnoverPercentage: number;
     offensiveLineRank: number;
     runningBackSoS: number;
+  }
+
+  interface ICreateThreadOnMutationArguments {
+    creator: string;
+    dateCreated: string;
+    title: string;
+  }
+
+  interface IDeleteThreadOnMutationArguments {
+    id: string;
   }
 
   interface IRegisterOnMutationArguments {

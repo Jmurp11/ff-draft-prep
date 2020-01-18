@@ -131,7 +131,7 @@ describe("note mutations", () => {
 
     it('can delete note', async () => {
         const client = new TestClient(process.env.TEST_HOST as string);
-
+        
         const response = await client.deleteNote(noteId);
 
         expect(response.data).toEqual({ deleteNote: null });
