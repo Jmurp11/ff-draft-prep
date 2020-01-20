@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { Apollo } from 'apollo-angular';
 import { AuthService } from './auth.service';
-import { AlertService } from '../shared/alert.service';
 import { User } from '../user';
 import { userByEmail } from '../user/queries';
 import { login } from './queries';
@@ -31,8 +31,8 @@ export class AuthComponent implements OnInit {
   constructor(
     private router: Router,
     private authService: AuthService,
-    private alertService: AlertService,
-    private apollo: Apollo
+    private apollo: Apollo,
+    private snackbar: MatSnackBar
   ) {
     if (this.authService.getCurrentUser()) {
       this.router.navigate(['/dashboard']);
@@ -99,14 +99,16 @@ export class AuthComponent implements OnInit {
             this.authService.setCurrentUser(user);
             if (user) {
               this.router.navigate(['./dashboard']);
+              this.openSnackBar('Success! Welcome back!' , 'Dismiss');
               this.resetForm();
             } else {
-              this.alertService.error(this.errMessage);
               this.loading = false;
             }
           });
       } else {
+        this.openSnackBar(data.login[0].message, 'Dismiss');
         this.authService.setMessage(data.login[0].message);
+        this.resetForm();
       }
     }, (error) => {
       console.log(error);
@@ -117,5 +119,11 @@ export class AuthComponent implements OnInit {
     this.form.reset();
     this.emailControlIsValid = true;
     this.passwordControlIsValid = true;
+  }
+
+  openSnackBar(message: string, action: string) {
+    this.snackbar.open(message, action, {
+      duration: 5000
+    });
   }
 }
