@@ -1,20 +1,14 @@
 
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, Subscription } from 'rxjs';
-import { Apollo } from 'apollo-angular';
 
 import { User } from '../user';
-import { login } from './queries';
-import { userByEmail } from '../user/queries';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private currentUser: User;
   message: string;
 
-  constructor(
-    private apollo: Apollo,
-  ) {
+  constructor() {
     if (!localStorage.getItem('currentUser')) {
       this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     } else {
@@ -22,7 +16,7 @@ export class AuthService {
     }
   }
 
-  setCurrentUser(currentUser): void {
+  setCurrentUser(currentUser: any): void {
     this.currentUser = currentUser;
   }
 

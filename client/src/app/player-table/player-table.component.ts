@@ -30,6 +30,7 @@ export class PlayerTableComponent implements OnInit, OnDestroy {
   lastSelectedPlayer: Player;
   selectedPlayers: Player[];
   isDraft: Boolean;
+  _draftSubscription: Subscription;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -44,7 +45,9 @@ export class PlayerTableComponent implements OnInit, OnDestroy {
     private apollo: Apollo,
     private draftState: DraftStateService
   ) { 
-    this.isDraft = this.draftState.isDraft;
+    this._draftSubscription = this.draftState.isDraft.subscribe(data => {
+      this.isDraft = data;
+    });
   }
 
   ngOnInit() {
@@ -126,5 +129,6 @@ export class PlayerTableComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.querySubscription.unsubscribe();
+    this._draftSubscription.unsubscribe();
   }
 }
