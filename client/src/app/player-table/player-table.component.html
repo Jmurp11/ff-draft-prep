@@ -1,4 +1,4 @@
-<div class="resetButtonContainer">
+<div class="resetButtonContainer" [hidden]="!isDraft">
   <button mat-raised-button color="accent" class="resetButton" (click)="resetAll()"><i class="fas fa-undo icon"></i>Reset All</button>
 </div>
 

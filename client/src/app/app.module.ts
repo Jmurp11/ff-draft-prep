@@ -42,4 +42,4 @@ import { EditProfileComponent } from './profile/edit-profile/edit-profile.compon
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }

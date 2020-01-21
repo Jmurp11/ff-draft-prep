@@ -35,3 +35,12 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .invalid-label {
   color: red;
 }
+
+.card-header {
+  align-content: center;
+}
+
+.card-header-text {
+  display: flex;
+  justify-content: space-between;
+}

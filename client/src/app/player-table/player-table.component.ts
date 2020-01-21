@@ -5,7 +5,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Subscription } from 'rxjs';
 import { Apollo } from 'apollo-angular';
-
+import { DraftStateService } from './draft-state.service';
 import { projections } from './queries';
 import { Player } from './Player';
 
@@ -29,6 +29,7 @@ export class PlayerTableComponent implements OnInit, OnDestroy {
   querySubscription: Subscription;
   lastSelectedPlayer: Player;
   selectedPlayers: Player[];
+  isDraft: Boolean;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -40,8 +41,11 @@ export class PlayerTableComponent implements OnInit, OnDestroy {
   expandedPlayer: Player | null;
 
   constructor(
-    private apollo: Apollo
-  ) { }
+    private apollo: Apollo,
+    private draftState: DraftStateService
+  ) { 
+    this.isDraft = this.draftState.isDraft;
+  }
 
   ngOnInit() {
     this.players = [];
