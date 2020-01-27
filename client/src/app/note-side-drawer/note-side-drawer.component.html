@@ -1,6 +1,5 @@
-<mat-sidenav-container class="example-container" *ngIf="shouldRun">
-    <mat-sidenav #sidenav mode="side" [(opened)]="opened" (opened)="events.push('open!')"
-        (closed)="events.push('close!')">
+<mat-sidenav-container class="container" *ngIf="shouldRun">
+    <mat-sidenav #sidenav mode="side" [(opened)]="opened">
         <app-note></app-note>
     </mat-sidenav>
 

@@ -20,9 +20,7 @@ export class AuthComponent implements OnInit {
   passwordControlIsValid = true;
   loading = false;
   errMessage: string;
-  private currentUserSubject: BehaviorSubject<User>;
   public currentUser: Observable<User>;
-  private messageSubject: BehaviorSubject<string>;
   public message: Observable<string>;
   subLoading: boolean;
   loginResult: any;
