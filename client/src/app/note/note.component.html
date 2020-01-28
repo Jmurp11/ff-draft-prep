@@ -1,0 +1,45 @@
+<div class='note-container'>
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="form">
+        <mat-form-field>
+            <input matInput placeholder="Title" formControlName="title" class="form-control">
+        </mat-form-field>
+
+        <mat-form-field>
+            <textarea matInput placeholder="Note" formControlName="note" class="form-control"></textarea>
+        </mat-form-field>
+
+        <mat-form-field>
+            <input matInput placeholder="Source" formControlName="source" class="form-control">
+        </mat-form-field>
+
+        <div class="form-group">
+            <button mat-raised-button color="primary" [disabled]="loading" class="btn btn-primary note-btn"
+                (click)="onSubmit()">
+                <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                Save
+            </button>
+            <button mat-raised-button color="warn" class="note-btn" (click)="onCancel()">Cancel</button>
+        </div>
+    </form>
+</div>
+
+<div class='note-cards'>
+    <mat-card class="note-card">
+        <mat-card-header>
+            <div mat-card-avatar class="note-header-image"></div>
+            <mat-card-title>Date</mat-card-title>
+        </mat-card-header>
+        <img mat-card-image [src]=player.player.team.imageUrl>
+        <mat-card-content>
+            <p>
+                The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan.
+                A small, agile dog that copes very well with mountainous terrain, the Shiba Inu was originally
+                bred for hunting.
+            </p>
+        </mat-card-content>
+        <mat-card-actions>
+            <button mat-button>LIKE</button>
+            <button mat-button>SHARE</button>
+        </mat-card-actions>
+    </mat-card>
+</div>

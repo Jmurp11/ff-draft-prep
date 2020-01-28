@@ -1,0 +1,9 @@
+<mat-sidenav-container class="container" *ngIf="shouldRun">
+    <mat-sidenav #sidenav mode="side" [(opened)]="opened">
+        <app-note></app-note>
+    </mat-sidenav>
+
+    <mat-sidenav-content>
+        <app-player-table></app-player-table>
+    </mat-sidenav-content>
+</mat-sidenav-container>

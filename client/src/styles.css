@@ -30,14 +30,11 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 .card-header {
   text-align: center;
+  align-content: center;
 }
 
 .invalid-label {
   color: red;
-}
-
-.card-header {
-  align-content: center;
 }
 
 .card-header-text {
