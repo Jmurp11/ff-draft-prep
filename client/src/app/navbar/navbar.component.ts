@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { DraftStateService } from '../player-table/draft-state.service';
 import { Subscription } from 'rxjs';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
@@ -11,7 +12,10 @@ export class NavbarComponent implements OnInit, OnDestroy {
   isDraft: Boolean;
   _draftSubscription: Subscription;
 
-  constructor(private draftState: DraftStateService) { }
+  constructor(
+    private draftState: DraftStateService,
+    private router: Router
+  ) { }
 
   ngOnInit() {
     this.menuOption = 'Draft';
@@ -25,6 +29,10 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.updateMenuOption();
   }
 
+  navigateToDraft() {
+    this.updateDraftState();
+    this.router.navigate(['./draft']);
+  }
   updateMenuOption() {
     if (this.draftState.isDraft.getValue()) {
       this.menuOption = 'Draft Prep';

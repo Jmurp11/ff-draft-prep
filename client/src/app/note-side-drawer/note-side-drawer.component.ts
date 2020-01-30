@@ -6,7 +6,6 @@ import { Component } from '@angular/core';
   styleUrls: ['./note-side-drawer.component.css']
 })
 export class NoteSideDrawerComponent {
-  events: string[] = [];
   opened: boolean;
 
   shouldRun = [/(^|\.)plnkr\.co$/, /(^|\.)stackblitz\.io$/].some(h => h.test(window.location.host));
