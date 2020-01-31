@@ -35,6 +35,9 @@ export class NoteComponent implements OnInit {
       note: new FormControl(null, {
         updateOn: 'blur',
         validators: [Validators.required, Validators.minLength(5)]
+      }),
+      source: new FormControl(null, {
+        updateOn: 'blur'
       })
     });
 
@@ -62,11 +65,11 @@ export class NoteComponent implements OnInit {
 
     this.callAddNoteMutation(user, title, date, body, source);
 
-    this.form.reset
+    this.form.reset();
   }
 
   onCancel() {
-    this.form.reset
+    this.form.reset();
   }
 
   callAddNoteMutation(user: string, title: string, date: string, body: string, source: string) {

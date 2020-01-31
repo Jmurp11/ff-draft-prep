@@ -5,7 +5,7 @@ import { BehaviorSubject, of } from 'rxjs';
   providedIn: 'root'
 })
 export class DraftStateService {
-  isDraft = new BehaviorSubject<Boolean>(false);
+  isDraft = new BehaviorSubject<boolean>(false);
 
   constructor() { }
 
@@ -14,6 +14,6 @@ export class DraftStateService {
   }
 
   updateIsDraft() {
-    this.isDraft.next(!this.isDraft.getValue())
+    this.isDraft.next(!this.isDraft.getValue());
   }
 }

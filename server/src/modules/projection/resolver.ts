@@ -10,7 +10,7 @@ import { projectionAlreadyExists } from "./errorMessages";
 export const resolvers: ResolverMap = {
     Query: {
         projections: async (_: any) => {
-            const projections = await getRepository(Projection)
+            return getRepository(Projection)
                 .find({
                     join: {
                         alias: "projection",
@@ -20,11 +20,10 @@ export const resolvers: ResolverMap = {
                         }
                     }
                 });
-            return projections;
         },
         projection: async (_: any, { player }:
             GQL.IProjectionOnQueryArguments) => {
-            const projections = await getRepository(Projection)
+            return getRepository(Projection)
                 .find({
                     join: {
                         alias: "projection",
@@ -34,7 +33,6 @@ export const resolvers: ResolverMap = {
                         }
                     }, where: { player }
                 });
-            return projections;
         },
     },
     Mutation: {

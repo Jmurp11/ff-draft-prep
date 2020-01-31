@@ -117,3 +117,22 @@ div.resetButtonContainer {
   font-weight: bold;
   margin: 5px;
 }
+
+.drawer-container {
+  width: 100%;
+  height: 100%;
+}
+
+.content {
+  height: 100%;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.sidenav {
+  display: flex;
+  flex-direction: column;
+  width: 25%;
+  padding: 10px;
+}

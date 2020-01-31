@@ -29,13 +29,13 @@ export class PlayerTableComponent implements OnInit, OnDestroy {
   querySubscription: Subscription;
   lastSelectedPlayer: Player;
   selectedPlayers: Player[];
-  isDraft: Boolean;
-  _draftSubscription: Subscription;
+  isDraft: boolean;
+  draftSubscription: Subscription;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
-  columnsToDisplay = ['draft', 'player.rank', 'player.adp', 'player.lastName', 'player.position', 'player.team.abbreviation',
+  columnsToDisplay = ['draft', 'note', 'player.rank', 'player.adp', 'player.lastName', 'player.position', 'player.team.abbreviation',
     'player.tier', 'player.team.bye', 'completions', 'attempts', 'passYards', 'passTd', 'interception', 'carries', 'rushYards',
     'rushTd', 'fumbles', 'receptions', 'receivingYards', 'receivingTd', 'fantasyPoints'];
 
@@ -44,8 +44,8 @@ export class PlayerTableComponent implements OnInit, OnDestroy {
   constructor(
     private apollo: Apollo,
     private draftState: DraftStateService
-  ) { 
-    this._draftSubscription = this.draftState.isDraft.subscribe(data => {
+  ) {
+    this.draftSubscription = this.draftState.isDraft.subscribe(data => {
       this.isDraft = data;
     });
   }
@@ -129,6 +129,6 @@ export class PlayerTableComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.querySubscription.unsubscribe();
-    this._draftSubscription.unsubscribe();
+    this.draftSubscription.unsubscribe();
   }
 }

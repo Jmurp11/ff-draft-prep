@@ -16,8 +16,8 @@ import { AuthComponent } from './auth/auth.component';
 import { ProfileComponent } from './profile/profile.component';
 import { CreateProfileComponent } from './profile/create-profile/create-profile.component';
 import { EditProfileComponent } from './profile/edit-profile/edit-profile.component';
-import { NoteSideDrawerComponent } from './note-side-drawer/note-side-drawer.component';
 import { NoteComponent } from './note/note.component';
+import { NoteCardComponent } from './note-card/note-card.component';
 
 @NgModule({
   declarations: [
@@ -29,8 +29,8 @@ import { NoteComponent } from './note/note.component';
     ProfileComponent,
     CreateProfileComponent,
     EditProfileComponent,
-    NoteSideDrawerComponent,
-    NoteComponent
+    NoteComponent,
+    NoteCardComponent
   ],
   imports: [
     BrowserModule,

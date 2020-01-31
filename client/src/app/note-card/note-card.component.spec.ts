@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { NoteSideDrawerComponent } from './note-side-drawer.component';
+import { NoteCardComponent } from './note-card.component';
 
-describe('NoteSideDrawerComponent', () => {
-  let component: NoteSideDrawerComponent;
-  let fixture: ComponentFixture<NoteSideDrawerComponent>;
+describe('NoteCardComponent', () => {
+  let component: NoteCardComponent;
+  let fixture: ComponentFixture<NoteCardComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ NoteSideDrawerComponent ]
+      declarations: [ NoteCardComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(NoteSideDrawerComponent);
+    fixture = TestBed.createComponent(NoteCardComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
