@@ -10,3 +10,12 @@ mat-card-content {
 .note-input {
   padding: 5px;
 }
+
+.note-header-image {
+  background-size: contain;
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  object-fit: none;
+}

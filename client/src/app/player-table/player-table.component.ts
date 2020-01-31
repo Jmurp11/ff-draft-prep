@@ -8,6 +8,7 @@ import { Apollo } from 'apollo-angular';
 import { DraftStateService } from './draft-state.service';
 import { projections } from './queries';
 import { Player } from './Player';
+import { PlayerService } from './player.service';
 
 @Component({
   selector: 'app-player-table',
@@ -26,11 +27,11 @@ export class PlayerTableComponent implements OnInit, OnDestroy {
   dataSource: MatTableDataSource<Player>;
   players: Player[];
   loading: boolean;
-  querySubscription: Subscription;
+  _querySubscription: Subscription;
   lastSelectedPlayer: Player;
   selectedPlayers: Player[];
   isDraft: boolean;
-  draftSubscription: Subscription;
+  _draftSubscription: Subscription;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -43,9 +44,10 @@ export class PlayerTableComponent implements OnInit, OnDestroy {
 
   constructor(
     private apollo: Apollo,
-    private draftState: DraftStateService
+    private _draftState: DraftStateService,
+    private _player: PlayerService
   ) {
-    this.draftSubscription = this.draftState.isDraft.subscribe(data => {
+    this._draftSubscription = this._draftState.isDraft.subscribe(data => {
       this.isDraft = data;
     });
   }
@@ -53,7 +55,7 @@ export class PlayerTableComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.players = [];
     this.selectedPlayers = [];
-    this.querySubscription = this.apollo.watchQuery<any>({
+    this._querySubscription = this.apollo.watchQuery<any>({
       query: projections
     })
       .valueChanges
@@ -120,6 +122,15 @@ export class PlayerTableComponent implements OnInit, OnDestroy {
     }
   }
 
+  updateCurrentPlayer(player: Player) {
+    return this._player.updateCurrentPlayer(player);
+  }
+
+  onRowClick(player: Player) {
+    this.updateCurrentPlayer(player);
+    this.expandedPlayer = this.expandedPlayer === player ? null : player;
+  }
+
   resetAll() {
     this.selectedPlayers.forEach(player => {
       player.selected = false;
@@ -128,7 +139,7 @@ export class PlayerTableComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.querySubscription.unsubscribe();
-    this.draftSubscription.unsubscribe();
+    this._querySubscription.unsubscribe();
+    this._draftSubscription.unsubscribe();
   }
 }

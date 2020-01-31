@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
 })
 export class NavbarComponent implements OnInit, OnDestroy {
   menuOption: string;
-  isDraft: Boolean;
+  isDraft: boolean;
   _draftSubscription: Subscription;
 
   constructor(

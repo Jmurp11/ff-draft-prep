@@ -221,7 +221,7 @@
             'isRb': player.player.position === 'RB',
             'isWr': player.player.position === 'WR',
             'isTe': player.player.position === 'TE'
-          }" (click)="expandedPlayer = expandedPlayer === player ? null : player">
+          }" (click)="onRowClick(player)">
       </tr>
       <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="detail-row"></tr>
     </table>

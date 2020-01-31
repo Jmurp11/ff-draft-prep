@@ -28,11 +28,11 @@ export class AuthComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private authService: AuthService,
+    private _authService: AuthService,
     private apollo: Apollo,
     private snackbar: MatSnackBar
   ) {
-    if (this.authService.getCurrentUser()) {
+    if (this._authService.getCurrentUser()) {
       this.router.navigate(['/dashboard']);
     }
   }
@@ -94,7 +94,7 @@ export class AuthComponent implements OnInit {
             this.subLoading = loading;
             user = data.userByEmail;
             localStorage.setItem('currentUser', JSON.stringify(user));
-            this.authService.setCurrentUser(user);
+            this._authService.setCurrentUser(user);
             if (user) {
               this.router.navigate(['./dashboard']);
               this.openSnackBar('Success! Welcome back!' , 'Dismiss');
@@ -105,7 +105,7 @@ export class AuthComponent implements OnInit {
           });
       } else {
         this.openSnackBar(data.login[0].message, 'Dismiss');
-        this.authService.setMessage(data.login[0].message);
+        this._authService.setMessage(data.login[0].message);
         this.resetForm();
       }
     }, (error) => {

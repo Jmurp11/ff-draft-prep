@@ -1,5 +1,6 @@
 export interface Player {
   player: {
+    id: number;
     firstName: string;
     lastName: string;
     team: {

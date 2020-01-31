@@ -2,11 +2,12 @@
   <form [formGroup]="form" (ngSubmit)="onSubmit()" class="form">
     <mat-card class="note-card">
       <mat-card-header>
-        <div mat-card-avatar class="note-header-image"></div>
-        <mat-card-title>Player Name - Pos</mat-card-title>
-        <mat-card-subtitle>Date</mat-card-subtitle>
+        <div mat-card-avatar class="note-header-image"
+          [ngStyle]="{ 'background-image': 'url('+currentPlayer.player.team.imageUrl+')' }"></div>
+        <mat-card-title>{{ currentPlayer.player.firstName }} {{ currentPlayer.player.lastName }}</mat-card-title>
+        <mat-card-subtitle>{{ currentPlayer.player.team.abbreviation }} - {{currentPlayer.player.position }}
+        </mat-card-subtitle>
       </mat-card-header>
-      <!--<img mat-card-image team image>-->
       <mat-card-content>
         <mat-form-field class="note-input">
           <input matInput placeholder="Title" formControlName="title" class="form-control">

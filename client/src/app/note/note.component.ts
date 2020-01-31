@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { BehaviorSubject, Observable, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { Apollo } from 'apollo-angular';
 import { PlayerService } from '../player-table/player.service';
 import { DraftStateService } from '../player-table/draft-state.service';
 import { AuthService } from '../auth/auth.service';
 import { addNote } from './queries';
+import { Player } from '../player-table/Player';
 
 @Component({
   selector: 'app-note',
@@ -15,6 +16,8 @@ import { addNote } from './queries';
 })
 export class NoteComponent implements OnInit {
   form: FormGroup;
+  _currentPlayer: Subscription;
+  currentPlayer: Player;
   titleIsValid = true;
   noteIsValid = true;
   loading = false;
@@ -27,6 +30,10 @@ export class NoteComponent implements OnInit {
     private snackbar: MatSnackBar) { }
 
   ngOnInit() {
+    this._currentPlayer = this._player.currentPlayer.subscribe(data => {
+      this.currentPlayer = data;
+    });
+
     this.form = new FormGroup({
       title: new FormControl(null, {
         updateOn: 'blur',
@@ -56,6 +63,7 @@ export class NoteComponent implements OnInit {
     }
 
     const user = this._auth.getCurrentUser().id;
+    const player = this.currentPlayer.player.id;
     const title = this.form.get('title').value;
     const body = this.form.get('note').value;
     const source = this.form.get('source').value;
@@ -63,7 +71,7 @@ export class NoteComponent implements OnInit {
 
     this.loading = true;
 
-    this.callAddNoteMutation(user, title, date, body, source);
+    this.callAddNoteMutation(user, player, title, date, body, source);
 
     this.form.reset();
   }
@@ -72,11 +80,12 @@ export class NoteComponent implements OnInit {
     this.form.reset();
   }
 
-  callAddNoteMutation(user: string, title: string, date: string, body: string, source: string) {
+  callAddNoteMutation(user: string, player: number, title: string, date: string, body: string, source: string) {
     return this.apollo.mutate({
       mutation: addNote,
       variables: {
         user,
+        player,
         title,
         date,
         body,

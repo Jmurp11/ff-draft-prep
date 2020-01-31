@@ -9,9 +9,9 @@ import { DraftStateService } from './player-table/draft-state.service';
 export class AppComponent implements OnInit {
   title = 'Draft Shark';
 
-  constructor(private draftState: DraftStateService) { }
+  constructor(private _draftState: DraftStateService) { }
 
   ngOnInit() {
-    this.draftState.setInitialState();
+    this._draftState.setInitialState();
   }
 }
