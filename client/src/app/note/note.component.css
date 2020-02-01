@@ -12,14 +12,8 @@ mat-card-content {
 }
 
 .note-header-image {
-  background-size: cover;
   height: 40px;
   width: 40px;
   border-radius: 50%;
   flex-shrink: 0;
-}
-
-.team-image {
-  height: 10%;
-  width: 15%;
 }

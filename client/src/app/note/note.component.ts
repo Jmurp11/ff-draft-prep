@@ -32,6 +32,20 @@ export class NoteComponent implements OnInit {
   ngOnInit() {
     this._currentPlayer = this._player.currentPlayer.subscribe(data => {
       this.currentPlayer = data;
+      switch (this.currentPlayer.player.position) {
+        case 'QB':
+          this.backgroundColor = 'lightskyblue';
+          break;
+        case 'RB':
+          this.backgroundColor = 'lightgreen';
+          break;
+        case 'WR':
+          this.backgroundColor = 'lightpink';
+          break;
+        case 'TE':
+          this.backgroundColor = 'lightgoldenrodyellow';
+          break;
+      }
     });
 
     this.form = new FormGroup({
