@@ -15,7 +15,9 @@ type Note {
 type Query {
   note(id: String): Note
   notes: [Note],
-  notesByUser(user: String): [Note]
+  notesByUser(user: String): [Note],
+  notesByPlayer(player: Int): [Note],
+  notesByUserAndPlayer(user: String, player: Int): [Note]
 }
 
 type Mutation {

@@ -45,6 +45,30 @@ export const resolvers: ResolverMap = {
                     }, where: { user }
                 });
         },
+        notesByPlayer: async (_: any, { player }: GQL.INotesByPlayerOnQueryArguments) => {
+            return getRepository(Note)
+                .find({
+                    join: {
+                        alias: "note",
+                        leftJoinAndSelect: {
+                            user: "note.user",
+                            player: "note.player",
+                        }
+                    }, where: { player }
+                });
+        },
+        notesByUserAndPlayer: async (_: any, { user, player }: GQL.INotesByUserAndPlayerOnQueryArguments) => {
+            return getRepository(Note)
+                .find({
+                    join: {
+                        alias: "note",
+                        leftJoinAndSelect: {
+                            user: "note.user",
+                            player: "note.player",
+                        }
+                    }, where: { user, player }
+                });
+        },
     },
     Mutation: {
         addNote: async (_: any, {

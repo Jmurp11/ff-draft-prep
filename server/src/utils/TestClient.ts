@@ -615,6 +615,57 @@ export class TestClient {
         });
     }
 
+    async notesByPlayer(player: number) {
+        return rp.post(this.url, {
+            ...this.options,
+            body: {
+                query: `
+                    query {
+                        notesByPlayer(player: ${player}) {
+                            id
+                            user {
+                                id
+                            }
+                            player {
+                                id
+                            }
+                            date
+                            title
+                            body
+                            source
+                        }
+                    }
+                `
+            }
+        });
+    }
+
+    async notesByUserAndPlayer(user: string, player: number) {
+        return rp.post(this.url, {
+            ...this.options,
+            body: {
+                query: `
+                    query {
+                        notesByUserAndPlayer(user: "${user}", player: ${player}) {
+                            id
+                            user {
+                                id
+                            }
+                            player {
+                                id
+                            }
+                            date
+                            title
+                            body
+                            source
+                        }
+                    }
+                `
+            }
+        });
+    }
+
+
     async createDraft(user: string,
         date: string,
         type: string,

@@ -6,7 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./note-card.component.css']
 })
 export class NoteCardComponent implements OnInit {
-
+  
   constructor() { }
 
   ngOnInit() {

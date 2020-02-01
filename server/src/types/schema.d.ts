@@ -33,6 +33,8 @@ declare namespace GQL {
     note: INote | null;
     notes: Array<INote | null> | null;
     notesByUser: Array<INote | null> | null;
+    notesByPlayer: Array<INote | null> | null;
+    notesByUserAndPlayer: Array<INote | null> | null;
     player: Array<IPlayer | null> | null;
     players: Array<IPlayer | null> | null;
     projections: Array<IProjection | null> | null;
@@ -83,6 +85,15 @@ declare namespace GQL {
 
   interface INotesByUserOnQueryArguments {
     user?: string | null;
+  }
+
+  interface INotesByPlayerOnQueryArguments {
+    player?: number | null;
+  }
+
+  interface INotesByUserAndPlayerOnQueryArguments {
+    user?: string | null;
+    player?: number | null;
   }
 
   interface IPlayerOnQueryArguments {
@@ -149,34 +160,6 @@ declare namespace GQL {
     forgotPasswordLock: boolean | null;
   }
 
-  interface IMessage {
-    __typename: 'Message';
-    id: string | null;
-    author: IUser | null;
-    thread: IThread | null;
-    dateCreated: string | null;
-    body: string | null;
-  }
-
-  interface IThread {
-    __typename: 'Thread';
-    id: string | null;
-    creator: IUser | null;
-    dateCreated: string | null;
-    title: string | null;
-  }
-
-  interface INote {
-    __typename: 'Note';
-    id: string | null;
-    user: IUser | null;
-    player: IPlayer | null;
-    date: string | null;
-    title: string | null;
-    body: string | null;
-    source: string | null;
-  }
-
   interface IPlayer {
     __typename: 'Player';
     id: number | null;
@@ -219,6 +202,23 @@ declare namespace GQL {
     turnoverPercentage: number | null;
     offensiveLineRank: number | null;
     runningBackSoS: number | null;
+  }
+
+  interface IMessage {
+    __typename: 'Message';
+    id: string | null;
+    author: IUser | null;
+    thread: IThread | null;
+    dateCreated: string | null;
+    body: string | null;
+  }
+
+  interface IThread {
+    __typename: 'Thread';
+    id: string | null;
+    creator: IUser | null;
+    dateCreated: string | null;
+    title: string | null;
   }
 
   interface INote {
@@ -287,6 +287,7 @@ declare namespace GQL {
     numberOfTeams: number;
     title: string;
   }
+
   interface ICreateMessageOnMutationArguments {
     author: string;
     thread: string;
