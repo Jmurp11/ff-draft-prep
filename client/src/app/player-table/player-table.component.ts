@@ -61,6 +61,7 @@ export class PlayerTableComponent implements OnInit, OnDestroy {
       .valueChanges
       .subscribe(({ data, loading }) => {
         this.loading = loading;
+        console.log('subscribe hit');
         data.projections.forEach(el => {
           el.selected = false;
           el.buttonText = 'Draft';

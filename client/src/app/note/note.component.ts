@@ -21,7 +21,6 @@ export class NoteComponent implements OnInit {
   backgroundColor: string;
   titleIsValid = true;
   noteIsValid = true;
-  loading = false;
 
   constructor(
     private _player: PlayerService,
@@ -69,8 +68,6 @@ export class NoteComponent implements OnInit {
     const body = this.form.get('note').value;
     const source = this.form.get('source').value;
     const date = new Date().toLocaleString();
-
-    this.loading = true;
 
     this.callAddNoteMutation(user, player, title, date, body, source);
 
