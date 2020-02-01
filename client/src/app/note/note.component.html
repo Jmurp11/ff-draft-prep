@@ -1,12 +1,12 @@
-<div class='add-note-card'>
+<div class='add-note-card' *ngIf="currentPlayer !== undefined ">
   <form [formGroup]="form" (ngSubmit)="onSubmit()" class="form">
     <mat-card class="note-card">
       <mat-card-header>
-        <div mat-card-avatar class="note-header-image"
-          [ngStyle]="{ 'background-image': 'url('+currentPlayer.player.team.imageUrl+')' }"></div>
+        <div mat-card-avatar class="note-header-image" [ngStyle]="{ 'background-color': backgroundColor}"></div>
         <mat-card-title>{{ currentPlayer.player.firstName }} {{ currentPlayer.player.lastName }}</mat-card-title>
         <mat-card-subtitle>{{ currentPlayer.player.team.abbreviation }} - {{currentPlayer.player.position }}
         </mat-card-subtitle>
+        <mat-card-subtitle>{{ currentDate }}</mat-card-subtitle>
       </mat-card-header>
       <mat-card-content>
         <mat-form-field class="note-input">

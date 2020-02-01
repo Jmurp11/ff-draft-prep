@@ -1,18 +1,17 @@
 import { Injectable } from '@angular/core';
 import { Player } from './Player';
-import { BehaviorSubject } from 'rxjs';
+import { ReplaySubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PlayerService {
-  currentPlayer = new BehaviorSubject<Player>(null);
+  currentPlayer = new ReplaySubject<Player>();
 
   constructor() { }
 
   updateCurrentPlayer(player: Player) {
     this.currentPlayer.next(player);
-    console.log(this.currentPlayer);
   }
 
 }

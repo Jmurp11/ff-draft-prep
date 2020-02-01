@@ -18,6 +18,7 @@ export class NoteComponent implements OnInit {
   form: FormGroup;
   _currentPlayer: Subscription;
   currentPlayer: Player;
+  backgroundColor: string;
   titleIsValid = true;
   noteIsValid = true;
   loading = false;
@@ -67,7 +68,7 @@ export class NoteComponent implements OnInit {
     const title = this.form.get('title').value;
     const body = this.form.get('note').value;
     const source = this.form.get('source').value;
-    const date = new Date().toString();
+    const date = new Date().toLocaleString();
 
     this.loading = true;
 
@@ -105,5 +106,9 @@ export class NoteComponent implements OnInit {
     this.snackbar.open(message, action, {
       duration: 5000
     });
+  }
+
+  ngOnDestroy() {
+    this._currentPlayer.unsubscribe();
   }
 }
