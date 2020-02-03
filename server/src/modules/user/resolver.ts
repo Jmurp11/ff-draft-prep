@@ -108,13 +108,11 @@ export const resolvers: ResolverMap = {
                 ];
             }
 
-            const user = User.create({
+            const user = await User.create({
                 email,
                 password,
                 username
-            });
-
-            await user.save();
+            }).save();
 
             if (process.env.NODE_ENV !== 'test' && process.env.NODE_ENV !== 'development') {
                 await sendEmail(

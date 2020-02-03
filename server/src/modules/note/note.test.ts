@@ -14,6 +14,7 @@ const password = "jlkajoioiqwe";
 let userId: string;
 let userId2: string;
 let playerId: number;
+let playerId2: number;
 let teamId: number;
 let noteId: string;
 
@@ -76,6 +77,17 @@ beforeEach(async () => {
         tier: playerData.tier
     }).save();
     playerId = player.id;
+
+    const player2 = await Player.create({
+        firstName: 'Test',
+        lastName: 'Player2',
+        team: teamId,
+        position: playerData.position,
+        rank: playerData.rank,
+        adp: playerData.adp,
+        tier: playerData.tier
+    }).save();
+    playerId2 = player2.id;
 
     const newNote = await Note.create({
         user: userId,
@@ -170,5 +182,31 @@ describe("note queries", () => {
 
         expect(response.data.notesByUser).toHaveLength(1);
         expect(response.data.notesByUser[0].user.id).toEqual(userId);
+    });
+
+    it('return notes by player', async () => {
+        const client = new TestClient(process.env.TEST_HOST as string);
+
+        await client.addNote(userId2, playerId2, noteData.date,
+            noteData.title, noteData.body, noteData.source);
+
+        const response = await client.notesByPlayer(playerId2);
+
+        expect(response.data.notesByPlayer).toHaveLength(1);
+        expect(response.data.notesByPlayer[0].player.id).toEqual(playerId2);
+    });
+
+    it('return notes by user and player', async () => {
+        const client = new TestClient(process.env.TEST_HOST as string);
+
+        await client.addNote(userId2, playerId2, noteData.date,
+            noteData.title, noteData.body, noteData.source);
+
+        const response = await client.notesByUserAndPlayer(userId2, playerId2);
+
+        expect(response.data.notesByUserAndPlayer).toHaveLength(1);
+        expect(response.data.notesByUserAndPlayer[0].user.id).toEqual(userId2);
+        expect(response.data.notesByUserAndPlayer[0].player.id).toEqual(playerId2);
+
     });
 });

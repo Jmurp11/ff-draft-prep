@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { Apollo } from 'apollo-angular';
 import { register } from './queries';
@@ -21,7 +22,9 @@ export class CreateProfileComponent implements OnInit {
 
   constructor(
     private apollo: Apollo,
-    private router: Router) { }
+    private router: Router,
+    private snackbar: MatSnackBar
+  ) { }
 
   ngOnInit() {
     this.form = new FormGroup({
@@ -70,19 +73,31 @@ export class CreateProfileComponent implements OnInit {
           username: this.form.get('username').value
         }
       }).subscribe(({ data }) => {
-        this.router.navigate(['./login']);
-        this.form.reset();
+        if (data != { register: null }) {
+          this.openSnackBar(data.register[0].message, 'Dismiss');
+        } else {
+          this.router.navigate(['./login']);
+          this.openSnackBar('Success! Welcome to DraftShark', 'Dismiss');
+          this.form.reset();
+        }
         return data;
       }, (error) => {
         console.log(error);
       });
     } else {
       this.passwordEqualConfirmPasswordIsValid = false;
+      this.openSnackBar('Registration failed!', 'Dismiss');
     }
   }
 
 
   onLoginClick() {
     this.router.navigate(['./login']);
+  }
+
+  openSnackBar(message: string, action: string) {
+    this.snackbar.open(message, action, {
+      duration: 5000
+    });
   }
 }

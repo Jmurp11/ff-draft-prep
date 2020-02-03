@@ -17,10 +17,10 @@
       "@types/yup": "~0.26.24",
       "gql2ts": "~1.10.1",
       "jest": "~24.8.0",
-      "nodemon": "~1.19.1",
       "prettier": "~1.18.2",
       "ts-jest": "~24.0.2",
       "ts-node": "8.3.0",
+      "ts-node-dev": "~1.0.0-pre.44",
       "typescript": "3.5.3"
    },
    "dependencies": {
@@ -56,11 +56,12 @@
       "tslint": "~5.18.0",
       "tslint-config-prettier": "~1.18.0",
       "typeorm": "0.2.18",
+      "uninstall": "0.0.0",
       "uuid": "~3.3.3",
       "yup": "~0.27.0"
    },
    "scripts": {
-      "start:dev": "NODE_ENV=development nodemon --exec ts-node --files src/index.ts",
+      "start:dev": "NODE_ENV=development ts-node-dev --respawn --files src/index.ts",
       "start:prod": "NODE_ENV=production ts-node --files src/index.ts",
       "gen-schema-types": "ts-node --files src/scripts/createTypes.ts",
       "test": "NODE_ENV=test TS_NODE_FILES=true jest --runInBand --coverage --forceExit"

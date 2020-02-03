@@ -28,10 +28,16 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   text-align: center;
 }
 
-.card-header {
-  text-align: center;
-}
-
 .invalid-label {
   color: red;
+}
+
+
+.note-card {
+  max-width: 400;
+}
+
+.auth-header-image {
+  background-image: url('https://freedesignfile.com/upload/2015/12/Cartoon-funny-shark-vector-material-02.jpg');
+  background-size: cover;
 }

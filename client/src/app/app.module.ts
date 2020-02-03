@@ -16,6 +16,8 @@ import { AuthComponent } from './auth/auth.component';
 import { ProfileComponent } from './profile/profile.component';
 import { CreateProfileComponent } from './profile/create-profile/create-profile.component';
 import { EditProfileComponent } from './profile/edit-profile/edit-profile.component';
+import { NoteComponent } from './note/note.component';
+import { NoteCardComponent } from './note-card/note-card.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +28,9 @@ import { EditProfileComponent } from './profile/edit-profile/edit-profile.compon
     AuthComponent,
     ProfileComponent,
     CreateProfileComponent,
-    EditProfileComponent
+    EditProfileComponent,
+    NoteComponent,
+    NoteCardComponent
   ],
   imports: [
     BrowserModule,
@@ -42,4 +46,4 @@ import { EditProfileComponent } from './profile/edit-profile/edit-profile.compon
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }

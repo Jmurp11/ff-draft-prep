@@ -4,7 +4,7 @@ import {
     Team
 } from './../../entity';
 import { getRepository } from "typeorm";
-import { playerAlreadyExists } from "./errorMessages";
+import { playerAlreadyExists, unsuccessfulSave } from "./errorMessages";
 
 export const resolvers: ResolverMap = {
     Query: {
@@ -43,11 +43,12 @@ export const resolvers: ResolverMap = {
             if (playerExists) {
                 return [
                     {
-                        path: "team",
+                        path: "player",
                         message: playerAlreadyExists
                     }
                 ];
             }
+
             const teamQueryResult = await Team.findOne({
                 where: { abbreviation: team }
             });
@@ -62,11 +63,15 @@ export const resolvers: ResolverMap = {
                     adp,
                     tier
                 }).save();
-
-                return true;
+                return null;
             }
 
-            return false;
+            return [
+                {
+                    path: "player",
+                    message: unsuccessfulSave
+                }
+            ];
         }
     }
 };
