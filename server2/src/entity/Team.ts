@@ -1,0 +1,26 @@
+import { 
+    Entity,
+    Column,
+    PrimaryGeneratedColumn,
+    BaseEntity
+} from "typeorm";
+import { ObjectType } from "type-graphql";
+
+@Entity("teams")
+@ObjectType()
+export class Team extends BaseEntity {
+    @PrimaryGeneratedColumn()
+    id!: number;
+
+    @Column("text")
+    city!: string;
+
+    @Column("text")
+    nickname!: string;
+
+    @Column("text")
+    abbreviation!: string;
+
+    @Column("text")
+    imageUrl!: string;
+}
