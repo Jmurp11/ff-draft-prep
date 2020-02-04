@@ -44,8 +44,14 @@ export class PlayerResolver {
             tier
         }: PlayerInput
     ): Promise<Result> {
+        const teamResult = await Team.findOne({
+            where: { abbreviation: team }
+        });
+
+        const teamId = teamResult!.id;
+
         const playerExists = await Player.findOne({
-            where: { firstName, lastName, team, position },
+            where: { firstName, lastName, teamId, position },
             select: ["id"]
         });
 
@@ -59,14 +65,11 @@ export class PlayerResolver {
                 ]
             };
         }
-        const teamQueryResult = await Team.findOne({
-            where: { abbreviation: team }
-        });
-        
+
         await Player.create({
             firstName,
             lastName,
-            team: teamQueryResult!.id,
+            team: teamId,
             position,
             rank,
             adp,

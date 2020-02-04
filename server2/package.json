@@ -32,7 +32,7 @@
     "typeorm": "0.2.20"
   },
   "scripts": {
-    "start": "ts-node-dev --respawn src/index.ts",
+    "start": "ts-node-dev src/index.ts",
     "build": "tsc"
   }
 }
