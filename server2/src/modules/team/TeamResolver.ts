@@ -3,15 +3,15 @@ import { Team } from '../../entity';
 import { Result } from '../../types';
 import { TeamInput } from './inputs/TeamInput';
 
-@Resolver(Team)
+@Resolver()
 export class TeamResolver {
     @Query(() => [Team])
-    async teams(): Promise<Team[]> {
+    async teams() {
         return Team.find();
     }
 
     @Query(() => Team)
-    async team(@Arg('id') id: string): Promise<Team | undefined> {
+    async team(@Arg('id') id: string) {
         return Team.findOne({
             where: {
                 id
@@ -20,7 +20,7 @@ export class TeamResolver {
     }
 
     @Query(() => Team)
-    async teamByAbbreviation(@Arg('abbreviation') abbreviation: string): Promise<Team | undefined> {
+    async teamByAbbreviation(@Arg('abbreviation') abbreviation: string) {
         return Team.findOne({
             where: {
                 abbreviation

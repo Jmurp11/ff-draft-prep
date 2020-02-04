@@ -3,15 +3,15 @@ import { Player, Team } from '../../entity';
 import { Result } from '../../types';
 import { PlayerInput } from './inputs/PlayerInput';
 
-@Resolver(Player)
+@Resolver()
 export class PlayerResolver {
     @Query(() => [Player])
-    async players(): Promise<Player[]> {
+    async players() {
         return Player.find();
     }
 
     @Query(() => Player)
-    async player(@Arg('id') id: string): Promise<Player | undefined> {
+    async player(@Arg('id') id: string) {
         return Player.findOne({
             where: {
                 id

@@ -7,34 +7,42 @@ import {
    JoinColumn
 } from "typeorm";
 import { Team } from "./index";
-import { ObjectType } from "type-graphql";
+import { ObjectType, Field } from "type-graphql";
 
 @Entity("players")
 @ObjectType()
 export class Player extends BaseEntity {
+    @Field()
     @PrimaryGeneratedColumn()
     id!: number;
 
+    @Field()
     @Column("text")
     firstName!: string;
 
+    @Field()
     @Column("text")
     lastName!: string;
 
     @ManyToOne(() => Team)
     @JoinColumn()
+    @Field()
     @Column("text")
     team!: number;
 
+    @Field()
     @Column("text")
     position!: string;
 
+    @Field()
     @Column("int")
     rank!: number;
 
+    @Field()
     @Column("float")
     adp!: number;
 
+    @Field()
     @Column("text")
     tier!: string;
 }

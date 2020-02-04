@@ -4,13 +4,11 @@ import { Result } from '../../types';
 import { NoteInput } from './inputs/NoteInput';
 import { getRepository } from 'typeorm';
 
-@Resolver(Note)
+@Resolver()
 export class NoteResolver {
     @Query(() => [Note])
-    async note(): Promise<Note[]> {
-        return Note.find();
-        /*
-            return getRepository(Note)
+    async note() {
+        return getRepository(Note)
             .find({
                 join: {
                     alias: "note",
@@ -20,13 +18,10 @@ export class NoteResolver {
                     }
                 }
             });
-        */
     }
 
     @Query(() => Note)
-    async notes(@Arg('id') id: string): Promise<Note | undefined> {
-        return Note.findOne({ where: { id } });
-        /*
+    async notes(@Arg('id') id: string) {
         return getRepository(Note)
             .findOne({
                 join: {
@@ -37,7 +32,6 @@ export class NoteResolver {
                     }
                 }, where: { id }
             });
-        */
     }
 
     @Mutation(() => Result)

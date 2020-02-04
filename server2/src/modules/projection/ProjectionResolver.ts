@@ -8,10 +8,10 @@ import {
 import { Result } from '../../types';
 import { ProjectionInput } from './inputs/ProjectionInput';
 
-@Resolver(Projection)
+@Resolver()
 export class ProjectionResolver {
     @Query(() => [Projection])
-    async projections(): Promise<Projection[]> {
+    async projections() {
         return getRepository(Projection)
                 .find({
                     join: {
@@ -25,7 +25,7 @@ export class ProjectionResolver {
     }
 
     @Query(() => Projection)
-    async projection(@Arg('player') player: string): Promise<Projection | undefined> {
+    async projection(@Arg('player') player: string) {
         return getRepository(Projection)
         .findOne({
             join: {

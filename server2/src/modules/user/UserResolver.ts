@@ -7,15 +7,15 @@ import { registerSuccess, loginFailed, /* confirmEmailError, forgotPasswordLockE
 import { UserResponse } from './UserResponse';
 import { MyContext } from '../../types';
 
-@Resolver(User)
+@Resolver()
 export class UserResolver {
     @Query(() => [User])
-    async users(): Promise<User[]> {
+    async users() {
         return User.find();
     }
 
     @Query(() => User)
-    async user(@Arg('id') id: string): Promise<User | undefined> {
+    async user(@Arg('id') id: string) {
         return User.findOne({
             where: {
                 id
@@ -24,7 +24,7 @@ export class UserResolver {
     }
 
     @Query(() => User)
-    async userByUsername(@Arg('username') username: string): Promise<User | undefined> {
+    async userByUsername(@Arg('username') username: string) {
         return User.findOne({
             where: {
                 username
@@ -33,7 +33,7 @@ export class UserResolver {
     }
 
     @Query(() => User)
-    async userByEmail(@Arg('email') email: string): Promise<User | undefined> {
+    async userByEmail(@Arg('email') email: string) {
         return User.findOne({
             where: {
                 email

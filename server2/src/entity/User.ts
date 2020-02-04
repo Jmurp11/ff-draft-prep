@@ -6,29 +6,36 @@ import {
     BaseEntity,
     BeforeInsert
 } from "typeorm";
-import { ObjectType } from 'type-graphql';
+import { ObjectType, Field } from 'type-graphql';
 
 @Entity("users")
 @ObjectType()
 export class User extends BaseEntity {
+    @Field()
     @PrimaryGeneratedColumn("uuid")
     id!: string;
 
+    @Field()
     @Column("varchar", { length: 255 })
     email!: string;
 
+    @Field()
     @Column("text")
     password!: string;
 
+    @Field()
     @Column("text")
     username!: string;
 
+    @Field()
     @Column("boolean", { default: false })
     confirmed!: boolean;
 
+    @Field()
     @Column("boolean", { default: false }) 
     forgotPasswordLock!: boolean;
 
+    @Field()
     @Column("boolean", { default: false }) 
     isLoggedIn!: boolean;
 

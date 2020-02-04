@@ -24,6 +24,7 @@ import { redisSessionPrefix } from './constants/constants';
   const options = await getConnectionOptions(
     process.env.NODE_ENV || 'development'
   );
+
   await createConnection({ ...options, name: 'default' });
 
   const apolloServer = new ApolloServer({
