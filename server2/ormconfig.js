@@ -34,8 +34,8 @@ module.exports = [
     password: 'postgres',
     database: 'ff-draft-prep-dev',
     synchronize: true,
-    logging: true,
-    dropSchema: true,
+    logging: false,
+    dropSchema: false,
     entities: [
     "src/entity/**/*.ts"
     ],

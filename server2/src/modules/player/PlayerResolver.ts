@@ -2,20 +2,33 @@ import { Resolver, Query, Mutation, Arg } from 'type-graphql';
 import { Player, Team } from '../../entity';
 import { Result } from '../../types';
 import { PlayerInput } from './inputs/PlayerInput';
+import { getRepository } from 'typeorm';
 
 @Resolver()
 export class PlayerResolver {
     @Query(() => [Player])
     async players() {
-        return Player.find();
+        return getRepository(Player)
+        .find({
+            join: {
+                alias: "player",
+                leftJoinAndSelect: {
+                    team: "player.team",
+                }
+            }
+        });
     }
 
     @Query(() => Player)
     async player(@Arg('id') id: string) {
-        return Player.findOne({
-            where: {
-                id
-            }
+        return getRepository(Player)
+        .findOne({
+            join: {
+                alias: "player",
+                leftJoinAndSelect: {
+                    team: "player.team",
+                }
+            }, where: { id }
         });
     }
 

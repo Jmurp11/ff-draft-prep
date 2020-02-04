@@ -39,7 +39,7 @@ export class ProjectionResolver {
     }
 
     @Mutation(() => Result)
-    async createPlayer(
+    async createProjection(
         @Arg('input') {
             firstName, lastName, team, completions, attempts,
             passTd, passYards, interception, carries, rushYards, rushTd, fumbles,
