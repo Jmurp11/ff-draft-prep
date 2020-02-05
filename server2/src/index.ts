@@ -20,7 +20,7 @@ import { redisSessionPrefix } from './constants/constants';
   const app = express();
 
   const SESSION_SECRET = "temporarySessionSecret";
-  
+
   const options = await getConnectionOptions(
     process.env.NODE_ENV || 'development'
   );
@@ -36,7 +36,8 @@ import { redisSessionPrefix } from './constants/constants';
         TeamResolver,
         UserResolver
       ],
-      validate: true
+      validate: true,
+      dateScalarMode: "isoDate"
     }),
     context: ({ req, res }) => ({ req, res })
   });
@@ -49,7 +50,7 @@ import { redisSessionPrefix } from './constants/constants';
       process.env.NODE_ENV === "test"
         ? "*"
         : '*' // (process.env.FRONTEND_HOST as string) 
-        // TODO: Change the above line back in prod
+    // TODO: Change the above line back in prod
   };
 
   app.use(

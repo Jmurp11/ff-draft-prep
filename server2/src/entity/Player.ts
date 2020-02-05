@@ -26,7 +26,7 @@ export class Player extends BaseEntity {
 
     @ManyToOne(() => Team)
     @JoinColumn()
-    @Field()
+    @Field(() => Team)
     @Column("int")
     team!: number;
 

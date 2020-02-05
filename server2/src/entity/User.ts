@@ -39,6 +39,14 @@ export class User extends BaseEntity {
     @Column("boolean", { default: false }) 
     isLoggedIn!: boolean;
 
+    @Field(() => Date)
+    @Column("timestamp")
+    creationTime!: string;
+
+    @Field(() => Date)
+    @Column("timestamp")
+    lastLoggedIn!: string;
+
     @BeforeInsert()
     async hashPassword() {
         this.password = await bcrypt.hash(this.password, 10);

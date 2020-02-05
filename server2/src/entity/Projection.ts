@@ -18,7 +18,7 @@ export class Projection extends BaseEntity {
 
     @ManyToOne(() => Player)
     @JoinColumn()
-    @Field()
+    @Field(() => Player)
     @Column("text")
     player!: number;
 

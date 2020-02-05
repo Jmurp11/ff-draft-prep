@@ -9,7 +9,7 @@ module.exports = [
     database: process.env.DB_DB,
     synchronize: true,
     logging: false,
-    dropSchema: true,
+    dropSchema: false,
     entities: [
        "src/entity/**/*.ts"
     ],
@@ -35,7 +35,7 @@ module.exports = [
     database: 'ff-draft-prep-dev',
     synchronize: true,
     logging: false,
-    dropSchema: false,
+    dropSchema: true,
     entities: [
     "src/entity/**/*.ts"
     ],

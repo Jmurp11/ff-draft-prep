@@ -18,13 +18,13 @@ export class Note extends BaseEntity {
 
     @ManyToOne(() => User)
     @JoinColumn()
-    @Field()
+    @Field(() => User)
     @Column("uuid")
     user!: string;
 
     @ManyToOne(() => Player)
     @JoinColumn()
-    @Field()
+    @Field(() => Player)
     @Column("text")
     player!: number;
 
@@ -55,4 +55,8 @@ export class Note extends BaseEntity {
     @Field()
     @Column("int") 
     shares!: number;
+
+    @Field(() => Date)
+    @Column("timestamp")
+    creationTime!: string;
 }

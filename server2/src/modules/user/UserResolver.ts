@@ -47,10 +47,14 @@ export class UserResolver {
     ): Promise<Result> {
         const hashedPassword = await bcrypt.hash(password, 12);
 
+        const creationTime = new Date().toISOString();
+        console.log(creationTime);
         await User.create({
             email,
             password: hashedPassword,
-            username
+            username,
+            creationTime,
+            lastLoggedIn: creationTime
         }).save();
 
         return {
@@ -100,6 +104,10 @@ export class UserResolver {
 
         ctx.req.session!.user = user;
         
+        const logInTime = new Date().toISOString();
+
+        await User.update({ id: user.id }, { lastLoggedIn: logInTime});
+
         return ctx.req.session!.user;
     }
 }
