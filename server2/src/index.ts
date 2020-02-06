@@ -15,6 +15,7 @@ import {
   UserResolver
 } from './modules';
 import { redisSessionPrefix } from './constants/constants';
+import { MeResolver } from './modules/user/MeResolver';
 
 (async () => {
   const app = express();
@@ -30,13 +31,16 @@ import { redisSessionPrefix } from './constants/constants';
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
       resolvers: [
+        MeResolver,
         NoteResolver,
         PlayerResolver,
         ProjectionResolver,
         TeamResolver,
         UserResolver
       ],
-      validate: true,
+      authChecker: ({ context: { req } }, roles) => {
+        return !!req.session.userId;
+      },
       dateScalarMode: "isoDate"
     }),
     context: ({ req, res }) => ({ req, res })

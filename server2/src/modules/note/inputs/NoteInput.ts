@@ -9,9 +9,6 @@ export class NoteInput {
     player: number;
 
     @Field()
-    date: string;
-
-    @Field()
     title: string;
 
     @Field()

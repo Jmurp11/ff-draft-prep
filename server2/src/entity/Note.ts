@@ -30,10 +30,6 @@ export class Note extends BaseEntity {
 
     @Field()
     @Column("text")
-    date!: string;
-
-    @Field()
-    @Column("text")
     title!: string;
 
     @Field()

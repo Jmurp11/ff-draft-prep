@@ -1,11 +1,13 @@
-import { Resolver, Query, Mutation, Arg } from 'type-graphql';
+import { Resolver, Query, Mutation, Arg, UseMiddleware } from 'type-graphql';
 import { Note } from '../../entity';
 import { Result } from '../../types';
 import { NoteInput } from './inputs/NoteInput';
 import { getRepository } from 'typeorm';
+import { isAuth, logger } from '../../middleware';
 
 @Resolver()
 export class NoteResolver {
+    @UseMiddleware(isAuth, logger)
     @Query(() => [Note])
     async note() {
         return getRepository(Note)
@@ -20,6 +22,7 @@ export class NoteResolver {
             });
     }
 
+    @UseMiddleware(isAuth, logger)
     @Query(() => Note)
     async notes(@Arg('id') id: string) {
         return getRepository(Note)
@@ -34,12 +37,12 @@ export class NoteResolver {
             });
     }
 
+    @UseMiddleware(isAuth, logger)
     @Mutation(() => Result)
     async createNote(
         @Arg('input') {
             user,
             player,
-            date,
             title,
             body,
             source,
@@ -69,10 +72,12 @@ export class NoteResolver {
             }
         }
 
+        const creationTime = new Date().toISOString();
+
         await Note.create({
             user,
             player,
-            date,
+            creationTime,
             title,
             body,
             source,

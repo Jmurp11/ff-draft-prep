@@ -2,17 +2,17 @@ import { registerDecorator, ValidationOptions, ValidatorConstraint, ValidatorCon
 import { User } from '../../../entity';
 
 @ValidatorConstraint({ async: true })
-export class IsForgotPasswordLockConstraint implements ValidatorConstraintInterface {
+export class UserExistsConstraint implements ValidatorConstraintInterface {
 
-    async validate(email: string, args: ValidationArguments) {
+    async validate(id: string, args: ValidationArguments) {
         try {
             const user = await User.findOne({
                 where: {
-                    email
+                    id
                 }
             });
 
-            if (user!.forgotPasswordLock) return false;
+            if (!user) return false;
             return true;
         } catch (e) {
             throw (e);
@@ -21,14 +21,14 @@ export class IsForgotPasswordLockConstraint implements ValidatorConstraintInterf
 
 }
 
-export function IsForgotPasswordLock(validationOptions?: ValidationOptions) {
-    return function (object: Object, propertyName: string) {
+export function UserExists(validationOptions?: ValidationOptions) {
+    return (object: Object, propertyName: string) => {
         registerDecorator({
             target: object.constructor,
             propertyName: propertyName,
             options: validationOptions,
             constraints: [],
-            validator: IsForgotPasswordLockConstraint
+            validator: UserExists
         });
     };
 }

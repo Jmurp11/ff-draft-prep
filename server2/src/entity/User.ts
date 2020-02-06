@@ -1,5 +1,5 @@
 import * as bcrypt from 'bcryptjs';
-import { 
+import {
     Entity,
     Column,
     PrimaryGeneratedColumn,
@@ -32,11 +32,11 @@ export class User extends BaseEntity {
     confirmed!: boolean;
 
     @Field()
-    @Column("boolean", { default: false }) 
+    @Column("boolean", { default: false })
     forgotPasswordLock!: boolean;
 
     @Field()
-    @Column("boolean", { default: false }) 
+    @Column("boolean", { default: false })
     isLoggedIn!: boolean;
 
     @Field(() => Date)
@@ -47,8 +47,12 @@ export class User extends BaseEntity {
     @Column("timestamp")
     lastLoggedIn!: string;
 
+    @Field()
+    @Column("boolean", { default: false })
+    isAdmin!: boolean;
+
     @BeforeInsert()
     async hashPassword() {
-        this.password = await bcrypt.hash(this.password, 10);
+        this.password = await bcrypt.hash(this.password, 12);
     }
 }

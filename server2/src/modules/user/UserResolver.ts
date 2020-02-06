@@ -1,19 +1,21 @@
-import { Resolver, Query, Mutation, Arg, Ctx } from 'type-graphql';
+import { Resolver, Query, Mutation, Arg, Ctx, UseMiddleware } from 'type-graphql';
 import bcrypt from 'bcryptjs';
 import { User } from '../../entity';
-import { RegisterInput, LoginInput } from './inputs';
+import { RegisterInput, LoginInput, AdminInput } from './inputs';
 import { Result } from '../../types';
-import { registerSuccess, loginFailed, /* confirmEmailError, forgotPasswordLockError */ } from './messages';
-import { UserResponse } from './UserResponse';
+import { registerSuccess, loginFailed, loginSuccess, /* confirmEmailError, forgotPasswordLockError */ } from './messages';
 import { MyContext } from '../../types';
+import { isAuth, logger, isAdmin } from '../../middleware';
 
 @Resolver()
 export class UserResolver {
+    @UseMiddleware(isAuth, logger)
     @Query(() => [User])
     async users() {
         return User.find();
     }
 
+    @UseMiddleware(isAuth, logger)
     @Query(() => User)
     async user(@Arg('id') id: string) {
         return User.findOne({
@@ -23,6 +25,7 @@ export class UserResolver {
         });
     }
 
+    @UseMiddleware(isAuth, logger)
     @Query(() => User)
     async userByUsername(@Arg('username') username: string) {
         return User.findOne({
@@ -32,6 +35,7 @@ export class UserResolver {
         });
     }
 
+    @UseMiddleware(isAuth, logger)
     @Query(() => User)
     async userByEmail(@Arg('email') email: string) {
         return User.findOne({
@@ -45,13 +49,11 @@ export class UserResolver {
     async register(
         @Arg('input') { email, password, username }: RegisterInput
     ): Promise<Result> {
-        const hashedPassword = await bcrypt.hash(password, 12);
-
         const creationTime = new Date().toISOString();
-        console.log(creationTime);
+
         await User.create({
             email,
-            password: hashedPassword,
+            password,
             username,
             creationTime,
             lastLoggedIn: creationTime
@@ -67,12 +69,12 @@ export class UserResolver {
         }
     }
 
-    @Mutation(() => User, { nullable: true })
+    @Mutation(() => Result, { nullable: true })
     async login(
         @Arg('input') { email, password }: LoginInput,
         @Ctx() ctx: MyContext
-    ): Promise<UserResponse> {
-        const user = await User.findOne({
+    ): Promise<Result> {
+        let user = await User.findOne({
             where: {
                 email
             }
@@ -102,12 +104,57 @@ export class UserResolver {
             }
         }
 
-        ctx.req.session!.user = user;
-        
+
         const logInTime = new Date().toISOString();
 
-        await User.update({ id: user.id }, { lastLoggedIn: logInTime});
+        await User.update({ id: user.id }, {
+            lastLoggedIn: logInTime,
+            isLoggedIn: true
+        });
 
-        return ctx.req.session!.user;
+        user = await User.findOne({
+            where: {
+                email
+            }
+        });
+
+        ctx.req.session!.userId = user!.id;
+
+        return {
+            success: [
+                {
+                    path: 'login',
+                    message: loginSuccess
+                }
+            ]
+        };
+    }
+
+    @UseMiddleware(isAuth, isAdmin, logger)
+    @Mutation(() => Result)
+    async updateAdminStatus(
+        @Arg('input') { id, isAdmin }: AdminInput
+    ): Promise<Result> {
+        const result = await User.update({ id }, { isAdmin });
+
+        if (result.affected !== 1) {
+            return {
+                errors: [
+                    {
+                        path: 'admin',
+                        message: 'Something went wrong! User was not made an admin!'
+                    }
+                ]
+            }
+        }
+
+        return {
+            success: [
+                {
+                    path: 'admin',
+                    message: 'User is now an admin!'
+                }
+            ]
+        }
     }
 }
