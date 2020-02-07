@@ -3,9 +3,10 @@ import bcrypt from 'bcryptjs';
 import { User } from '../../entity';
 import { RegisterInput, LoginInput, AdminInput } from './inputs';
 import { Result } from '../../types';
-import { registerSuccess, loginFailed, loginSuccess, /* confirmEmailError, forgotPasswordLockError */ } from './messages';
+import { registerSuccess, loginFailed, loginSuccess, confirmEmailError, /* forgotPasswordLockError */ } from './messages';
 import { MyContext } from '../../types';
 import { isAuth, logger, isAdmin } from '../../middleware';
+import { sendEmail } from '../../utils';
 
 @Resolver()
 export class UserResolver {
@@ -51,13 +52,15 @@ export class UserResolver {
     ): Promise<Result> {
         const creationTime = new Date().toISOString();
 
-        await User.create({
+        const user = await User.create({
             email,
             password,
             username,
             creationTime,
             lastLoggedIn: creationTime
         }).save();
+
+        await sendEmail(email, user.id);
 
         return {
             success: [
@@ -104,6 +107,16 @@ export class UserResolver {
             }
         }
 
+        if (!user.confirmed) {
+            return {
+                errors: [
+                    {
+                        path: 'login',
+                        message: confirmEmailError
+                    }
+                ]
+            }
+        }
 
         const logInTime = new Date().toISOString();
 

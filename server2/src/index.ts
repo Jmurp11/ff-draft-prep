@@ -78,8 +78,7 @@ import { MeResolver } from './modules/user/MeResolver';
   apolloServer.applyMiddleware({ app, cors });
 
   const port = process.env.PORT || 4000;
-  app.listen(port, () => {
+  app.listen(port, async () => {
     console.log(chalk.magentaBright('🏈  Draft Shark server is running on ') + chalk.greenBright('localhost:4000') + chalk.magentaBright('...'));
-
   });
 })();
