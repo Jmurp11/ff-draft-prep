@@ -19,7 +19,6 @@ export class User extends BaseEntity {
     @Column("varchar", { length: 255 })
     email!: string;
 
-    @Field()
     @Column("text")
     password!: string;
 
@@ -27,15 +26,12 @@ export class User extends BaseEntity {
     @Column("text")
     username!: string;
 
-    @Field()
     @Column("boolean", { default: false })
     confirmed!: boolean;
 
-    @Field()
     @Column("boolean", { default: false })
     forgotPasswordLock!: boolean;
 
-    @Field()
     @Column("boolean", { default: false })
     isLoggedIn!: boolean;
 
