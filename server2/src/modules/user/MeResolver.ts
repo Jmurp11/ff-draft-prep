@@ -5,9 +5,11 @@ import { MyContext } from '../../types';
 
 @Resolver()
 export class MeResolver {
-    @Query(() => User)
+    @Query(() => User, { nullable: true })
     async me(@Ctx() ctx: MyContext): Promise<User | undefined> {
+        console.log(ctx.req.session!.userId);
         if (!ctx.req.session!.userId) {
+            console.log(ctx.req.session!.userId);
             return undefined;
         }
 

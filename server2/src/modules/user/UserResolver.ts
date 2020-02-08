@@ -148,6 +148,8 @@ export class UserResolver {
 
         ctx.req.session!.userId = user!.id;
 
+        console.log(ctx.req.session!.userId);
+
         return {
             success: [
                 {
@@ -308,5 +310,49 @@ export class UserResolver {
                 }
             ]
         }
+    }
+
+
+    @Mutation(() => Result)
+    async logout(
+        @Ctx() ctx: MyContext
+    ): Promise<Result> {
+        const user = await User.findOne({
+            where: {
+                id: ctx.req.session!.userId
+            }
+        });
+
+        console.log (ctx.req.session!.userId);
+        
+        return new Promise((res, rej) => {
+            ctx.req.session!.destroy((err) => {
+                if (err) {
+                    return rej({
+                        errors: [
+                            {
+                                path: 'logout',
+                                message: err
+                            }
+                        ]
+                    });
+                }
+
+                ctx.res.clearCookie('qid');
+                
+                user!.isLoggedIn = false;
+
+                user!.save();
+
+                return res({
+                    success: [
+                        {
+                            path: 'logout',
+                            message: 'User logged out successfully!'
+                        }
+                    ]
+                });
+            });
+        });
     }
 }
