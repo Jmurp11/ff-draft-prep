@@ -4,7 +4,7 @@ import { v4 } from 'uuid';
 import { User } from '../../entity';
 import { RegisterInput, LoginInput, AdminInput } from './inputs';
 import { Result } from '../../types';
-import { registerSuccess, loginFailed, loginSuccess, confirmEmailError, /* forgotPasswordLockError */ } from './messages/messages';
+import { registerSuccess, loginFailed, loginSuccess, confirmEmailError, forgotPasswordLockError } from './messages/messages';
 import { MyContext } from '../../types';
 import { isAuth, logger, isAdmin } from '../../middleware';
 import { sendEmail, createConfirmationUrl } from '../../utils';
@@ -127,7 +127,7 @@ export class UserResolver {
                 errors: [
                     {
                         path: 'login',
-                        message: 'User account is locked!'
+                        message: forgotPasswordLockError
                     }
                 ]
             }
@@ -324,7 +324,7 @@ export class UserResolver {
         });
 
         console.log (ctx.req.session!.userId);
-        
+
         return new Promise((res, rej) => {
             ctx.req.session!.destroy((err) => {
                 if (err) {

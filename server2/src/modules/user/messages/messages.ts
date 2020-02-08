@@ -6,3 +6,4 @@ export const duplicateUsername = 'Username already exists!';
 export const registerSuccess = 'Successfully registered!';
 export const loginSuccess = 'Successfully logged in!';
 export const loginFailed = 'Login Failed!';
+export const forgotPasswordLockError = 'User account is locked!';
