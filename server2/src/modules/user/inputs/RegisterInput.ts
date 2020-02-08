@@ -2,7 +2,7 @@ import { InputType, Field } from 'type-graphql';
 import { MinLength, Length, IsEmail } from 'class-validator';
 import { IsEmailAlreadyExist } from '../validators/isEmailAlreadyExist';
 import { IsUsernameAlreadyExist } from '../validators/isUsernameAlreadyExist';
-import { duplicateEmail, duplicateUsername, passwordNotLongEnough } from '../messages';
+import { duplicateEmail, duplicateUsername, passwordNotLongEnough } from '../messages/messages';
 @InputType()
 export class RegisterInput {
   @Field()

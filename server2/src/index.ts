@@ -7,15 +7,7 @@ import { buildSchema } from 'type-graphql';
 import session from 'express-session';
 import connectRedis from 'connect-redis';
 import { redis } from './redis';
-import {
-  NoteResolver,
-  PlayerResolver,
-  ProjectionResolver,
-  TeamResolver,
-  UserResolver
-} from './modules';
 import { redisSessionPrefix } from './constants/constants';
-import { MeResolver } from './modules/user/MeResolver';
 
 (async () => {
   const app = express();
@@ -30,14 +22,7 @@ import { MeResolver } from './modules/user/MeResolver';
 
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [
-        MeResolver,
-        NoteResolver,
-        PlayerResolver,
-        ProjectionResolver,
-        TeamResolver,
-        UserResolver
-      ],
+      resolvers: [`${__dirname}/modules/**/*.ts`],
       authChecker: ({ context: { req } }, roles) => {
         return !!req.session.userId;
       },

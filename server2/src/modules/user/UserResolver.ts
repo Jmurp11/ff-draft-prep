@@ -1,12 +1,16 @@
 import { Resolver, Query, Mutation, Arg, Ctx, UseMiddleware } from 'type-graphql';
 import bcrypt from 'bcryptjs';
+import { v4 } from 'uuid';
 import { User } from '../../entity';
 import { RegisterInput, LoginInput, AdminInput } from './inputs';
 import { Result } from '../../types';
-import { registerSuccess, loginFailed, loginSuccess, confirmEmailError, /* forgotPasswordLockError */ } from './messages';
+import { registerSuccess, loginFailed, loginSuccess, confirmEmailError, /* forgotPasswordLockError */ } from './messages/messages';
 import { MyContext } from '../../types';
 import { isAuth, logger, isAdmin } from '../../middleware';
-import { sendEmail } from '../../utils';
+import { sendEmail, createConfirmationUrl } from '../../utils';
+import { redis } from '../../redis';
+import { baseUrl, forgotPasswordPrefix, confirmationPrefix } from '../../constants/constants';
+import { ChangePasswordInput } from './inputs/ChangePasswordInput';
 
 @Resolver()
 export class UserResolver {
@@ -60,7 +64,7 @@ export class UserResolver {
             lastLoggedIn: creationTime
         }).save();
 
-        await sendEmail(email, user.id);
+        await sendEmail(email, await createConfirmationUrl(user.id), 'Confirm');
 
         return {
             success: [
@@ -118,6 +122,17 @@ export class UserResolver {
             }
         }
 
+        if (user.forgotPasswordLock) {
+            return {
+                errors: [
+                    {
+                        path: 'login',
+                        message: 'User account is locked!'
+                    }
+                ]
+            }
+        }
+
         const logInTime = new Date().toISOString();
 
         await User.update({ id: user.id }, {
@@ -166,6 +181,127 @@ export class UserResolver {
                 {
                     path: 'admin',
                     message: 'User is now an admin!'
+                }
+            ]
+        }
+    }
+
+    @Mutation(() => Result)
+    async confirmUser(
+        @Arg('token') token: string
+    ): Promise<Result> {
+        const userId = await redis.get(`${confirmationPrefix}${token}`);
+
+        if (!userId) {
+            return {
+                errors: [
+                    {
+                        path: 'confirm user',
+                        message: 'User not found in store!'
+                    }
+                ]
+            }
+        }
+
+        await User.update({ id: userId }, { confirmed: true });
+
+        await redis.del(token);
+
+        return {
+            success: [
+                {
+                    path: 'confirm user',
+                    message: 'User confirmed!'
+                }
+            ]
+        }
+    }
+
+    @Mutation(() => Result)
+    async forgotPassword(
+        @Arg('email') email: string
+    ): Promise<Result> {
+        const user = await User.findOne({
+            where: {
+                email
+            }
+        });
+
+        if (!user) {
+            return {
+                errors: [
+                    {
+                        path: 'forgot password',
+                        message: 'User not found!'
+                    }
+                ]
+            }
+        }
+
+        await User.update({ email }, { forgotPasswordLock: true });
+
+        const token = v4();
+        await redis.set(`${forgotPasswordPrefix}${token}`, user.id, "ex", 60 * 60 * 24) // 1 day expiration
+
+        await sendEmail(email, `${baseUrl}user/change-password/${token}`, 'Forgot Password');
+
+        return {
+            success: [
+                {
+                    path: 'forgot password',
+                    message: 'Check email for a link to reset your password!'
+                }
+            ]
+        }
+    }
+
+    @Mutation(() => Result)
+    async changePassword(
+        @Arg('input') { token, password }: ChangePasswordInput
+    ): Promise<Result> {
+        const userId = await redis.get(`${forgotPasswordPrefix}${token}`);
+
+        if (!userId) {
+            return {
+                errors: [
+                    {
+                        path: 'change password',
+                        message: 'User not found or bad token!'
+                    }
+                ]
+            }
+        }
+
+        const user = await User.findOne({
+            where: {
+                id: userId
+            }
+        })
+
+        if (!user) {
+            return {
+                errors: [
+                    {
+                        path: 'change password',
+                        message: 'User not found!'
+                    }
+                ]
+            }
+        }
+
+        await redis.del(`${forgotPasswordPrefix}${token}`);
+        
+        user.password = await bcrypt.hash(password, 12);
+
+        user.save();
+
+        await User.update({ id: userId }, { forgotPasswordLock: false });
+
+        return {
+            success: [
+                {
+                    path: 'change password',
+                    message: 'Password updated successfully!'
                 }
             ]
         }
