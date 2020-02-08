@@ -33,4 +33,16 @@ export class Player extends BaseEntity {
     @Field()
     @Column("text")
     position!: string;
+
+    @Field()
+    @Column("int")
+    rank!: number;
+
+    @Field()
+    @Column("float")
+    adp!: number;
+
+    @Field()
+    @Column("text")
+    tier!: string;
 }
