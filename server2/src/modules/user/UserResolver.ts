@@ -257,7 +257,8 @@ export class UserResolver {
 
     @Mutation(() => Result)
     async changePassword(
-        @Arg('input') { token, password }: ChangePasswordInput
+        @Arg('input') { token, password }: ChangePasswordInput,
+        @Ctx() ctx: MyContext
     ): Promise<Result> {
         const userId = await redis.get(`${forgotPasswordPrefix}${token}`);
 
@@ -290,10 +291,12 @@ export class UserResolver {
         }
 
         await redis.del(`${forgotPasswordPrefix}${token}`);
-        
+
         user.password = await bcrypt.hash(password, 12);
 
         user.save();
+
+        ctx.req.session!.userId = user.id;
 
         await User.update({ id: userId }, { forgotPasswordLock: false });
 
