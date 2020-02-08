@@ -13,13 +13,4 @@ export class PlayerInput {
 
     @Field()
     position: string;
-
-    @Field()
-    rank: number;
-
-    @Field()
-    adp: number;
-
-    @Field()
-    tier: string;
 }

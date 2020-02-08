@@ -38,10 +38,7 @@ export class PlayerResolver {
             firstName,
             lastName,
             team,
-            position,
-            rank,
-            adp,
-            tier
+            position
         }: PlayerInput
     ): Promise<Result> {
         const teamResult = await Team.findOne({
@@ -70,10 +67,7 @@ export class PlayerResolver {
             firstName,
             lastName,
             team: teamId,
-            position,
-            rank,
-            adp,
-            tier
+            position
         }).save();
 
         return {
