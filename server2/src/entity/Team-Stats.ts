@@ -7,7 +7,7 @@ import {
     JoinColumn
 } from "typeorm";
 import { ObjectType, Field } from "type-graphql";
-import { Team } from "./Team";
+import { Team } from ".";
 
 @Entity("teamstats")
 @ObjectType()

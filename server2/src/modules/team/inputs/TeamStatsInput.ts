@@ -1,9 +1,8 @@
 import { InputType, Field } from 'type-graphql';
-import { Team } from '../../../entity';
 
 @InputType()
 export class TeamStatsInput {
-    @Field(() => Team)
+    @Field()
     team!: number;
 
     @Field()

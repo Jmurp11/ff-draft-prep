@@ -6,7 +6,7 @@ import {
     ManyToOne,
    JoinColumn
 } from "typeorm";
-import { Team } from "./index";
+import { Team } from "./";
 import { ObjectType, Field } from "type-graphql";
 
 @Entity("players")

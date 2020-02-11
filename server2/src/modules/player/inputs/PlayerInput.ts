@@ -9,7 +9,7 @@ export class PlayerInput {
     lastName: string;
 
     @Field()
-    team: string;
+    team: number;
 
     @Field()
     position: string;
