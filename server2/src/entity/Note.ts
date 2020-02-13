@@ -17,13 +17,13 @@ export class Note extends BaseEntity {
     id!: string;
 
     @ManyToOne(() => User)
-    @JoinColumn()
+    @JoinColumn({ name: 'user' })
     @Field(() => User)
     @Column("uuid")
     user!: string;
 
     @ManyToOne(() => Player)
-    @JoinColumn()
+    @JoinColumn({ name: 'player' })
     @Field(() => Player)
     @Column("text")
     player!: number;
@@ -41,15 +41,15 @@ export class Note extends BaseEntity {
     source!: string;
 
     @Field()
-    @Column("boolean", { default: false }) 
+    @Column("boolean", { default: false })
     isPrivate!: boolean;
 
     @Field()
-    @Column("int") 
+    @Column("int")
     likes!: number;
 
     @Field()
-    @Column("int") 
+    @Column("int")
     shares!: number;
 
     @Field(() => Date)

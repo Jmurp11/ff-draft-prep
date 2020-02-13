@@ -10,12 +10,7 @@ export class PlayerResolver {
     async players() {
         return getRepository(Player)
         .find({
-            join: {
-                alias: "player",
-                leftJoinAndSelect: {
-                    team: "player.team",
-                }
-            }
+            relations: ['team']
         });
     }
 
@@ -23,12 +18,8 @@ export class PlayerResolver {
     async player(@Arg('id') id: string) {
         return getRepository(Player)
         .findOne({
-            join: {
-                alias: "player",
-                leftJoinAndSelect: {
-                    team: "player.team",
-                }
-            }, where: { id }
+            relations: ['team'], 
+            where: { id }
         });
     }
 

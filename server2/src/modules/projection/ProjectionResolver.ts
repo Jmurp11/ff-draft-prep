@@ -14,13 +14,7 @@ export class ProjectionResolver {
     async projections() {
         return getRepository(Projection)
                 .find({
-                    join: {
-                        alias: "projection",
-                        leftJoinAndSelect: {
-                            player: "projection.player",
-                            team: "player.team"
-                        }
-                    }
+                    relations: ['player']
                 });
     }
 
@@ -28,13 +22,8 @@ export class ProjectionResolver {
     async projection(@Arg('player') player: string) {
         return getRepository(Projection)
         .findOne({
-            join: {
-                alias: "projection",
-                leftJoinAndSelect: {
-                    player: "projection.player",
-                    team: "player.team"
-                }
-            }, where: { player }
+            relations: ['player'], 
+            where: { player }
         });
     }
 

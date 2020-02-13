@@ -4,7 +4,7 @@ import {
     PrimaryGeneratedColumn,
     BaseEntity,
     ManyToOne,
-   JoinColumn
+    JoinColumn
 } from "typeorm";
 import { Team } from "./";
 import { ObjectType, Field } from "type-graphql";
@@ -25,7 +25,7 @@ export class Player extends BaseEntity {
     lastName!: string;
 
     @ManyToOne(() => Team)
-    @JoinColumn()
+    @JoinColumn({ name: 'team' })
     @Field(() => Team)
     @Column("int")
     team!: number;

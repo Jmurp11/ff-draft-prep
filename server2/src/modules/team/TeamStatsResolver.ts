@@ -10,12 +10,7 @@ export class TeamStatsResolver {
     async teams() {
         return getRepository(TeamStats)
             .find({
-                join: {
-                    alias: "teamstats",
-                    leftJoinAndSelect: {
-                        team: "teamstats.team",
-                    }
-                }
+                relations: ['team']
             });
     }
 
@@ -23,12 +18,8 @@ export class TeamStatsResolver {
     async player(@Arg('id') id: string) {
         return getRepository(TeamStats)
             .findOne({
-                join: {
-                    alias: "teamstats",
-                    leftJoinAndSelect: {
-                        team: "teamstats.team",
-                    }
-                }, where: { id }
+                relations: ['team'], 
+                where: { id }
             });
     }
 

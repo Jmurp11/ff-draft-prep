@@ -12,13 +12,7 @@ export class NoteResolver {
     async note() {
         return getRepository(Note)
             .find({
-                join: {
-                    alias: "note",
-                    leftJoinAndSelect: {
-                        user: "note.user",
-                        player: "note.player",
-                    }
-                }
+                relations: ['user', 'player']
             });
     }
 
@@ -27,13 +21,8 @@ export class NoteResolver {
     async notes(@Arg('id') id: string) {
         return getRepository(Note)
             .findOne({
-                join: {
-                    alias: "note",
-                    leftJoinAndSelect: {
-                        user: "note.user",
-                        player: "note.player",
-                    }
-                }, where: { id }
+                relations: ['user', 'player'],
+                where: { id }
             });
     }
 
