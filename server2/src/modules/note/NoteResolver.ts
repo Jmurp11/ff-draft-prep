@@ -1,7 +1,7 @@
 import { Resolver, Query, Mutation, Arg, UseMiddleware, Subscription, Root } from 'type-graphql';
 import { Note } from '../../entity';
 import { Result } from '../../types';
-import { NoteInput } from './inputs/NoteInput';
+import { NoteInput, SubscriptionInput } from './inputs';
 import { getRepository } from 'typeorm';
 import { isAuth, logger } from '../../middleware';
 
@@ -89,16 +89,42 @@ export class NoteResolver {
 
     @UseMiddleware(isAuth, logger)
     @Subscription(() => Note,
-    {
-        topics: NOTE
-    })
-    newNote(
+        {
+            topics: NOTE
+        })
+    newUserNote(
         @Root() note: Note,
-        @Arg('input') input: { user: string, player: number }
+        @Arg('input') { user, player }: SubscriptionInput
     ): Note | undefined {
-        if (input.user === note.user && input.player === note.player) {
+        if (user === note.user && player === note.player) {
             return note;
         }
         return undefined;
+    }
+
+    @UseMiddleware(isAuth, logger)
+    @Subscription(() => Note,
+        {
+            topics: NOTE
+        })
+    newPlayerNote(
+        @Root() note: Note,
+        @Arg('input') { player }: SubscriptionInput
+    ): Note | undefined {
+        if (player === note.player) {
+            return note;
+        }
+        return undefined;
+    }
+
+    @UseMiddleware(isAuth, logger)
+    @Subscription(() => Note,
+        {
+            topics: NOTE
+        })
+    newNote(
+        @Root() note: Note,
+    ): Note | undefined {
+        return note;
     }
 }
