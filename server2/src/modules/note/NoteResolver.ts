@@ -1,9 +1,11 @@
-import { Resolver, Query, Mutation, Arg, UseMiddleware } from 'type-graphql';
+import { Resolver, Query, Mutation, Arg, UseMiddleware, Subscription, Root } from 'type-graphql';
 import { Note } from '../../entity';
 import { Result } from '../../types';
 import { NoteInput } from './inputs/NoteInput';
 import { getRepository } from 'typeorm';
 import { isAuth, logger } from '../../middleware';
+
+const NOTE = 'NOTE';
 
 @Resolver()
 export class NoteResolver {
@@ -83,5 +85,20 @@ export class NoteResolver {
                 }
             ]
         }
+    }
+
+    @UseMiddleware(isAuth, logger)
+    @Subscription(() => Note,
+    {
+        topics: NOTE
+    })
+    newNote(
+        @Root() note: Note,
+        @Arg('input') input: { user: string, player: number }
+    ): Note | undefined {
+        if (input.user === note.user && input.player === note.player) {
+            return note;
+        }
+        return undefined;
     }
 }
