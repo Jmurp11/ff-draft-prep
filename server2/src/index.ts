@@ -1,4 +1,5 @@
 import 'reflect-metadata';
+import http from 'http';
 import { createConnection, getConnectionOptions } from 'typeorm';
 import express from 'express';
 import chalk from 'chalk'
@@ -62,8 +63,13 @@ import { redisSessionPrefix } from './constants/constants';
 
   apolloServer.applyMiddleware({ app, cors });
 
+  const httpServer = http.createServer(app);
+  apolloServer.installSubscriptionHandlers(httpServer);
+
+
   const port = process.env.PORT || 4000;
-  app.listen(port, async () => {
+
+  httpServer.listen(port, async () => {
     console.log(chalk.magentaBright('🏈  Draft Shark server is running on ') + chalk.greenBright('localhost:4000') + chalk.magentaBright('...'));
   });
 })();
