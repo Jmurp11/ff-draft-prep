@@ -1,1 +1,0 @@
-export const projectionAlreadyExists = 'This projection already exists!';

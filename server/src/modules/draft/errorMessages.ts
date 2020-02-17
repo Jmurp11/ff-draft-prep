@@ -1,1 +1,0 @@
-export const titleAlreadyExists = 'You already have a draft with that title';

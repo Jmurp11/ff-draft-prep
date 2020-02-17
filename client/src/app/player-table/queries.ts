@@ -1,6 +1,4 @@
-import gql from 'graphql-tag';
-
-export const projections = gql
+export const projections =
   `
   query {
     projections {

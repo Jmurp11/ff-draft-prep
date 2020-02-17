@@ -1,7 +1,5 @@
-import gql from 'graphql-tag';
-
-export const users = gql
-`
+export const users =
+  `
   query {
     users {
       id
@@ -15,8 +13,7 @@ export const users = gql
 `;
 
 export const userById = (id: string) => {
-  const user = gql
-  `
+  return `
     query {
       userById(id: "${id}") {
         id
@@ -28,13 +25,10 @@ export const userById = (id: string) => {
       }
     }
   `;
-
-  return user;
 };
 
 export const userByUsername = (username: string) => {
-  const user = gql
-  `
+  return `
     query {
       userByUsername(username: "${username}") {
         id
@@ -46,13 +40,10 @@ export const userByUsername = (username: string) => {
       }
     }
   `;
-
-  return user;
 };
 
 export const userByEmail = (email: string) => {
-  const user = gql
-  `
+  return `
     query {
       userByEmail(email: "${email}") {
         id
@@ -64,6 +55,4 @@ export const userByEmail = (email: string) => {
       }
     }
   `;
-
-  return user;
 };
