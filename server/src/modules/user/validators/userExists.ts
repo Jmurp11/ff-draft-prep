@@ -1,10 +1,10 @@
-import { registerDecorator, ValidationOptions, ValidatorConstraint, ValidatorConstraintInterface, ValidationArguments } from "class-validator";
+import { registerDecorator, ValidationOptions, ValidatorConstraint, ValidatorConstraintInterface } from "class-validator";
 import { User } from '../../../entity';
 
 @ValidatorConstraint({ async: true })
 export class UserExistsConstraint implements ValidatorConstraintInterface {
 
-    async validate(id: string, args: ValidationArguments) {
+    async validate(id: string) {
         try {
             const user = await User.findOne({
                 where: {

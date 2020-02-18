@@ -35,7 +35,7 @@ module.exports = [
     database: 'ff-draft-prep-dev',
     synchronize: true,
     logging: false,
-    dropSchema: true,
+    dropSchema: false,
     entities: [
     "src/entity/**/*.ts"
     ],

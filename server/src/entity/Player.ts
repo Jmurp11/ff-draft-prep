@@ -3,11 +3,11 @@ import {
     Column,
     PrimaryGeneratedColumn,
     BaseEntity,
-    ManyToOne,
-    JoinColumn
+    JoinColumn,
+    ManyToOne
 } from "typeorm";
-import { Team } from ".";
 import { ObjectType, Field } from "type-graphql";
+import { TeamStats } from "./";
 
 @Entity("players")
 @ObjectType()
@@ -24,9 +24,9 @@ export class Player extends BaseEntity {
     @Column("text")
     lastName!: string;
 
-    @ManyToOne(() => Team)
+    @ManyToOne(() => TeamStats)
     @JoinColumn({ name: 'team' })
-    @Field(() => Team)
+    @Field(() => TeamStats, { nullable: true })
     @Column("int")
     team!: number;
 

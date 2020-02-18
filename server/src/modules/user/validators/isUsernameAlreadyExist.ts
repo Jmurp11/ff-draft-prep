@@ -1,10 +1,10 @@
-import {registerDecorator, ValidationOptions, ValidatorConstraint, ValidatorConstraintInterface, ValidationArguments} from "class-validator";
+import { registerDecorator, ValidationOptions, ValidatorConstraint, ValidatorConstraintInterface } from "class-validator";
 import { User } from '../../../entity';
 
 @ValidatorConstraint({ async: true })
 export class IsUsernameAlreadyExistConstraint implements ValidatorConstraintInterface {
 
-    async validate(username: string, args: ValidationArguments) {
+    async validate(username: string) {
         return User.findOne({
             where: {
                 username
@@ -18,7 +18,7 @@ export class IsUsernameAlreadyExistConstraint implements ValidatorConstraintInte
 }
 
 export function IsUsernameAlreadyExist(validationOptions?: ValidationOptions) {
-   return function (object: Object, propertyName: string) {
+    return function (object: Object, propertyName: string) {
         registerDecorator({
             target: object.constructor,
             propertyName: propertyName,
@@ -26,5 +26,5 @@ export function IsUsernameAlreadyExist(validationOptions?: ValidationOptions) {
             constraints: [],
             validator: IsUsernameAlreadyExistConstraint
         });
-   };
+    };
 }

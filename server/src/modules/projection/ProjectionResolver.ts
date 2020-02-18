@@ -3,7 +3,8 @@ import { getRepository } from "typeorm";
 import {
     Player,
     Projection,
-    Team
+    Team,
+    TeamStats
 } from '../../entity';
 import { Result } from '../../types';
 import { ProjectionInput } from './inputs/ProjectionInput';
@@ -14,7 +15,7 @@ export class ProjectionResolver {
     async projections() {
         return getRepository(Projection)
                 .find({
-                    relations: ['player']
+                    relations: ['player', 'player.team', 'player.team.team']
                 });
     }
 
@@ -22,7 +23,7 @@ export class ProjectionResolver {
     async projection(@Arg('player') player: string) {
         return getRepository(Projection)
         .findOne({
-            relations: ['player'], 
+            relations: ['player', 'player.team', 'player.team.team'], 
             where: { player }
         });
     }
@@ -36,16 +37,17 @@ export class ProjectionResolver {
             receivingTd, fantasyPoints
         }: ProjectionInput
     ): Promise<Result> {
-        const teamQueryResult = await Team.find({ where: { abbreviation: team } });
-        const teamId = teamQueryResult[0].id;
+        const teamResult = await Team.findOne({ where: { abbreviation: team } });
+
+        const teamStatsResult = await TeamStats.findOne({
+            where: { id: teamResult!.id }
+        });
+
+        const teamId = teamStatsResult!.id;
+        
         const players = await getRepository(Player)
             .find({
-                join: {
-                    alias: "player",
-                    leftJoinAndSelect: {
-                        team: "player.team",
-                    }
-                },
+                relations: ['team'],
                 where: [
                     {
                         team: teamId

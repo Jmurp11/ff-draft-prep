@@ -1,5 +1,5 @@
 import { Resolver, Query, Mutation, Arg } from 'type-graphql';
-import { Player, Team } from '../../entity';
+import { Player, Team, TeamStats } from '../../entity';
 import { Result } from '../../types';
 import { PlayerInput } from './inputs/PlayerInput';
 import { getRepository } from 'typeorm';
@@ -10,7 +10,7 @@ export class PlayerResolver {
     async players() {
         return getRepository(Player)
         .find({
-            relations: ['team']
+            relations: ['team', 'team.team']
         });
     }
 
@@ -18,7 +18,7 @@ export class PlayerResolver {
     async player(@Arg('id') id: string) {
         return getRepository(Player)
         .findOne({
-            relations: ['team'], 
+            relations: ['team', 'team.team'], 
             where: { id }
         });
     }
@@ -39,7 +39,11 @@ export class PlayerResolver {
             where: { abbreviation: team }
         });
 
-        const teamId = teamResult!.id;
+        const teamStatsResult = await TeamStats.findOne({
+            where: { id: teamResult!.id }
+        });
+
+        const teamId = teamStatsResult!.id;
 
         const playerExists = await Player.findOne({
             where: { firstName, lastName, teamId, position },

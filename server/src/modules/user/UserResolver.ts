@@ -43,7 +43,7 @@ export class UserResolver {
         });
     }
 
-    @UseMiddleware(isAuth, logger)
+    @UseMiddleware(logger)
     @Query(() => User)
     async userByEmail(@Arg('email') email: string) {
         return User.findOne({

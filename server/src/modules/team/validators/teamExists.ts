@@ -1,10 +1,10 @@
-import {registerDecorator, ValidationOptions, ValidatorConstraint, ValidatorConstraintInterface, ValidationArguments} from "class-validator";
+import { registerDecorator, ValidationOptions, ValidatorConstraint, ValidatorConstraintInterface } from "class-validator";
 import { Team } from '../../../entity';
 
 @ValidatorConstraint({ async: true })
 export class TeamExistsConstraint implements ValidatorConstraintInterface {
 
-    async validate(nickname: string, args: ValidationArguments) {
+    async validate(nickname: string) {
         return Team.findOne({
             where: {
                 nickname
@@ -18,7 +18,7 @@ export class TeamExistsConstraint implements ValidatorConstraintInterface {
 }
 
 export function TeamExists(validationOptions?: ValidationOptions) {
-   return function (object: Object, propertyName: string) {
+    return function (object: Object, propertyName: string) {
         registerDecorator({
             target: object.constructor,
             propertyName: propertyName,
@@ -26,5 +26,5 @@ export function TeamExists(validationOptions?: ValidationOptions) {
             constraints: [],
             validator: TeamExistsConstraint
         });
-   };
+    };
 }
