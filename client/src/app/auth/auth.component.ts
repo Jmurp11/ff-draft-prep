@@ -85,9 +85,12 @@ export class AuthComponent implements OnInit {
         password
       }
     }).subscribe(({ data }) => {
-      if (data.login === null) {
+      if (data.login.success[0].message) {
         this.querySubscription = this.apollo.watchQuery<any>({
-          query: userByEmail(email)
+          query: userByEmail,
+          variables: {
+            email
+          }
         })
           .valueChanges
           .subscribe(({ data, loading }) => {
@@ -104,8 +107,8 @@ export class AuthComponent implements OnInit {
             }
           });
       } else {
-        this.openSnackBar(data.login[0].message, 'Dismiss');
-        this._authService.setMessage(data.login[0].message);
+        this.openSnackBar(data.login.errors[0].message, 'Dismiss');
+        this._authService.setMessage(data.login.errors[0].message);
         this.resetForm();
       }
     }, (error) => {

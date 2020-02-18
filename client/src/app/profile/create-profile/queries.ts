@@ -1,14 +1,15 @@
-export const register = (email: string, password: string, username: string) => {
-  return `
-    mutation {
-      register(input: { email: ${email}, password: ${password}, username: ${username} }) {
-        success {
+import gql from 'graphql-tag';
+
+export const register = gql
+`
+  mutation register($email: String!, $password: String!, $username: String!) {
+    register(input: { email: $email, password: $password, username: $username }) {
+      success {
+        message
+      }
+      errors {
           message
-        }
-        errors {
-            message
-        }
       }
     }
-  `;
-};
+  }
+`;

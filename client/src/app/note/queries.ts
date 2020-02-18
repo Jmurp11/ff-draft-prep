@@ -1,8 +1,11 @@
-export const addNote = (user: string, player: number, title: string, date: string, body: string, source: string) => {
-  return `
-    mutation {
-      addNote(input: { user: ${user}, player: ${player}, title: ${title}, date: ${date}, body: ${body},
-        source: ${source} }) {
+import gql from 'graphql-tag';
+
+export const addNote = gql
+  `
+    mutation createNote($user: String!, $player: Int!, $title: String!, $date: String!, $body: String!,
+        $source: String!) {
+      addNote(input: { user: $user, player: $player, title: $title, date: $date, body: $body,
+        source: $source }) {
           success {
             message
           }
@@ -12,4 +15,3 @@ export const addNote = (user: string, player: number, title: string, date: strin
       }
     }
   `;
-};

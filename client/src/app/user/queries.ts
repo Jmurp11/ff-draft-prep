@@ -1,4 +1,6 @@
-export const users =
+import gql from 'graphql-tag';
+
+export const users = gql
   `
   query {
     users {
@@ -12,10 +14,10 @@ export const users =
   }
 `;
 
-export const userById = (id: string) => {
-  return `
-    query {
-      userById(id: "${id}") {
+export const userById = gql
+  `
+    query userById($id: String!) {
+      userById(id: $id) {
         id
         email
         password
@@ -24,35 +26,32 @@ export const userById = (id: string) => {
         forgotPasswordLock
       }
     }
-  `;
-};
+`;
 
-export const userByUsername = (username: string) => {
-  return `
-    query {
-      userByUsername(username: "${username}") {
-        id
-        email
-        password
-        username
-        confirmed
-        forgotPasswordLock
-      }
+export const userByUsername = gql
+`
+  query userByUsername($username: String!) {
+    userByUsername(username: $username) {
+      id
+      email
+      password
+      username
+      confirmed
+      forgotPasswordLock
     }
-  `;
-};
+  }
+`;
 
-export const userByEmail = (email: string) => {
-  return `
-    query {
-      userByEmail(email: "${email}") {
-        id
-        email
-        password
-        username
-        confirmed
-        forgotPasswordLock
-      }
+export const userByEmail = gql
+`
+  query userByEmail($email: String!) {
+    userByEmail(email: $email) {
+      id
+      email
+      password
+      username
+      confirmed
+      forgotPasswordLock
     }
-  `;
-};
+  }
+`;

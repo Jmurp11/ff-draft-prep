@@ -104,11 +104,11 @@ export class NoteComponent implements OnInit {
         source
       }
     }).subscribe(({ data }) => {
-      if (data.addNote === null) {
+      if (data.addNote.success[0].message) {
         this.form.reset();
         this.openSnackBar('Success! Note saved!', 'Dismiss');
       } else {
-        this.openSnackBar(data.addNote[0].message, 'Dismiss');
+        this.openSnackBar(data.addNote.errors[0].message, 'Dismiss');
       }
     })
   }

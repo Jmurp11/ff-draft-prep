@@ -1,4 +1,6 @@
-export const projections =
+import gql from 'graphql-tag';
+
+export const projections = gql
   `
   query {
     projections {
@@ -7,11 +9,13 @@ export const projections =
         firstName
         lastName
         team {
-          city
-          nickname
-          abbreviation
+          team {
+            city
+            nickname
+            abbreviation
+            imageUrl
+          }
           bye
-          imageUrl
           rank
           passRank
           rushRank

@@ -73,8 +73,8 @@ export class CreateProfileComponent implements OnInit {
           username: this.form.get('username').value
         }
       }).subscribe(({ data }) => {
-        if (data != { register: null }) {
-          this.openSnackBar(data.register[0].message, 'Dismiss');
+        if (!data.register.success[0].message) {
+          this.openSnackBar(data.register[0].errors[0].message, 'Dismiss');
         } else {
           this.router.navigate(['./login']);
           this.openSnackBar('Success! Welcome to DraftShark', 'Dismiss');
