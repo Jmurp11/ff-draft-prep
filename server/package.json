@@ -36,7 +36,7 @@
     "uuid": "~3.4.0"
   },
   "scripts": {
-    "start": "ts-node-dev src/index.ts",
+    "start": "ts-node-dev --ignore-watch node_modules --respawn --files src/index.ts",
     "build": "tsc"
   }
 }
