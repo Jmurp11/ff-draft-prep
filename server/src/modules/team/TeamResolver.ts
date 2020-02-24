@@ -7,7 +7,11 @@ import { TeamInput } from './inputs/TeamInput';
 export class TeamResolver {
     @Query(() => [Team])
     async teams() {
-        return Team.find();
+        return Team.find({
+            order: {
+                abbreviation: 'DESC'
+            }
+        });
     }
 
     @Query(() => Team)
