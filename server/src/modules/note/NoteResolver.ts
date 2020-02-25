@@ -11,7 +11,7 @@ const NOTE = 'NOTE';
 export class NoteResolver {
     @UseMiddleware(isAuth, logger)
     @Query(() => [Note])
-    async note() {
+    async notes() {
         return getRepository(Note)
             .find({
                 relations: ['user', 'player'],
@@ -23,7 +23,7 @@ export class NoteResolver {
 
     @UseMiddleware(isAuth, logger)
     @Query(() => Note)
-    async notes(@Arg('id') id: string) {
+    async note(@Arg('id') id: string) {
         return getRepository(Note)
             .findOne({
                 relations: ['user', 'player'],
