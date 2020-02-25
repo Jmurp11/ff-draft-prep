@@ -10,7 +10,10 @@ export class PlayerResolver {
     async players() {
         return getRepository(Player)
         .find({
-            relations: ['team', 'team.team']
+            relations: ['team', 'team.team'],
+            order: {
+                lastName: 'DESC'
+            }
         });
     }
 

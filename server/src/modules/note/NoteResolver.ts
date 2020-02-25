@@ -14,7 +14,10 @@ export class NoteResolver {
     async note() {
         return getRepository(Note)
             .find({
-                relations: ['user', 'player']
+                relations: ['user', 'player'],
+                order: {
+                    creationTime: 'DESC'
+                }
             });
     }
 
@@ -24,7 +27,10 @@ export class NoteResolver {
         return getRepository(Note)
             .findOne({
                 relations: ['user', 'player'],
-                where: { id }
+                where: { id },
+                order: {
+                    creationTime: 'DESC'
+                }
             });
     }
 
