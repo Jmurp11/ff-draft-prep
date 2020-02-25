@@ -42,6 +42,7 @@ export class NoteCardComponent implements OnInit {
   notesQuery(player: number) {
 
   }
+
   ngOnDestroy() {
     this._currentPlayer.unsubscribe();
   }
