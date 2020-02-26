@@ -9,7 +9,7 @@ export class TeamResolver {
     async teams() {
         return Team.find({
             order: {
-                abbreviation: 'DESC'
+                abbreviation: 'ASC'
             }
         });
     }
