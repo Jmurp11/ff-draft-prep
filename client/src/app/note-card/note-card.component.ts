@@ -13,6 +13,7 @@ export class NoteCardComponent implements OnInit {
   _currentPlayer: Subscription;
   currentPlayer: Player;
   backgroundColor: string;
+  notes = [];
 
   constructor(
     private _player: PlayerService,
