@@ -89,7 +89,8 @@ export class AuthComponent implements OnInit {
         this.querySubscription = this.apollo.watchQuery<any>({
           query: userByEmail,
           variables: {
-            email
+            email,
+            password
           }
         })
           .valueChanges

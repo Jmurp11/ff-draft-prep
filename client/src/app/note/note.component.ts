@@ -6,7 +6,7 @@ import { Apollo } from 'apollo-angular';
 import { PlayerService } from '../player-table/player.service';
 import { DraftStateService } from '../player-table/draft-state.service';
 import { AuthService } from '../auth/auth.service';
-import { addNote } from './queries';
+import { createNote } from './queries';
 import { Player } from '../player-table/Player';
 
 @Component({
@@ -81,9 +81,8 @@ export class NoteComponent implements OnInit {
     const title = this.form.get('title').value;
     const body = this.form.get('note').value;
     const source = this.form.get('source').value;
-    const date = new Date().toLocaleString();
 
-    this.callAddNoteMutation(user, player, title, date, body, source);
+    this.callAddNoteMutation(user, player, title, body, source, false);
 
     this.form.reset();
   }
@@ -92,18 +91,21 @@ export class NoteComponent implements OnInit {
     this.form.reset();
   }
 
-  callAddNoteMutation(user: string, player: number, title: string, date: string, body: string, source: string) {
+  callAddNoteMutation(user: string, player: number, title: string,
+    body: string, source: string, isPrivate: boolean) {
+    console.log(`${user} ${player} ${title} ${body} ${source} ${isPrivate}`)
     return this.apollo.mutate({
-      mutation: addNote,
+      mutation: createNote,
       variables: {
         user,
         player,
         title,
-        date,
         body,
-        source
+        source,
+        isPrivate
       }
     }).subscribe(({ data }) => {
+      console.log(JSON.stringify(data));
       if (data.addNote.success[0].message) {
         this.form.reset();
         this.openSnackBar('Success! Note saved!', 'Dismiss');
