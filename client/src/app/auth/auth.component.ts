@@ -85,7 +85,7 @@ export class AuthComponent implements OnInit {
         password
       }
     }).subscribe(({ data }) => {
-      if (data.login.success[0].message) {
+      if (data.login.success) {
         this.querySubscription = this.apollo.watchQuery<any>({
           query: userByEmail,
           variables: {
