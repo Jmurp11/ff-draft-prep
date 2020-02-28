@@ -18,6 +18,7 @@ import { CreateProfileComponent } from './profile/create-profile/create-profile.
 import { EditProfileComponent } from './profile/edit-profile/edit-profile.component';
 import { NoteComponent } from './note/note.component';
 import { NoteCardComponent } from './note-card/note-card.component';
+import { LoadingSpinner } from './shared/loading-spinner/loading-spinner.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { NoteCardComponent } from './note-card/note-card.component';
     CreateProfileComponent,
     EditProfileComponent,
     NoteComponent,
-    NoteCardComponent
+    NoteCardComponent,
+    LoadingSpinner
   ],
   imports: [
     BrowserModule,

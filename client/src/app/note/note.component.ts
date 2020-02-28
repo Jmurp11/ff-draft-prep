@@ -93,7 +93,7 @@ export class NoteComponent implements OnInit {
 
   callAddNoteMutation(user: string, player: number, title: string,
     body: string, source: string, isPrivate: boolean) {
-    console.log(`${user} ${player} ${title} ${body} ${source} ${isPrivate}`)
+    console.log(this._auth.getCurrentUser());
     return this.apollo.mutate({
       mutation: createNote,
       variables: {
