@@ -114,6 +114,7 @@ export class AuthComponent implements OnInit {
       }
     }, (error) => {
       console.log(error);
+      this.loading = false;
     });
   }
 
@@ -121,6 +122,7 @@ export class AuthComponent implements OnInit {
     this.form.reset();
     this.emailControlIsValid = true;
     this.passwordControlIsValid = true;
+    this.loading = false;
   }
 
   openSnackBar(message: string, action: string) {

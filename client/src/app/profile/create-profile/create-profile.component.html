@@ -1,5 +1,8 @@
 <div class="form-container">
-  <form [formGroup]="form" (ngSubmit)="onRegisterSubmit()" class="form">
+  <div class="loading-div" *ngIf="loading">
+    <loading-spinner></loading-spinner>
+  </div>
+  <form [formGroup]="form" (ngSubmit)="onRegisterSubmit()" class="form" *ngIf="!loading">
     <mat-card class="form-card">
       <mat-card-header>
         <div mat-card-avatar class="auth-header-image"></div>

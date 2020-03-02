@@ -65,6 +65,7 @@ export class CreateProfileComponent implements OnInit {
 
   onRegisterSubmit() {
     if (this.form.get('password').value === this.form.get('confirmPassword').value) {
+      this.loading = true;
       return this.apollo.mutate({
         mutation: register,
         variables: {
@@ -73,19 +74,22 @@ export class CreateProfileComponent implements OnInit {
           username: this.form.get('username').value
         }
       }).subscribe(({ data }) => {
+        this.loading = false;
         if (!data.register.success[0].message) {
           this.openSnackBar(data.register[0].errors[0].message, 'Dismiss');
         } else {
           this.router.navigate(['./login']);
-          this.openSnackBar('Success! Welcome to DraftShark', 'Dismiss');
+          this.openSnackBar('Success! Check your email for confirmation', 'Dismiss');
           this.form.reset();
         }
         return data;
       }, (error) => {
+        this.loading = false;
         console.log(error);
       });
     } else {
       this.passwordEqualConfirmPasswordIsValid = false;
+      this.loading = false;
       this.openSnackBar('Registration failed!', 'Dismiss');
     }
   }
