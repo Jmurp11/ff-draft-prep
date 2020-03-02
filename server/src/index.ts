@@ -64,6 +64,7 @@ import { redisSessionPrefix } from './constants/constants';
   apolloServer.applyMiddleware({ app, cors });
 
   const httpServer = http.createServer(app);
+  
   apolloServer.installSubscriptionHandlers(httpServer);
 
 

@@ -6,6 +6,8 @@ import { Apollo } from 'apollo-angular';
 import { PlayerService } from '../player-table/player.service';
 import { createNote } from './queries';
 import { Player } from '../player-table/Player';
+import { AuthService } from '../auth/auth.service';
+import { User } from '../auth/user.model';
 
 @Component({
   selector: 'app-note',
@@ -19,13 +21,18 @@ export class NoteComponent implements OnInit {
   backgroundColor: string;
   titleIsValid = true;
   noteIsValid = true;
+  currentUser: User;
 
   constructor(
+    private _auth: AuthService,
     private _player: PlayerService,
     private apollo: Apollo,
     private snackbar: MatSnackBar) { }
 
   ngOnInit() {
+    this._auth.getUser$().subscribe(user => {
+      this.currentUser = user;
+    });
     this._currentPlayer = this._player.currentPlayer.subscribe(data => {
       this.currentPlayer = data;
       switch (this.currentPlayer.player.position) {
@@ -72,13 +79,12 @@ export class NoteComponent implements OnInit {
       return;
     }
 
-    const user = '123';
     const player = this.currentPlayer.player.id;
     const title = this.form.get('title').value;
     const body = this.form.get('note').value;
     const source = this.form.get('source').value;
 
-    this.callAddNoteMutation(user, player, title, body, source, false);
+    this.callAddNoteMutation(this.currentUser.email, player, title, body, source, false);
 
     this.form.reset();
   }

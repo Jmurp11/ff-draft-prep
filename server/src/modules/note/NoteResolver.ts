@@ -3,30 +3,30 @@ import { Note } from '../../entity';
 import { Result } from '../../types';
 import { NoteInput, SubscriptionInput } from './inputs';
 import { getRepository } from 'typeorm';
-import { isAuth, logger } from '../../middleware';
+import { logger } from '../../middleware';
 
 const NOTE = 'NOTE';
 
 @Resolver()
 export class NoteResolver {
-    @UseMiddleware(isAuth, logger)
+    @UseMiddleware(logger)
     @Query(() => [Note])
     async notes() {
         return getRepository(Note)
             .find({
-                relations: ['user', 'player'],
+                relations: ['player'],
                 order: {
                     creationTime: 'DESC'
                 }
             });
     }
 
-    @UseMiddleware(isAuth, logger)
+    @UseMiddleware(logger)
     @Query(() => Note)
     async note(@Arg('id') id: string) {
         return getRepository(Note)
             .findOne({
-                relations: ['user', 'player'],
+                relations: ['player'],
                 where: { id },
                 order: {
                     creationTime: 'DESC'
@@ -34,7 +34,7 @@ export class NoteResolver {
             });
     }
 
-    @UseMiddleware(isAuth, logger)
+    @UseMiddleware(logger)
     @Mutation(() => Result)
     async createNote(
         @PubSub() pubsub: PubSubEngine,
@@ -107,7 +107,7 @@ export class NoteResolver {
         }
     }
 
-    @UseMiddleware(isAuth, logger)
+    @UseMiddleware(logger)
     @Subscription(() => Note,
         {
             topics: NOTE
@@ -122,7 +122,7 @@ export class NoteResolver {
         return undefined;
     }
 
-    @UseMiddleware(isAuth, logger)
+    @UseMiddleware(logger)
     @Subscription(() => Note,
         {
             topics: NOTE
@@ -137,7 +137,7 @@ export class NoteResolver {
         return undefined;
     }
 
-    @UseMiddleware(isAuth, logger)
+    @UseMiddleware(logger)
     @Subscription(() => Note,
         {
             topics: NOTE

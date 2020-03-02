@@ -6,7 +6,7 @@ import {
     PrimaryGeneratedColumn,
     ManyToOne
 } from "typeorm";
-import { Player, User } from './index';
+import { Player } from './index';
 import { ObjectType, Field } from "type-graphql";
 
 @Entity("notes")
@@ -16,10 +16,8 @@ export class Note extends BaseEntity {
     @PrimaryGeneratedColumn('uuid')
     id!: string;
 
-    @ManyToOne(() => User)
-    @JoinColumn({ name: 'user' })
-    @Field(() => User)
-    @Column("uuid")
+    @Field(() => String)
+    @Column("text")
     user!: string;
 
     @ManyToOne(() => Player)
