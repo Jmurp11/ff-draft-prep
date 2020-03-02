@@ -2,7 +2,7 @@ import nodemailer, { SentMessageInfo } from 'nodemailer';
 
 const confirm = (email: string, url: string) => {
     return {
-        from: '"Fred Foo 👻" <foo@example.com>',
+        from: '"Jim 🦈" <jim@draftshark.io>',
         to: email,
         subject: 'Confirm New User ✔',
         text: 'Thanks for registering for DraftShark! Please click the link to confirm your new account',
@@ -12,7 +12,7 @@ const confirm = (email: string, url: string) => {
 
 const forgotPassword = (email: string, url: string) => {
     return {
-        from: '"Fred Foo 👻" <foo@example.com>',
+        from: '"Jim 🦈" <jim@draftshark.io>',
         to: email,
         subject: 'Reset DraftShark Password',
         text: 'Please click the link to reset your DraftShark password',
@@ -37,10 +37,12 @@ export const sendEmail = async (email: string, url: string, type: string) => {
     });
 
     if (type === 'Confirm') {
+        console.log('confirm');
         info = await transporter.sendMail(confirm(email, url));
     } else if (type === 'Forgot Password') {
         info = await transporter.sendMail(forgotPassword(email, url));
     } else {
+        console.log('please provide type');
         throw Error('Please provide type');
     }
 

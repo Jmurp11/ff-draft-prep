@@ -1,4 +1,4 @@
-import { Resolver, Query, Mutation, Arg, Ctx, UseMiddleware, Subscription, Root, PubSub, PubSubEngine } from 'type-graphql';
+import { Resolver, Query, Mutation, Arg, Ctx, UseMiddleware } from 'type-graphql';
 import bcrypt from 'bcryptjs';
 import { v4 } from 'uuid';
 import { User } from '../../entity';
@@ -11,9 +11,6 @@ import { sendEmail, createConfirmationUrl } from '../../utils';
 import { redis } from '../../redis';
 import { baseUrl, forgotPasswordPrefix, confirmationPrefix } from '../../constants/constants';
 import { ChangePasswordInput } from './inputs/ChangePasswordInput';
-
-const USER = 'USER';
-const LOGIN = 'LOGIN';
 
 @Resolver()
 export class UserResolver {
@@ -55,7 +52,6 @@ export class UserResolver {
 
     @Mutation(() => Result)
     async register(
-        @PubSub() pubsub: PubSubEngine,
         @Arg('input') { email, password, username }: RegisterInput
     ): Promise<Result> {
         const creationTime = new Date().toISOString();
@@ -70,17 +66,6 @@ export class UserResolver {
 
         await sendEmail(email, await createConfirmationUrl(user.id), 'Confirm');
 
-        const newUser = await User.findOne({
-            where: {
-                email,
-                password,
-                username,
-                creationTime,
-            }
-        });
-
-        await pubsub.publish(USER, newUser);
-
         return {
             success: [
                 {
@@ -93,7 +78,6 @@ export class UserResolver {
 
     @Mutation(() => Result, { nullable: true })
     async login(
-        @PubSub() pubsub: PubSubEngine, 
         @Arg('input') { email, password }: LoginInput,
         @Ctx() ctx: MyContext
     ): Promise<Result> {
@@ -164,8 +148,6 @@ export class UserResolver {
 
         ctx.req.session!.userId = user!.id;
 
-        await pubsub.publish(LOGIN, user);
-
         return {
             success: [
                 {
@@ -174,26 +156,6 @@ export class UserResolver {
                 }
             ]
         };
-    }
-
-    @UseMiddleware(isAuth, isAdmin, logger)
-    @Subscription(() => User, {
-        topics: USER
-    })
-    newUser(
-        @Root() user: User 
-    ): User {
-        return user;
-    }
-
-    @UseMiddleware(isAuth, isAdmin, logger)
-    @Subscription(() => User, {
-        topics: LOGIN
-    })
-    userLogin(
-        @Root() user: User 
-    ): User {
-        return user;
     }
 
     @UseMiddleware(isAuth, isAdmin, logger)
