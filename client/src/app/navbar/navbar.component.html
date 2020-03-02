@@ -1,4 +1,18 @@
 <mat-toolbar color="primary">
   <span><img class="title-logo" src='../../assets/images/shark.svg'></span>
   <span class="title">Draft Shark</span>
+
+  <span class="fill-space"></span>
+
+  <span>
+    <button mat-button [matMenuTriggerFor]="menu">
+      <mat-icon>account_circle</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item (click)="_auth.login()" *ngIf="!_auth.loggedIn">Login</button>
+      <button mat-menu-item (click)="_auth.login()" *ngIf="!_auth.loggedIn">Register</button>
+      <button mat-menu-item (click)="_auth.login()" *ngIf="_auth.loggedIn">Profile</button>
+      <button mat-menu-item (click)="_auth.logout()" *ngIf="_auth.loggedIn">Logout</button>
+    </mat-menu>
+  </span>
 </mat-toolbar>

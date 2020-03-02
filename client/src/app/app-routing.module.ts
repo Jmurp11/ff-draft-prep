@@ -4,13 +4,11 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { ProfileComponent } from './profile/profile.component';
 import { CreateProfileComponent } from './profile/create-profile/create-profile.component';
 import { EditProfileComponent } from './profile/edit-profile/edit-profile.component';
-import { AuthComponent } from './auth/auth.component';
 import { AuthGuard } from './auth/auth.guard';
 import { PlayerTableComponent } from './player-table/player-table.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
-  { path: 'login', component: AuthComponent },
   { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard]},
   { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
   { path: 'draft', component: PlayerTableComponent, canActivate: [AuthGuard]},

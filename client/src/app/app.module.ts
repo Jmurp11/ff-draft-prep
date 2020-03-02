@@ -12,7 +12,6 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { PlayerTableComponent } from './player-table/player-table.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { GraphQLModule } from './graphql.module';
-import { AuthComponent } from './auth/auth.component';
 import { ProfileComponent } from './profile/profile.component';
 import { CreateProfileComponent } from './profile/create-profile/create-profile.component';
 import { EditProfileComponent } from './profile/edit-profile/edit-profile.component';
@@ -26,7 +25,6 @@ import { LoadingSpinner } from './shared/loading-spinner/loading-spinner.compone
     NavbarComponent,
     PlayerTableComponent,
     DashboardComponent,
-    AuthComponent,
     ProfileComponent,
     CreateProfileComponent,
     EditProfileComponent,

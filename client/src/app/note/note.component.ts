@@ -4,8 +4,6 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription } from 'rxjs';
 import { Apollo } from 'apollo-angular';
 import { PlayerService } from '../player-table/player.service';
-import { DraftStateService } from '../player-table/draft-state.service';
-import { AuthService } from '../auth/auth.service';
 import { createNote } from './queries';
 import { Player } from '../player-table/Player';
 
@@ -24,8 +22,6 @@ export class NoteComponent implements OnInit {
 
   constructor(
     private _player: PlayerService,
-    private _draftState: DraftStateService,
-    private _auth: AuthService,
     private apollo: Apollo,
     private snackbar: MatSnackBar) { }
 
@@ -76,7 +72,7 @@ export class NoteComponent implements OnInit {
       return;
     }
 
-    const user = this._auth.getCurrentUser().id;
+    const user = '123';
     const player = this.currentPlayer.player.id;
     const title = this.form.get('title').value;
     const body = this.form.get('note').value;
@@ -91,9 +87,9 @@ export class NoteComponent implements OnInit {
     this.form.reset();
   }
 
-  callAddNoteMutation(user: string, player: number, title: string,
+  callAddNoteMutation(
+    user: string, player: number, title: string,
     body: string, source: string, isPrivate: boolean) {
-    console.log(this._auth.getCurrentUser());
     return this.apollo.mutate({
       mutation: createNote,
       variables: {
@@ -112,16 +108,12 @@ export class NoteComponent implements OnInit {
       } else {
         this.openSnackBar(data.addNote.errors[0].message, 'Dismiss');
       }
-    })
+    });
   }
 
   openSnackBar(message: string, action: string) {
     this.snackbar.open(message, action, {
       duration: 5000
     });
-  }
-
-  ngOnDestroy() {
-    this._currentPlayer.unsubscribe();
   }
 }
