@@ -1,6 +1,6 @@
 import { Resolver, Query, Mutation, Arg } from 'type-graphql';
 import { Team } from '../../entity';
-import { Result } from '../../types';
+import { Result } from '../../shared';
 import { TeamInput } from './inputs/TeamInput';
 
 @Resolver()

@@ -6,7 +6,7 @@ import {
     Team,
     TeamStats
 } from '../../entity';
-import { Result } from '../../types';
+import { Result } from '../../shared';
 import { ProjectionInput } from './inputs/ProjectionInput';
 
 @Resolver()

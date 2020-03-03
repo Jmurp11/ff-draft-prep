@@ -3,14 +3,15 @@ import bcrypt from 'bcryptjs';
 import { v4 } from 'uuid';
 import { User } from '../../entity';
 import { RegisterInput, LoginInput, AdminInput } from './inputs';
-import { Result } from '../../types';
-import { registerSuccess, loginFailed, loginSuccess, confirmEmailError, forgotPasswordLockError } from './messages/messages';
-import { MyContext } from '../../types';
+import { Result } from '../../shared';
+import { registerSuccess, loginFailed, confirmEmailError, forgotPasswordLockError } from './messages/messages';
+import { MyContext } from '../../shared';
 import { isAuth, logger, isAdmin } from '../../middleware';
 import { sendEmail, createConfirmationUrl } from '../../utils';
 import { redis } from '../../redis';
 import { baseUrl, forgotPasswordPrefix, confirmationPrefix } from '../../constants/constants';
 import { ChangePasswordInput } from './inputs/ChangePasswordInput';
+import { LoginResult } from './types/LoginResult';
 
 @Resolver()
 export class UserResolver {
@@ -76,11 +77,11 @@ export class UserResolver {
         }
     }
 
-    @Mutation(() => Result, { nullable: true })
+    @Mutation(() => LoginResult, { nullable: true })
     async login(
         @Arg('input') { email, password }: LoginInput,
         @Ctx() ctx: MyContext
-    ): Promise<Result> {
+    ): Promise<LoginResult> {
         let user = await User.findOne({
             where: {
                 email
@@ -146,15 +147,10 @@ export class UserResolver {
             }
         });
 
-        ctx.req.session!.userId = user!.id;
+        ctx.req.session!.user = user!;
 
         return {
-            success: [
-                {
-                    path: 'login',
-                    message: loginSuccess
-                }
-            ]
+            user
         };
     }
 
@@ -296,7 +292,7 @@ export class UserResolver {
 
         user.save();
 
-        ctx.req.session!.userId = user.id;
+        ctx.req.session!.user.id = user.id;
 
         await User.update({ id: userId }, { forgotPasswordLock: false });
 
@@ -317,11 +313,9 @@ export class UserResolver {
     ): Promise<Result> {
         const user = await User.findOne({
             where: {
-                id: ctx.req.session!.userId
+                id: ctx.req.session!.user.id
             }
         });
-
-        console.log(ctx.req.session!.userId);
 
         return new Promise((res, rej) => {
             ctx.req.session!.destroy((err) => {

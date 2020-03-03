@@ -1,6 +1,6 @@
 import { Resolver, Query, Mutation, Arg, UseMiddleware, Subscription, Root, PubSubEngine, PubSub } from 'type-graphql';
 import { Note } from '../../entity';
-import { Result } from '../../types';
+import { Result } from '../../shared';
 import { NoteInput, SubscriptionInput } from './inputs';
 import { getRepository } from 'typeorm';
 import { isAuth, logger } from '../../middleware';
