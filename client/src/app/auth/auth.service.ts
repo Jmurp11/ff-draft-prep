@@ -1,39 +1,61 @@
-
 import { Injectable } from '@angular/core';
+import { Subject } from 'rxjs';
+import { login } from './queries';
+import { Apollo } from 'apollo-angular';
+import { User } from './user.model';
 
-import { User } from '../user';
+export interface LoginResponse {
+  success: boolean;
+  user?: User;
+  accessToken?: string;
+  message?: string;
+}
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private currentUser: User;
-  message: string;
 
-  constructor() {
-    if (!localStorage.getItem('currentUser')) {
-      this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-    } else {
-      console.log('User Not Set');
-    }
-  }
+  user = new Subject<User>();
+  loginStatus = new Subject<LoginResponse>();
 
-  setCurrentUser(currentUser: any): void {
-    this.currentUser = currentUser;
-  }
+  constructor(
+    private apollo: Apollo
+  ) { }
 
-  getCurrentUser() {
-    return this.currentUser;
-  }
+  login(email: string, password: string) {
+    return this.apollo.mutate({
+      mutation: login,
+      variables: {
+        email,
+        password
+      }
+    }).subscribe(({ data }) => {
+      if (data.login.success) {
+        const response: LoginResponse = {
+          success: true,
+          user: data.login.success.user,
+          accessToken: data.login.success.accessToken
+        };
 
-  setMessage(message: string) {
-    this.message = message;
-  }
+        const user = new User(
+          data.login.success.user.id,
+          data.login.success.user.email,
+          data.login.success.user.username,
+          data.login.success.user.accessToken
+        );
 
-  getMessage() {
-    return this.message;
-  }
+        this.user.next(user);
 
-  logout() {
-    localStorage.removeItem('currentUser');
-    this.currentUser = null;
+        this.loginStatus.next(response);
+      } else {
+        const response: LoginResponse = {
+          success: true,
+          message: data.login.errors[0].message
+        };
+
+        this.loginStatus.next(response);
+      }
+    }, (error) => {
+      console.log(error);
+    });
   }
 }

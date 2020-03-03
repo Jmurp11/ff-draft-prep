@@ -1,35 +1,39 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription } from 'rxjs';
 import { Apollo } from 'apollo-angular';
 import { PlayerService } from '../player-table/player.service';
-import { DraftStateService } from '../player-table/draft-state.service';
 import { AuthService } from '../auth/auth.service';
 import { createNote } from './queries';
 import { Player } from '../player-table/Player';
+import { User } from '../auth/user.model';
 
 @Component({
   selector: 'app-note',
   templateUrl: './note.component.html',
   styleUrls: ['./note.component.css']
 })
-export class NoteComponent implements OnInit {
+export class NoteComponent implements OnInit, OnDestroy {
   form: FormGroup;
   _currentPlayer: Subscription;
   currentPlayer: Player;
   backgroundColor: string;
   titleIsValid = true;
   noteIsValid = true;
+  userId: string;
 
   constructor(
     private _player: PlayerService,
-    private _draftState: DraftStateService,
     private _auth: AuthService,
     private apollo: Apollo,
     private snackbar: MatSnackBar) { }
 
   ngOnInit() {
+    this._auth.user.subscribe(user => {
+      this.userId = user.id;
+    });
+
     this._currentPlayer = this._player.currentPlayer.subscribe(data => {
       this.currentPlayer = data;
       switch (this.currentPlayer.player.position) {
@@ -76,7 +80,7 @@ export class NoteComponent implements OnInit {
       return;
     }
 
-    const user = this._auth.getCurrentUser().id;
+    const user = this.userId;
     const player = this.currentPlayer.player.id;
     const title = this.form.get('title').value;
     const body = this.form.get('note').value;
@@ -91,9 +95,10 @@ export class NoteComponent implements OnInit {
     this.form.reset();
   }
 
-  callAddNoteMutation(user: string, player: number, title: string,
-    body: string, source: string, isPrivate: boolean) {
-    console.log(this._auth.getCurrentUser());
+  callAddNoteMutation(
+    user: string, player: number, title: string,
+    body: string, source: string, isPrivate: boolean
+  ) {
     return this.apollo.mutate({
       mutation: createNote,
       variables: {

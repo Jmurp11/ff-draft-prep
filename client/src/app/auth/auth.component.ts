@@ -1,40 +1,31 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Observable, Subscription } from 'rxjs';
-import { Apollo } from 'apollo-angular';
 import { AuthService } from './auth.service';
-import { User } from '../user';
-import { userByEmail } from '../user/queries';
-import { login } from './queries';
 
 @Component({
   selector: 'app-auth',
   templateUrl: './auth.component.html',
   styleUrls: ['./auth.component.css']
 })
-export class AuthComponent implements OnInit {
+export class AuthComponent implements OnInit, OnDestroy {
   form: FormGroup;
   emailControlIsValid = true;
   passwordControlIsValid = true;
   loading = false;
-  errMessage: string;
-  public currentUser: Observable<User>;
-  public message: Observable<string>;
-  subLoading: boolean;
-  loginResult: any;
-  querySubscription: Subscription;
+  dismissSnackbar = 'Dismiss';
 
   constructor(
     private router: Router,
-    private _authService: AuthService,
-    private apollo: Apollo,
+    private _auth: AuthService,
     private snackbar: MatSnackBar
   ) {
-    if (this._authService.getCurrentUser()) {
-      this.router.navigate(['/dashboard']);
-    }
+    this._auth.user.subscribe(user => {
+      if (user) {
+        this.router.navigate(['/dashboard']);
+      }
+    });
   }
 
   ngOnInit() {
@@ -68,54 +59,22 @@ export class AuthComponent implements OnInit {
 
     this.loading = true;
 
-    this.callLoginMutation(email, password);
+    this._auth.login(email, password);
+
+    this._auth.loginStatus.subscribe(response => {
+      if (response.success) {
+        this.router.navigate(['dashboard']);
+        this.openSnackBar('Success! Welcome back!', this.dismissSnackbar);
+        this.resetForm();
+      } else {
+        this.openSnackBar(response.message, this.dismissSnackbar);
+        this.resetForm();
+      }
+    });
   }
 
   onRegisterClick() {
     this.router.navigate(['./register']);
-  }
-
-  callLoginMutation(email: string, password: string) {
-    let user: User;
-
-    return this.apollo.mutate({
-      mutation: login,
-      variables: {
-        email,
-        password
-      }
-    }).subscribe(({ data }) => {
-      if (data.login.success) {
-        this.querySubscription = this.apollo.watchQuery<any>({
-          query: userByEmail,
-          variables: {
-            email,
-            password
-          }
-        })
-          .valueChanges
-          .subscribe(({ data, loading }) => {
-            this.subLoading = loading;
-            user = data.userByEmail;
-            localStorage.setItem('currentUser', JSON.stringify(user));
-            this._authService.setCurrentUser(user);
-            if (user) {
-              this.router.navigate(['./dashboard']);
-              this.openSnackBar('Success! Welcome back!' , 'Dismiss');
-              this.resetForm();
-            } else {
-              this.loading = false;
-            }
-          });
-      } else {
-        this.openSnackBar(data.login.errors[0].message, 'Dismiss');
-        this._authService.setMessage(data.login.errors[0].message);
-        this.resetForm();
-      }
-    }, (error) => {
-      console.log(error);
-      this.loading = false;
-    });
   }
 
   resetForm() {
@@ -129,5 +88,10 @@ export class AuthComponent implements OnInit {
     this.snackbar.open(message, action, {
       duration: 5000
     });
+  }
+
+  ngOnDestroy() {
+    this._auth.loginStatus.unsubscribe();
+    this._auth.user.unsubscribe();
   }
 }

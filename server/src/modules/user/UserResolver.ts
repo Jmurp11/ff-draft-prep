@@ -12,7 +12,7 @@ import { redis } from '../../redis';
 import { baseUrl, forgotPasswordPrefix, confirmationPrefix } from '../../constants/constants';
 import { ChangePasswordInput } from './inputs/ChangePasswordInput';
 import { LoginResult } from './types/LoginResult';
-import {createAccessToken, createRefreshToken} from '../../shared/auth';
+import { createAccessToken, createRefreshToken } from '../../shared/auth';
 import { sendRefreshToken } from '../../shared/sendRefreshToken';
 
 @Resolver()
@@ -258,8 +258,7 @@ export class UserResolver {
 
     @Mutation(() => Result)
     async changePassword(
-        @Arg('input') { token, password }: ChangePasswordInput,
-        @Ctx() ctx: MyContext
+        @Arg('input') { token, password }: ChangePasswordInput
     ): Promise<Result> {
         const userId = await redis.get(`${forgotPasswordPrefix}${token}`);
 
@@ -297,8 +296,6 @@ export class UserResolver {
 
         user.save();
 
-        ctx.req.session!.user.id = user.id;
-
         await User.update({ id: userId }, { forgotPasswordLock: false });
 
         return {
@@ -312,44 +309,18 @@ export class UserResolver {
     }
 
 
-    @Mutation(() => Result)
+    @Mutation(() => Boolean)
     async logout(
-        @Ctx() ctx: MyContext
-    ): Promise<Result> {
-        const user = await User.findOne({
-            where: {
-                id: ctx.req.session!.user.id
-            }
-        });
+        @Arg('userId') userId: string,
+        @Ctx() { res }: MyContext
+    ) {
+        await User.update(
+            { id: userId },
+            { isLoggedIn: false }
+        );
 
-        return new Promise((res, rej) => {
-            ctx.req.session!.destroy((err) => {
-                if (err) {
-                    return rej({
-                        errors: [
-                            {
-                                path: 'logout',
-                                message: err
-                            }
-                        ]
-                    });
-                }
+        sendRefreshToken(res, "");
 
-                ctx.res.clearCookie('qid');
-
-                user!.isLoggedIn = false;
-
-                user!.save();
-
-                return res({
-                    success: [
-                        {
-                            path: 'logout',
-                            message: 'User logged out successfully!'
-                        }
-                    ]
-                });
-            });
-        });
-    }
+        return true;
+    };
 }

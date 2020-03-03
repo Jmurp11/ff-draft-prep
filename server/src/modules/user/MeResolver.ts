@@ -17,7 +17,6 @@ export class MeResolver {
         try {
             const token = authorization.split(" ")[1];
             const payload: any = verify(token, process.env.ACCESS_TOKEN_SECRET!);
-            console.log(payload.userId);
             return User.findOne({
                 where: {
                     id: payload.userId
