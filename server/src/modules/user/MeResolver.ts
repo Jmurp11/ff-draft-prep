@@ -1,4 +1,5 @@
 import { Resolver, Query, Ctx } from 'type-graphql';
+import { verify } from 'jsonwebtoken';
 import { User } from '../../entity';
 import { MyContext } from '../../shared';
 
@@ -7,14 +8,24 @@ import { MyContext } from '../../shared';
 export class MeResolver {
     @Query(() => User, { nullable: true })
     async me(@Ctx() ctx: MyContext): Promise<User | undefined> {
-        if (!ctx.req.session!.user.id) {
+        const authorization = ctx.req.headers['authorization'];
+
+        if (!authorization) {
             return undefined;
         }
 
-        return User.findOne({
-            where: {
-                id: ctx.req.session!.user.id
-            }
-        });
+        try {
+            const token = authorization.split(" ")[1];
+            const payload: any = verify(token, process.env.ACCESS_TOKEN_SECRET!);
+            console.log(payload.userId);
+            return User.findOne({
+                where: {
+                    id: payload.userId
+                }
+            });
+        } catch (err) {
+            console.log(err);
+            return undefined;
+        }
     }
 }

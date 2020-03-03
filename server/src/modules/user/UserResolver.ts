@@ -12,10 +12,12 @@ import { redis } from '../../redis';
 import { baseUrl, forgotPasswordPrefix, confirmationPrefix } from '../../constants/constants';
 import { ChangePasswordInput } from './inputs/ChangePasswordInput';
 import { LoginResult } from './types/LoginResult';
+import {createAccessToken, createRefreshToken} from '../../shared/auth';
+import { sendRefreshToken } from '../../shared/sendRefreshToken';
 
 @Resolver()
 export class UserResolver {
-    @UseMiddleware(isAuth, logger)
+    @UseMiddleware(isAuth, isAdmin, logger)
     @Query(() => [User])
     async users() {
         return User.find();
@@ -80,7 +82,7 @@ export class UserResolver {
     @Mutation(() => LoginResult, { nullable: true })
     async login(
         @Arg('input') { email, password }: LoginInput,
-        @Ctx() ctx: MyContext
+        @Ctx() { res }: MyContext
     ): Promise<LoginResult> {
         let user = await User.findOne({
             where: {
@@ -147,10 +149,13 @@ export class UserResolver {
             }
         });
 
-        ctx.req.session!.user = user!;
+        sendRefreshToken(res, createRefreshToken(user!));
 
         return {
-            user
+            success: {
+                user,
+                accessToken: createAccessToken(user!)
+            }
         };
     }
 
