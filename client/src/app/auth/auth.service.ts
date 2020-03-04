@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { ReplaySubject } from 'rxjs';
 import { login, register } from './queries';
 import { Apollo } from 'apollo-angular';
 import { User } from './user.model';
@@ -19,8 +19,8 @@ export interface RegisterResponse {
 @Injectable({ providedIn: 'root' })
 export class AuthService {
 
-  user = new Subject<User>();
-  loginStatus = new Subject<LoginResponse>();
+  user = new ReplaySubject<User>();
+  loginStatus = new ReplaySubject<LoginResponse>();
 
   constructor(
     private apollo: Apollo

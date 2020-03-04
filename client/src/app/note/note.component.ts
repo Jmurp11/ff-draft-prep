@@ -15,8 +15,9 @@ import { User } from '../auth/user.model';
   styleUrls: ['./note.component.css']
 })
 export class NoteComponent implements OnInit, OnDestroy {
+  authSub$: Subscription;
   form: FormGroup;
-  _currentPlayer: Subscription;
+  curPlayer$: Subscription;
   currentPlayer: Player;
   backgroundColor: string;
   titleIsValid = true;
@@ -30,11 +31,11 @@ export class NoteComponent implements OnInit, OnDestroy {
     private snackbar: MatSnackBar) { }
 
   ngOnInit() {
-    this._auth.user.subscribe(user => {
+    this.authSub$ = this._auth.user.subscribe(user => {
       this.userId = user.id;
     });
 
-    this._currentPlayer = this._player.currentPlayer.subscribe(data => {
+    this.curPlayer$ = this._player.currentPlayer.subscribe(data => {
       this.currentPlayer = data;
       switch (this.currentPlayer.player.position) {
         case 'QB':
@@ -127,6 +128,7 @@ export class NoteComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this._currentPlayer.unsubscribe();
+    this.authSub$.unsubscribe();
+    this.curPlayer$.unsubscribe();
   }
 }

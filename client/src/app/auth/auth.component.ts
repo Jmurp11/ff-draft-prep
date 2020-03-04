@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from './auth.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-auth',
@@ -10,6 +11,8 @@ import { AuthService } from './auth.service';
   styleUrls: ['./auth.component.css']
 })
 export class AuthComponent implements OnInit, OnDestroy {
+  authSub$: Subscription;
+  loginSub$: Subscription;
   form: FormGroup;
   emailControlIsValid = true;
   passwordControlIsValid = true;
@@ -20,15 +23,15 @@ export class AuthComponent implements OnInit, OnDestroy {
     private router: Router,
     private _auth: AuthService,
     private snackbar: MatSnackBar
-  ) {
-    this._auth.user.subscribe(user => {
+  ) {}
+
+  ngOnInit() {
+    this.authSub$ = this._auth.user.subscribe(user => {
       if (user) {
         this.router.navigate(['/dashboard']);
       }
     });
-  }
 
-  ngOnInit() {
     this.form = new FormGroup({
       email: new FormControl(null, {
         updateOn: 'blur',
@@ -61,11 +64,11 @@ export class AuthComponent implements OnInit, OnDestroy {
 
     this._auth.login(email, password);
 
-    this._auth.loginStatus.subscribe(response => {
+    this.loginSub$ = this._auth.loginStatus.subscribe(response => {
+      console.log(response);
       if (response.success) {
         this.router.navigate(['dashboard']);
         this.openSnackBar('Success! Welcome back!', this.dismissSnackbar);
-        this.openSnackBar(response.message, this.dismissSnackbar);
         this.resetForm();
       } else {
         this.openSnackBar(response.message, this.dismissSnackbar);
@@ -92,7 +95,7 @@ export class AuthComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this._auth.loginStatus.unsubscribe();
-    this._auth.user.unsubscribe();
+    this.loginSub$.unsubscribe();
+    this.authSub$.unsubscribe();
   }
 }
