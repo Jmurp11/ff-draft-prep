@@ -5,14 +5,17 @@ export const projections = gql
   query {
     projections {
       player {
+        id
         firstName
         lastName
         team {
-          city
-          nickname
-          abbreviation
+          team {
+            city
+            nickname
+            abbreviation
+            imageUrl
+          }
           bye
-          imageUrl
           rank
           passRank
           rushRank

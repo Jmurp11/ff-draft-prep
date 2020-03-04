@@ -1,45 +1,37 @@
-import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Router } from '@angular/router';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { BehaviorSubject, Observable, Subscription } from 'rxjs';
-import { Apollo } from 'apollo-angular';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from './auth.service';
-import { AlertService } from '../shared/alert.service';
-import { User } from '../user';
-import { userByEmail } from '../user/queries';
-import { login } from './queries';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-auth',
   templateUrl: './auth.component.html',
   styleUrls: ['./auth.component.css']
 })
-export class AuthComponent implements OnInit {
+export class AuthComponent implements OnInit, OnDestroy {
+  authSub$: Subscription;
+  loginSub$: Subscription;
   form: FormGroup;
   emailControlIsValid = true;
   passwordControlIsValid = true;
   loading = false;
-  errMessage: string;
-  private currentUserSubject: BehaviorSubject<User>;
-  public currentUser: Observable<User>;
-  private messageSubject: BehaviorSubject<string>;
-  public message: Observable<string>;
-  subLoading: boolean;
-  loginResult: any;
-  querySubscription: Subscription;
+  dismissSnackbar = 'Dismiss';
 
   constructor(
     private router: Router,
-    private authService: AuthService,
-    private alertService: AlertService,
-    private apollo: Apollo
-  ) {
-    if (this.authService.getCurrentUser()) {
-      this.router.navigate(['/dashboard']);
-    }
-  }
+    private _auth: AuthService,
+    private snackbar: MatSnackBar
+  ) {}
 
   ngOnInit() {
+    this.authSub$ = this._auth.user.subscribe(user => {
+      if (user) {
+        this.router.navigate(['/dashboard']);
+      }
+    });
+
     this.form = new FormGroup({
       email: new FormControl(null, {
         updateOn: 'blur',
@@ -70,52 +62,40 @@ export class AuthComponent implements OnInit {
 
     this.loading = true;
 
-    this.callLoginMutation(email, password);
+    this._auth.login(email, password);
+
+    this.loginSub$ = this._auth.loginStatus.subscribe(response => {
+      console.log(response);
+      if (response.success) {
+        this.router.navigate(['dashboard']);
+        this.openSnackBar('Success! Welcome back!', this.dismissSnackbar);
+        this.resetForm();
+      } else {
+        this.openSnackBar(response.message, this.dismissSnackbar);
+        this.resetForm();
+      }
+    });
   }
 
   onRegisterClick() {
     this.router.navigate(['./register']);
   }
 
-  callLoginMutation(email: string, password: string) {
-    let user: User;
-
-    return this.apollo.mutate({
-      mutation: login,
-      variables: {
-        email,
-        password
-      }
-    }).subscribe(({ data }) => {
-      if (data.login === null) {
-        this.querySubscription = this.apollo.watchQuery<any>({
-          query: userByEmail(email)
-        })
-          .valueChanges
-          .subscribe(({ data, loading }) => {
-            this.subLoading = loading;
-            user = data.userByEmail;
-            localStorage.setItem('currentUser', JSON.stringify(user));
-            this.authService.setCurrentUser(user);
-            if (user) {
-              this.router.navigate(['./dashboard']);
-              this.resetForm();
-            } else {
-              this.alertService.error(this.errMessage);
-              this.loading = false;
-            }
-          });
-      } else {
-        this.authService.setMessage(data.login[0].message);
-      }
-    }, (error) => {
-      console.log(error);
-    });
-  }
-
   resetForm() {
     this.form.reset();
     this.emailControlIsValid = true;
     this.passwordControlIsValid = true;
+    this.loading = false;
+  }
+
+  openSnackBar(message: string, action: string) {
+    this.snackbar.open(message, action, {
+      duration: 5000
+    });
+  }
+
+  ngOnDestroy() {
+    this.loginSub$.unsubscribe();
+    this.authSub$.unsubscribe();
   }
 }

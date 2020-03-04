@@ -1,11 +1,2 @@
-export { createTypeormConn } from './createTypeOrmConn';
-export { createConfirmEmailLink } from './createConfirmEmailLink';
-export { createMiddleware } from './createMiddleware';
-export { createForgotPasswordLink } from './createForgotPasswordLink';
-export { forgotPasswordLockAccount } from './forgotPasswordLockAccount';
-export { logger } from  './logger';
-export { removeAllUsersSessions } from './removeUserSessions';
-export { formatYupError } from './formatYupError';
-export { TestClient } from './TestClient';
-export { genSchema } from './genSchema';
 export { sendEmail } from './sendEmail';
+export { createConfirmationUrl } from './createConfirmationUrl';

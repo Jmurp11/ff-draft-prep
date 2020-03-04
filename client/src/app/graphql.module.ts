@@ -4,7 +4,7 @@ import {HttpLinkModule, HttpLink} from 'apollo-angular-link-http';
 import {InMemoryCache} from 'apollo-cache-inmemory';
 
 // const uri = 'https://draftshark-api.herokuapp.com/'; UAT
-const uri = 'http://localhost:4000'; // DEV
+const uri = 'http://127.0.0.1:4000/graphql'; // DEV
 // const uri = 'http://localhost:3000'; DOCKER
 
 export function createApollo(httpLink: HttpLink) {

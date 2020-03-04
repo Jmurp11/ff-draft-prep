@@ -1,1 +1,0 @@
-export const cannotFindMessage = 'Cannot find message';

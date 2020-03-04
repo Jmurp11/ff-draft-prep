@@ -5,9 +5,10 @@ import { MatTableDataSource } from '@angular/material/table';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Subscription } from 'rxjs';
 import { Apollo } from 'apollo-angular';
-
+import { DraftStateService } from './draft-state.service';
 import { projections } from './queries';
 import { Player } from './Player';
+import { PlayerService } from './player.service';
 
 @Component({
   selector: 'app-player-table',
@@ -26,27 +27,35 @@ export class PlayerTableComponent implements OnInit, OnDestroy {
   dataSource: MatTableDataSource<Player>;
   players: Player[];
   loading: boolean;
-  querySubscription: Subscription;
+  _querySubscription: Subscription;
   lastSelectedPlayer: Player;
   selectedPlayers: Player[];
+  isDraft: boolean;
+  _draftSubscription: Subscription;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
-  columnsToDisplay = ['draft', 'player.rank', 'player.adp', 'player.lastName', 'player.position', 'player.team.abbreviation',
+  columnsToDisplay = ['draft', 'note', 'player.rank', 'player.adp', 'player.lastName', 'player.position', 'player.team.abbreviation',
     'player.tier', 'player.team.bye', 'completions', 'attempts', 'passYards', 'passTd', 'interception', 'carries', 'rushYards',
     'rushTd', 'fumbles', 'receptions', 'receivingYards', 'receivingTd', 'fantasyPoints'];
 
   expandedPlayer: Player | null;
 
   constructor(
-    private apollo: Apollo
-  ) { }
+    private apollo: Apollo,
+    private _draftState: DraftStateService,
+    private _player: PlayerService
+  ) {
+    this._draftSubscription = this._draftState.isDraft.subscribe(data => {
+      this.isDraft = data;
+    });
+  }
 
   ngOnInit() {
     this.players = [];
     this.selectedPlayers = [];
-    this.querySubscription = this.apollo.watchQuery<any>({
+    this._querySubscription = this.apollo.watchQuery<any>({
       query: projections
     })
       .valueChanges
@@ -113,6 +122,15 @@ export class PlayerTableComponent implements OnInit, OnDestroy {
     }
   }
 
+  updateCurrentPlayer(player: Player) {
+    return this._player.updateCurrentPlayer(player);
+  }
+
+  onRowClick(player: Player) {
+    this.updateCurrentPlayer(player);
+    this.expandedPlayer = this.expandedPlayer === player ? null : player;
+  }
+
   resetAll() {
     this.selectedPlayers.forEach(player => {
       player.selected = false;
@@ -121,6 +139,7 @@ export class PlayerTableComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.querySubscription.unsubscribe();
+    this._querySubscription.unsubscribe();
+    this._draftSubscription.unsubscribe();
   }
 }
