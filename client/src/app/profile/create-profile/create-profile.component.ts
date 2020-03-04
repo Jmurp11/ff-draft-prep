@@ -2,8 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { Apollo } from 'apollo-angular';
-import { register } from './queries';
+import { AuthService } from 'src/app/auth/auth.service';
 
 @Component({
   selector: 'app-create-profile',
@@ -19,9 +18,10 @@ export class CreateProfileComponent implements OnInit {
   confirmPasswordControlIsValid = true;
   passwordEqualConfirmPasswordIsValid = true;
   loading = false;
+  dismissSnackbar = 'Dismiss';
 
   constructor(
-    private apollo: Apollo,
+    private _auth: AuthService,
     private router: Router,
     private snackbar: MatSnackBar
   ) { }
@@ -63,30 +63,23 @@ export class CreateProfileComponent implements OnInit {
     });
   }
 
-  onRegisterSubmit() {
+  async onRegisterSubmit() {
     if (this.form.get('password').value === this.form.get('confirmPassword').value) {
       this.loading = true;
-      return this.apollo.mutate({
-        mutation: register,
-        variables: {
-          email: this.form.get('email').value,
-          password: this.form.get('password').value,
-          username: this.form.get('username').value
-        }
-      }).subscribe(({ data }) => {
-        this.loading = false;
-        if (!data.register.success[0].message) {
-          this.openSnackBar(data.register[0].errors[0].message, 'Dismiss');
-        } else {
-          this.router.navigate(['./login']);
-          this.openSnackBar('Success! Check your email for confirmation', 'Dismiss');
-          this.form.reset();
-        }
-        return data;
-      }, (error) => {
-        this.loading = false;
-        console.log(error);
-      });
+      const response = await this._auth.register(
+        this.form.get('email').value,
+        this.form.get('password').value,
+        this.form.get('username').value
+      );
+
+      if (response.success) {
+        this.router.navigate(['login']);
+        this.openSnackBar('Thanks for registering! Check your email for confirmation!', this.dismissSnackbar);
+        this.resetForm();
+      } else {
+        this.openSnackBar(response.message, this.dismissSnackbar);
+        this.resetForm();
+      }
     } else {
       this.passwordEqualConfirmPasswordIsValid = false;
       this.loading = false;
@@ -97,6 +90,13 @@ export class CreateProfileComponent implements OnInit {
 
   onLoginClick() {
     this.router.navigate(['./login']);
+  }
+
+  resetForm() {
+    this.form.reset();
+    this.emailControlIsValid = true;
+    this.passwordControlIsValid = true;
+    this.loading = false;
   }
 
   openSnackBar(message: string, action: string) {

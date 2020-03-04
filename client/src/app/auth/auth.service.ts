@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
-import { login } from './queries';
+import { login, register } from './queries';
 import { Apollo } from 'apollo-angular';
 import { User } from './user.model';
 
@@ -8,6 +8,11 @@ export interface LoginResponse {
   success: boolean;
   user?: User;
   accessToken?: string;
+  message?: string;
+}
+
+export interface RegisterResponse {
+  success: boolean;
   message?: string;
 }
 
@@ -57,5 +62,34 @@ export class AuthService {
     }, (error) => {
       console.log(error);
     });
+  }
+
+  async register(email: string, password: string, username: string) {
+    let response: RegisterResponse;
+
+    this.apollo.mutate({
+      mutation: register,
+      variables: {
+        email,
+        password,
+        username
+      }
+    }).subscribe(({ data }) => {
+      if (!data.register.success) {
+        response = {
+          success: false,
+          message: data.register.errors[0].message
+        };
+      } else {
+        response = {
+          success: true,
+          message: data.register.success[0].message
+        };
+      }
+    }, (error) => {
+      console.log(error);
+    });
+
+    return response;
   }
 }

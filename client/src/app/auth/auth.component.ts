@@ -65,6 +65,7 @@ export class AuthComponent implements OnInit, OnDestroy {
       if (response.success) {
         this.router.navigate(['dashboard']);
         this.openSnackBar('Success! Welcome back!', this.dismissSnackbar);
+        this.openSnackBar(response.message, this.dismissSnackbar);
         this.resetForm();
       } else {
         this.openSnackBar(response.message, this.dismissSnackbar);
