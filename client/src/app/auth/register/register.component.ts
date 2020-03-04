@@ -5,11 +5,11 @@ import { Router } from '@angular/router';
 import { AuthService } from 'src/app/auth/auth.service';
 
 @Component({
-  selector: 'app-create-profile',
-  templateUrl: './create-profile.component.html',
-  styleUrls: ['./create-profile.component.css']
+  selector: 'app-register',
+  templateUrl: './register.component.html',
+  styleUrls: ['./register.component.css']
 })
-export class CreateProfileComponent implements OnInit {
+export class RegisterComponent implements OnInit {
   id: number;
   form: FormGroup;
   nameControlIsValid = true;

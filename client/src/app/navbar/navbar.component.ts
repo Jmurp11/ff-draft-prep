@@ -1,47 +1,40 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { DraftStateService } from '../player-table/draft-state.service';
 import { Subscription } from 'rxjs';
-import { Router } from '@angular/router';
+import { AuthService } from '../auth/auth.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AuthModalComponent } from '../auth/auth-modal/auth-modal.component';
+
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit, OnDestroy {
-  menuOption: string;
-  isDraft: boolean;
-  _draftSubscription: Subscription;
+  authSub$: Subscription;
+  isAuth: boolean;
 
   constructor(
-    private draftState: DraftStateService,
-    private router: Router
+    public dialog: MatDialog,
+    private _auth: AuthService,
   ) { }
 
   ngOnInit() {
-    this.menuOption = 'Draft';
-    this._draftSubscription = this.draftState.isDraft.subscribe(data => {
-      this.isDraft = data;
+    this.authSub$ = this._auth.user.subscribe(user => {
+      if (user) {
+        this.isAuth = true;
+      } else {
+        this.isAuth = false;
+      }
     });
   }
 
-  updateDraftState() {
-    this.draftState.updateIsDraft();
-    this.updateMenuOption();
-  }
-
-  navigateToDraft() {
-    this.updateDraftState();
-    this.router.navigate(['./draft']);
-  }
-  updateMenuOption() {
-    if (this.draftState.isDraft.getValue()) {
-      this.menuOption = 'Draft Prep';
-    } else {
-      this.menuOption = 'Draft';
-    }
+  openDialog() {
+    this.dialog.open(AuthModalComponent, {
+      width: '500px'
+    });
   }
 
   ngOnDestroy() {
-    this._draftSubscription.unsubscribe();
+    this.authSub$.unsubscribe();
   }
 }
