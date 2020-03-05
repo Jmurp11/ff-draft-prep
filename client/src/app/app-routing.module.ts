@@ -6,10 +6,14 @@ import { EditProfileComponent } from './profile/edit-profile/edit-profile.compon
 import { AuthGuard } from './auth/auth.guard';
 import { PlayerTableComponent } from './player-table/player-table.component';
 import { HomeComponent } from './home/home.component';
+import { LoginComponent } from './auth/login/login.component';
+import { RegisterComponent } from './auth/register/register.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
+  { path: 'login', component: LoginComponent },
+  { path: 'register', component: RegisterComponent },
   { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard]},
   { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
   { path: 'draft', component: PlayerTableComponent, canActivate: [AuthGuard]},

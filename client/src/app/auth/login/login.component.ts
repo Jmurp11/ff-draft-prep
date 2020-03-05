@@ -32,6 +32,18 @@ export class LoginComponent implements OnInit, OnDestroy {
       }
     });
 
+    this.loginSub$ = this._auth.loginStatus.subscribe(response => {
+      console.log(response);
+      if (response.success) {
+        this.router.navigate(['dashboard']);
+        this.openSnackBar('Success! Welcome back!', this.dismissSnackbar);
+        this.resetForm();
+      } else {
+        this.openSnackBar(response.message, this.dismissSnackbar);
+        this.resetForm();
+      }
+    });
+
     this.form = new FormGroup({
       email: new FormControl(null, {
         updateOn: 'blur',
@@ -63,18 +75,6 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.loading = true;
 
     this._auth.login(email, password);
-
-    this.loginSub$ = this._auth.loginStatus.subscribe(response => {
-      console.log(response);
-      if (response.success) {
-        this.router.navigate(['dashboard']);
-        this.openSnackBar('Success! Welcome back!', this.dismissSnackbar);
-        this.resetForm();
-      } else {
-        this.openSnackBar(response.message, this.dismissSnackbar);
-        this.resetForm();
-      }
-    });
   }
 
   onRegisterClick() {

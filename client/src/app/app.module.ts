@@ -16,11 +16,10 @@ import { LoginComponent } from './auth/login/login.component';
 import { RegisterComponent } from './auth/register/register.component';
 import { ProfileComponent } from './profile/profile.component';
 import { EditProfileComponent } from './profile/edit-profile/edit-profile.component';
-import { NoteComponent } from './note/note.component';
-import { NoteCardComponent } from './note-card/note-card.component';
+import { NoteComponent } from './notes/note/note.component';
+import { NoteCardComponent } from './notes/note-card/note-card.component';
 import { LoadingSpinner } from './shared/loading-spinner/loading-spinner.component';
 import { HomeComponent } from './home/home.component';
-import { AuthModalComponent } from './auth/auth-modal/auth-modal.component';
 
 @NgModule({
   declarations: [
@@ -35,8 +34,7 @@ import { AuthModalComponent } from './auth/auth-modal/auth-modal.component';
     NoteComponent,
     NoteCardComponent,
     LoadingSpinner,
-    HomeComponent,
-    AuthModalComponent
+    HomeComponent
   ],
   imports: [
     BrowserModule,

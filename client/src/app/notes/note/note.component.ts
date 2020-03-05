@@ -3,11 +3,10 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription } from 'rxjs';
 import { Apollo } from 'apollo-angular';
-import { PlayerService } from '../player-table/player.service';
-import { AuthService } from '../auth/auth.service';
+import { PlayerService } from '../../player-table/player.service';
+import { AuthService } from '../../auth/auth.service';
 import { createNote } from './queries';
-import { Player } from '../player-table/Player';
-import { User } from '../auth/user.model';
+import { Player } from '../../player-table/Player';
 
 @Component({
   selector: 'app-note',

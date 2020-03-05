@@ -1,19 +1,28 @@
 <mat-toolbar color="primary">
-  <span><img class="title-logo" src='../../assets/images/shark.svg'></span>
-  <span class="title">Draft Shark</span>
+  <span class="span1">
+    <span><img class="title-logo" src='../../assets/images/shark.svg'></span>
+    <span class="title">Draft Shark</span>
+  </span>
 
   <span class="fill-space"></span>
 
-  <span>
-    <mat-menu #profileMenu="matMenu">
-      <button mat-menu-item (click)="openDialog()" *ngIf="!isAuth">Sign Up</button>
-      <button mat-menu-item (click)="openDialog()" *ngIf="!isAuth">Login</button>
-      <button mat-menu-item *ngIf="isAuth">Profile</button>
-      <button mat-menu-item *ngIf="isAuth">Logout</button>
-    </mat-menu>
+  <span class="span2">
+    <span>
+      <button class="nav-button" mat-menu-item (click)="navigateToRegisterPage()" *ngIf="!isAuth">Sign Up</button>
+    </span>
+    <span>
+      <button class="nav-button" mat-menu-item (click)="navigateToLoginPage()" *ngIf="!isAuth">Login</button>
+    </span>
 
-    <button mat-icon-button [matMenuTriggerFor]="profileMenu">
-      <mat-icon>account_circle</mat-icon>
-    </button>
+    <span>
+      <mat-menu #profileMenu="matMenu">
+        <button mat-menu-item>Profile</button>
+        <button mat-menu-item>Logout</button>
+      </mat-menu>
+
+      <button mat-icon-button [matMenuTriggerFor]="profileMenu" *ngIf="isAuth">
+        <mat-icon>account_circle</mat-icon>
+      </button>
+    </span>
   </span>
 </mat-toolbar>

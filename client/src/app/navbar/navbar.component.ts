@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { AuthService } from '../auth/auth.service';
 import { MatDialog } from '@angular/material/dialog';
-import { AuthModalComponent } from '../auth/auth-modal/auth-modal.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
@@ -16,6 +16,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   constructor(
     public dialog: MatDialog,
     private _auth: AuthService,
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -28,10 +29,12 @@ export class NavbarComponent implements OnInit, OnDestroy {
     });
   }
 
-  openDialog() {
-    this.dialog.open(AuthModalComponent, {
-      width: '500px'
-    });
+  navigateToLoginPage() {
+    this.router.navigate(['/login']);
+  }
+
+  navigateToRegisterPage() {
+    this.router.navigate(['/register']);
   }
 
   ngOnDestroy() {
