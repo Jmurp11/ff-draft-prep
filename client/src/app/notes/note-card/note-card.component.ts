@@ -1,15 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Apollo } from 'apollo-angular';
-import { Player } from '../player-table/Player';
-import { PlayerService } from '../player-table/player.service';
+import { Player } from '../../player-table/Player';
+import { PlayerService } from '../../player-table/player.service';
 
 @Component({
   selector: 'app-note-card',
   templateUrl: './note-card.component.html',
   styleUrls: ['./note-card.component.css']
 })
-export class NoteCardComponent implements OnInit {
+export class NoteCardComponent implements OnInit, OnDestroy {
   _currentPlayer: Subscription;
   currentPlayer: Player;
   backgroundColor: string;
