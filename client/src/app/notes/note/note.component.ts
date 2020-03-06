@@ -14,15 +14,16 @@ import { NoteService } from '../note.service';
 })
 export class NoteComponent implements AfterContentInit, OnDestroy {
   authSub$: Subscription;
-  form: FormGroup;
   curPlayer$: Subscription;
+  noteStatus$: Subscription;
+  form: FormGroup;
   currentPlayer: Player;
   backgroundColor: string;
-  titleIsValid = true;
-  noteIsValid = true;
   userId: string;
   loading: boolean;
   dismiss = 'Dismiss';
+  titleIsValid = true;
+  noteIsValid = true;
 
   constructor(
     private _player: PlayerService,
@@ -32,6 +33,14 @@ export class NoteComponent implements AfterContentInit, OnDestroy {
 
   ngAfterContentInit() {
     this.loading = false;
+
+    this._note.noteStatus.subscribe(response => {
+      console.log(response);
+      if (response) {
+        this.openSnackBar(response.message, this.dismiss);
+        this.resetForm();
+      }
+    });
 
     this.authSub$ = this._auth.user.subscribe(user => {
       this.userId = user.id;
@@ -78,12 +87,10 @@ export class NoteComponent implements AfterContentInit, OnDestroy {
     });
   }
 
-  onSubmit() {
+  async onSubmit() {
     if (!this.form.valid) {
       return;
     }
-
-    this.loading = true;
 
     const user = this.userId;
     const player = this.currentPlayer.player.id;
@@ -91,31 +98,31 @@ export class NoteComponent implements AfterContentInit, OnDestroy {
     const body = this.form.get('note').value;
     const source = this.form.get('source').value;
 
-    const response = this._note.createNote(user, player, title, body, source, false);
+    this.loading = true;
 
-    this.openSnackBar(response.message, this.dismiss);
-    this.resetForm();
-  }
+    this._note.createNote(user, player, title, body, source, false);
+}
 
-  onCancel() {
-    this.form.reset();
-  }
+onCancel() {
+  this.form.reset();
+}
 
-  resetForm() {
-    this.form.reset();
-    this.noteIsValid = true;
-    this.titleIsValid = true;
-    this.loading = false;
-  }
+resetForm() {
+  this.form.reset();
+  this.noteIsValid = true;
+  this.titleIsValid = true;
+  this.loading = false;
+}
 
-  openSnackBar(message: string, action: string) {
-    this.snackbar.open(message, action, {
-      duration: 5000
-    });
-  }
+openSnackBar(message: string, action: string) {
+  this.snackbar.open(message, action, {
+    duration: 5000
+  });
+}
 
-  ngOnDestroy() {
-    this.authSub$.unsubscribe();
-    this.curPlayer$.unsubscribe();
-  }
+ngOnDestroy() {
+  this.authSub$.unsubscribe();
+  this.curPlayer$.unsubscribe();
+  this.noteStatus$.unsubscribe();
+}
 }

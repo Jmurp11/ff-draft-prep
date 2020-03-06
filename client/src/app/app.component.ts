@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { DraftStateService } from './player-table/draft-state.service';
+import { AuthService } from './auth/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -9,9 +9,11 @@ import { DraftStateService } from './player-table/draft-state.service';
 export class AppComponent implements OnInit {
   title = 'Draft Shark';
 
-  constructor(private _draftState: DraftStateService) { }
+  constructor(
+    private _auth: AuthService
+  ) { }
 
   ngOnInit() {
-    this._draftState.setInitialState();
+    this._auth.autoLogin();
   }
 }

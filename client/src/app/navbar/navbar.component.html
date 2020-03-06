@@ -17,7 +17,7 @@
     <span>
       <mat-menu #profileMenu="matMenu">
         <button mat-menu-item>Profile</button>
-        <button mat-menu-item>Logout</button>
+        <button mat-menu-item (click)="logout()">Logout</button>
       </mat-menu>
 
       <button mat-icon-button [matMenuTriggerFor]="profileMenu" *ngIf="isAuth">

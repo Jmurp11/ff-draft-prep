@@ -3,6 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/auth/auth.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-register',
@@ -12,6 +13,7 @@ import { AuthService } from 'src/app/auth/auth.service';
 export class RegisterComponent implements OnInit {
   id: number;
   form: FormGroup;
+  register$: Subscription;
   nameControlIsValid = true;
   emailControlIsValid = true;
   passwordControlIsValid = true;
@@ -27,6 +29,19 @@ export class RegisterComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.register$ = this._auth.registerStatus.subscribe(response => {
+      if (response) {
+        if (response.success) {
+          this.router.navigate(['login']);
+          this.openSnackBar('Thanks for registering! Check your email for confirmation!', this.dismissSnackbar);
+          this.resetForm();
+        } else {
+          this.openSnackBar(response.message, this.dismissSnackbar);
+          this.resetForm();
+        }
+      }
+    });
+
     this.form = new FormGroup({
       username: new FormControl(null, {
         updateOn: 'blur',
@@ -66,20 +81,12 @@ export class RegisterComponent implements OnInit {
   async onRegisterSubmit() {
     if (this.form.get('password').value === this.form.get('confirmPassword').value) {
       this.loading = true;
-      const response = await this._auth.register(
+
+      await this._auth.register(
         this.form.get('email').value,
         this.form.get('password').value,
         this.form.get('username').value
       );
-
-      if (response.success) {
-        this.router.navigate(['login']);
-        this.openSnackBar('Thanks for registering! Check your email for confirmation!', this.dismissSnackbar);
-        this.resetForm();
-      } else {
-        this.openSnackBar(response.message, this.dismissSnackbar);
-        this.resetForm();
-      }
     } else {
       this.passwordEqualConfirmPasswordIsValid = false;
       this.loading = false;

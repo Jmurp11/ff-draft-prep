@@ -2,7 +2,7 @@ import { Resolver, Query, Mutation, Arg, Ctx, UseMiddleware } from 'type-graphql
 import bcrypt from 'bcryptjs';
 import { v4 } from 'uuid';
 import { User } from '../../entity';
-import { RegisterInput, LoginInput, AdminInput } from './inputs';
+import { RegisterInput, LoginInput, AdminInput, LogoutInput } from './inputs';
 import { Result } from '../../shared';
 import { registerSuccess, loginFailed, confirmEmailError, forgotPasswordLockError } from './messages/messages';
 import { MyContext } from '../../shared';
@@ -311,7 +311,7 @@ export class UserResolver {
 
     @Mutation(() => Boolean)
     async logout(
-        @Arg('userId') userId: string,
+        @Arg('input') { userId }: LogoutInput,
         @Ctx() { res }: MyContext
     ) {
         await User.update(
