@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, AfterContentInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription } from 'rxjs';
@@ -12,7 +12,7 @@ import { NoteService } from '../note.service';
   templateUrl: './note.component.html',
   styleUrls: ['./note.component.css']
 })
-export class NoteComponent implements OnInit, OnDestroy {
+export class NoteComponent implements AfterContentInit, OnDestroy {
   authSub$: Subscription;
   form: FormGroup;
   curPlayer$: Subscription;
@@ -30,7 +30,7 @@ export class NoteComponent implements OnInit, OnDestroy {
     private _note: NoteService,
     private snackbar: MatSnackBar) { }
 
-  ngOnInit() {
+  ngAfterContentInit() {
     this.loading = false;
 
     this.authSub$ = this._auth.user.subscribe(user => {
