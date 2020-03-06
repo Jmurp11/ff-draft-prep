@@ -1,5 +1,5 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Subscription, Observable } from 'rxjs';
+import { Component, OnDestroy, AfterContentInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Player } from '../../player-table/player.model';
 import { PlayerService } from '../../player-table/player.service';
@@ -12,7 +12,7 @@ import { Apollo } from 'apollo-angular';
   templateUrl: './note-card.component.html',
   styleUrls: ['./note-card.component.css']
 })
-export class NoteCardComponent implements OnInit, OnDestroy {
+export class NoteCardComponent implements AfterContentInit, OnDestroy {
   curPlayer$: Subscription;
   query$: Subscription;
   currentPlayer: Player;
@@ -26,7 +26,7 @@ export class NoteCardComponent implements OnInit, OnDestroy {
     private snackbar: MatSnackBar
   ) { }
 
-  ngOnInit() {
+  ngAfterContentInit() {
     this.loading = true;
 
     this.query$ = this.apollo.watchQuery<any>({
