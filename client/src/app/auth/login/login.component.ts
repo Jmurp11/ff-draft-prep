@@ -33,7 +33,6 @@ export class LoginComponent implements OnInit, OnDestroy {
     });
 
     this.loginSub$ = this._auth.loginStatus.subscribe(response => {
-      console.log(response);
       if (response.success) {
         this.router.navigate(['dashboard']);
         this.openSnackBar('Success! Welcome back!', this.dismissSnackbar);

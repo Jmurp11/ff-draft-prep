@@ -5,9 +5,8 @@ import { MatTableDataSource } from '@angular/material/table';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Subscription } from 'rxjs';
 import { Apollo } from 'apollo-angular';
-import { DraftStateService } from './draft-state.service';
 import { projections } from './queries';
-import { Player } from './Player';
+import { Player } from './player.model';
 import { PlayerService } from './player.service';
 
 @Component({
@@ -27,11 +26,10 @@ export class PlayerTableComponent implements OnInit, OnDestroy {
   dataSource: MatTableDataSource<Player>;
   players: Player[];
   loading: boolean;
-  _querySubscription: Subscription;
+  query$: Subscription;
   lastSelectedPlayer: Player;
   selectedPlayers: Player[];
   isDraft: boolean;
-  _draftSubscription: Subscription;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -44,24 +42,21 @@ export class PlayerTableComponent implements OnInit, OnDestroy {
 
   constructor(
     private apollo: Apollo,
-    private _draftState: DraftStateService,
     private _player: PlayerService
-  ) {
-    this._draftSubscription = this._draftState.isDraft.subscribe(data => {
-      this.isDraft = data;
-    });
-  }
+  ) {}
 
   ngOnInit() {
+    this.loading = true;
     this.players = [];
     this.selectedPlayers = [];
-    this._querySubscription = this.apollo.watchQuery<any>({
+
+    this.query$ = this.apollo.watchQuery<any>({
       query: projections
     })
       .valueChanges
       .subscribe(({ data, loading }) => {
         this.loading = loading;
-        data.projections.forEach(el => {
+        data.projections.forEach((el: any) => {
           el.selected = false;
           el.buttonText = 'Draft';
           this.players.push(el);
@@ -103,10 +98,10 @@ export class PlayerTableComponent implements OnInit, OnDestroy {
     }
   }
 
-  sortingDataAccessor(item, property) {
+  sortingDataAccessor(item: any, property: any) {
     if (property.includes('.')) {
       return property.split('.')
-        .reduce((object, key) => object[key], item);
+        .reduce((object: any, key: any) => object[key], item);
     }
     return item[property];
   }
@@ -139,7 +134,6 @@ export class PlayerTableComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this._querySubscription.unsubscribe();
-    this._draftSubscription.unsubscribe();
+    this.query$.unsubscribe();
   }
 }

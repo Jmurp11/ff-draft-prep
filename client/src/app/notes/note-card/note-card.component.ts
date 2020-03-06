@@ -1,8 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { Apollo } from 'apollo-angular';
-import { Player } from '../../player-table/Player';
+import { Subscription, Observable } from 'rxjs';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Player } from '../../player-table/player.model';
 import { PlayerService } from '../../player-table/player.service';
+import { Note } from '../note.model';
+import { notes } from '../queries';
+import { Apollo } from 'apollo-angular';
 
 @Component({
   selector: 'app-note-card',
@@ -10,18 +13,32 @@ import { PlayerService } from '../../player-table/player.service';
   styleUrls: ['./note-card.component.css']
 })
 export class NoteCardComponent implements OnInit, OnDestroy {
-  _currentPlayer: Subscription;
+  curPlayer$: Subscription;
+  query$: Subscription;
   currentPlayer: Player;
   backgroundColor: string;
-  notes = [];
+  notes: Note[];
+  loading: boolean;
 
   constructor(
+    private apollo: Apollo,
     private _player: PlayerService,
-    private apollo: Apollo
+    private snackbar: MatSnackBar
   ) { }
 
   ngOnInit() {
-    this._currentPlayer = this._player.currentPlayer.subscribe(data => {
+    this.loading = true;
+
+    this.query$ = this.apollo.watchQuery<any>({
+      query: notes
+    })
+      .valueChanges
+      .subscribe(({ data, loading }) => {
+        this.loading = loading;
+        this.notes = data.notes;
+      });
+
+    this.curPlayer$ = this._player.currentPlayer.subscribe(data => {
       this.currentPlayer = data;
       switch (this.currentPlayer.player.position) {
         case 'QB':
@@ -38,13 +55,16 @@ export class NoteCardComponent implements OnInit, OnDestroy {
           break;
       }
     });
+
   }
 
-  notesQuery(player: number) {
-
+  openSnackBar(message: string, action: string) {
+    this.snackbar.open(message, action, {
+      duration: 5000
+    });
   }
 
   ngOnDestroy() {
-    this._currentPlayer.unsubscribe();
+    this.curPlayer$.unsubscribe();
   }
 }

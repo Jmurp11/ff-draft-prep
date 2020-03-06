@@ -2,11 +2,10 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription } from 'rxjs';
-import { Apollo } from 'apollo-angular';
 import { PlayerService } from '../../player-table/player.service';
 import { AuthService } from '../../auth/auth.service';
-import { createNote } from './queries';
-import { Player } from '../../player-table/Player';
+import { Player } from '../../player-table/player.model';
+import { NoteService } from '../note.service';
 
 @Component({
   selector: 'app-note',
@@ -22,14 +21,18 @@ export class NoteComponent implements OnInit, OnDestroy {
   titleIsValid = true;
   noteIsValid = true;
   userId: string;
+  loading: boolean;
+  dismiss = 'Dismiss';
 
   constructor(
     private _player: PlayerService,
     private _auth: AuthService,
-    private apollo: Apollo,
+    private _note: NoteService,
     private snackbar: MatSnackBar) { }
 
   ngOnInit() {
+    this.loading = false;
+
     this.authSub$ = this._auth.user.subscribe(user => {
       this.userId = user.id;
     });
@@ -80,44 +83,29 @@ export class NoteComponent implements OnInit, OnDestroy {
       return;
     }
 
+    this.loading = true;
+
     const user = this.userId;
     const player = this.currentPlayer.player.id;
     const title = this.form.get('title').value;
     const body = this.form.get('note').value;
     const source = this.form.get('source').value;
 
-    this.callAddNoteMutation(user, player, title, body, source, false);
+    const response = this._note.createNote(user, player, title, body, source, false);
 
-    this.form.reset();
+    this.openSnackBar(response.message, this.dismiss);
+    this.resetForm();
   }
 
   onCancel() {
     this.form.reset();
   }
 
-  callAddNoteMutation(
-    user: string, player: number, title: string,
-    body: string, source: string, isPrivate: boolean
-  ) {
-    return this.apollo.mutate({
-      mutation: createNote,
-      variables: {
-        user,
-        player,
-        title,
-        body,
-        source,
-        isPrivate
-      }
-    }).subscribe(({ data }) => {
-      console.log(JSON.stringify(data));
-      if (data.addNote.success[0].message) {
-        this.form.reset();
-        this.openSnackBar('Success! Note saved!', 'Dismiss');
-      } else {
-        this.openSnackBar(data.addNote.errors[0].message, 'Dismiss');
-      }
-    })
+  resetForm() {
+    this.form.reset();
+    this.noteIsValid = true;
+    this.titleIsValid = true;
+    this.loading = false;
   }
 
   openSnackBar(message: string, action: string) {
