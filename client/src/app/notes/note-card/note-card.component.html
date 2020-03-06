@@ -5,8 +5,8 @@
         <mat-card-header>
           <div mat-card-avatar class="note-header-image" [ngStyle]="{ 'background-color': backgroundColor}"></div>
           <mat-card-title>{{ note.player.firstName }} {{ note.player.lastName }}</mat-card-title>
-          <mat-card-subtitle>{{ note.player.team.abbreviation }} - {{note.player.position }}
-          </mat-card-subtitle>
+          <mat-card-subtitle>{{ note.player.team.team.abbreviation }} - {{note.player.position }}</mat-card-subtitle>
+          <mat-card-subtitle>{{note.creationTime}}</mat-card-subtitle>
         </mat-card-header>
         <mat-card-content>
           <div class=''>{{ note.title }}</div>

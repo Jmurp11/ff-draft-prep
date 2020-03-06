@@ -1,5 +1,8 @@
 <div class='add-note-card' *ngIf="currentPlayer !== undefined ">
-  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="form">
+  <div class="loading-div" *ngIf="loading">
+    <loading-spinner></loading-spinner>
+  </div>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="form" *ngIf="!loading">
     <mat-card class="note-card">
       <mat-card-header>
         <div mat-card-avatar class="note-header-image" [ngStyle]="{ 'background-color': backgroundColor}"></div>

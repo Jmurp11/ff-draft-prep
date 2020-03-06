@@ -1,5 +1,5 @@
 <div class="form-container">
-  <div class="loading-div" *ngIf="loading">
+  <div class="main-loading" *ngIf="loading">
     <loading-spinner></loading-spinner>
   </div>
   <form [formGroup]="form" (ngSubmit)="onRegisterSubmit()" class="form" *ngIf="!loading">

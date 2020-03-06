@@ -15,3 +15,32 @@ export const createNote = gql
       }
     }
   `;
+
+export const notes = gql
+  `
+    query {
+      notes {
+        id
+        user {
+          username
+        }
+        player {
+          firstName
+          lastName
+          team {
+            team {
+              abbreviation
+            }
+          }
+          position
+        }
+        title
+        body
+        source
+        isPrivate
+        likes
+        shares
+        creationTime
+      }
+    }
+  `;
