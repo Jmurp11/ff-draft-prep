@@ -16,7 +16,7 @@ export class User {
     this._token = _token;
   }
 
-  getToken() {
+  get token() {
     if (!this._token) {
       return null;
     }

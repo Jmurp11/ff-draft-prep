@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
 import { createNote } from './queries';
+import { BehaviorSubject } from 'rxjs';
 
 export interface CreateNoteResponse {
   success: boolean;
@@ -12,39 +13,41 @@ export interface CreateNoteResponse {
 })
 export class NoteService {
 
-  constructor(
-    private apollo: Apollo
-  ) { }
+  noteStatus = new BehaviorSubject<CreateNoteResponse>(null);
 
-  createNote(
-    user: string, player: number, title: string, body: string,
-    source: string, isPrivate: boolean): CreateNoteResponse {
-    let response: CreateNoteResponse;
+constructor(
+  private apollo: Apollo
+) { }
 
-    this.apollo.mutate({
-      mutation: createNote,
-      variables: {
-        user,
-        player,
-        title,
-        body,
-        source,
-        isPrivate
-      }
-    }).subscribe(({ data }) => {
-      if (data.addNote.success) {
-        response = {
-          success: true,
-          message: data.createNote.success[0].message
-        };
-      } else {
-        response = {
-          success: false,
-          message: data.createNote.errors[0].message
-        };
-      }
-    });
+createNote(
+  user: string, player: number, title: string, body: string,
+  source: string, isPrivate: boolean) {
+  this.apollo.mutate({
+    mutation: createNote,
+    variables: {
+      user,
+      player,
+      title,
+      body,
+      source,
+      isPrivate
+    }
+  }).subscribe(({ data }) => {
+    if (!data.createNote.success) {
+      const response = {
+        success: false,
+        message: data.createNote.errors[0].message
+      };
 
-    return response;
-  }
+      this.noteStatus.next(response);
+    } else {
+      const response = {
+        success: true,
+        message: data.createNote.success[0].message
+      };
+
+      this.noteStatus.next(response);
+    }
+  });
+}
 }

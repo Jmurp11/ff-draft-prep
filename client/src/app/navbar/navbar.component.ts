@@ -12,6 +12,7 @@ import { Router } from '@angular/router';
 export class NavbarComponent implements OnInit, OnDestroy {
   authSub$: Subscription;
   isAuth: boolean;
+  userId: string;
 
   constructor(
     public dialog: MatDialog,
@@ -22,6 +23,10 @@ export class NavbarComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.authSub$ = this._auth.user.subscribe(user => {
       this.isAuth = !!user;
+
+      if (user) {
+        this.userId = user.id;
+      }
     });
   }
 
@@ -31,6 +36,10 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   navigateToRegisterPage() {
     this.router.navigate(['/register']);
+  }
+
+  logout() {
+    this._auth.logout(this.userId);
   }
 
   ngOnDestroy() {

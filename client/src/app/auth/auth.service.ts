@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { ReplaySubject } from 'rxjs';
-import { login, register } from './queries';
+import { BehaviorSubject } from 'rxjs';
+import { login, register, logout } from './queries';
 import { Apollo } from 'apollo-angular';
 import { User } from './user.model';
+import { Router } from '@angular/router';
 
 export interface LoginResponse {
   success: boolean;
@@ -19,15 +20,17 @@ export interface RegisterResponse {
 @Injectable({ providedIn: 'root' })
 export class AuthService {
 
-  user = new ReplaySubject<User>();
-  loginStatus = new ReplaySubject<LoginResponse>();
+  user = new BehaviorSubject<User>(null);
+  loginStatus = new BehaviorSubject<LoginResponse>(null);
+  registerStatus = new BehaviorSubject<RegisterResponse>(null);
 
   constructor(
-    private apollo: Apollo
+    private apollo: Apollo,
+    private router: Router
   ) { }
 
   login(email: string, password: string) {
-    return this.apollo.mutate({
+    this.apollo.mutate({
       mutation: login,
       variables: {
         email,
@@ -45,15 +48,17 @@ export class AuthService {
           data.login.success.user.id,
           data.login.success.user.email,
           data.login.success.user.username,
-          data.login.success.user.accessToken
+          data.login.success.accessToken
         );
 
         this.user.next(user);
 
+        localStorage.setItem('user', JSON.stringify(user));
+
         this.loginStatus.next(response);
       } else {
         const response: LoginResponse = {
-          success: true,
+          success: false,
           message: data.login.errors[0].message
         };
 
@@ -64,9 +69,31 @@ export class AuthService {
     });
   }
 
-  async register(email: string, password: string, username: string) {
-    let response: RegisterResponse;
+  autoLogin() {
+    const userData: {
+      id: string;
+      email: string;
+      username: string;
+      _token: string;
+    } = JSON.parse(localStorage.getItem('user'));
 
+    if (!userData) {
+      return;
+    }
+
+    const loadedUser = new User(
+      userData.id,
+      userData.email,
+      userData.username,
+      userData._token
+    );
+
+    if (loadedUser.token) {
+      this.user.next(loadedUser);
+    }
+  }
+
+  async register(email: string, password: string, username: string) {
     this.apollo.mutate({
       mutation: register,
       variables: {
@@ -76,20 +103,40 @@ export class AuthService {
       }
     }).subscribe(({ data }) => {
       if (!data.register.success) {
-        response = {
+        const response = {
           success: false,
           message: data.register.errors[0].message
         };
+
+        this.registerStatus.next(response);
       } else {
-        response = {
+        const response = {
           success: true,
           message: data.register.success[0].message
         };
+
+        this.registerStatus.next(response);
       }
     }, (error) => {
       console.log(error);
     });
+  }
 
-    return response;
+  logout(userId: string) {
+    return this.apollo.mutate({
+      mutation: logout,
+      variables: {
+        userId
+      }
+    }).subscribe(({ data }) => {
+      this.apollo.getClient().resetStore();
+      this.user.next(null);
+      this.loginStatus.next(null);
+      localStorage.removeItem('user');
+      this.router.navigate(['home']);
+      return data;
+    }, (error) => {
+      console.log(error);
+    });
   }
 }

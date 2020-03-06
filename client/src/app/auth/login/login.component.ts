@@ -23,7 +23,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     private router: Router,
     private _auth: AuthService,
     private snackbar: MatSnackBar
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.authSub$ = this._auth.user.subscribe(user => {
@@ -33,13 +33,15 @@ export class LoginComponent implements OnInit, OnDestroy {
     });
 
     this.loginSub$ = this._auth.loginStatus.subscribe(response => {
-      if (response.success) {
-        this.router.navigate(['dashboard']);
-        this.openSnackBar('Success! Welcome back!', this.dismissSnackbar);
-        this.resetForm();
-      } else {
-        this.openSnackBar(response.message, this.dismissSnackbar);
-        this.resetForm();
+      if (response) {
+        if (response.success) {
+          this.router.navigate(['dashboard']);
+          this.openSnackBar('Success! Welcome back!', this.dismissSnackbar);
+          this.resetForm();
+        } else {
+          this.openSnackBar(response.message, this.dismissSnackbar);
+          this.resetForm();
+        }
       }
     });
 

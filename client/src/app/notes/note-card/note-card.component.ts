@@ -6,6 +6,7 @@ import { PlayerService } from '../../player-table/player.service';
 import { Note } from '../note.model';
 import { notes } from '../queries';
 import { Apollo } from 'apollo-angular';
+import { AuthService } from 'src/app/auth/auth.service';
 
 @Component({
   selector: 'app-note-card',
@@ -21,6 +22,7 @@ export class NoteCardComponent implements AfterContentInit, OnDestroy {
   loading: boolean;
 
   constructor(
+    private _auth: AuthService,
     private apollo: Apollo,
     private _player: PlayerService,
     private snackbar: MatSnackBar
