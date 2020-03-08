@@ -4,3 +4,33 @@
     border-radius: 50%;
     flex-shrink: 0;
 }
+
+mat-card-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: space-between;
+}
+
+mat-grid-list { 
+    height: 100%;
+}
+
+.card-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: space-between;
+    padding: 10px;
+}
+
+.note-card {
+    width: 100%;
+    padding-top: 5px;
+}
+
+.refresh-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}

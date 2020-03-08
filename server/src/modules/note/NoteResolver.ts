@@ -1,11 +1,9 @@
-import { Resolver, Query, Mutation, Arg, UseMiddleware, Subscription, Root, PubSubEngine, PubSub } from 'type-graphql';
+import { Resolver, Query, Mutation, Arg, UseMiddleware } from 'type-graphql';
 import { Note } from '../../entity';
 import { Result } from '../../shared';
-import { NoteInput, SubscriptionInput } from './inputs';
+import { NoteInput } from './inputs';
 import { getRepository } from 'typeorm';
 import { isAuth, logger } from '../../middleware';
-
-const NOTE = 'NOTE';
 
 @Resolver()
 export class NoteResolver {
@@ -37,7 +35,6 @@ export class NoteResolver {
     @UseMiddleware(isAuth, logger)
     @Mutation(() => Result)
     async createNote(
-        @PubSub() pubsub: PubSubEngine,
         @Arg('input') {
             user,
             player,
@@ -84,19 +81,6 @@ export class NoteResolver {
             shares
         }).save();
 
-        const newNote = await Note.findOne({
-            where: {
-                user,
-                player,
-                creationTime,
-                title,
-                body,
-                source,
-            }
-        });
-
-        await pubsub.publish(NOTE, newNote);
-        
         return {
             success: [
                 {
@@ -105,46 +89,5 @@ export class NoteResolver {
                 }
             ]
         }
-    }
-
-    @UseMiddleware(isAuth, logger)
-    @Subscription(() => Note,
-        {
-            topics: NOTE
-        })
-    newUserNote(
-        @Root() note: Note,
-        @Arg('input') { user, player }: SubscriptionInput
-    ): Note | undefined {
-        if (user === note.user && player === note.player) {
-            return note;
-        }
-        return undefined;
-    }
-
-    @UseMiddleware(isAuth, logger)
-    @Subscription(() => Note,
-        {
-            topics: NOTE
-        })
-    newPlayerNote(
-        @Root() note: Note,
-        @Arg('input') { player }: SubscriptionInput
-    ): Note | undefined {
-        if (player === note.player) {
-            return note;
-        }
-        return undefined;
-    }
-
-    @UseMiddleware(isAuth, logger)
-    @Subscription(() => Note,
-        {
-            topics: NOTE
-        })
-    newNote(
-        @Root() note: Note,
-    ): Note | undefined {
-        return note;
     }
 }

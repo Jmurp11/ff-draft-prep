@@ -17,3 +17,9 @@ mat-card-content {
   border-radius: 50%;
   flex-shrink: 0;
 }
+
+.checkbox-section {
+  display: flex;
+  align-content: center;
+  align-items: center;
+}

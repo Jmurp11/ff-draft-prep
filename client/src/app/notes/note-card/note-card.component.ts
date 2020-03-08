@@ -6,7 +6,6 @@ import { PlayerService } from '../../player-table/player.service';
 import { Note } from '../note.model';
 import { notes } from '../queries';
 import { Apollo } from 'apollo-angular';
-import { AuthService } from 'src/app/auth/auth.service';
 
 @Component({
   selector: 'app-note-card',
@@ -20,25 +19,15 @@ export class NoteCardComponent implements AfterContentInit, OnDestroy {
   backgroundColor: string;
   notes: Note[];
   loading: boolean;
-
+  
   constructor(
-    private _auth: AuthService,
     private apollo: Apollo,
     private _player: PlayerService,
     private snackbar: MatSnackBar
   ) { }
 
   ngAfterContentInit() {
-    this.loading = true;
-
-    this.query$ = this.apollo.watchQuery<any>({
-      query: notes
-    })
-      .valueChanges
-      .subscribe(({ data, loading }) => {
-        this.loading = loading;
-        this.notes = data.notes;
-      });
+    this.refreshNotes();
 
     this.curPlayer$ = this._player.currentPlayer.subscribe(data => {
       this.currentPlayer = data;
@@ -57,7 +46,20 @@ export class NoteCardComponent implements AfterContentInit, OnDestroy {
           break;
       }
     });
+  }
 
+  refreshNotes() {
+    this.loading = true;
+    this.notes = [];
+
+    this.query$ = this.apollo.watchQuery<any>({
+      query: notes
+    })
+      .valueChanges
+      .subscribe(({ data, loading }) => {
+        this.loading = loading;
+        this.notes = data.notes;
+      });
   }
 
   openSnackBar(message: string, action: string) {
@@ -68,5 +70,6 @@ export class NoteCardComponent implements AfterContentInit, OnDestroy {
 
   ngOnDestroy() {
     this.curPlayer$.unsubscribe();
+    this.query$.unsubscribe();
   }
 }

@@ -24,7 +24,9 @@ export class Player extends BaseEntity {
     @Column("text")
     lastName!: string;
 
-    @ManyToOne(() => TeamStats)
+    @ManyToOne(() => TeamStats, {
+        eager: true
+    })
     @JoinColumn({ name: 'team' })
     @Field(() => TeamStats, { nullable: true })
     @Column("int")

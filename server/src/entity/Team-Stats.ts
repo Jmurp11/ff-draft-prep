@@ -16,7 +16,9 @@ export class TeamStats extends BaseEntity {
     @PrimaryGeneratedColumn()
     id!: number;
 
-    @ManyToOne(() => Team)
+    @ManyToOne(() => Team, {
+        eager: true
+    })
     @JoinColumn({ name: 'team'})
     @Field(() => Team)
     @Column("int")

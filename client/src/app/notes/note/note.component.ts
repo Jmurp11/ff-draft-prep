@@ -21,6 +21,7 @@ export class NoteComponent implements AfterContentInit, OnDestroy {
   backgroundColor: string;
   userId: string;
   loading: boolean;
+  sources: string[];
   dismiss = 'Dismiss';
   titleIsValid = true;
   noteIsValid = true;
@@ -34,8 +35,16 @@ export class NoteComponent implements AfterContentInit, OnDestroy {
   ngAfterContentInit() {
     this.loading = false;
 
+    this.sources = [
+      'CBS',
+      'ESPN',
+      'Local News',
+      'Twitter',
+      'Yahoo',
+      'None'
+    ];
+
     this._note.noteStatus.subscribe(response => {
-      console.log(response);
       if (response) {
         this.openSnackBar(response.message, this.dismiss);
         this.resetForm();
@@ -73,6 +82,9 @@ export class NoteComponent implements AfterContentInit, OnDestroy {
         updateOn: 'blur',
         validators: [Validators.required, Validators.minLength(5)]
       }),
+      isPrivate: new FormControl(null, {
+        updateOn: 'blur'
+      }),
       source: new FormControl(null, {
         updateOn: 'blur'
       })
@@ -97,32 +109,34 @@ export class NoteComponent implements AfterContentInit, OnDestroy {
     const title = this.form.get('title').value;
     const body = this.form.get('note').value;
     const source = this.form.get('source').value;
+    const isPrivate = this.form.get('isPrivate').value;
 
     this.loading = true;
 
-    this._note.createNote(user, player, title, body, source, false);
-}
+    console.log(source);
+    this._note.createNote(user, player, title, body, source, isPrivate);
+  }
 
-onCancel() {
-  this.form.reset();
-}
+  onCancel() {
+    this.form.reset();
+  }
 
-resetForm() {
-  this.form.reset();
-  this.noteIsValid = true;
-  this.titleIsValid = true;
-  this.loading = false;
-}
+  resetForm() {
+    this.form.reset();
+    this.noteIsValid = true;
+    this.titleIsValid = true;
+    this.loading = false;
+  }
 
-openSnackBar(message: string, action: string) {
-  this.snackbar.open(message, action, {
-    duration: 5000
-  });
-}
+  openSnackBar(message: string, action: string) {
+    this.snackbar.open(message, action, {
+      duration: 5000
+    });
+  }
 
-ngOnDestroy() {
-  this.authSub$.unsubscribe();
-  this.curPlayer$.unsubscribe();
-  this.noteStatus$.unsubscribe();
-}
+  ngOnDestroy() {
+    this.authSub$.unsubscribe();
+    this.curPlayer$.unsubscribe();
+    this.noteStatus$.unsubscribe();
+  }
 }

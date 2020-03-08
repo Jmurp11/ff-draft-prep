@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
-import { createNote } from './queries';
+import { createNote, notes } from './queries';
 import { BehaviorSubject } from 'rxjs';
 
 export interface CreateNoteResponse {
@@ -31,7 +31,8 @@ createNote(
       body,
       source,
       isPrivate
-    }
+    },
+    refetchQueries: [{ query: notes }]
   }).subscribe(({ data }) => {
     if (!data.createNote.success) {
       const response = {

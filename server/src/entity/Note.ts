@@ -22,7 +22,9 @@ export class Note extends BaseEntity {
     @Column("uuid")
     user!: string;
 
-    @ManyToOne(() => Player)
+    @ManyToOne(() => Player, {
+        eager: true
+    })
     @JoinColumn({ name: 'player' })
     @Field(() => Player)
     @Column("text")
