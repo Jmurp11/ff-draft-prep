@@ -40,8 +40,6 @@ export class NoteCardComponent implements AfterContentInit, OnDestroy {
     this.user$ = this._auth.user.subscribe(user => {
       this.curUser = user;
     });
-
-    console.log(this.curUser);
     
     this.query$ = this.apollo.watchQuery<any>({
       query: userNotes,
@@ -51,12 +49,10 @@ export class NoteCardComponent implements AfterContentInit, OnDestroy {
     })
       .valueChanges
       .subscribe(({ data, loading }) => {
-        console.log('refresh run');
         this.loading = loading;
         this.notes = data.userNotes;
 
         this.curPlayer$ = this._player.currentPlayer.subscribe(data => {
-          console.log('refreshing cur player');
           this.currentPlayer = data;
           this.playerNotes = [];
           this.notes.forEach(note => {

@@ -2,11 +2,6 @@
   <loading-spinner></loading-spinner>
 </div>
 <div class='note-cards' *ngIf="!loading">
-  <div class="refresh-container">
-    <button mat-button color="primary" (click)="refreshNotes()">
-      <mat-icon>refresh</mat-icon>
-    </button>
-  </div>
   <mat-grid-list cols="2" rowHeight="300px">
     <mat-grid-tile class="note-card-tile" colspan="2" *ngFor="let note of playerNotes" gutterSize="5px">
       <mat-card class="note-card">
