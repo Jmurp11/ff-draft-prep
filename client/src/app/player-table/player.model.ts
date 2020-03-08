@@ -51,5 +51,4 @@ export interface Player {
   receivingTd: number;
   fantasyPoints: number;
   selected: boolean;
-  buttonText: string;
 }

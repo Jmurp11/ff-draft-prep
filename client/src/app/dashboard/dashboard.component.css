@@ -1,3 +1,15 @@
 .draft-btn-ctr {
     padding: 10px;
 }
+
+.tab-ctr {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+}
+
+.card-ctr {
+    width: 500px;
+}

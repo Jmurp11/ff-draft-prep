@@ -30,6 +30,8 @@ export class PlayerTableComponent implements OnInit, OnDestroy {
   lastSelectedPlayer: Player;
   selectedPlayers: Player[];
   isDraft: boolean;
+  add_circle: string;
+  undo: string;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -58,7 +60,6 @@ export class PlayerTableComponent implements OnInit, OnDestroy {
         this.loading = loading;
         data.projections.forEach((el: any) => {
           el.selected = false;
-          el.buttonText = 'Draft';
           this.players.push(el);
         });
         this.dataSource = new MatTableDataSource(this.players);
@@ -110,11 +111,6 @@ export class PlayerTableComponent implements OnInit, OnDestroy {
     player.selected = !player.selected;
     this.lastSelectedPlayer = player;
     this.selectedPlayers.push(this.lastSelectedPlayer);
-    if (player.selected) {
-      player.buttonText = 'Undo';
-    } else {
-      player.buttonText = 'Draft';
-    }
   }
 
   updateCurrentPlayer(player: Player) {
@@ -129,7 +125,6 @@ export class PlayerTableComponent implements OnInit, OnDestroy {
   resetAll() {
     this.selectedPlayers.forEach(player => {
       player.selected = false;
-      player.buttonText = 'Draft';
     });
   }
 

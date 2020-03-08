@@ -2,11 +2,17 @@
     <button mat-raised-button color="accent" (click)="goToDraft()">Draft</button>
 </div>
 
-<mat-tab-group>
-    <mat-tab label="Public Notes">
-        <app-public-notes></app-public-notes>
-    </mat-tab>
-    <mat-tab label="My Notes">
-        <app-user-notes></app-user-notes>
-    </mat-tab>
-</mat-tab-group>
+<div class="tab-ctr">
+    <mat-tab-group>
+        <mat-tab label="Public Notes">
+            <div class="card-ctr">
+                <app-public-notes></app-public-notes>
+            </div>
+        </mat-tab>
+        <mat-tab label="My Notes">
+            <div class="card-ctr">
+                <app-user-notes></app-user-notes>
+            </div>
+        </mat-tab>
+    </mat-tab-group>
+</div>
