@@ -7,13 +7,13 @@
       <mat-icon>refresh</mat-icon>
     </button>
   </div>
-  <mat-grid-list cols="2">
-    <mat-grid-tile class="note-card-tile" colspan="2" *ngFor="let note of notes" gutterSize="15px">
+  <mat-grid-list cols="2" rowHeight="300px">
+    <mat-grid-tile class="note-card-tile" colspan="2" *ngFor="let note of playerNotes" gutterSize="5px">
       <mat-card class="note-card">
         <mat-card-header>
           <div mat-card-avatar class="note-header-image" [ngStyle]="{ 'background-color': backgroundColor}"></div>
           <mat-card-title>{{ note.title }}</mat-card-title>
-          <mat-card-subtitle>{{ note.user.username }} - {{ note.creationTime | date: "MMM dd, yyyy" }}
+          <mat-card-subtitle>{{ note.user.username }} - {{ note.creationTime | date: "MMM dd, yyyy hh:mm " }}
           </mat-card-subtitle>
           <mat-card-subtitle>{{ note.player.firstName}} {{ note.player.lastName }}
             {{ note.player.team.team.abbreviation }} - {{ note.player.position }}</mat-card-subtitle>

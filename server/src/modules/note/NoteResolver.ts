@@ -32,6 +32,37 @@ export class NoteResolver {
             });
     }
 
+    @UseMiddleware(logger)
+    @Query(() => [Note])
+    async publicNotes() {
+        return getRepository(Note)
+            .find({
+                relations: ['user', 'player'],
+                where: {
+                    isPrivate: false
+                },
+                order: {
+                    creationTime: 'DESC'
+                }
+            });
+    }
+
+
+    @UseMiddleware(isAuth, logger)
+    @Query(() => [Note])
+    async userNotes(@Arg('user') user: string) {
+        return getRepository(Note)
+            .find({
+                relations: ['user', 'player'],
+                where: {
+                    user
+                },
+                order: {
+                    creationTime: 'DESC'
+                }
+            });
+    }
+
     @UseMiddleware(isAuth, logger)
     @Mutation(() => Result)
     async createNote(

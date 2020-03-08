@@ -109,11 +109,14 @@ export class NoteComponent implements AfterContentInit, OnDestroy {
     const title = this.form.get('title').value;
     const body = this.form.get('note').value;
     const source = this.form.get('source').value;
-    const isPrivate = this.form.get('isPrivate').value;
+    let isPrivate = this.form.get('isPrivate').value;
 
     this.loading = true;
 
-    console.log(source);
+    if (!isPrivate) {
+      isPrivate = false;
+    }
+
     this._note.createNote(user, player, title, body, source, isPrivate);
   }
 
