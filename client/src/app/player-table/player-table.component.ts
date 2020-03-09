@@ -8,6 +8,7 @@ import { Apollo } from 'apollo-angular';
 import { projections } from './queries';
 import { Player } from './player.model';
 import { PlayerService } from './player.service';
+import { NoteService } from '../notes/note.service';
 
 @Component({
   selector: 'app-player-table',
@@ -44,8 +45,9 @@ export class PlayerTableComponent implements OnInit, OnDestroy {
 
   constructor(
     private apollo: Apollo,
+    private _note: NoteService,
     private _player: PlayerService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.loading = true;
@@ -126,6 +128,10 @@ export class PlayerTableComponent implements OnInit, OnDestroy {
     this.selectedPlayers.forEach(player => {
       player.selected = false;
     });
+  }
+
+  clearNote() {
+    this._note.resetForm(true);
   }
 
   ngOnDestroy() {

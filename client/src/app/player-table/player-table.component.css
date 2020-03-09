@@ -136,3 +136,10 @@ div.resetButtonContainer {
   width: 25%;
   padding: 10px;
 }
+
+.close-btn-ctr {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-end;
+}

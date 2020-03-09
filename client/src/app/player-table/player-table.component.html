@@ -1,5 +1,10 @@
 <mat-drawer-container class="container" autosize>
   <mat-drawer #drawer class="sidenav" mode="side" position="end">
+    <div class="close-btn-ctr">
+      <button mat-icon-button color="accent" (click)="drawer.close()" (click)="clearNote()">
+        <mat-icon>clear</mat-icon>
+      </button>
+    </div>
     <app-note></app-note>
     <mat-divider></mat-divider>
     <app-note-card></app-note-card>
