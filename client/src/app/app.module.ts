@@ -22,6 +22,7 @@ import { LoadingSpinner } from './shared/loading-spinner/loading-spinner.compone
 import { HomeComponent } from './home/home.component';
 import { UserNotesComponent } from './notes/user-notes/user-notes.component';
 import { PublicNotesComponent } from './notes/public-notes/public-notes.component';
+import { NoteDialogComponent } from './notes/note-dialog/note-dialog.component';
 
 @NgModule({
   declarations: [
@@ -38,8 +39,10 @@ import { PublicNotesComponent } from './notes/public-notes/public-notes.componen
     LoadingSpinner,
     HomeComponent,
     UserNotesComponent,
-    PublicNotesComponent
+    PublicNotesComponent,
+    NoteDialogComponent
   ],
+  entryComponents: [NoteDialogComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

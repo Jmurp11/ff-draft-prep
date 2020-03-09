@@ -119,6 +119,10 @@ export class PlayerTableComponent implements OnInit, OnDestroy {
     return this._player.updateCurrentPlayer(player);
   }
 
+  addNoteClick() {
+    this._note.prepopulatePlayer(true);
+  }
+
   onRowClick(player: Player) {
     this.updateCurrentPlayer(player);
     this.expandedPlayer = this.expandedPlayer === player ? null : player;

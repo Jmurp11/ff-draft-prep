@@ -37,7 +37,7 @@
       <ng-container matColumnDef="note">
         <th mat-header-cell *matHeaderCellDef mat-sort-header></th>
         <td mat-cell *matCellDef="let player">
-          <button mat-icon-button color="accent" (click)="drawer.toggle()">
+          <button mat-icon-button color="accent" (click)="drawer.toggle()" (click)="addNoteClick()">
             <mat-icon>note_add</mat-icon>
           </button>
         </td>

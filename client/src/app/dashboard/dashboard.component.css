@@ -1,15 +1,19 @@
-.draft-btn-ctr {
-    padding: 10px;
+.btn-ctr {
+  display: flex;
+  flex-direction: row;
 }
 
-.tab-ctr {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    align-content: center;
+.draft-btn {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  padding: 10px;
 }
 
 .card-ctr {
-    width: 500px;
+    width: 97.5%;
+}
+
+.add-note-btn {
+  float: right;
 }

@@ -6,7 +6,7 @@ import {
     JoinColumn,
     ManyToOne
 } from "typeorm";
-import { ObjectType, Field } from "type-graphql";
+import { ObjectType, Field, Root } from "type-graphql";
 import { TeamStats } from "./";
 
 @Entity("players")
@@ -24,6 +24,11 @@ export class Player extends BaseEntity {
     @Column("text")
     lastName!: string;
 
+    @Field()
+    name(@Root() parent: Player): string {
+      return `${parent.firstName} ${parent.lastName}`;
+    }
+    
     @ManyToOne(() => TeamStats, {
         eager: true
     })
