@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
-import { createNote, notes, userNotes, publicNotes } from './queries';
+import { createNote, userNotes, publicNotes } from './queries';
 import { BehaviorSubject } from 'rxjs';
 
 export interface CreateNoteResponse {
@@ -14,6 +14,7 @@ export interface CreateNoteResponse {
 export class NoteService {
 
   noteStatus = new BehaviorSubject<CreateNoteResponse>(null);
+  clearNoteForm = new BehaviorSubject<boolean>(null);
 
   constructor(
     private apollo: Apollo
@@ -61,4 +62,9 @@ export class NoteService {
       }
     });
   }
+
+  resetForm(val: boolean) {
+    this.clearNoteForm.next(val);
+  }
+
 }

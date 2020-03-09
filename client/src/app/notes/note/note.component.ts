@@ -51,6 +51,13 @@ export class NoteComponent implements AfterContentInit, OnDestroy {
       }
     });
 
+    this._note.clearNoteForm.subscribe(clear => {
+      if (clear) {
+        this.resetForm();
+        this._note.resetForm(false);
+      }
+    });
+    
     this.authSub$ = this._auth.user.subscribe(user => {
       this.userId = user.id;
     });
