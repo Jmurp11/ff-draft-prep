@@ -10,8 +10,10 @@ mat-card-content {
     align-content: space-between;
 }
 
-mat-grid-list { 
-    height: 100%;
+mat-grid-list {
+  margin:0;
+  padding:0;
+  height:100%;
 }
 
 .card-content {
@@ -20,9 +22,4 @@ mat-grid-list {
     justify-content: center;
     align-content: space-between;
     padding: 10px;
-}
-
-.note-card {
-    width: 100%;
-    padding-top: 5px;
 }

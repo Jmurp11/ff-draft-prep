@@ -7,6 +7,7 @@ export interface Note {
     id: number;
     firstName: string;
     lastName: string;
+    name: string;
     team: {
       team: {
         abbreviation: string;

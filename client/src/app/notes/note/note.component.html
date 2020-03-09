@@ -1,4 +1,4 @@
-<div class='add-note-card' *ngIf="currentPlayer !== undefined ">
+<div class='add-note-card'>
   <form [formGroup]="form" (ngSubmit)="onSubmit()" class="form">
     <div class="loading-div" *ngIf="loading">
       <loading-spinner></loading-spinner>
@@ -6,14 +6,29 @@
     <mat-card class="note-card" *ngIf="!loading">
       <mat-card-header>
         <div mat-card-avatar class="note-header-image" [ngStyle]="{ 'background-color': backgroundColor}"></div>
-        <mat-card-title>{{ currentPlayer.player.firstName }} {{ currentPlayer.player.lastName }}</mat-card-title>
-        <mat-card-subtitle>{{ currentPlayer.player.team.team.abbreviation }} - {{currentPlayer.player.position }}
+        <mat-card-title *ngIf="!isPlayerPreSet">Create Note</mat-card-title>
+        <mat-card-title *ngIf="isPlayerPreSet">{{ currentPlayer.player.firstName }} {{ currentPlayer.player.lastName }}
+        </mat-card-title>
+        <mat-card-subtitle *ngIf="isPlayerPreSet">{{ currentPlayer.player.team.team.abbreviation }} -
+          {{currentPlayer.player.position }}
         </mat-card-subtitle>
       </mat-card-header>
       <mat-card-content>
         <section class="checkbox-section">
           <mat-checkbox color="primary" formControlName="isPrivate">Private</mat-checkbox>
         </section>
+
+        <mat-form-field class="note-input" *ngIf="!isPlayerPreSet">
+          <input matInput placeholder="Player" formControlName="player" class="form-control"
+            [matAutocomplete]="auto">
+        </mat-form-field>
+
+        <mat-autocomplete #auto="matAutocomplete">
+          <mat-option *ngFor="let player of filteredOptions | async" [value]="player">
+            {{ player.name }} {{ player.team.team.abbreviation }} - {{ player.position }}
+          </mat-option>
+        </mat-autocomplete>
+
         <mat-form-field class="note-input">
           <input matInput placeholder="Title" formControlName="title" class="form-control">
         </mat-form-field>

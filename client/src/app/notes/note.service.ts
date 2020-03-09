@@ -15,6 +15,7 @@ export class NoteService {
 
   noteStatus = new BehaviorSubject<CreateNoteResponse>(null);
   clearNoteForm = new BehaviorSubject<boolean>(null);
+  populatePlayer = new BehaviorSubject<boolean>(null);
 
   constructor(
     private apollo: Apollo
@@ -61,6 +62,10 @@ export class NoteService {
         this.noteStatus.next(response);
       }
     });
+  }
+
+  prepopulatePlayer(val: boolean) {
+    this.populatePlayer.next(val);
   }
 
   resetForm(val: boolean) {

@@ -12,7 +12,7 @@ mat-card-content {
     align-content: space-between;
 }
 
-mat-grid-list { 
+mat-grid-list {
     height: 100%;
 }
 
@@ -22,9 +22,4 @@ mat-grid-list {
     justify-content: center;
     align-content: space-between;
     padding: 10px;
-}
-
-.note-card {
-    width: 100%;
-    padding-top: 5px;
 }

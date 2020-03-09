@@ -1,28 +1,30 @@
 <div class="loading-div" *ngIf="loading">
-    <loading-spinner></loading-spinner>
+  <loading-spinner></loading-spinner>
+</div>
+<div class='note-cards' *ngIf="!loading">
+  <div fxLayout="column" fxLayoutAlign="center" fxLayoutGap="0.5%" *ngFor="let note of notes">
+    <mat-card class="note-card">
+      <mat-card-header>
+        <div mat-card-avatar class="note-header-image" [ngStyle]="{ 'background-color': backgroundColor}"></div>
+        <mat-card-title>{{ note.title }}</mat-card-title>
+        <mat-card-subtitle>{{ note.user.username }} - {{ note.creationTime | date: "MMM dd, yyyy hh:mm " }}
+        </mat-card-subtitle>
+        <mat-card-subtitle>{{ note.player.firstName}} {{ note.player.lastName }}
+          {{ note.player.team.team.abbreviation }} - {{ note.player.position }}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <div class='card-content'>{{ note.body }}</div>
+        <div class='card-content'>Source: {{ note.source }}</div>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-icon-button color="primary">
+          <mat-icon>favorite</mat-icon>
+        </button>
+        <button mat-icon-button color="accent">
+          <mat-icon>share</mat-icon>
+        </button>
+      </mat-card-actions>
+    </mat-card>
+    <mat-divider></mat-divider>
   </div>
-  <div class='note-cards' *ngIf="!loading">
-    <mat-grid-list cols="2" rowHeight="300px">
-      <mat-grid-tile class="note-card-tile" colspan="2" *ngFor="let note of notes" gutterSize="5px">
-        <mat-card class="note-card">
-          <mat-card-header>
-            <div mat-card-avatar class="note-header-image"></div>
-            <mat-card-title>{{ note.title }}</mat-card-title>
-            <mat-card-subtitle>{{ note.user.username }} - {{ note.creationTime | date: "MMM dd, yyyy hh:mm " }}
-            </mat-card-subtitle>
-            <mat-card-subtitle>{{ note.player.firstName}} {{ note.player.lastName }}
-              {{ note.player.team.team.abbreviation }} - {{ note.player.position }}</mat-card-subtitle>
-          </mat-card-header>
-          <mat-card-content>
-            <div class='card-content'>{{ note.body }}</div>
-            <div class='card-content'>Source: {{ note.source }}</div>
-          </mat-card-content>
-          <mat-card-actions>
-            <button mat-button color="accent">LIKE</button>
-            <button mat-button color="primary">SHARE</button>
-          </mat-card-actions>
-        </mat-card>
-        <mat-divider></mat-divider>
-      </mat-grid-tile>
-    </mat-grid-list>
-  </div>
+</div>
