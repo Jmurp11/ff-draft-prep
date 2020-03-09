@@ -35,15 +35,15 @@ export class NoteService {
       },
       refetchQueries: [
         {
-        query: userNotes,
-        variables: {
-          user
+          query: userNotes,
+          variables: {
+            user
+          }
+        },
+        {
+          query: publicNotes
         }
-      },
-      {
-        query: publicNotes
-      }
-    ]
+      ]
     }).subscribe(({ data }) => {
       if (!data.createNote.success) {
         const response = {
