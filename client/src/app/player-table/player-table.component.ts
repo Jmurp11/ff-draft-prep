@@ -125,6 +125,9 @@ export class PlayerTableComponent implements OnInit, OnDestroy {
 
   onRowClick(player: Player) {
     this.updateCurrentPlayer(player);
+  }
+
+  onRowDoubleClick(player: Player) {
     this.expandedPlayer = this.expandedPlayer === player ? null : player;
   }
 

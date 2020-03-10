@@ -6,8 +6,7 @@ export const projections = gql
     projections {
       player {
         id
-        firstName
-        lastName
+        initialName
         name
         team {
           team {

@@ -55,8 +55,7 @@
 
       <ng-container matColumnDef="player.lastName">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
-        <td mat-cell *matCellDef="let player" class="bold-font"> {{player.player.firstName.substring(0, 1)}}.
-          {{player.player.lastName}}
+        <td mat-cell *matCellDef="let player" class="bold-font"> {{ player.player.initialName }}
         </td>
       </ng-container>
 
@@ -235,7 +234,10 @@
             'isRb': player.player.position === 'RB',
             'isWr': player.player.position === 'WR',
             'isTe': player.player.position === 'TE'
-          }" (click)="onRowClick(player)">
+          }"
+          (click)="onRowClick(player)"
+          (dblclick)="onRowDoubleClick(player)"
+          matTooltip="Double-click the row to expand team details">
       </tr>
       <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="detail-row"></tr>
     </table>

@@ -24,6 +24,9 @@ import { UserNotesComponent } from './notes/user-notes/user-notes.component';
 import { PublicNotesComponent } from './notes/public-notes/public-notes.component';
 import { NoteDialogComponent } from './notes/note-dialog/note-dialog.component';
 import { MatDialogRef } from '@angular/material/dialog';
+import { TargetComponent } from './target/target.component';
+import { TargetDialogComponent } from './target/target-dialog/target-dialog.component';
+import { AddTargetComponent } from './target/add-target/add-target.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +44,10 @@ import { MatDialogRef } from '@angular/material/dialog';
     HomeComponent,
     UserNotesComponent,
     PublicNotesComponent,
-    NoteDialogComponent
+    NoteDialogComponent,
+    TargetComponent,
+    TargetDialogComponent,
+    AddTargetComponent
   ],
   entryComponents: [NoteDialogComponent],
   imports: [

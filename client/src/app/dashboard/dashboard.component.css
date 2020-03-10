@@ -17,3 +17,11 @@
 .add-note-btn {
   float: right;
 }
+
+.targetList {
+  padding: 10px;
+  border-style: ridge;
+  border-width: 1px;
+  border-color: lightgray;
+  width: 15%;
+}
