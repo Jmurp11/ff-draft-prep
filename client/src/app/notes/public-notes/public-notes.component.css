@@ -1,8 +1,6 @@
 .note-header-image {
-    height: 40px;
-    width: 40px;
-    border-radius: 50%;
-    flex-shrink: 0;
+    background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
+    background-size: cover;
 }
 
 mat-card-content {
@@ -10,10 +8,6 @@ mat-card-content {
     flex-direction: column;
     justify-content: center;
     align-content: space-between;
-}
-
-mat-grid-list {
-    height: 100%;
 }
 
 .card-content {

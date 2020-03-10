@@ -7,13 +7,16 @@ import { AuthService } from './auth/auth.service';
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent implements OnInit {
-  title = 'Draft Shark';
-
+  title = 'DraftShark';
+  isAuth: boolean;
   constructor(
     private _auth: AuthService
   ) { }
 
   ngOnInit() {
+    this._auth.user.subscribe(user => {
+      this.isAuth = !!user;
+    })
     this._auth.autoLogin();
   }
 }

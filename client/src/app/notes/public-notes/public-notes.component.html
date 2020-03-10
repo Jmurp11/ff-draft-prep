@@ -2,7 +2,7 @@
   <loading-spinner></loading-spinner>
 </div>
 <div class='note-cards' *ngIf="!loading">
-  <div fxLayout="column" fxLayoutAlign="center" fxLayoutGap="0.5%" *ngFor="let note of playerNotes">
+  <div fxLayout="column" fxLayoutAlign="center" fxLayoutGap="0.5%" *ngFor="let note of notes">
     <mat-card class="note-card">
       <mat-card-header>
         <div mat-card-avatar class="note-header-image" [ngStyle]="{ 'background-color': backgroundColor}"></div>
@@ -26,4 +26,5 @@
       </mat-card-actions>
     </mat-card>
     <mat-divider></mat-divider>
+  </div>
 </div>

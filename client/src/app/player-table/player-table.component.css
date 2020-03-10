@@ -51,7 +51,6 @@ tr.player-row:not(.expanded-row):active {
   margin-bottom: 10px;
 }
 
-
 .team-info-col {
   padding: 10px;
   float: left;
@@ -133,6 +132,14 @@ div.resetButtonContainer {
 .sidenav {
   display: flex;
   flex-direction: column;
+  align-content: space-between;
   width: 25%;
   padding: 10px;
+}
+
+.close-btn-ctr {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-end;
 }

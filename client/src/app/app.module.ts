@@ -20,6 +20,10 @@ import { NoteComponent } from './notes/note/note.component';
 import { NoteCardComponent } from './notes/note-card/note-card.component';
 import { LoadingSpinner } from './shared/loading-spinner/loading-spinner.component';
 import { HomeComponent } from './home/home.component';
+import { UserNotesComponent } from './notes/user-notes/user-notes.component';
+import { PublicNotesComponent } from './notes/public-notes/public-notes.component';
+import { NoteDialogComponent } from './notes/note-dialog/note-dialog.component';
+import { MatDialogRef } from '@angular/material/dialog';
 
 @NgModule({
   declarations: [
@@ -34,8 +38,12 @@ import { HomeComponent } from './home/home.component';
     NoteComponent,
     NoteCardComponent,
     LoadingSpinner,
-    HomeComponent
+    HomeComponent,
+    UserNotesComponent,
+    PublicNotesComponent,
+    NoteDialogComponent
   ],
+  entryComponents: [NoteDialogComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -47,7 +55,12 @@ import { HomeComponent } from './home/home.component';
     ReactiveFormsModule,
     GraphQLModule
   ],
-  providers: [],
+  providers: [
+    {
+      provide: MatDialogRef,
+      useValue: {}
+    },
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

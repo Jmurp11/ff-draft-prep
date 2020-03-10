@@ -63,3 +63,11 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   -webkit-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
 }
+
+.note-card {
+  width: 100%;
+}
+
+mat-divider {
+  padding: 10px;
+}
