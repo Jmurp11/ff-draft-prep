@@ -2,7 +2,7 @@ import { Component, OnDestroy, AfterContentInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription, Observable } from 'rxjs';
-import { map, startWith } from 'rxjs/operators';
+import { map, startWith, filter } from 'rxjs/operators';
 import { PlayerService } from '../../player-table/player.service';
 import { AuthService } from '../../auth/auth.service';
 import { Player } from '../../player-table/player.model';
@@ -142,6 +142,8 @@ export class NoteComponent implements AfterContentInit, OnDestroy {
     this.filteredOptions = this.form.get('player').valueChanges
       .pipe(
         startWith(''),
+        filter(value => value !== null),
+        map(value => typeof value === 'string' ? value : value.name),
         map(value => this._filter(value))
       );
 
@@ -192,6 +194,12 @@ export class NoteComponent implements AfterContentInit, OnDestroy {
     if (value) {
       const filterValue = value.toLowerCase();
       return this.players.filter(player => player.name.toLowerCase().includes(filterValue));
+    }
+  }
+
+  displayFn(player: any): string {
+    if (player) {
+      return `${player.name} ${player.team.team.abbreviation} - ${player.position}`;
     }
   }
 
