@@ -7,7 +7,7 @@
       <mat-card-header>
         <div mat-card-avatar class="note-header-image" [ngStyle]="{ 'background-color': backgroundColor}"></div>
         <mat-card-title *ngIf="!isPlayerPreSet">Create Note</mat-card-title>
-        <mat-card-title *ngIf="isPlayerPreSet">{{ currentPlayer.player.name }}
+        <mat-card-title *ngIf="isPlayerPreSet">{{ currentPlayer.player.name  }}
         </mat-card-title>
         <mat-card-subtitle *ngIf="isPlayerPreSet">{{ currentPlayer.player.team.team.abbreviation }} -
           {{currentPlayer.player.position }}
