@@ -23,3 +23,7 @@ mat-grid-list {
     align-content: space-between;
     padding: 10px;
 }
+
+.note-card {
+  width: 95%;
+}
