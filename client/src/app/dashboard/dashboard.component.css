@@ -1,0 +1,19 @@
+.btn-ctr {
+  display: flex;
+  flex-direction: row;
+}
+
+.draft-btn {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  padding: 10px;
+}
+
+.card-ctr {
+    width: 97.5%;
+}
+
+.add-note-btn {
+  float: right;
+}

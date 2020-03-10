@@ -3,12 +3,15 @@ export interface Player {
     id: number;
     firstName: string;
     lastName: string;
+    name: string;
     team: {
-      city: string;
-      nickname: string;
-      abbreviation: string;
+      team: {
+        city: string;
+        nickname: string;
+        abbreviation: string;
+        imageUrl: string;
+      }
       bye: number;
-      imageUrl: string;
       rank: number;
       passRank: number;
       rushRank: number;
@@ -51,5 +54,4 @@ export interface Player {
   receivingTd: number;
   fantasyPoints: number;
   selected: boolean;
-  buttonText: string;
 }

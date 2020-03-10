@@ -1,0 +1,7 @@
+.sidenav {
+    display: flex;
+    flex-direction: column;
+    align-content: space-between;
+    width: 10%;
+    padding: 10px;
+}

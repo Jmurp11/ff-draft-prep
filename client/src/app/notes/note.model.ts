@@ -4,8 +4,10 @@ export interface Note {
     username: string;
   };
   player: {
+    id: number;
     firstName: string;
     lastName: string;
+    name: string;
     team: {
       team: {
         abbreviation: string;

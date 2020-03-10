@@ -12,7 +12,7 @@ export class PlayerResolver {
         .find({
             relations: ['team', 'team.team'],
             order: {
-                lastName: 'DESC'
+                lastName: 'ASC'
             }
         });
     }

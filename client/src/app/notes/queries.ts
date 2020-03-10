@@ -25,8 +25,10 @@ export const notes = gql
           username
         }
         player {
+          id
           firstName
           lastName
+          name
           team {
             team {
               abbreviation
@@ -41,6 +43,88 @@ export const notes = gql
         likes
         shares
         creationTime
+      }
+    }
+  `;
+
+export const publicNotes = gql
+  `
+    query {
+      publicNotes {
+        id
+        user {
+          username
+        }
+        player {
+          id
+          firstName
+          lastName
+          name
+          team {
+            team {
+              abbreviation
+            }
+          }
+          position
+        }
+        title
+        body
+        source
+        isPrivate
+        likes
+        shares
+        creationTime
+      }
+    }
+  `;
+
+export const userNotes = gql
+  `
+    query userNotes($user: String!){
+      userNotes(user: $user) {
+        id
+        user {
+          username
+        }
+        player {
+          id
+          firstName
+          lastName
+          name
+          team {
+            team {
+              abbreviation
+            }
+          }
+          position
+        }
+        title
+        body
+        source
+        isPrivate
+        likes
+        shares
+        creationTime
+      }
+    }
+  `;
+
+export const players = gql
+  `
+    query {
+      players {
+        id
+        firstName
+        lastName
+        name
+        position
+        team {
+          team {
+            city
+            abbreviation
+            nickname
+          }
+        }
       }
     }
   `;

@@ -129,11 +129,11 @@ export class AuthService {
         userId
       }
     }).subscribe(({ data }) => {
+      this.router.navigate(['home']);
       this.apollo.getClient().resetStore();
       this.user.next(null);
       this.loginStatus.next(null);
       localStorage.removeItem('user');
-      this.router.navigate(['home']);
       return data;
     }, (error) => {
       console.log(error);
