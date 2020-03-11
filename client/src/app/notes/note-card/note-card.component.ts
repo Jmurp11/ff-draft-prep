@@ -40,7 +40,7 @@ export class NoteCardComponent implements AfterContentInit, OnDestroy {
     this.user$ = this._auth.user.subscribe(user => {
       this.curUser = user;
     });
-    
+
     this.query$ = this.apollo.watchQuery<any>({
       query: userNotes,
       variables: {
@@ -60,7 +60,7 @@ export class NoteCardComponent implements AfterContentInit, OnDestroy {
               this.playerNotes.push(note);
             }
           });
-    
+
           switch (this.currentPlayer.player.position) {
             case 'QB':
               this.backgroundColor = 'lightskyblue';

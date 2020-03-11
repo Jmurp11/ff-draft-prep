@@ -14,18 +14,18 @@ export class ProjectionResolver {
     @Query(() => [Projection])
     async projections() {
         return getRepository(Projection)
-                .find({
-                    relations: ['player', 'player.team', 'player.team.team']
-                });
+            .find({
+                relations: ['player', 'player.team', 'player.team.team']
+            });
     }
 
     @Query(() => Projection)
     async projection(@Arg('player') player: string) {
         return getRepository(Projection)
-        .findOne({
-            relations: ['player', 'player.team', 'player.team.team'], 
-            where: { player }
-        });
+            .findOne({
+                relations: ['player', 'player.team', 'player.team.team'],
+                where: { player }
+            });
     }
 
     @Mutation(() => Result)
@@ -44,7 +44,7 @@ export class ProjectionResolver {
         });
 
         const teamId = teamStatsResult!.id;
-        
+
         const players = await getRepository(Player)
             .find({
                 relations: ['team'],

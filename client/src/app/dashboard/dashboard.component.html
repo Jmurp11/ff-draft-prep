@@ -7,24 +7,25 @@
 <div fxLayout="row" fxLayoutAlign="center" fxLayoutGap="0.5%">
   <span>
     <button mat-fab color="primary" (click)="openDialog()">
-      <mat-icon>add</mat-icon>
+      <mat-icon>note_add</mat-icon>
     </button>
-    </span>
+  </span>
 </div>
 
 <div fxLayout="row" fxLayoutAlign="center" fxLayoutGap="0.5%">
-  <span>
-    <mat-tab-group fxFlex>
-      <mat-tab label="Public Notes">
-        <div class="card-ctr">
-          <app-public-notes></app-public-notes>
-        </div>
-      </mat-tab>
-      <mat-tab label="My Notes">
-        <div class="card-ctr">
-          <app-user-notes></app-user-notes>
-        </div>
-      </mat-tab>
-    </mat-tab-group>
+  <mat-tab-group fxFlex>
+    <mat-tab label="Public Notes">
+      <div class="card-ctr">
+        <app-public-notes></app-public-notes>
+      </div>
+    </mat-tab>
+    <mat-tab label="My Notes">
+      <div class="card-ctr">
+        <app-user-notes></app-user-notes>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+  <span class="targetList">
+    <app-target></app-target>
   </span>
 </div>

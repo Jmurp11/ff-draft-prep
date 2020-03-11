@@ -29,6 +29,11 @@ export class Player extends BaseEntity {
       return `${parent.firstName} ${parent.lastName}`;
     }
     
+    @Field()
+    initialName(@Root() parent: Player): string {
+      return `${parent.firstName.substring(0, 1)}. ${parent.lastName}`;
+    }
+
     @ManyToOne(() => TeamStats, {
         eager: true
     })
