@@ -6,12 +6,6 @@
     <button mat-raised-button color="accent" (click)="addTarget()">Start Adding Targets</button>
   </div>
 
-  <div class="center padding" *ngIf="hasTargets">
-    <button mat-fab color="accent" (click)="addTarget()">
-      <mat-icon>add</mat-icon>
-    </button>
-  </div>
-
   <table mat-table [dataSource]="targets" *ngIf="hasTargets">
 
     <ng-container matColumnDef="name">
@@ -46,4 +40,11 @@
     <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
+
+  <div class="center padding" *ngIf="hasTargets">
+    <button mat-icon-button color="accent" (click)="addTarget()">
+      <mat-icon>add</mat-icon>
+    </button>
+  </div>
+
 </div>
