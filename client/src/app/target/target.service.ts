@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
 import { createTarget, deleteTarget, targets } from './queries';
 import { BehaviorSubject, Subscription } from 'rxjs';
+import { AuthService } from '../auth/auth.service';
 
 
 export interface TargetResponse {
@@ -13,12 +14,13 @@ export interface TargetResponse {
   providedIn: 'root'
 })
 export class TargetService {
-
+  auth$: Subscription;
   targetStatus = new BehaviorSubject<TargetResponse>(null);
   deleteStatus = new BehaviorSubject<TargetResponse>(null);
   clearTargetForm = new BehaviorSubject<boolean>(null);
 
   constructor(
+    private _auth: AuthService,
     private apollo: Apollo
   ) { }
 
@@ -43,7 +45,7 @@ export class TargetService {
         }
       ]
     }).subscribe(({ data }) => {
-      if (!data.createTarget.success) {
+      if (data.createTarget.success) {
         const response = {
           success: true,
           message: data.createTarget.success[0].message
@@ -61,11 +63,17 @@ export class TargetService {
     });
   }
 
-  deleteTarget(user: string) {
+  deleteTarget(id: string) {
+    let user = '';
+
+    this.auth$ = this._auth.user.subscribe(data => {
+      user = data.id;
+    });
+
     this.apollo.mutate({
       mutation: deleteTarget,
       variables: {
-        user
+        id
       },
       refetchQueries: [
         {
@@ -76,7 +84,7 @@ export class TargetService {
         }
       ]
     }).subscribe(({ data }) => {
-      if (!data.deleteTarget.success) {
+      if (data.deleteTarget.success) {
         const response = {
           success: true,
           message: data.deleteTarget.success[0].message

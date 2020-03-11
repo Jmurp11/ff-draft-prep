@@ -11,7 +11,7 @@
 }
 
 .card-ctr {
-    width: 97.5%;
+  width: 97.5%;
 }
 
 .add-note-btn {
@@ -23,5 +23,6 @@
   border-style: ridge;
   border-width: 1px;
   border-color: lightgray;
-  width: 15%;
+  width: 20%;
+  text-align: center;
 }

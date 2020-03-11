@@ -41,6 +41,7 @@ export class AddTargetComponent implements AfterContentInit, OnDestroy {
   ngAfterContentInit() {
     this.loading = true;
     this.players = [];
+    this.rounds = [];
 
     for (let i = 1; i < 14; i++) {
       this.rounds.push(i);
@@ -81,10 +82,18 @@ export class AddTargetComponent implements AfterContentInit, OnDestroy {
       .valueChanges
       .subscribe(({ data, loading }) => {
         this.loading = loading;
+        console.log(this.loading);
         data.players.forEach((player: any) => {
           this.players.push(player);
         });
       });
+
+    this.deleteStatus$ = this._target.deleteStatus.subscribe(response => {
+      if (response.success) {
+        this.openSnackBar(response.message, this.dismiss);
+        this.resetForm();
+      }
+    });
 
     this.filteredOptions = this.form.get('player').valueChanges
       .pipe(
@@ -98,7 +107,7 @@ export class AddTargetComponent implements AfterContentInit, OnDestroy {
       this.playerIsValid = status === 'VALID';
     });
 
-    this.form.get('round').statusChanges.subscribe(status => {
+    this.form.get('rounds').statusChanges.subscribe(status => {
       this.roundIsValid = status === 'VALID';
     });
   }
@@ -110,11 +119,13 @@ export class AddTargetComponent implements AfterContentInit, OnDestroy {
 
     const user = this.userId;
     const player = this.form.get('player').value;
-    const round = this.form.get('round').value;
+    const round = this.form.get('rounds').value;
+
+    console.log(user, player.id, round);
 
     this.loading = true;
 
-    this._target.createTarget(user, player, round);
+    this._target.createTarget(user, player.id, round);
 
     this.dialogRef.close();
   }

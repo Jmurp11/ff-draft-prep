@@ -25,7 +25,7 @@ export const targets = gql
 
 export const createTarget = gql
   `
-    mutation createTarget($user: String!, $player: Int!, $round: Int!) {
+    mutation createTarget($user: String!, $player: Float!, $round: Float!) {
       createTarget(
         input: { user: $user, player: $player, round: $round }
       ) {

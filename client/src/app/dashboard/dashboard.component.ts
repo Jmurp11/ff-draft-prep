@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import {MatDialog, MatDialogRef } from '@angular/material/dialog';
+import {MatDialog } from '@angular/material/dialog';
 import { NoteService } from '../notes/note.service';
 import { NoteDialogComponent } from '../notes/note-dialog/note-dialog.component';
 

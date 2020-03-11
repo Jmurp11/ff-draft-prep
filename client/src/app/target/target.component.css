@@ -5,3 +5,15 @@
 .title {
   color: #3949ab;
 }
+
+.underline {
+  text-decoration: underline;
+}
+
+.list-item {
+  display: inline;
+}
+
+.padding {
+  padding: 10px;
+}

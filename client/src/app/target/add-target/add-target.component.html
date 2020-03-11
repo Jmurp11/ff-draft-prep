@@ -3,7 +3,7 @@
     <div class="loading-div" *ngIf="loading">
       <loading-spinner></loading-spinner>
     </div>
-    <mat-card class="note-card" *ngIf="!loading">
+    <mat-card class="target-card" *ngIf="!loading">
       <mat-card-header>
         <div mat-card-avatar class="note-header-image" [ngStyle]="{ 'background-color': backgroundColor}"></div>
       </mat-card-header>
@@ -20,14 +20,15 @@
         </mat-autocomplete>
 
         <mat-form-field>
-          <mat-label>Source</mat-label>
-          <mat-select formControlName="round" class="form-control">
+          <mat-label>Round</mat-label>
+          <mat-select formControlName="rounds" class="form-control">
             <mat-option *ngFor="let round of rounds" [value]="round">
               {{ round }}
             </mat-option>
           </mat-select>
         </mat-form-field>
       </mat-card-content>
+
       <mat-card-actions>
         <div class="form-group">
           <button mat-raised-button color="primary" [disabled]="loading" class="btn btn-primary note-btn"

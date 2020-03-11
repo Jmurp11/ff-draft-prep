@@ -49,7 +49,7 @@ import { AddTargetComponent } from './target/add-target/add-target.component';
     TargetDialogComponent,
     AddTargetComponent
   ],
-  entryComponents: [NoteDialogComponent],
+  entryComponents: [NoteDialogComponent, TargetDialogComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

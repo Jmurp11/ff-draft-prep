@@ -5,6 +5,9 @@ import { Target } from './target.model';
 import { targets } from './queries';
 import { AuthService } from '../auth/auth.service';
 import { User } from '../auth/user.model';
+import { TargetDialogComponent } from './target-dialog/target-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
+import { TargetService } from './target.service';
 
 @Component({
   selector: 'app-target',
@@ -18,15 +21,20 @@ export class TargetComponent implements OnInit, OnDestroy {
   hasTargets: boolean;
   targets: Target[];
   curUser: User;
-  displayedColumns = ['name', 'team', 'position', 'round'];
+  rounds: number[];
+  displayedColumns = ['name', 'team', 'position', 'round', 'clear'];
 
   constructor(
     private _auth: AuthService,
-    private apollo: Apollo
+    private apollo: Apollo,
+    private dialog: MatDialog,
+    private _target: TargetService
   ) { }
 
   ngOnInit() {
     this.loading = true;
+
+    this.rounds = [];
 
     this.curUser$ = this._auth.user.subscribe(user => {
       this.curUser = user;
@@ -42,16 +50,30 @@ export class TargetComponent implements OnInit, OnDestroy {
       .subscribe(({ data, loading }) => {
         this.loading = loading;
         this.targets = data.targets;
-        if (targets.length > 0) {
+        if (this.targets.length > 0) {
           this.hasTargets = true;
+          this.targets.forEach((target: any) => {
+            this.rounds.push(target.round);
+          });
         } else {
           this.hasTargets = false;
         }
       });
   }
 
-  deleteTarget(target: string) {
+  addTarget() {
+    const dialogRef = this.dialog.open(TargetDialogComponent, {
+      width: '400px',
+      height: '300px'
+    });
 
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+    });
+  }
+
+  deleteTarget(target: any) {
+    this._target.deleteTarget(target.id);
   }
 
   ngOnDestroy() {
