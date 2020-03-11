@@ -109,4 +109,8 @@ export class NoteService {
     this.clearNoteForm.next(val);
   }
 
+  resetResponse() {
+    this.noteStatus.next(null);
+    this.deleteStatus.next(null);
+  }
 }

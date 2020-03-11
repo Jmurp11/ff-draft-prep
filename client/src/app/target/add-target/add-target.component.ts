@@ -18,7 +18,6 @@ import { players } from '../../notes/queries';
 export class AddTargetComponent implements AfterContentInit, OnDestroy {
   user$: Subscription;
   addStatus$: Subscription;
-  deleteStatus$: Subscription;
   clearForm$: Subscription;
   players$: Subscription;
   filteredOptions: Observable<any[]>;
@@ -43,7 +42,7 @@ export class AddTargetComponent implements AfterContentInit, OnDestroy {
     this.players = [];
     this.rounds = [];
 
-    for (let i = 1; i < 14; i++) {
+    for (let i = 1; i < 17; i++) {
       this.rounds.push(i);
     }
 
@@ -62,6 +61,7 @@ export class AddTargetComponent implements AfterContentInit, OnDestroy {
       if (response) {
         this.openSnackBar(response.message, this.dismiss);
         this.resetForm();
+        this._target.resetResponse();
       }
     });
 
@@ -87,13 +87,6 @@ export class AddTargetComponent implements AfterContentInit, OnDestroy {
           this.players.push(player);
         });
       });
-
-    this.deleteStatus$ = this._target.deleteStatus.subscribe(response => {
-      if (response.success) {
-        this.openSnackBar(response.message, this.dismiss);
-        this.resetForm();
-      }
-    });
 
     this.filteredOptions = this.form.get('player').valueChanges
       .pipe(
@@ -163,7 +156,6 @@ export class AddTargetComponent implements AfterContentInit, OnDestroy {
   ngOnDestroy() {
     this.user$.unsubscribe();
     this.addStatus$.unsubscribe();
-    this.deleteStatus$.unsubscribe();
     this.players$.unsubscribe();
     this.clearForm$.unsubscribe();
   }

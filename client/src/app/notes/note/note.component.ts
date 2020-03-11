@@ -84,6 +84,7 @@ export class NoteComponent implements AfterContentInit, OnDestroy {
       if (response) {
         this.openSnackBar(response.message, this.dismiss);
         this.resetForm();
+        this._note.resetResponse();
       }
     });
 
