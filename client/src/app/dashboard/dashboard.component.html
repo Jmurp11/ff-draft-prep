@@ -1,31 +1,32 @@
-<div class="btn-ctr">
-  <span class="draft-btn">
+<div fxLayout="row" fxLayoutAlign="center" fxLayoutGap="15.0%">
+  <div class="padding-top" fxFLex="35%">
     <button mat-raised-button color="accent" (click)="goToDraft()">Draft</button>
-  </span>
-</div>
+  </div>
 
-<div fxLayout="row" fxLayoutAlign="center" fxLayoutGap="0.5%">
-  <span>
-    <button mat-fab color="primary" (click)="openDialog()">
-      <mat-icon>note_add</mat-icon>
-    </button>
-  </span>
-</div>
 
-<div fxLayout="row" fxLayoutAlign="center" fxLayoutGap="0.5%">
-  <mat-tab-group fxFlex>
-    <mat-tab label="Public Notes">
-      <div class="card-ctr">
-        <app-public-notes></app-public-notes>
-      </div>
-    </mat-tab>
-    <mat-tab label="My Notes">
-      <div class="card-ctr">
-        <app-user-notes></app-user-notes>
-      </div>
-    </mat-tab>
-  </mat-tab-group>
-  <span class="targetList">
+  <div fxFlex="40%" fxLayout="column" fxFlexAlign="center center">
+    <div class="padding-top" fxFlex="20%">
+      <span>
+        <button mat-fab color="primary" (click)="openDialog()">
+          <mat-icon>note_add</mat-icon>
+        </button>
+      </span>
+    </div>
+    <mat-tab-group fxFlex="80%">
+      <mat-tab label="Public Notes">
+        <div class="card-ctr">
+          <app-public-notes></app-public-notes>
+        </div>
+      </mat-tab>
+      <mat-tab label="My Notes">
+        <div class="card-ctr">
+          <app-user-notes></app-user-notes>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+
+  <div fxFlex="25%" class="targetList">
     <app-target></app-target>
-  </span>
+  </div>
 </div>

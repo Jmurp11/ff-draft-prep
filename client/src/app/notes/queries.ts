@@ -16,6 +16,20 @@ export const createNote = gql
     }
   `;
 
+export const deleteNote = gql
+  `
+    mutation deleteNote($id: String!) {
+      deleteNote(id: $id) {
+        success {
+          message
+        }
+        errors {
+          message
+        }
+      }
+    }
+  `;
+
 export const notes = gql
   `
     query {

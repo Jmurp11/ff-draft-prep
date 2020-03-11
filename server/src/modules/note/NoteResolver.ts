@@ -121,4 +121,39 @@ export class NoteResolver {
             ]
         }
     }
+
+    @UseMiddleware(isAuth, logger)
+    @Mutation(() => Result)
+    async deleteNote(
+        @Arg('id') id: string
+    ): Promise<Result> {
+        const note = await Note.findOne({
+            where: {
+                id
+            },
+            select: ['id']
+        });
+
+        if (!note) {
+            return {
+                errors: [
+                    {
+                        path: 'note',
+                        message: 'Note does not exist!'
+                    }
+                ]
+            }
+        }
+
+        await Note.delete({ id });
+
+        return {
+            success: [
+                {
+                    path: 'note',
+                    message: 'Successfully deleted note!'
+                }
+            ]
+        }
+    }
 }

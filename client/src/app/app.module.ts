@@ -27,6 +27,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { TargetComponent } from './target/target.component';
 import { TargetDialogComponent } from './target/target-dialog/target-dialog.component';
 import { AddTargetComponent } from './target/add-target/add-target.component';
+import { FooterComponent } from './footer/footer.component';
 
 @NgModule({
   declarations: [
@@ -47,11 +48,13 @@ import { AddTargetComponent } from './target/add-target/add-target.component';
     NoteDialogComponent,
     TargetComponent,
     TargetDialogComponent,
-    AddTargetComponent
+    AddTargetComponent,
+    FooterComponent
   ],
   entryComponents: [NoteDialogComponent, TargetDialogComponent],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
     HttpClientModule,
     BrowserAnimationsModule,
