@@ -8,6 +8,7 @@ import { userNotes } from '../queries';
 import { Apollo } from 'apollo-angular';
 import { AuthService } from '../../auth/auth.service';
 import { User } from 'src/app/auth/user.model';
+import { NoteService } from '../note.service';
 
 @Component({
   selector: 'app-note-card',
@@ -29,7 +30,8 @@ export class NoteCardComponent implements AfterContentInit, OnDestroy {
     private apollo: Apollo,
     private _auth: AuthService,
     private _player: PlayerService,
-    private snackbar: MatSnackBar
+    private snackbar: MatSnackBar,
+    private _note: NoteService
   ) { }
 
   ngAfterContentInit() {
@@ -83,6 +85,11 @@ export class NoteCardComponent implements AfterContentInit, OnDestroy {
     this.snackbar.open(message, action, {
       duration: 5000
     });
+  }
+
+
+  deleteNote(note: any) {
+    this._note.deleteNote(note.id, this.curUser.id);
   }
 
   ngOnDestroy() {

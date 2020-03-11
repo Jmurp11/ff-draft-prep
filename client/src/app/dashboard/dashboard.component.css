@@ -1,28 +1,17 @@
-.btn-ctr {
-  display: flex;
-  flex-direction: row;
-}
-
-.draft-btn {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  padding: 10px;
-}
-
 .card-ctr {
   width: 97.5%;
 }
 
-.add-note-btn {
-  float: right;
-}
-
 .targetList {
-  padding: 10px;
   border-left-style: ridge;
+  border-right-style: ridge;
   border-width: 1px;
   border-color: lightgray;
-  width: 20%;
+  width: 100%;
+  text-align: center;
+}
+
+.padding-top {
+  padding-top: 20px;
   text-align: center;
 }

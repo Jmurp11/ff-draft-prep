@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
-import { createNote, userNotes, publicNotes } from './queries';
+import { createNote, userNotes, publicNotes, deleteNote } from './queries';
 import { BehaviorSubject } from 'rxjs';
+import { AuthService } from '../auth/auth.service';
 
-export interface CreateNoteResponse {
+export interface NoteResponse {
   success: boolean;
   message?: string;
 }
@@ -12,8 +13,8 @@ export interface CreateNoteResponse {
   providedIn: 'root'
 })
 export class NoteService {
-
-  noteStatus = new BehaviorSubject<CreateNoteResponse>(null);
+  noteStatus = new BehaviorSubject<NoteResponse>(null);
+  deleteStatus = new BehaviorSubject<NoteResponse>(null);
   clearNoteForm = new BehaviorSubject<boolean>(null);
   populatePlayer = new BehaviorSubject<boolean>(null);
 
@@ -33,6 +34,42 @@ export class NoteService {
         body,
         source,
         isPrivate
+      },
+      refetchQueries: [
+        {
+          query: userNotes,
+          variables: {
+            user
+          }
+        },
+        {
+          query: publicNotes
+        }
+      ]
+    }).subscribe(({ data }) => {
+      if (!data.createNote.success) {
+        const response = {
+          success: false,
+          message: data.createNote.errors[0].message
+        };
+
+        this.noteStatus.next(response);
+      } else {
+        const response = {
+          success: true,
+          message: data.createNote.success[0].message
+        };
+
+        this.noteStatus.next(response);
+      }
+    });
+  }
+
+  deleteNote(id: string, user: string) {
+    this.apollo.mutate({
+      mutation: deleteNote,
+      variables: {
+        id
       },
       refetchQueries: [
         {
