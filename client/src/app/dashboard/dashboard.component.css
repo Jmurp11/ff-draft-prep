@@ -20,7 +20,7 @@
 
 .targetList {
   padding: 10px;
-  border-style: ridge;
+  border-left-style: ridge;
   border-width: 1px;
   border-color: lightgray;
   width: 20%;
