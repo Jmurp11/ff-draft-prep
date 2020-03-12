@@ -38,6 +38,14 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.router.navigate(['/register']);
   }
 
+  goToDashboard() {
+    this.router.navigate(['./dashboard']);
+  }
+
+  goToDraft() {
+    this.router.navigate(['./draft']);
+  }
+
   logout() {
     this._auth.logout(this.userId);
   }

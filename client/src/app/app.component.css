@@ -1,7 +1,12 @@
-.sidenav {
-    display: flex;
-    flex-direction: column;
-    align-content: space-between;
-    width: 10%;
-    padding: 10px;
+.footer {
+  position: fixed;
+  bottom: 0;
+}
+
+.content {
+  width: 100%;
+  margin: 0px;
+  height: 80%;
+  max-height: 80%;
+  overflow: auto;
 }

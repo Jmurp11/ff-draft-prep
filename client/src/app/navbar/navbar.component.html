@@ -1,21 +1,29 @@
-<mat-toolbar color="primary">
-  <span class="span1">
-    <span><img class="title-logo" src='../../assets/images/shark.svg'></span>
-    <span class="title">Draft Shark</span>
+<mat-toolbar color="primary" fxLayout="row" fxFlexAlign="center center" fxLayoutGap="30.0%">
+  <span class="span1" fxFlex="30%">
+    <span>
+      <button mat-button class="title" (click)="goToDashboard()">
+        <span class="title-content"><img class="title-logo" src='../../assets/images/shark.svg'></span>
+        <span class="title-content">DraftShark</span>
+      </button>
+    </span>
   </span>
 
-  <span class="fill-space"></span>
-
-  <span class="span2">
+  <div fxFlex="30%">
     <span>
-      <button class="nav-button" mat-menu-item (click)="navigateToRegisterPage()" *ngIf="!isAuth">Sign Up</button>
+      <button mat-button class="nav-button" (click)="goToDraft()" *ngIf="isAuth">Draft</button>
+    </span>
+  </div>
+
+  <span class="span2" fxFlex="30%">
+    <span>
+      <button class="nav-button" mat-button (click)="navigateToRegisterPage()" *ngIf="!isAuth">Sign Up</button>
     </span>
     <span>
-      <button class="nav-button" mat-menu-item (click)="navigateToLoginPage()" *ngIf="!isAuth">Login</button>
+      <button class="nav-button" mat-button (click)="navigateToLoginPage()" *ngIf="!isAuth">Login</button>
     </span>
 
     <span>
-      <mat-menu #profileMenu="matMenu">
+      <mat-menu #profileMenu="matMenu" fxFlex="30%">
         <button mat-menu-item>Profile</button>
         <button mat-menu-item (click)="logout()">Logout</button>
       </mat-menu>

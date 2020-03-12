@@ -1,5 +1,7 @@
 <div fxLayout="column" fxFlexFill>
   <app-navbar></app-navbar>
-  <router-outlet></router-outlet>
-  <app-footer fxFlexOffset="auto"></app-footer>
+  <div class="content">
+    <router-outlet></router-outlet>
+  </div>
+  <app-footer class="footer" fxFlexOffset="auto"></app-footer>
 </div>
