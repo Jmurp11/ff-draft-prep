@@ -10,3 +10,11 @@
   max-height: 80%;
   overflow: auto;
 }
+
+.border {
+  border-left-style: ridge;
+  border-right-style: ridge;
+  border-width: 1px;
+  border-color: lightgray;
+  text-align: center;
+}
