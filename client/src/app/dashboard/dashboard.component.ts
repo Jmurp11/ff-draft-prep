@@ -19,10 +19,6 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit() { }
 
-  goToDraft() {
-    this.router.navigate(['./draft']);
-  }
-
   openDialog(): void {
     this._note.prepopulatePlayer(false);
     const dialogRef = this.dialog.open(NoteDialogComponent, {

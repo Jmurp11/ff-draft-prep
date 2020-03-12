@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { AuthService } from '../auth/auth.service';
 import { MatDialog } from '@angular/material/dialog';
@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css']
 })
-export class NavbarComponent implements OnInit, OnDestroy {
+export class NavbarComponent implements OnInit {
   authSub$: Subscription;
   isAuth: boolean;
   userId: string;
@@ -36,13 +36,5 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   navigateToRegisterPage() {
     this.router.navigate(['/register']);
-  }
-
-  logout() {
-    this._auth.logout(this.userId);
-  }
-
-  ngOnDestroy() {
-    this.authSub$.unsubscribe();
   }
 }

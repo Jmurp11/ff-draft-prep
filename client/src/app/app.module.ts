@@ -28,6 +28,7 @@ import { TargetComponent } from './target/target.component';
 import { TargetDialogComponent } from './target/target-dialog/target-dialog.component';
 import { AddTargetComponent } from './target/add-target/add-target.component';
 import { FooterComponent } from './footer/footer.component';
+import { SidenavComponent } from './sidenav/sidenav.component';
 
 @NgModule({
   declarations: [
@@ -49,7 +50,8 @@ import { FooterComponent } from './footer/footer.component';
     TargetComponent,
     TargetDialogComponent,
     AddTargetComponent,
-    FooterComponent
+    FooterComponent,
+    SidenavComponent
   ],
   entryComponents: [NoteDialogComponent, TargetDialogComponent],
   imports: [
