@@ -19,7 +19,6 @@ export class PublicNotesComponent implements OnInit, OnDestroy {
   backgroundColor: string;
   notes: Note[];
   curUser: User;
-
   loading: boolean;
 
   constructor(

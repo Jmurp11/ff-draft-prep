@@ -102,8 +102,12 @@ export class TargetService {
     });
   }
 
+  resetResponse() {
+    this.targetStatus.next(null);
+    this.deleteStatus.next(null);
+  }
+
   resetForm(val: boolean) {
     this.clearTargetForm.next(val);
   }
-
 }

@@ -8,6 +8,7 @@ import { User } from '../auth/user.model';
 import { TargetDialogComponent } from './target-dialog/target-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { TargetService } from './target.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-target',
@@ -17,18 +18,21 @@ import { TargetService } from './target.service';
 export class TargetComponent implements OnInit, OnDestroy {
   targets$: Subscription;
   curUser$: Subscription;
+  deleteStatus$: Subscription;
   loading: boolean;
   hasTargets: boolean;
   targets: Target[];
   curUser: User;
   rounds: number[];
+  dismiss = 'Dismiss';
   displayedColumns = ['name', 'team', 'position', 'round', 'clear'];
 
   constructor(
     private _auth: AuthService,
     private apollo: Apollo,
     private dialog: MatDialog,
-    private _target: TargetService
+    private _target: TargetService,
+    private snackbar: MatSnackBar
   ) { }
 
   ngOnInit() {
@@ -59,6 +63,13 @@ export class TargetComponent implements OnInit, OnDestroy {
           this.hasTargets = false;
         }
       });
+
+    this.deleteStatus$ = this._target.deleteStatus.subscribe(response => {
+      if (response) {
+        this.openSnackBar(response.message, this.dismiss);
+        this._target.resetResponse();
+      }
+    });
   }
 
   addTarget() {
@@ -76,7 +87,14 @@ export class TargetComponent implements OnInit, OnDestroy {
     this._target.deleteTarget(target.id);
   }
 
+  openSnackBar(message: string, action: string) {
+    this.snackbar.open(message, action, {
+      duration: 5000
+    });
+  }
+
   ngOnDestroy() {
     this.targets$.unsubscribe();
+    this.deleteStatus$.unsubscribe();
   }
 }

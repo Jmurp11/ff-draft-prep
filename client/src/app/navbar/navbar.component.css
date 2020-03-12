@@ -1,14 +1,21 @@
+.fill-space {
+  flex: 1 1 auto;
+}
+
 .title {
-  color: white;
-  font-size: 36px;
+  font-size: 28px;
   font-weight: bold;
   font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
 }
 
+.title-content {
+  display: inline-block;
+}
+
 .title-logo {
   fill: white;
-  height: 100px;
-  width: 100px;
+  height: 55px;
+  width: 55px;
   padding: 5px;
 }
 
@@ -42,10 +49,13 @@
 }
 
 .nav-button {
-  color: white;
   font-size: 16px;
 }
 
 .fill-space {
   flex: 1 1 auto;
+}
+
+.home-btn {
+  padding-left: 10px;
 }
