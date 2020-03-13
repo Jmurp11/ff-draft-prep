@@ -10,13 +10,13 @@
 
 .title-content {
   display: inline-block;
+  height: 100%;
 }
 
 .title-logo {
   fill: white;
-  height: 55px;
-  width: 55px;
-  padding: 5px;
+  height: 100%;
+  width: 100%;
 }
 
 .menu-option {
