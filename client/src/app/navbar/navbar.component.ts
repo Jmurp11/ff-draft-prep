@@ -30,6 +30,10 @@ export class NavbarComponent implements OnInit {
     });
   }
 
+  goToDashboard() {
+    this.router.navigate(['/dashboard']);
+  }
+
   navigateToLoginPage() {
     this.router.navigate(['/login']);
   }
