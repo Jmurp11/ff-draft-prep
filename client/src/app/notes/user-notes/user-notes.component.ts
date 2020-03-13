@@ -19,7 +19,6 @@ export class UserNotesComponent implements OnInit, OnDestroy {
   curUser: User;
   backgroundColor: string;
   notes: Note[];
-
   loading: boolean;
 
   constructor(
@@ -47,6 +46,12 @@ export class UserNotesComponent implements OnInit, OnDestroy {
       .subscribe(({ data, loading }) => {
         this.loading = loading;
         this.notes = data.userNotes;
+        if (this.notes.length > 0) {
+          this._note.setHasNotes(true);
+        } else {
+          this._note.setHasNotes(false);
+
+        }
       });
   }
 

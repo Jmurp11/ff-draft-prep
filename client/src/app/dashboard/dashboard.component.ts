@@ -1,23 +1,29 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import {MatDialog } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { NoteService } from '../notes/note.service';
 import { NoteDialogComponent } from '../notes/note-dialog/note-dialog.component';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit, OnDestroy {
+  hasNotes$: Subscription;
+  hasNotes: boolean;
 
   constructor(
     private dialog: MatDialog,
-    private router: Router,
     private _note: NoteService
-    ) { }
+  ) { }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.hasNotes$ = this._note.hasNotes.subscribe(hn => {
+      this.hasNotes = hn;
+    });
+  }
 
   openDialog(): void {
     this._note.prepopulatePlayer(false);
@@ -29,5 +35,9 @@ export class DashboardComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
     });
+  }
+
+  ngOnDestroy() {
+    this.hasNotes$.unsubscribe();
   }
 }
