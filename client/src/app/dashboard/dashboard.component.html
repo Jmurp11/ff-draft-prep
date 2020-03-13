@@ -1,6 +1,6 @@
 <div fxLayout="row" fxLayoutAlign="center" fxLayoutGap="1.0%">
 
-  <div class="scroll" fxFlex="75%" fxLayout="column" fxFlexAlign="center center">
+  <div fxFlex="75%" fxLayout="column" fxFlexAlign="center center">
 
     <mat-tab-group fxFlex="90%">
       <mat-tab label="Public Notes">
@@ -18,8 +18,11 @@
       <mat-tab label="My Notes">
         <div class="padding">
           <span>
-            <button mat-fab color="primary" (click)="openDialog()">
+            <button mat-fab color="primary" (click)="openDialog()" *ngIf="hasNotes">
               <mat-icon>note_add</mat-icon>
+            </button>
+            <button mat-raised-button color="primary" (click)="openDialog()" *ngIf="!hasNotes">
+              Start Adding Notes
             </button>
           </span>
         </div>

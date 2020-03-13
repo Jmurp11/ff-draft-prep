@@ -15,6 +15,7 @@ export interface NoteResponse {
 export class NoteService {
   noteStatus = new BehaviorSubject<NoteResponse>(null);
   deleteStatus = new BehaviorSubject<NoteResponse>(null);
+  hasNotes = new BehaviorSubject<boolean>(null);
   clearNoteForm = new BehaviorSubject<boolean>(null);
   populatePlayer = new BehaviorSubject<boolean>(null);
 
@@ -99,6 +100,10 @@ export class NoteService {
         this.noteStatus.next(response);
       }
     });
+  }
+
+  setHasNotes(hasNotes: boolean) {
+    this.hasNotes.next(hasNotes);
   }
 
   prepopulatePlayer(val: boolean) {
