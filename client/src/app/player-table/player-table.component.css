@@ -1,5 +1,7 @@
 table {
   width: 100%;
+  height: 50%;
+  overflow: auto;
 }
 
 tr.detail-row {
@@ -142,4 +144,8 @@ div.resetButtonContainer {
   flex-direction: column;
   justify-content: flex-end;
   align-items: flex-end;
+}
+
+.container {
+  height: 90%;
 }
