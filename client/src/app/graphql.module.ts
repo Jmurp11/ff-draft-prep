@@ -24,11 +24,20 @@ export class GraphQLModule {
     this._auth.user.subscribe(user => {
       if (user) {
         token = user.token;
+        console.log(`Token 1 ${token}`);
       } else {
         token = '';
       }
     });
-    console.log(token);
+
+    if (!token) {
+      const result = this._auth.fetchRefreshToken();
+      if (result) {
+        token = this._auth.refreshToken;
+        console.log(`Token 2 ${token}`);
+      }
+    }
+
     const basic = setContext((operation, context) => ({
       headers: {
         Accept: 'charset=utf-8'

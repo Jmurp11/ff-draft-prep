@@ -23,6 +23,7 @@ export class AuthService {
   user = new BehaviorSubject<User>(null);
   loginStatus = new BehaviorSubject<LoginResponse>(null);
   registerStatus = new BehaviorSubject<RegisterResponse>(null);
+  refreshToken: string;
 
   constructor(
     private apollo: Apollo,
@@ -138,5 +139,28 @@ export class AuthService {
     }, (error) => {
       console.log(error);
     });
+  }
+
+  setRefreshToken(newToken: string) {
+    this.refreshToken = newToken;
+  }
+
+  async fetchRefreshToken(): Promise<boolean> {
+    let result: boolean;
+
+    fetch('http://localhost:4000/refresh_token', {
+      method: 'POST',
+      credentials: 'include'
+    }).then(async data => {
+      const object = await data.json();
+      if (!object.accessToken) {
+        result = false;
+      }
+
+      this.setRefreshToken(object.accessToken);
+      result = true;
+    });
+
+    return result;
   }
 }
