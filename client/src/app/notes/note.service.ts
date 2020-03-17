@@ -17,7 +17,7 @@ export class NoteService {
   deleteStatus = new BehaviorSubject<NoteResponse>(null);
   hasNotes = new BehaviorSubject<boolean>(null);
   clearNoteForm = new BehaviorSubject<boolean>(null);
-  populatePlayer = new BehaviorSubject<boolean>(null);
+  populatePlayer = new BehaviorSubject<boolean>(true);
 
   constructor(
     private apollo: Apollo

@@ -22,7 +22,10 @@ export class SidenavComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.auth$ = this._auth.user.subscribe(user => {
       this.isAuth = !!user;
-      this.userId = user.id;
+
+      if (user) {
+        this.userId = user.id;
+      }
     });
 
     this.links = [

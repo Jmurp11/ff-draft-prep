@@ -59,6 +59,38 @@ export class NoteComponent implements AfterContentInit, OnDestroy {
       'None'
     ];
 
+    this.popPlayer$ = this._note.populatePlayer.subscribe(populate => {
+      console.log(populate);
+
+      if (!populate) {
+        this.isPlayerPreSet = false;
+        this.currentPlayer = null;
+      } else {
+        this.isPlayerPreSet = true;
+
+        this.curPlayer$ = this._player.currentPlayer.subscribe(data => {
+          this.currentPlayer = data;
+          console.log(this.currentPlayer);
+          this.form.get('player').setValue(this.currentPlayer.player.id);
+
+          switch (this.currentPlayer.player.position) {
+            case 'QB':
+              this.backgroundColor = 'lightskyblue';
+              break;
+            case 'RB':
+              this.backgroundColor = 'lightgreen';
+              break;
+            case 'WR':
+              this.backgroundColor = 'lightpink';
+              break;
+            case 'TE':
+              this.backgroundColor = 'lightgoldenrodyellow';
+              break;
+          }
+        });
+      }
+    });
+
     this.form = new FormGroup({
       player: new FormControl(null, {
         updateOn: 'change',
@@ -85,36 +117,6 @@ export class NoteComponent implements AfterContentInit, OnDestroy {
         this.openSnackBar(response.message, this.dismiss);
         this.resetForm();
         this._note.resetResponse();
-      }
-    });
-
-    this.popPlayer$ = this._note.populatePlayer.subscribe(populate => {
-      if (!populate) {
-        this.isPlayerPreSet = false;
-        this.currentPlayer = null;
-      } else {
-        this.isPlayerPreSet = true;
-
-        this.curPlayer$ = this._player.currentPlayer.subscribe(data => {
-          this.currentPlayer = data;
-
-          this.form.get('player').setValue(this.currentPlayer.player.id);
-
-          switch (this.currentPlayer.player.position) {
-            case 'QB':
-              this.backgroundColor = 'lightskyblue';
-              break;
-            case 'RB':
-              this.backgroundColor = 'lightgreen';
-              break;
-            case 'WR':
-              this.backgroundColor = 'lightpink';
-              break;
-            case 'TE':
-              this.backgroundColor = 'lightgoldenrodyellow';
-              break;
-          }
-        });
       }
     });
 
@@ -188,7 +190,9 @@ export class NoteComponent implements AfterContentInit, OnDestroy {
 
     this._note.createNote(user, player, title, body, source, isPrivate);
 
-    this.dialogRef.close();
+    if (!this.isPlayerPreSet) {
+      this.dialogRef.close();
+    }
   }
 
   _filter(value: string): string[] {
@@ -199,8 +203,14 @@ export class NoteComponent implements AfterContentInit, OnDestroy {
   }
 
   displayFn(player: any): string {
-    if (player) {
-      return `${player.name} ${player.team.team.abbreviation} - ${player.position}`;
+    console.log(this.isPlayerPreSet);
+    if (!this.isPlayerPreSet) {
+      if (player) {
+        return `${player.name} ${player.team.team.abbreviation} - ${player.position}`;
+      }
+    } else {
+      return `${this.currentPlayer.player.name}
+        ${this.currentPlayer.player.team.team.abbreviation} - ${this.currentPlayer.player.position}`;
     }
   }
 
