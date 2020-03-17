@@ -82,7 +82,6 @@ export class AddTargetComponent implements AfterContentInit, OnDestroy {
       .valueChanges
       .subscribe(({ data, loading }) => {
         this.loading = loading;
-        console.log(this.loading);
         data.players.forEach((player: any) => {
           this.players.push(player);
         });
@@ -113,8 +112,6 @@ export class AddTargetComponent implements AfterContentInit, OnDestroy {
     const user = this.userId;
     const player = this.form.get('player').value;
     const round = this.form.get('rounds').value;
-
-    console.log(user, player.id, round);
 
     this.loading = true;
 
