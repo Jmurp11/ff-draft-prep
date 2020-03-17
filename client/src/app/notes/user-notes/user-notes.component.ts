@@ -66,7 +66,11 @@ export class UserNotesComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.query$.unsubscribe();
-    this.user$.unsubscribe();
+    if (this.query$) {
+      this.query$.unsubscribe();
+    }
+    if (this.user$) {
+      this.user$.unsubscribe();
+    }
   }
 }

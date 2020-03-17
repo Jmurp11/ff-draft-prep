@@ -94,7 +94,11 @@ export class TargetComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.targets$.unsubscribe();
-    this.deleteStatus$.unsubscribe();
+    if (this.targets$) {
+      this.targets$.unsubscribe();
+    }
+    if (this.deleteStatus$) {
+      this.deleteStatus$.unsubscribe();
+    }
   }
 }
