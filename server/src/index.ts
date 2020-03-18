@@ -32,6 +32,7 @@ import { sendRefreshToken } from './shared/sendRefreshToken';
   app.post('/refresh_token', async (req, res) => {
     const token = req.cookies.uid;
 
+
     if (!token) {
       return res.send({
         ok: false,
@@ -53,7 +54,7 @@ import { sendRefreshToken } from './shared/sendRefreshToken';
 
     const user = await User.findOne({
       where: {
-        id: payload.userid
+        id: payload.userId
       }
     });
 
