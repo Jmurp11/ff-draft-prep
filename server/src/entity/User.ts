@@ -51,6 +51,10 @@ export class User extends BaseEntity {
     @Column("boolean", { default: false })
     isAdmin!: boolean;
 
+    @Field(() => String, { nullable: true })
+    @Column("text", { nullable: true } )
+    profileImage: string;
+    
     @BeforeInsert()
     async hashPassword() {
         this.password = await bcrypt.hash(this.password, 12);

@@ -37,6 +37,7 @@ export const notes = gql
         id
         user {
           username
+          profileImage
         }
         player {
           id
@@ -68,6 +69,7 @@ export const publicNotes = gql
         id
         user {
           username
+          profileImage
         }
         player {
           id
@@ -99,6 +101,7 @@ export const userNotes = gql
         id
         user {
           username
+          profileImage
         }
         player {
           id

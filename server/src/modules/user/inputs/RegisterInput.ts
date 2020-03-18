@@ -20,4 +20,7 @@ export class RegisterInput {
   @Length(1, 30)
   @IsUsernameAlreadyExist({ message: duplicateUsername })
   username: string;
+
+  @Field({ nullable: true })
+  profileImage: string;
 }

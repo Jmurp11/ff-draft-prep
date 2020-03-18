@@ -5,7 +5,7 @@
   <div fxLayout="column" fxLayoutAlign="center" fxLayoutGap="0.5%" *ngFor="let note of notes">
     <mat-card class="note-card">
       <mat-card-header>
-        <div mat-card-avatar class="note-header-image"></div>
+        <div mat-card-avatar class="note-header-image" [style.backgroundImage]="'url(' + note.user.profileImage + ')'"></div>
         <mat-card-title>{{ note.title }}</mat-card-title>
         <mat-card-subtitle>{{ note.user.username }} - {{ note.creationTime | date: "MMM dd, yyyy hh:mm " }}
         </mat-card-subtitle>

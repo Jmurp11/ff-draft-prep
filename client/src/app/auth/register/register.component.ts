@@ -58,6 +58,9 @@ export class RegisterComponent implements OnInit {
       confirmPassword: new FormControl(null, {
         updateOn: 'blur',
         validators: [Validators.required, Validators.minLength(8)]
+      }),
+      profileImage: new FormControl(null, {
+        updateOn: 'blur'
       })
     });
 
@@ -85,7 +88,8 @@ export class RegisterComponent implements OnInit {
       await this._auth.register(
         this.form.get('email').value,
         this.form.get('password').value,
-        this.form.get('username').value
+        this.form.get('username').value,
+        this.form.get('profileImage').value
       );
     } else {
       this.passwordEqualConfirmPasswordIsValid = false;
