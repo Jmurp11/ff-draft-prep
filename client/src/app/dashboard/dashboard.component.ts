@@ -1,5 +1,4 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { NoteService } from '../notes/note.service';
 import { NoteDialogComponent } from '../notes/note-dialog/note-dialog.component';
