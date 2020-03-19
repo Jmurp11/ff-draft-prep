@@ -28,7 +28,7 @@ export class GraphQLModule {
         token = '';
       }
     });
-    console.log(token);
+
     const basic = setContext((operation, context) => ({
       headers: {
         Accept: 'charset=utf-8'
@@ -46,4 +46,6 @@ export class GraphQLModule {
 
     this.apollo.create({ link, cache });
   }
+
+  setUp() {}
 }

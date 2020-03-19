@@ -4,6 +4,7 @@ import http from 'http';
 import { createConnection, getConnectionOptions } from 'typeorm';
 import express from 'express';
 import chalk from 'chalk'
+import cors from 'cors';
 import { ApolloServer } from 'apollo-server-express';
 import { buildSchema } from 'type-graphql';
 import session from 'express-session';
@@ -19,9 +20,18 @@ import { sendRefreshToken } from './shared/sendRefreshToken';
 (async () => {
   const app = express();
 
+  app.use(cors({
+    credentials: true,
+    origin:
+      process.env.NODE_ENV === "test"
+        ? "*"
+        : (process.env.FRONTEND_HOST as string) 
+  }));
+
   app.use(cookieParser());
   app.post('/refresh_token', async (req, res) => {
     const token = req.cookies.uid;
+
 
     if (!token) {
       return res.send({
@@ -44,7 +54,7 @@ import { sendRefreshToken } from './shared/sendRefreshToken';
 
     const user = await User.findOne({
       where: {
-        id: payload.userid
+        id: payload.userId
       }
     });
 
@@ -55,6 +65,13 @@ import { sendRefreshToken } from './shared/sendRefreshToken';
       });
     }
     
+    if (user.tokenVersion !== payload.tokenVersion) {
+      return res.send({
+        ok: false,
+        accessToken: ''
+      });
+    }
+
     sendRefreshToken(res, createRefreshToken(user));
 
     return res.send({
@@ -84,15 +101,6 @@ import { sendRefreshToken } from './shared/sendRefreshToken';
 
   const RedisStore = connectRedis(session);
 
-  const cors = {
-    credentials: true,
-    origin:
-      process.env.NODE_ENV === "test"
-        ? "*"
-        : '*' // (process.env.FRONTEND_HOST as string) 
-    // TODO: Change the above line back in prod
-  };
-
   app.use(
     session({
       store: new RedisStore({
@@ -111,7 +119,7 @@ import { sendRefreshToken } from './shared/sendRefreshToken';
     })
   );
 
-  apolloServer.applyMiddleware({ app, cors });
+  apolloServer.applyMiddleware({ app, cors: false });
 
   const httpServer = http.createServer(app);
   apolloServer.installSubscriptionHandlers(httpServer);

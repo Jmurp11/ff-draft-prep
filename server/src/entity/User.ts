@@ -51,6 +51,10 @@ export class User extends BaseEntity {
     @Column("boolean", { default: false })
     isAdmin!: boolean;
 
+    @Field()
+    @Column("int", { default: 0 })
+    tokenVersion: number;
+
     @BeforeInsert()
     async hashPassword() {
         this.password = await bcrypt.hash(this.password, 12);
