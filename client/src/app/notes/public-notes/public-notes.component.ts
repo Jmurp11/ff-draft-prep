@@ -42,7 +42,6 @@ export class PublicNotesComponent implements OnInit, OnDestroy {
       .valueChanges
       .subscribe(({ data, loading }) => {
         this.loading = loading;
-        console.log(this.loading);
         this.notes = data.publicNotes;
       });
   }

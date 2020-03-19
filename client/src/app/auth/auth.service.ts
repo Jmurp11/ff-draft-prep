@@ -19,11 +19,12 @@ export interface RegisterResponse {
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-
+  userInStorage = JSON.parse(localStorage.getItem('user'));
+  _token = this.userInStorage ? this.userInStorage._token : '';
   user = new BehaviorSubject<User>(null);
   loginStatus = new BehaviorSubject<LoginResponse>(null);
   registerStatus = new BehaviorSubject<RegisterResponse>(null);
-  refreshToken: string;
+  refreshToken = new BehaviorSubject<string>(this._token);
 
   constructor(
     private apollo: Apollo,
@@ -70,7 +71,8 @@ export class AuthService {
     });
   }
 
-  autoLogin() {
+  async autoLogin() {
+    console.log('hit it');
     const userData: {
       id: string;
       email: string;
@@ -82,16 +84,21 @@ export class AuthService {
       return;
     }
 
-    const loadedUser = new User(
-      userData.id,
-      userData.email,
-      userData.username,
-      userData._token
-    );
+    await this.fetchRefreshToken();
 
-    if (loadedUser.token) {
-      this.user.next(loadedUser);
-    }
+    this.refreshToken.subscribe(newToken => {
+      console.log(newToken);
+      const loadedUser = new User(
+        userData.id,
+        userData.email,
+        userData.username,
+        newToken
+      );
+
+      if (loadedUser.token) {
+        this.user.next(loadedUser);
+      }
+    });
   }
 
   async register(email: string, password: string, username: string) {
@@ -141,26 +148,27 @@ export class AuthService {
     });
   }
 
-  setRefreshToken(newToken: string) {
-    this.refreshToken = newToken;
+
+  setRefreshToken(token: string) {
+    console.log('set token');
+    this.refreshToken.next(token);
   }
 
-  async fetchRefreshToken(): Promise<boolean> {
-    let result: boolean;
+  async fetchRefreshToken() {
+    let result: string;
 
+    console.log('hit it');
     fetch('http://localhost:4000/refresh_token', {
       method: 'POST',
       credentials: 'include'
     }).then(async data => {
       const object = await data.json();
       if (!object.accessToken) {
-        result = false;
+        result = '';
+        this.setRefreshToken(result);
       }
-
-      this.setRefreshToken(object.accessToken);
-      result = true;
+      result = object.accessToken;
+      this.setRefreshToken(result);
     });
-
-    return result;
   }
 }
