@@ -72,7 +72,6 @@ export class AuthService {
   }
 
   async autoLogin() {
-    console.log('hit it');
     const userData: {
       id: string;
       email: string;
@@ -87,7 +86,6 @@ export class AuthService {
     await this.fetchRefreshToken();
 
     this.refreshToken.subscribe(newToken => {
-      console.log(newToken);
       const loadedUser = new User(
         userData.id,
         userData.email,
@@ -150,14 +148,12 @@ export class AuthService {
 
 
   setRefreshToken(token: string) {
-    console.log('set token');
     this.refreshToken.next(token);
   }
 
   async fetchRefreshToken() {
     let result: string;
 
-    console.log('hit it');
     fetch('http://localhost:4000/refresh_token', {
       method: 'POST',
       credentials: 'include'
