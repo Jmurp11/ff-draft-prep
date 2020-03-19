@@ -60,8 +60,6 @@ export class NoteComponent implements AfterContentInit, OnDestroy {
     ];
 
     this.popPlayer$ = this._note.populatePlayer.subscribe(populate => {
-      console.log(populate);
-
       if (!populate) {
         this.isPlayerPreSet = false;
         this.currentPlayer = null;
@@ -70,7 +68,6 @@ export class NoteComponent implements AfterContentInit, OnDestroy {
 
         this.curPlayer$ = this._player.currentPlayer.subscribe(data => {
           this.currentPlayer = data;
-          console.log(this.currentPlayer);
           this.form.get('player').setValue(this.currentPlayer.player.id);
 
           switch (this.currentPlayer.player.position) {
@@ -203,7 +200,6 @@ export class NoteComponent implements AfterContentInit, OnDestroy {
   }
 
   displayFn(player: any): string {
-    console.log(this.isPlayerPreSet);
     if (!this.isPlayerPreSet) {
       if (player) {
         return `${player.name} ${player.team.team.abbreviation} - ${player.position}`;

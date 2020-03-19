@@ -78,9 +78,7 @@ export class TargetComponent implements OnInit, OnDestroy {
       height: '300px'
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-    });
+    dialogRef.afterClosed().subscribe(result => { });
   }
 
   deleteTarget(target: any) {

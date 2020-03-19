@@ -31,9 +31,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       height: '500px'
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-    });
+    dialogRef.afterClosed().subscribe(result => { });
   }
 
   ngOnDestroy() {

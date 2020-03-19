@@ -19,10 +19,12 @@ export interface RegisterResponse {
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-
+  userInStorage = JSON.parse(localStorage.getItem('user'));
+  _token = this.userInStorage ? this.userInStorage._token : '';
   user = new BehaviorSubject<User>(null);
   loginStatus = new BehaviorSubject<LoginResponse>(null);
   registerStatus = new BehaviorSubject<RegisterResponse>(null);
+  refreshToken = new BehaviorSubject<string>(this._token);
 
   constructor(
     private apollo: Apollo,
@@ -69,7 +71,7 @@ export class AuthService {
     });
   }
 
-  autoLogin() {
+  async autoLogin() {
     const userData: {
       id: string;
       email: string;
@@ -81,16 +83,20 @@ export class AuthService {
       return;
     }
 
-    const loadedUser = new User(
-      userData.id,
-      userData.email,
-      userData.username,
-      userData._token
-    );
+    await this.fetchRefreshToken();
 
-    if (loadedUser.token) {
-      this.user.next(loadedUser);
-    }
+    this.refreshToken.subscribe(newToken => {
+      const loadedUser = new User(
+        userData.id,
+        userData.email,
+        userData.username,
+        newToken
+      );
+
+      if (loadedUser.token) {
+        this.user.next(loadedUser);
+      }
+    });
   }
 
   async register(email: string, password: string, username: string) {
@@ -137,6 +143,28 @@ export class AuthService {
       return data;
     }, (error) => {
       console.log(error);
+    });
+  }
+
+
+  setRefreshToken(token: string) {
+    this.refreshToken.next(token);
+  }
+
+  async fetchRefreshToken() {
+    let result: string;
+
+    fetch('http://localhost:4000/refresh_token', {
+      method: 'POST',
+      credentials: 'include'
+    }).then(async data => {
+      const object = await data.json();
+      if (!object.accessToken) {
+        result = '';
+        this.setRefreshToken(result);
+      }
+      result = object.accessToken;
+      this.setRefreshToken(result);
     });
   }
 }

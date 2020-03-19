@@ -14,6 +14,7 @@ import { ChangePasswordInput } from './inputs/ChangePasswordInput';
 import { LoginResult } from './types/LoginResult';
 import { createAccessToken, createRefreshToken } from '../../shared/auth';
 import { sendRefreshToken } from '../../shared/sendRefreshToken';
+import { getConnection } from 'typeorm';
 
 @Resolver()
 export class UserResolver {
@@ -308,6 +309,17 @@ export class UserResolver {
         }
     }
 
+    @UseMiddleware(isAuth, isAdmin, logger)    
+    @Mutation(() => Boolean)
+    async revokeRefreshTokensForUser(@Arg('userId') userId: string): Promise<Boolean> {
+        await getConnection()
+            .getRepository('User')
+            .increment({
+                id: userId
+            }, 'tokenVersion', 1);
+
+        return true;
+    }
 
     @Mutation(() => Boolean)
     async logout(

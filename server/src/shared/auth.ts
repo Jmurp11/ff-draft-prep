@@ -4,7 +4,8 @@ import { User } from '../entity'
 export const createAccessToken = (user: User) => {
     return sign(
         {
-            userId: user!.id
+            userId: user!.id,
+            tokenVersion: user!.tokenVersion
         },
         process.env.ACCESS_TOKEN_SECRET!,
         {
@@ -16,7 +17,8 @@ export const createAccessToken = (user: User) => {
 export const createRefreshToken = (user: User) => {
     return sign(
         {
-            userId: user!.id
+            userId: user!.id,
+            tokenVersion: user!.tokenVersion
         },
         process.env.REFRESH_TOKEN_SECRET!,
         {
