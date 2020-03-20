@@ -46,14 +46,6 @@ export class Note extends BaseEntity {
     @Column("boolean", { default: false })
     isPrivate!: boolean;
 
-    @Field()
-    @Column("int")
-    likes!: number;
-
-    @Field()
-    @Column("int")
-    shares!: number;
-
     @Field(() => Date)
     @Column("timestamp")
     creationTime!: string;

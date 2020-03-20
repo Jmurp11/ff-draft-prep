@@ -54,8 +54,16 @@ export const notes = gql
         body
         source
         isPrivate
-        likes
-        shares
+        likes {
+          user {
+            username
+          }
+        }
+        shares {
+          user {
+            username
+          }
+        }
         creationTime
       }
     }
@@ -85,8 +93,16 @@ export const publicNotes = gql
         body
         source
         isPrivate
-        likes
-        shares
+        likes {
+          user {
+            username
+          }
+        }
+        shares {
+          user {
+            username
+          }
+        }
         creationTime
       }
     }
@@ -116,8 +132,16 @@ export const userNotes = gql
         body
         source
         isPrivate
-        likes
-        shares
+        likes {
+          user {
+            username
+          }
+        }
+        shares {
+          user {
+            username
+          }
+        }
         creationTime
       }
     }
