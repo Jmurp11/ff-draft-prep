@@ -54,16 +54,6 @@ export const notes = gql
         body
         source
         isPrivate
-        likes {
-          user {
-            username
-          }
-        }
-        shares {
-          user {
-            username
-          }
-        }
         creationTime
       }
     }
@@ -93,16 +83,6 @@ export const publicNotes = gql
         body
         source
         isPrivate
-        likes {
-          user {
-            username
-          }
-        }
-        shares {
-          user {
-            username
-          }
-        }
         creationTime
       }
     }
@@ -132,17 +112,38 @@ export const userNotes = gql
         body
         source
         isPrivate
-        likes {
-          user {
-            username
-          }
-        }
-        shares {
-          user {
-            username
-          }
-        }
         creationTime
+      }
+    }
+  `;
+
+export const likedNotes = gql
+  `
+    query likes($userId: String!){
+      likes(userId: $userId) {
+        note {
+          id
+          user {
+            username
+          }
+          player {
+            id
+            firstName
+            lastName
+            name
+            team {
+              team {
+                abbreviation
+              }
+            }
+            position
+          }
+          title
+          body
+          source
+          isPrivate
+          creationTime
+        }
       }
     }
   `;
