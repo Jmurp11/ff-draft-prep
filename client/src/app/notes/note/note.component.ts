@@ -229,12 +229,20 @@ export class NoteComponent implements AfterContentInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.authSub$.unsubscribe();
+    if (this.authSub$) {
+      this.authSub$.unsubscribe();
+    }
     if (this.isPlayerPreSet) {
       this.curPlayer$.unsubscribe();
     }
-    this.noteStatus$.unsubscribe();
-    this.popPlayer$.unsubscribe();
-    this.clearForm$.unsubscribe();
+    if (this.noteStatus$) {
+      this.noteStatus$.unsubscribe();
+    }
+    if (this.popPlayer$) {
+      this.popPlayer$.unsubscribe();
+    }
+    if (this.clearForm$) {
+      this.clearForm$.unsubscribe();
+    }
   }
 }

@@ -75,8 +75,6 @@ export class NoteResolver {
             isPrivate
         }: NoteInput
     ): Promise<Result> {
-        const likes = 0;
-        const shares = 0;
 
         const titleExists = await Note.findOne({
             where: {
@@ -107,9 +105,7 @@ export class NoteResolver {
             title,
             body,
             source,
-            isPrivate,
-            likes,
-            shares
+            isPrivate
         }).save();
 
         return {

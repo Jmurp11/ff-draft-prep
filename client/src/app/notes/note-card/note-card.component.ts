@@ -19,6 +19,8 @@ export class NoteCardComponent implements AfterContentInit, OnDestroy {
   user$: Subscription;
   curPlayer$: Subscription;
   query$: Subscription;
+  like$: Subscription;
+  share$: Subscription;
   currentPlayer: Player;
   curUser: User;
   backgroundColor: string;
@@ -79,6 +81,20 @@ export class NoteCardComponent implements AfterContentInit, OnDestroy {
           }
         });
       });
+
+    this.like$ = this._note.likeStatus.subscribe(response => {
+      if (response) {
+        this.openSnackBar(response.message, 'Dismiss');
+        this._note.resetResponse();
+      }
+    });
+
+    this.share$ = this._note.shareStatus.subscribe(response => {
+      if (response) {
+        this.openSnackBar(response.message, 'Dismiss');
+        this._note.resetResponse();
+      }
+    });
   }
 
   openSnackBar(message: string, action: string) {
@@ -87,14 +103,33 @@ export class NoteCardComponent implements AfterContentInit, OnDestroy {
     });
   }
 
-
   deleteNote(note: any) {
     this._note.deleteNote(note.id, this.curUser.id);
   }
 
+  addLike(note: any) {
+    this._note.addLike(this.curUser.id, note.id);
+  }
+
+  createShare(note: any) {
+    this._note.createShare(this.curUser.id, note.id);
+  }
+
   ngOnDestroy() {
-    this.curPlayer$.unsubscribe();
-    this.query$.unsubscribe();
-    this.user$.unsubscribe();
+    if (this.curPlayer$) {
+      this.curPlayer$.unsubscribe();
+    }
+    if (this.query$) {
+      this.query$.unsubscribe();
+    }
+    if (this.user$) {
+      this.user$.unsubscribe();
+    }
+    if (this.like$) {
+      this.like$.unsubscribe();
+    }
+    if (this.share$) {
+      this.share$.unsubscribe();
+    }
   }
 }

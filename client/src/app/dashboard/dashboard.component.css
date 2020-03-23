@@ -21,6 +21,7 @@
   border-color: lightgray;
   width: 100%;
   text-align: center;
+  overflow: auto;
 }
 
 .padding {
