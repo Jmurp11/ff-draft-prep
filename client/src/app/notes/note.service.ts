@@ -86,17 +86,17 @@ export class NoteService {
         }
       ]
     }).subscribe(({ data }) => {
-      if (!data.createNote.success) {
+      if (!data.deleteNote.success) {
         const response = {
           success: false,
-          message: data.createNote.errors[0].message
+          message: data.deleteNote.errors[0].message
         };
 
         this.noteStatus.next(response);
       } else {
         const response = {
           success: true,
-          message: data.createNote.success[0].message
+          message: data.deleteNote.success[0].message
         };
 
         this.noteStatus.next(response);

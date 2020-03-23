@@ -23,7 +23,8 @@ export class Share extends BaseEntity {
     user!: string;
 
     @ManyToOne(() => Note, {
-        eager: true
+        eager: true,
+        onDelete: 'CASCADE'
     })
     @JoinColumn({ name: 'note' })
     @Field(() => Note)
