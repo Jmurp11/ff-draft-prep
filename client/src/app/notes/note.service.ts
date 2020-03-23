@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
-import { createNote, userNotes, publicNotes, deleteNote } from './queries';
+import { createNote, userNotes, publicNotes, deleteNote, addLike, createShare, likedNotes } from './queries';
 import { BehaviorSubject } from 'rxjs';
 import { AuthService } from '../auth/auth.service';
 
@@ -15,6 +15,8 @@ export interface NoteResponse {
 export class NoteService {
   noteStatus = new BehaviorSubject<NoteResponse>(null);
   deleteStatus = new BehaviorSubject<NoteResponse>(null);
+  likeStatus = new BehaviorSubject<NoteResponse>(null);
+  shareStatus = new BehaviorSubject<NoteResponse>(null);
   hasNotes = new BehaviorSubject<boolean>(null);
   clearNoteForm = new BehaviorSubject<boolean>(null);
   populatePlayer = new BehaviorSubject<boolean>(true);
@@ -102,6 +104,66 @@ export class NoteService {
     });
   }
 
+  addLike(user: string, note: string) {
+    this.apollo.mutate({
+      mutation: addLike,
+      variables: {
+        user,
+        note
+      },
+      refetchQueries: [
+        {
+          query: likedNotes,
+          variables: {
+            userId: user
+          }
+        }
+      ]
+    }).subscribe(({ data }) => {
+      if (!data.addLike.success) {
+        const response = {
+          success: false,
+          message: data.addLike.errors[0].message
+        };
+
+        this.likeStatus.next(response);
+      } else {
+        const response = {
+          success: true,
+          message: data.addLike.success[0].message
+        };
+
+        this.likeStatus.next(response);
+      }
+    });
+  }
+
+  createShare(user: string, note: string) {
+    this.apollo.mutate({
+      mutation: createShare,
+      variables: {
+        user,
+        note
+      }
+    }).subscribe(({ data }) => {
+      if (!data.createShare.success) {
+        const response = {
+          success: false,
+          message: data.createShare.errors[0].message
+        };
+
+        this.shareStatus.next(response);
+      } else {
+        const response = {
+          success: true,
+          message: data.createShare.success[0].message
+        };
+
+        this.shareStatus.next(response);
+      }
+    });
+  }
+
   setHasNotes(hasNotes: boolean) {
     this.hasNotes.next(hasNotes);
   }
@@ -117,5 +179,7 @@ export class NoteService {
   resetResponse() {
     this.noteStatus.next(null);
     this.deleteStatus.next(null);
+    this.likeStatus.next(null);
+    this.shareStatus.next(null);
   }
 }

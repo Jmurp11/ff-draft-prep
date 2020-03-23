@@ -16,6 +16,8 @@ import { User } from '../../auth/user.model';
 export class LikedNotesComponent implements OnInit, OnDestroy {
   query$: Subscription;
   user$: Subscription;
+  like$: Subscription;
+  share$: Subscription;
   backgroundColor: string;
   notes: any[];
   curUser: User;
@@ -47,12 +49,34 @@ export class LikedNotesComponent implements OnInit, OnDestroy {
         this.loading = loading;
         this.notes = data.likes;
       });
+
+    this.like$ = this._note.likeStatus.subscribe(response => {
+      if (response) {
+        this.openSnackBar(response.message, 'Dismiss');
+        this._note.resetResponse();
+      }
+    });
+
+    this.share$ = this._note.shareStatus.subscribe(response => {
+      if (response) {
+        this.openSnackBar(response.message, 'Dismiss');
+        this._note.resetResponse();
+      }
+    });
   }
 
   openSnackBar(message: string, action: string) {
     this.snackbar.open(message, action, {
       duration: 5000
     });
+  }
+
+  addLike(note: any) {
+    this._note.addLike(this.curUser.id, note.id);
+  }
+
+  createShare(note: any) {
+    this._note.createShare(this.curUser.id, note.id);
   }
 
   deleteNote(note: any) {
@@ -65,6 +89,12 @@ export class LikedNotesComponent implements OnInit, OnDestroy {
     }
     if (this.user$) {
       this.user$.unsubscribe();
+    }
+    if (this.like$) {
+      this.like$.unsubscribe();
+    }
+    if (this.share$) {
+      this.share$.unsubscribe();
     }
   }
 }
