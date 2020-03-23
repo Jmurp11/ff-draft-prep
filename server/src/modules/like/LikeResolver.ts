@@ -9,10 +9,10 @@ import { isAuth, logger } from '../../middleware';
 export class LikeResolver {
     @UseMiddleware(isAuth, logger)
     @Query(() => [Like])
-    async likes(@Arg('userId') userId: string) {
+    async likes(@Arg('userId') userId: string) { 
         return getRepository(Like)
             .find({
-                relations: ['user', 'note'],
+                relations: ['user', 'note', 'note.user'],
                 where: {
                     user: {
                         id: userId
@@ -26,7 +26,7 @@ export class LikeResolver {
     async like(@Arg('id') id: string) {
         return getRepository(Like)
             .find({
-                relations: ['user', 'note'],
+                relations: ['user', 'note', 'note.user'],
                 where: {
                     id
                 }
@@ -36,17 +36,14 @@ export class LikeResolver {
     @UseMiddleware(isAuth, logger)
     @Query(() => Int)
     async likesCount(@Arg('noteId') noteId: string) {
-        const likes = await getRepository(Like)
-            .find({
-                relations: ['user', 'note'],
-                where: {
-                    note: {
-                        id: noteId
-                    }
+        return getRepository(Like)
+        .count({
+            where: {
+                note: {
+                    id: noteId
                 }
-            });
-        
-        return likes.length;
+            }
+        });
     }
 
     @UseMiddleware(isAuth, logger)

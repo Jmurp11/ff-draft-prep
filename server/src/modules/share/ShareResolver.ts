@@ -12,7 +12,7 @@ export class ShareResolver {
     async shares(@Arg('userId') userId: string) {
         return getRepository(Share)
             .find({
-                relations: ['user', 'note'],
+                relations: ['user', 'note', 'note.user'],
                 where: {
                     user: {
                         id: userId
@@ -26,7 +26,7 @@ export class ShareResolver {
     async share(@Arg('id') id: string) {
         return getRepository(Share)
             .find({
-                relations: ['user', 'note'],
+                relations: ['user', 'note', 'note.user'],
                 where: {
                     id
                 }
@@ -35,18 +35,15 @@ export class ShareResolver {
 
     @UseMiddleware(isAuth, logger)
     @Query(() => Int)
-    async likesCount(@Arg('noteId') noteId: string) {
-        const shares = await getRepository(Share)
-            .find({
-                relations: ['user', 'note'],
-                where: {
-                    note: {
-                        id: noteId
-                    }
+    async sharesCount(@Arg('noteId') noteId: string) {
+        return getRepository(Share)
+        .count({
+            where: {
+                note: {
+                    id: noteId
                 }
-            });
-        
-        return shares.length;
+            }
+        });
     }
 
     @UseMiddleware(isAuth, logger)

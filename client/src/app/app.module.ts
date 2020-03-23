@@ -29,6 +29,7 @@ import { TargetDialogComponent } from './target/target-dialog/target-dialog.comp
 import { AddTargetComponent } from './target/add-target/add-target.component';
 import { FooterComponent } from './footer/footer.component';
 import { SidenavComponent } from './sidenav/sidenav.component';
+import { LikedNotesComponent } from './notes/liked-notes/liked-notes.component';
 
 @NgModule({
   declarations: [
@@ -51,7 +52,8 @@ import { SidenavComponent } from './sidenav/sidenav.component';
     TargetDialogComponent,
     AddTargetComponent,
     FooterComponent,
-    SidenavComponent
+    SidenavComponent,
+    LikedNotesComponent
   ],
   entryComponents: [NoteDialogComponent, TargetDialogComponent],
   imports: [
