@@ -18,7 +18,7 @@ Assist users in prepping for their fantasy sports drafts.  Users can use this ap
 
 Clone the source locally:
 ```
-$ git clone https://github.com/Jmurp11/ff-draft-prep.git
+$ git clone https://github.com/Jmurp11/draft-shark.git
 ```
 
 Create your feature branch:
