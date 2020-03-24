@@ -17,15 +17,21 @@
         <div class='card-content'>Source: {{ note.source }}</div>
       </mat-card-content>
       <mat-card-actions fxLayout="row" fxAlign="center center" fxLayoutGap="5.0%">
-        <button fxFlex="30%" mat-icon-button color="accent" (click)="addLike(note)">
-          <mat-icon>favorite</mat-icon>
-        </button>
-        <button fxFlex="30%" mat-icon-button color="primary" (click)="createShare(note)">
-          <mat-icon>share</mat-icon>
-        </button>
-        <button fxFlex="30%" mat-icon-button color="warn" (click)="deleteNote(note)">
-          <mat-icon>delete</mat-icon>
-        </button>
+        <div class="action-btn" fxFlex="30%">
+          <button mat-icon-button color="accent" (click)="addLike(note)">
+            <mat-icon>favorite</mat-icon>
+          </button>
+        </div>
+        <div class="action-btn" fxFlex="30%">
+          <button mat-icon-button color="primary" (click)="createShare(note)">
+            <mat-icon>share</mat-icon>
+          </button>
+        </div>
+        <div class="action-btn" fxFlex="30%">
+          <button mat-icon-button color="warn" (click)="deleteNote(note)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
       </mat-card-actions>
     </mat-card>
     <mat-divider></mat-divider>
