@@ -16,6 +16,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   form: FormGroup;
   emailControlIsValid = true;
   passwordControlIsValid = true;
+  username: string;
   loading = false;
   dismissSnackbar = 'Dismiss';
 
@@ -28,6 +29,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.authSub$ = this._auth.user.subscribe(user => {
       if (user) {
+        this.username = user.username;
         this.router.navigate(['/dashboard']);
       }
     });
@@ -36,7 +38,7 @@ export class LoginComponent implements OnInit, OnDestroy {
       if (response) {
         if (response.success) {
           this.router.navigate(['dashboard']);
-          this.openSnackBar('Success! Welcome back!', this.dismissSnackbar);
+          this.openSnackBar(`Success! Welcome back ${this.username}!`, this.dismissSnackbar);
           this.resetForm();
         } else {
           this.openSnackBar(response.message, this.dismissSnackbar);

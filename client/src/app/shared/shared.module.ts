@@ -27,8 +27,7 @@ import { RouterModule } from '@angular/router';
     FormsModule,
     GraphQLModule,
     LoadingSpinner,
-    ReactiveFormsModule,
-    RouterModule
+    ReactiveFormsModule
   ]
 })
 export class SharedModule { }

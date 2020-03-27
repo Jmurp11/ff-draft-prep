@@ -8,8 +8,6 @@ import { AppComponent } from './app.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { PlayerTableComponent } from './player-table/player-table.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { ProfileComponent } from './profile/profile.component';
-import { EditProfileComponent } from './profile/edit-profile/edit-profile.component';
 import { NoteComponent } from './notes/note/note.component';
 import { NoteCardComponent } from './notes/note-card/note-card.component';
 import { HomeComponent } from './home/home.component';
@@ -23,6 +21,7 @@ import { LikedNotesComponent } from './notes/liked-notes/liked-notes.component';
 import { AuthModule } from './auth/auth.module';
 import { TargetModule } from './target/target.module';
 import { SharedModule } from './shared/shared.module';
+import { ProfileModule } from './profile/profile.module';
 
 @NgModule({
   declarations: [
@@ -30,8 +29,6 @@ import { SharedModule } from './shared/shared.module';
     NavbarComponent,
     PlayerTableComponent,
     DashboardComponent,
-    ProfileComponent,
-    EditProfileComponent,
     NoteComponent,
     NoteCardComponent,
     HomeComponent,
@@ -49,6 +46,7 @@ import { SharedModule } from './shared/shared.module';
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,
+    ProfileModule,
     SharedModule,
     TargetModule
   ],

@@ -16,5 +16,8 @@
     <span>
       <button class="nav-button" mat-button (click)="navigateToLoginPage()" *ngIf="!isAuth">Login</button>
     </span>
+    <span>
+      <button class="nav-button" mat-button *ngIf="isAuth">{{ username }}</button>
+    </span>
   </span>
 </mat-toolbar>

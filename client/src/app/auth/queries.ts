@@ -11,6 +11,7 @@ export const login = gql
           username
         }
         accessToken
+        expiresIn
       }
       errors {
           message

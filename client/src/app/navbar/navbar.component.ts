@@ -13,6 +13,7 @@ export class NavbarComponent implements OnInit {
   authSub$: Subscription;
   isAuth: boolean;
   userId: string;
+  username: string;
 
   constructor(
     public dialog: MatDialog,
@@ -26,6 +27,7 @@ export class NavbarComponent implements OnInit {
 
       if (user) {
         this.userId = user.id;
+        this.username = user.username;
       }
     });
   }

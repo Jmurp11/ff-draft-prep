@@ -1,0 +1,11 @@
+<div class="main-loading" *ngIf="loading">
+  <loading-spinner></loading-spinner>
+</div>
+
+<div *ngIf="!loading">
+  <button mat-raised-button color="accent" (click)="navigateToEdit()">Edit Profile</button>
+
+  <div>{{ user.username }}</div>
+  <div>{{ user.id }}</div>
+  <div>{{ user.email }}</div>
+</div>

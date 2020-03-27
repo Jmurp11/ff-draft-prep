@@ -18,7 +18,7 @@ import { getConnection } from 'typeorm';
 
 @Resolver()
 export class UserResolver {
-    @UseMiddleware(isAuth, isAdmin, logger)
+    @UseMiddleware(isAuth, logger)
     @Query(() => [User])
     async users() {
         return User.find();
@@ -155,7 +155,8 @@ export class UserResolver {
         return {
             success: {
                 user,
-                accessToken: createAccessToken(user!)
+                accessToken: createAccessToken(user!),
+                expiresIn: 3600
             }
         };
     }
