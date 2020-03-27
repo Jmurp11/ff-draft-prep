@@ -37,10 +37,14 @@ export class NavbarComponent implements OnInit {
   }
 
   navigateToLoginPage() {
-    this.router.navigate(['/login']);
+    this.router.navigate(['/auth/login']);
   }
 
   navigateToRegisterPage() {
-    this.router.navigate(['/register']);
+    this.router.navigate(['/auth/register']);
+  }
+
+  navigateToUserProfile() {
+    this.router.navigate([`/user/profile/${this.username}`]);
   }
 }

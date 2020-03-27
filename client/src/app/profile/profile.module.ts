@@ -3,8 +3,8 @@ import { SharedModule } from '../shared/shared.module';
 import { ProfileComponent } from './profile.component';
 import { EditProfileComponent } from './edit-profile/edit-profile.component';
 import { ProfileRoutingModule } from './profile-routing.module';
-import { RouterModule } from '@angular/router';
 import { ProfileDetailComponent } from './profile-detail/profile-detail.component';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -18,9 +18,9 @@ import { ProfileDetailComponent } from './profile-detail/profile-detail.componen
     ProfileDetailComponent
   ],
   imports: [
-    // ProfileRoutingModule,
-    SharedModule,
-    RouterModule
+    RouterModule,
+    ProfileRoutingModule,
+    SharedModule
   ]
 })
 export class ProfileModule { }

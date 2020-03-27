@@ -14,7 +14,6 @@ import { HomeComponent } from './home/home.component';
 import { UserNotesComponent } from './notes/user-notes/user-notes.component';
 import { PublicNotesComponent } from './notes/public-notes/public-notes.component';
 import { NoteDialogComponent } from './notes/note-dialog/note-dialog.component';
-import { MatDialogRef } from '@angular/material/dialog';
 import { FooterComponent } from './footer/footer.component';
 import { SidenavComponent } from './sidenav/sidenav.component';
 import { LikedNotesComponent } from './notes/liked-notes/liked-notes.component';
@@ -22,6 +21,8 @@ import { AuthModule } from './auth/auth.module';
 import { TargetModule } from './target/target.module';
 import { SharedModule } from './shared/shared.module';
 import { ProfileModule } from './profile/profile.module';
+import { CoreModule } from './core.module';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -45,17 +46,14 @@ import { ProfileModule } from './profile/profile.module';
     AuthModule,
     BrowserModule,
     BrowserAnimationsModule,
+    CoreModule,
     HttpClientModule,
     ProfileModule,
+    RouterModule,
     SharedModule,
     TargetModule
   ],
-  providers: [
-    {
-      provide: MatDialogRef,
-      useValue: {}
-    },
-  ],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

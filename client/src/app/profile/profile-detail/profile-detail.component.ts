@@ -26,7 +26,6 @@ export class ProfileDetailComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    console.log('init');
     this.username = '';
     this.user = {
       id: '',
@@ -36,7 +35,6 @@ export class ProfileDetailComponent implements OnInit, OnDestroy {
     this.route.params
       .subscribe((params: Params) => {
         this.username = params['username'];
-        console.log(this.username);
         this.query$ = this.apollo.watchQuery<any>({
           query: userByUsername,
           variables: {
