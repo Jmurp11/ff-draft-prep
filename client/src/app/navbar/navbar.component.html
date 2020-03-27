@@ -16,7 +16,7 @@
     <span>
       <button class="nav-button" mat-button (click)="navigateToLoginPage()" *ngIf="!isAuth">Login</button>
     </span>
-    <span>
+    <span *ngIf="isAuth">
       <mat-menu #appMenu="matMenu">
         <button mat-menu-item (click)="navigateToUserProfile()"><mat-icon>account_circle</mat-icon>{{ username | lowercase}}</button>
         <button mat-menu-item><mat-icon>settings</mat-icon>Settings</button>
