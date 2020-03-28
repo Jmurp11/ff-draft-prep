@@ -184,6 +184,7 @@ export const likedNotes = gql
           id
           user {
             username
+            profileImage
           }
           player {
             id
