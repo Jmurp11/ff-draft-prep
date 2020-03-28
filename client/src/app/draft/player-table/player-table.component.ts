@@ -8,7 +8,7 @@ import { Apollo } from 'apollo-angular';
 import { projections } from './queries';
 import { Player } from './player.model';
 import { PlayerService } from './player.service';
-import { NoteService } from '../notes/note.service';
+import { NoteService } from '../../notes/note.service';
 
 @Component({
   selector: 'app-player-table',

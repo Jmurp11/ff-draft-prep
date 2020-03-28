@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { AuthService } from '../auth/auth.service';
+import { AuthService } from '../../auth/auth.service';
 import { Router } from '@angular/router';
 import { Subscribable, Subscription } from 'rxjs';
 
@@ -13,6 +13,7 @@ export class SidenavComponent implements OnInit, OnDestroy {
   isAuth: boolean;
   links: string[];
   userId: string;
+  username: string;
 
   constructor(
     private _auth: AuthService,
@@ -25,13 +26,15 @@ export class SidenavComponent implements OnInit, OnDestroy {
 
       if (user) {
         this.userId = user.id;
+        this.username = user.username;
       }
     });
 
     this.links = [
       './dashboard',
-      './draft',
-      './profile'
+      `./prep/draft/${this.username}/draft-prep`,
+      './prep/draft/draft-lobby',
+      `./user/profile/${this.username}`
     ];
   }
 

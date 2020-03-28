@@ -1,8 +1,8 @@
 import { Component, OnDestroy, AfterContentInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Player } from '../../player-table/player.model';
-import { PlayerService } from '../../player-table/player.service';
+import { Player } from '../../draft/player-table/player.model';
+import { PlayerService } from '../../draft/player-table/player.service';
 import { Note } from '../note.model';
 import { userNotes } from '../queries';
 import { Apollo } from 'apollo-angular';
@@ -11,11 +11,11 @@ import { User } from 'src/app/auth/user.model';
 import { NoteService } from '../note.service';
 
 @Component({
-  selector: 'app-note-card',
-  templateUrl: './note-card.component.html',
-  styleUrls: ['./note-card.component.css']
+  selector: 'app-draft-notes',
+  templateUrl: './draft-notes.component.html',
+  styleUrls: ['./draft-notes.component.css']
 })
-export class NoteCardComponent implements AfterContentInit, OnDestroy {
+export class DraftNotesComponent implements AfterContentInit, OnDestroy {
   user$: Subscription;
   curPlayer$: Subscription;
   query$: Subscription;
