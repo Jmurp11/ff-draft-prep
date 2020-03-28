@@ -1,0 +1,33 @@
+<div class="center">
+  <mat-action-list class="center">
+    <mat-list-item>
+       <button mat-icon-button (click)="navigateTo(0)">
+          <mat-icon>home</mat-icon> Home
+       </button>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+    <mat-list-item>
+      <mat-menu #draftMenu="matMenu">
+        <button mat-menu-item (click)="navigateTo(1)">Draft Prep</button>
+        <button mat-menu-item (click)="navigateTo(2)">Mock Draft Lobby</button>
+      </mat-menu>
+
+      <button mat-icon-button [matMenuTriggerFor]="draftMenu">
+        <mat-icon>view_list</mat-icon> Draft
+     </button>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+    <mat-list-item>
+      <button mat-icon-button (click)="navigateTo(2)">
+        <mat-icon>group</mat-icon> Users
+      </button>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+    <mat-list-item>
+      <button mat-icon-button (click)="logout()">
+        <mat-icon>vpn_key</mat-icon> Sign Out
+      </button>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+  </mat-action-list>
+</div>

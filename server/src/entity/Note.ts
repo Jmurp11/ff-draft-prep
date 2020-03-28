@@ -16,7 +16,9 @@ export class Note extends BaseEntity {
     @PrimaryGeneratedColumn('uuid')
     id!: string;
 
-    @ManyToOne(() => User)
+    @ManyToOne(() => User, {
+        eager: true
+    })
     @JoinColumn({ name: 'user' })
     @Field(() => User)
     @Column("uuid")
@@ -45,14 +47,6 @@ export class Note extends BaseEntity {
     @Field()
     @Column("boolean", { default: false })
     isPrivate!: boolean;
-
-    @Field()
-    @Column("int")
-    likes!: number;
-
-    @Field()
-    @Column("int")
-    shares!: number;
 
     @Field(() => Date)
     @Column("timestamp")

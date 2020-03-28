@@ -27,13 +27,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
   openDialog(): void {
     this._note.prepopulatePlayer(false);
     const dialogRef = this.dialog.open(NoteDialogComponent, {
-      width: '750px',
-      height: '500px'
+      width: '850px',
+      height: '600px'
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-    });
+    dialogRef.afterClosed().subscribe(result => { });
   }
 
   ngOnDestroy() {

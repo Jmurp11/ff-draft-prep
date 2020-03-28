@@ -1,0 +1,248 @@
+<mat-drawer-container class="container" autosize>
+  <mat-drawer #drawer class="sidenav" mode="side" position="end">
+    <div class="close-btn-ctr">
+      <button mat-icon-button color="accent" (click)="drawer.close()" (click)="clearNote()">
+        <mat-icon>clear</mat-icon>
+      </button>
+    </div>
+    <app-note></app-note>
+    <mat-divider></mat-divider>
+    <app-draft-notes></app-draft-notes>
+  </mat-drawer>
+
+  <div class="main-loading" *ngIf="loading">
+    <loading-spinner></loading-spinner>
+  </div>
+
+  <div class='content' *ngIf="!loading">
+    <div class="resetButtonContainer">
+      <button mat-raised-button color="accent" class="resetButton" (click)="resetAll()"><i
+          class="material-icons">undo</i>Reset All</button>
+    </div>
+
+    <mat-form-field>
+      <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+    </mat-form-field>
+
+    <table mat-table [dataSource]="dataSource" multiTemplateDataRows class="mat-elevation-z8" matSort>
+      <ng-container matColumnDef="draft">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header></th>
+        <td mat-cell *matCellDef="let player">
+          <button mat-icon-button color="accent" (click)="toggleRow(player)">
+            <mat-icon>{{ player.selected ? 'undo' : 'add' }}</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="note">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header></th>
+        <td mat-cell *matCellDef="let player">
+          <button mat-icon-button color="accent" (click)="drawer.toggle()" (click)="addNoteClick()">
+            <mat-icon>note_add</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="player.rank">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Rank </th>
+        <td mat-cell *matCellDef="let player"> {{player.player.rank}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="player.adp">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> ADP </th>
+        <td mat-cell *matCellDef="let player"> {{player.player.adp}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="player.lastName">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
+        <td mat-cell *matCellDef="let player" class="bold-font"> {{ player.player.initialName }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="player.position">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> POS </th>
+        <td mat-cell *matCellDef="let player"> {{player.player.position}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="player.team.abbreviation">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Team </th>
+        <td mat-cell *matCellDef="let player"> {{player.player.team.team.abbreviation}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="player.tier">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Tier </th>
+        <td mat-cell *matCellDef="let player" class="bold-font"> {{player.player.tier}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="player.team.bye">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Bye </th>
+        <td mat-cell *matCellDef="let player"> {{player.player.team.bye}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="completions">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> CMP </th>
+        <td mat-cell *matCellDef="let player"> {{player.completions}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="attempts">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> ATT </th>
+        <td mat-cell *matCellDef="let player"> {{player.attempts}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="passYards">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Pass YDS </th>
+        <td mat-cell *matCellDef="let player"> {{player.passYards}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="passTd">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Pass TD </th>
+        <td mat-cell *matCellDef="let player"> {{player.passTd}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="interception">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> INT </th>
+        <td mat-cell *matCellDef="let player"> {{player.interception}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="carries">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> CAR </th>
+        <td mat-cell *matCellDef="let player"> {{player.carries}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="rushYards">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Rush YDS </th>
+        <td mat-cell *matCellDef="let player"> {{player.rushYards}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="rushTd">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Rush TD </th>
+        <td mat-cell *matCellDef="let player"> {{player.rushTd}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="fumbles">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> FUM </th>
+        <td mat-cell *matCellDef="let player"> {{player.fumbles}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="receptions">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> REC </th>
+        <td mat-cell *matCellDef="let player"> {{player.receptions}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="receivingYards">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> REC YDS </th>
+        <td mat-cell *matCellDef="let player"> {{player.receivingYards}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="receivingTd">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> REC TD </th>
+        <td mat-cell *matCellDef="let player"> {{player.receivingTd}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="fantasyPoints">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Fantasy PTS </th>
+        <td mat-cell *matCellDef="let player" class="bold-font"> {{player.fantasyPoints}} </td>
+      </ng-container>
+
+      <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+      <ng-container matColumnDef="expandedDetail">
+        <td mat-cell *matCellDef="let player" [attr.colspan]="columnsToDisplay.length">
+          <div class="player-detail" [@detailExpand]="player == expandedPlayer ? 'expanded' : 'collapsed'">
+            <div class="player-description">
+              <span class="team-info-col team-logo">
+                <div>
+                  <div class="team-info-offense-rank" [ngClass]="{
+                      'green-text': player.player.team.rank <= 12,
+                      'orange-text': player.player.team.rank > 12 && player.player.team.rank <= 20,
+                      'red-text': player.player.team.rank > 20
+                    }">
+                    <span class="label">Offense Rank: </span>{{player.player.team.rank}}</div>
+                </div>
+                <div>
+                  <img [src]=player.player.team.team.imageUrl>
+                </div>
+              </span>
+              <span class="team-info-col">
+                <div class="team-info"><span class="label">Total Points: </span>{{player.player.team.pointsFor}}</div>
+                <div class="team-info"><span class="label">Total Yards: </span>{{player.player.team.yards}}</div>
+                <div class="team-info"><span class="label">Yards Per Play: </span>{{player.player.team.yardsPerPlay}}
+                </div>
+                <div class="team-info" [ngClass]="{
+                    'green-text': player.player.team.offensiveLineRank <= 12,
+                    'orange-text': player.player.team.offensiveLineRank > 12 && player.player.team.offensiveLineRank <= 20,
+                    'red-text': player.player.team.offensiveLineRank > 20
+                  }">
+                  <span class="label">Offensive Line Rank:
+                  </span>{{player.player.team.offensiveLineRank}}</div>
+                <div class="team-info"><span class="label">Score Percentage:
+                  </span>{{player.player.team.scorePercentage}}
+                </div>
+                <div class="team-info"><span class="label">Turnover Percentage:
+                  </span>{{player.player.team.turnoverPercentage}}</div>
+              </span>
+              <span class="team-info-col">
+                <div class="team-info" [ngClass]="{
+                    'green-text': player.player.team.passRank <= 12,
+                    'orange-text': player.player.team.passRank > 12 && player.player.team.passRank <= 20,
+                    'red-text': player.player.team.passRank > 20
+                  }">
+                  <span class="label">Pass Rank: </span>{{player.player.team.passRank}}</div>
+                <div class="team-info"><span class="label">Team Pass Attempts:
+                  </span>{{player.player.team.passAttempts}}
+                </div>
+                <div class="team-info"><span class="label">Team Pass Completions:
+                  </span>{{player.player.team.passCompletions}}</div>
+                <div class="team-info"><span class="label">Team Pass Yards: </span>{{player.player.team.passYards}}
+                </div>
+                <div class="team-info"><span class="label">Team Pass TD: </span>{{player.player.team.passTd}}</div>
+                <div class="team-info"><span class="label">Net Yards Per Pass:
+                  </span>{{player.player.team.netYardsPerPass}}
+                </div>
+              </span>
+              <span class="team-info-col">
+                <div class="team-info" [ngClass]="{
+                    'green-text': player.player.team.rushRank <= 12,
+                    'orange-text': player.player.team.rushRank > 12 && player.player.team.rushRank <= 20,
+                    'red-text': player.player.team.rushRank > 20
+                  }">
+                  <span class="label">Rush Rank: </span>{{player.player.team.rushRank}}</div>
+                <div class="team-info" [ngClass]="{
+                    'green-text': player.player.team.runningBackSoS <= 12,
+                    'orange-text': player.player.team.runningBackSoS > 12 && player.player.team.runningBackSoS <= 20,
+                    'red-text': player.player.team.runningBackSoS > 20
+                  }">
+                  <span class="label">Running Back SoS: </span>{{player.player.team.runningBackSoS}}
+                </div>
+                <div class="team-info"><span class="label">Team Rush Attempts: </span>{{player.player.team.rushAttempt}}
+                </div>
+                <div class="team-info"><span class="label">Team Rush Yards: </span>{{player.player.team.rushYards}}
+                </div>
+                <div class="team-info"><span class="label">Team Rush TD: </span>{{player.player.team.rushTd}}</div>
+                <div class="team-info"><span class="label">Yards Per Rush: </span>{{player.player.team.yardsPerRush}}
+                </div>
+              </span>
+            </div>
+          </div>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="columnsToDisplay; sticky: true"></tr>
+      <tr mat-row *matRowDef="let player; columns: columnsToDisplay;" class="player-row"
+        [class.expanded-row]="expandedPlayer === player" [ngClass]="{
+            'isSelected': player.selected,
+            'isQb': player.player.position === 'QB',
+            'isRb': player.player.position === 'RB',
+            'isWr': player.player.position === 'WR',
+            'isTe': player.player.position === 'TE'
+          }"
+          (click)="onRowClick(player)"
+          (dblclick)="onRowDoubleClick(player)"
+          matTooltip="Double-click the row to expand team details">
+      </tr>
+      <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="detail-row"></tr>
+    </table>
+
+    <mat-paginator [pageSizeOptions]="[14, 28, 42, 100, 492]"></mat-paginator>
+  </div>
+
+</mat-drawer-container>

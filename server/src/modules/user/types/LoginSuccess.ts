@@ -8,4 +8,7 @@ export class LoginSuccess {
 
     @Field()
     accessToken: string;
+
+    @Field()
+    expiresIn: number;
 }

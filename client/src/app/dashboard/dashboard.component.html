@@ -3,7 +3,7 @@
   <div class="crd-ctr" fxFlex="75%" fxLayout="column" fxFlexAlign="center center">
 
     <mat-tab-group fxFlex="90%">
-      <mat-tab label="Public Notes">
+      <mat-tab label="My Notes">
         <div class="padding">
           <span>
             <button mat-fab color="primary" (click)="openDialog()">
@@ -12,10 +12,10 @@
           </span>
         </div>
         <div class="card-ctr">
-          <app-public-notes></app-public-notes>
+          <app-user-notes></app-user-notes>
         </div>
       </mat-tab>
-      <mat-tab label="My Notes">
+      <mat-tab label="Trending Notes">
         <div class="padding">
           <span>
             <button mat-fab color="primary" (click)="openDialog()" *ngIf="hasNotes">
@@ -27,7 +27,22 @@
           </span>
         </div>
         <div class="card-ctr">
-          <app-user-notes></app-user-notes>
+          <app-public-notes></app-public-notes>
+        </div>
+      </mat-tab>
+      <mat-tab label="My Favorites">
+        <div class="padding">
+          <span>
+            <button mat-fab color="primary" (click)="openDialog()" *ngIf="hasNotes">
+              <mat-icon>note_add</mat-icon>
+            </button>
+            <button mat-raised-button color="primary" (click)="openDialog()" *ngIf="!hasNotes">
+              Start Adding Notes
+            </button>
+          </span>
+        </div>
+        <div class="card-ctr">
+          <app-liked-notes></app-liked-notes>
         </div>
       </mat-tab>
     </mat-tab-group>

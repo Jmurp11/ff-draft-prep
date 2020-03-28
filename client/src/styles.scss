@@ -41,7 +41,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 }
 
 .auth-header-image {
-  background-image: url('https://freedesignfile.com/upload/2015/12/Cartoon-funny-shark-vector-material-02.jpg');
+  background-image: url('./assets/images/profile.png');
   background-size: cover;
 }
 
@@ -79,4 +79,8 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 mat-divider {
   padding: 10px;
+}
+
+.action-btn {
+  text-align: center;
 }

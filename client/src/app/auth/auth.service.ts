@@ -19,10 +19,11 @@ export interface RegisterResponse {
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-
+  userInStorage = JSON.parse(localStorage.getItem('user'));
   user = new BehaviorSubject<User>(null);
   loginStatus = new BehaviorSubject<LoginResponse>(null);
   registerStatus = new BehaviorSubject<RegisterResponse>(null);
+  private tokenExpirationTimer: any;
 
   constructor(
     private apollo: Apollo,
@@ -44,16 +45,13 @@ export class AuthService {
           accessToken: data.login.success.accessToken
         };
 
-        const user = new User(
+        this.handleAuthentication(
           data.login.success.user.id,
           data.login.success.user.email,
           data.login.success.user.username,
-          data.login.success.accessToken
+          data.login.success.accessToken,
+          data.login.success.expiresIn
         );
-
-        this.user.next(user);
-
-        localStorage.setItem('user', JSON.stringify(user));
 
         this.loginStatus.next(response);
       } else {
@@ -69,12 +67,13 @@ export class AuthService {
     });
   }
 
-  autoLogin() {
+  async autoLogin() {
     const userData: {
       id: string;
       email: string;
       username: string;
       _token: string;
+      _tokenExpiration: string;
     } = JSON.parse(localStorage.getItem('user'));
 
     if (!userData) {
@@ -85,11 +84,16 @@ export class AuthService {
       userData.id,
       userData.email,
       userData.username,
-      userData._token
+      userData._token,
+      new Date(userData._tokenExpiration)
     );
 
     if (loadedUser.token) {
       this.user.next(loadedUser);
+      const expirationDuration =
+        new Date(userData._tokenExpiration).getTime() -
+        new Date().getTime();
+      this.autoLogout(userData.id, expirationDuration);
     }
   }
 
@@ -139,4 +143,47 @@ export class AuthService {
       console.log(error);
     });
   }
+
+  autoLogout(userId: string, expirationDuration: number) {
+    this.tokenExpirationTimer = setTimeout(() => {
+      this.logout(userId);
+    }, expirationDuration);
+  }
+
+  handleAuthentication(
+    id: string,
+    email: string,
+    username: string,
+    token: string,
+    expiresIn: number
+  ) {
+    const expirationDate = new Date(new Date().getTime() + expiresIn * 1000);
+    const user = new User(id, email, username, token, expirationDate);
+    this.user.next(user);
+    this.autoLogout(id, expiresIn * 1000);
+    localStorage.setItem('user', JSON.stringify(user));
+  }
+
+/**
+  setRefreshToken(token: string) {
+    this.refreshToken.next(token);
+  }
+
+  async fetchRefreshToken() {
+    let result: string;
+
+    fetch('http://localhost:4000/refresh_token', {
+      method: 'POST',
+      credentials: 'include'
+    }).then(async data => {
+      const object = await data.json();
+      if (!object.accessToken) {
+        result = '';
+        this.setRefreshToken(result);
+      }
+      result = object.accessToken;
+      this.setRefreshToken(result);
+    });
+  }
+*/
 }
