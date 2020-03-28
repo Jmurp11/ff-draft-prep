@@ -17,7 +17,7 @@ const routes: Routes = [
     }
   },
   {
-    path: 'user',
+    path: 'users',
     loadChildren: async () => {
       const module = await import('./profile/profile.module');
       return module.ProfileModule;

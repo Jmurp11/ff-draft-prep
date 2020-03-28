@@ -34,7 +34,7 @@ export class SidenavComponent implements OnInit, OnDestroy {
       './dashboard',
       `./prep/draft/${this.username}/draft-prep`,
       './prep/draft/draft-lobby',
-      `./user/profile/${this.username}`
+      `./users/profile/${this.username}`
     ];
   }
 

@@ -6,19 +6,17 @@ import { AuthService } from '../auth.service';
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  selector: 'app-forgot-password',
+  templateUrl: './forgot-password.component.html',
+  styleUrls: ['./forgot-password.component.css']
 })
-export class LoginComponent implements OnInit, OnDestroy {
-  authSub$: Subscription;
-  loginSub$: Subscription;
+export class ForgotPasswordComponent implements OnInit, OnDestroy {
+  forgotPass$: Subscription;
   form: FormGroup;
+  email: string;
+  dismissSnackbar: string;
   emailIsValid: boolean;
-  passwordIsValid: boolean;
-  username: string;
   loading: boolean;
-  dismissSnackbar = 'Dismiss';
 
   constructor(
     private router: Router,
@@ -27,21 +25,15 @@ export class LoginComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.loading = false;
     this.emailIsValid = true;
-    this.passwordIsValid = true;
-    this.authSub$ = this._auth.user.subscribe(user => {
-      if (user) {
-        this.username = user.username;
-        this.router.navigate(['/dashboard']);
-      }
-    });
+    this.loading = false;
+    this.dismissSnackbar = 'Dismiss';
 
-    this.loginSub$ = this._auth.loginStatus.subscribe(response => {
+    this.forgotPass$ = this._auth.forgotStatus.subscribe(response => {
       if (response) {
         if (response.success) {
           this.router.navigate(['dashboard']);
-          this.openSnackBar(`Success! Welcome back ${this.username}!`, this.dismissSnackbar);
+          this.openSnackBar(`Email sent to ${this.email}!`, this.dismissSnackbar);
           this.resetForm();
         } else {
           this.openSnackBar(response.message, this.dismissSnackbar);
@@ -54,19 +46,11 @@ export class LoginComponent implements OnInit, OnDestroy {
       email: new FormControl(null, {
         updateOn: 'blur',
         validators: [Validators.required, Validators.email]
-      }),
-      password: new FormControl(null, {
-        updateOn: 'blur',
-        validators: [Validators.required, Validators.minLength(6)]
       })
     });
 
     this.form.get('email').statusChanges.subscribe(status => {
       this.emailIsValid = status === 'VALID';
-    });
-
-    this.form.get('password').statusChanges.subscribe(status => {
-      this.passwordIsValid = status === 'VALID';
     });
   }
 
@@ -75,12 +59,13 @@ export class LoginComponent implements OnInit, OnDestroy {
       return;
     }
 
-    const email = this.form.get('email').value;
-    const password = this.form.get('password').value;
+    this.email = this.form.get('email').value;
+
+    this._auth.forgotPassword(this.email);
 
     this.loading = true;
 
-    this._auth.login(email, password);
+    this.resetForm();
   }
 
   onRegisterClick() {
@@ -94,8 +79,6 @@ export class LoginComponent implements OnInit, OnDestroy {
   resetForm() {
     this.form.reset();
     this.emailIsValid = true;
-    this.passwordIsValid = true;
-    this.loading = false;
   }
 
   openSnackBar(message: string, action: string) {
@@ -105,7 +88,6 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.loginSub$.unsubscribe();
-    this.authSub$.unsubscribe();
+    this.forgotPass$.unsubscribe();
   }
 }

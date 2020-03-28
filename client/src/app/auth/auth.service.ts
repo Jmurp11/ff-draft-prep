@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { login, register, logout } from './queries';
+import { login, register, logout, confirmUser, forgotPassword, changePassword } from './queries';
 import { Apollo } from 'apollo-angular';
 import { User } from './user.model';
 import { Router } from '@angular/router';
@@ -12,7 +12,7 @@ export interface LoginResponse {
   message?: string;
 }
 
-export interface RegisterResponse {
+export interface AuthResponse {
   success: boolean;
   message?: string;
 }
@@ -22,7 +22,10 @@ export class AuthService {
   userInStorage = JSON.parse(localStorage.getItem('user'));
   user = new BehaviorSubject<User>(null);
   loginStatus = new BehaviorSubject<LoginResponse>(null);
-  registerStatus = new BehaviorSubject<RegisterResponse>(null);
+  registerStatus = new BehaviorSubject<AuthResponse>(null);
+  confirmStatus = new BehaviorSubject<AuthResponse>(null);
+  forgotStatus = new BehaviorSubject<AuthResponse>(null);
+  changePassStatus = new BehaviorSubject<AuthResponse>(null);
   private tokenExpirationTimer: any;
 
   constructor(
@@ -164,6 +167,87 @@ export class AuthService {
     localStorage.setItem('user', JSON.stringify(user));
   }
 
+  confirmUser(token: string) {
+    return this.apollo.mutate({
+      mutation: confirmUser,
+      variables: {
+        token
+      }
+    }).subscribe(({ data }) => {
+      if (!data.confirmUser.success) {
+        const response = {
+          success: false,
+          message: data.confirmUser.errors[0].message
+        };
+
+        this.confirmStatus.next(response);
+      } else {
+        const response = {
+          success: true,
+          message: data.confirmUser.success[0].message
+        };
+
+        this.confirmStatus.next(response);
+      }
+    }, (error) => {
+      console.log(error);
+    });
+  }
+
+  forgotPassword(email: string) {
+    return this.apollo.mutate({
+      mutation: forgotPassword,
+      variables: {
+        email
+      }
+    }).subscribe(({ data }) => {
+      if (!data.forgotPassword.success) {
+        const response = {
+          success: false,
+          message: data.forgotPassword.errors[0].message
+        };
+
+        this.forgotStatus.next(response);
+      } else {
+        const response = {
+          success: true,
+          message: data.forgotPassword.success[0].message
+        };
+
+        this.forgotStatus.next(response);
+      }
+    }, (error) => {
+      console.log(error);
+    });
+  }
+
+  changePassword(token: string, password: string) {
+    return this.apollo.mutate({
+      mutation: changePassword,
+      variables: {
+        token,
+        password
+      }
+    }).subscribe(({ data }) => {
+      if (!data.changePassword.success) {
+        const response = {
+          success: false,
+          message: data.changePassword.errors[0].message
+        };
+
+        this.changePassStatus.next(response);
+      } else {
+        const response = {
+          success: true,
+          message: data.changePassword.success[0].message
+        };
+
+        this.changePassStatus.next(response);
+      }
+    }, (error) => {
+      console.log(error);
+    });
+  }
 /**
   setRefreshToken(token: string) {
     this.refreshToken.next(token);

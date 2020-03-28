@@ -15,7 +15,7 @@
               <mat-label>Email</mat-label>
               <input matInput placeholder="Enter Email" type="text" formControlName="email" class="form-control">
             </mat-form-field>
-            <div class="invalid-label" *ngIf="!emailControlIsValid">Please enter a valid email</div>
+            <div class="invalid-label" *ngIf="!emailIsValid">Please enter a valid email</div>
           </div>
           <div class="form-group">
             <mat-form-field appearance="standard">
@@ -32,6 +32,9 @@
               Login
             </button>
             <button mat-raised-button color="accent" class="auth-btn" (click)="onRegisterClick()">Register</button>
+          </div>
+          <div class="center">
+            <button mat-button color="primary" (click)="onForgotPasswordClick()">Forgot Password</button>
           </div>
         </mat-card-actions>
       </mat-card>
