@@ -100,13 +100,14 @@ export class AuthService {
     }
   }
 
-  async register(email: string, password: string, username: string) {
+  async register(email: string, password: string, username: string, profileImage: string) {
     this.apollo.mutate({
       mutation: register,
       variables: {
         email,
         password,
-        username
+        username,
+        profileImage
       }
     }).subscribe(({ data }) => {
       if (!data.register.success) {

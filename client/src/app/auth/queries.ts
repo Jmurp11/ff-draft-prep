@@ -22,8 +22,8 @@ export const login = gql
 
 export const register = gql
   `
-  mutation register($email: String!, $password: String!, $username: String!) {
-    register(input: { email: $email, password: $password, username: $username }) {
+  mutation register($email: String!, $password: String!, $username: String!, $profileImage: String!) {
+    register(input: { email: $email, password: $password, username: $username, profileImage: $profileImage }) {
       success {
         message
       }
