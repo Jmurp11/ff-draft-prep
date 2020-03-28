@@ -19,6 +19,7 @@ export class RegisterComponent implements OnInit {
   passwordControlIsValid = true;
   confirmPasswordControlIsValid = true;
   passwordEqualConfirmPasswordIsValid = true;
+  isValidImage = true;
   loading = false;
   dismissSnackbar = 'Dismiss';
 
@@ -29,6 +30,7 @@ export class RegisterComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    const pattern = '(http)?s?:?(\/\/[^"\']*\.(?:png|jpg|jpeg|gif))';
     this.register$ = this._auth.registerStatus.subscribe(response => {
       if (response) {
         if (response.success) {
@@ -60,7 +62,8 @@ export class RegisterComponent implements OnInit {
         validators: [Validators.required, Validators.minLength(8)]
       }),
       profileImage: new FormControl(null, {
-        updateOn: 'blur'
+        updateOn: 'blur',
+        validators: [Validators.pattern(pattern)]
       })
     });
 
@@ -79,6 +82,11 @@ export class RegisterComponent implements OnInit {
     this.form.get('confirmPassword').statusChanges.subscribe(status => {
       this.confirmPasswordControlIsValid = status === 'VALID';
     });
+
+    this.form.get('profileImage').statusChanges.subscribe(status => {
+      this.isValidImage = status === 'VALID';
+    });
+
   }
 
   async onRegisterSubmit() {

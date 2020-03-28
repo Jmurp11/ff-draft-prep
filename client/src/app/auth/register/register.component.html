@@ -47,7 +47,7 @@
             <input matInput placeholder="Enter Profile Image URL (optional)" type="text" formControlName="profileImage"
               class="form-control" />
           </mat-form-field>
-          <div class="invalid-label" *ngIf="!passwordEqualConfirmPasswordIsValid">Must be JPEG or PNG file</div>
+          <div class="invalid-label" *ngIf="!isValidImage">Must be JPEG or PNG file</div>
         </div>
       </mat-card-content>
       <mat-card-actions>
