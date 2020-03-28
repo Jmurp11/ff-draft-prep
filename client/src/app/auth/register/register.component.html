@@ -41,6 +41,14 @@
           <div class="invalid-label" *ngIf="!passwordEqualConfirmPasswordIsValid">Password and Confirm Password fields
             must match</div>
         </div>
+        <div class="form-group">
+          <mat-form-field appearance="standard">
+            <mat-label>Profile Image</mat-label>
+            <input matInput placeholder="Enter Profile Image URL (optional)" type="text" formControlName="profileImage"
+              class="form-control" />
+          </mat-form-field>
+          <div class="invalid-label" *ngIf="!isValidImage">Must be JPG, JPEG, PNG, or GIF file</div>
+        </div>
       </mat-card-content>
       <mat-card-actions>
         <div class="form-group">

@@ -54,9 +54,10 @@ export class UserResolver {
         });
     }
 
+    
     @Mutation(() => Result)
     async register(
-        @Arg('input') { email, password, username }: RegisterInput
+        @Arg('input') { email, password, username, profileImage }: RegisterInput
     ): Promise<Result> {
         const creationTime = new Date().toISOString();
 
@@ -64,6 +65,7 @@ export class UserResolver {
             email,
             password,
             username,
+            profileImage,
             creationTime,
             lastLoggedIn: creationTime
         }).save();
