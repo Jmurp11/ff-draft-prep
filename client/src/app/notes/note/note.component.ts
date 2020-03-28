@@ -3,9 +3,9 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription, Observable } from 'rxjs';
 import { map, startWith, filter } from 'rxjs/operators';
-import { PlayerService } from '../../player-table/player.service';
+import { PlayerService } from '../../draft/player-table/player.service';
 import { AuthService } from '../../auth/auth.service';
-import { Player } from '../../player-table/player.model';
+import { Player } from '../../draft/player-table/player.model';
 import { NoteService } from '../note.service';
 import { Apollo } from 'apollo-angular';
 import { players } from '../queries';
@@ -60,8 +60,6 @@ export class NoteComponent implements AfterContentInit, OnDestroy {
     ];
 
     this.popPlayer$ = this._note.populatePlayer.subscribe(populate => {
-      console.log(populate);
-
       if (!populate) {
         this.isPlayerPreSet = false;
         this.currentPlayer = null;
@@ -70,7 +68,6 @@ export class NoteComponent implements AfterContentInit, OnDestroy {
 
         this.curPlayer$ = this._player.currentPlayer.subscribe(data => {
           this.currentPlayer = data;
-          console.log(this.currentPlayer);
           this.form.get('player').setValue(this.currentPlayer.player.id);
 
           switch (this.currentPlayer.player.position) {
@@ -203,7 +200,6 @@ export class NoteComponent implements AfterContentInit, OnDestroy {
   }
 
   displayFn(player: any): string {
-    console.log(this.isPlayerPreSet);
     if (!this.isPlayerPreSet) {
       if (player) {
         return `${player.name} ${player.team.team.abbreviation} - ${player.position}`;
@@ -233,12 +229,20 @@ export class NoteComponent implements AfterContentInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.authSub$.unsubscribe();
+    if (this.authSub$) {
+      this.authSub$.unsubscribe();
+    }
     if (this.isPlayerPreSet) {
       this.curPlayer$.unsubscribe();
     }
-    this.noteStatus$.unsubscribe();
-    this.popPlayer$.unsubscribe();
-    this.clearForm$.unsubscribe();
+    if (this.noteStatus$) {
+      this.noteStatus$.unsubscribe();
+    }
+    if (this.popPlayer$) {
+      this.popPlayer$.unsubscribe();
+    }
+    if (this.clearForm$) {
+      this.clearForm$.unsubscribe();
+    }
   }
 }

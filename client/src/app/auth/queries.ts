@@ -11,6 +11,7 @@ export const login = gql
           username
         }
         accessToken
+        expiresIn
       }
       errors {
           message
@@ -37,5 +38,47 @@ export const logout = gql
   `
   mutation logout($userId: String!) {
     logout(input: { userId: $userId })
+  }
+`;
+
+export const confirmUser = gql
+  `
+  mutation confirmUser($token: String!) {
+    confirmUser(token: $token) {
+      success {
+        message
+      }
+      errors {
+          message
+      }
+    }
+  }
+`;
+
+export const forgotPassword = gql
+  `
+  mutation forgotPassword($email: String!) {
+    forgotPassword(email: $email) {
+      success {
+        message
+      }
+      errors {
+          message
+      }
+    }
+  }
+`;
+
+export const changePassword = gql
+  `
+  mutation changePassword($token: String!, $password: String!) {
+    changePassword(input: { token: $token, password: $password }) {
+      success {
+        message
+      }
+      errors {
+          message
+      }
+    }
   }
 `;

@@ -74,13 +74,11 @@ export class TargetComponent implements OnInit, OnDestroy {
 
   addTarget() {
     const dialogRef = this.dialog.open(TargetDialogComponent, {
-      width: '400px',
-      height: '300px'
+      width: '500px',
+      height: '400px'
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-    });
+    dialogRef.afterClosed().subscribe(result => { });
   }
 
   deleteTarget(target: any) {

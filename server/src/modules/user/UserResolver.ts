@@ -14,10 +14,11 @@ import { ChangePasswordInput } from './inputs/ChangePasswordInput';
 import { LoginResult } from './types/LoginResult';
 import { createAccessToken, createRefreshToken } from '../../shared/auth';
 import { sendRefreshToken } from '../../shared/sendRefreshToken';
+import { getConnection } from 'typeorm';
 
 @Resolver()
 export class UserResolver {
-    @UseMiddleware(isAuth, isAdmin, logger)
+    @UseMiddleware(isAuth, logger)
     @Query(() => [User])
     async users() {
         return User.find();
@@ -156,7 +157,8 @@ export class UserResolver {
         return {
             success: {
                 user,
-                accessToken: createAccessToken(user!)
+                accessToken: createAccessToken(user!),
+                expiresIn: 3600
             }
         };
     }
@@ -246,7 +248,7 @@ export class UserResolver {
         const token = v4();
         await redis.set(`${forgotPasswordPrefix}${token}`, user.id, "ex", 60 * 60 * 24) // 1 day expiration
 
-        await sendEmail(email, `${baseUrl}user/change-password/${token}`, 'Forgot Password');
+        await sendEmail(email, `${baseUrl}auth/change-password/${token}`, 'Forgot Password');
 
         return {
             success: [
@@ -310,6 +312,17 @@ export class UserResolver {
         }
     }
 
+    @UseMiddleware(isAuth, isAdmin, logger)    
+    @Mutation(() => Boolean)
+    async revokeRefreshTokensForUser(@Arg('userId') userId: string): Promise<Boolean> {
+        await getConnection()
+            .getRepository('User')
+            .increment({
+                id: userId
+            }, 'tokenVersion', 1);
+
+        return true;
+    }
 
     @Mutation(() => Boolean)
     async logout(

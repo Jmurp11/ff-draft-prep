@@ -55,6 +55,10 @@ export class User extends BaseEntity {
     @Column("text", { nullable: true } )
     profileImage: string;
     
+    @Field()
+    @Column("int", { default: 0 })
+    tokenVersion: number;
+
     @BeforeInsert()
     async hashPassword() {
         this.password = await bcrypt.hash(this.password, 12);

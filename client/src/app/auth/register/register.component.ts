@@ -14,10 +14,10 @@ export class RegisterComponent implements OnInit {
   id: number;
   form: FormGroup;
   register$: Subscription;
-  nameControlIsValid = true;
-  emailControlIsValid = true;
-  passwordControlIsValid = true;
-  confirmPasswordControlIsValid = true;
+  nameIsValid = true;
+  emailIsValid = true;
+  passwordIsValid = true;
+  confirmPasswordIsValid = true;
   passwordEqualConfirmPasswordIsValid = true;
   isValidImage = true;
   loading = false;
@@ -68,19 +68,19 @@ export class RegisterComponent implements OnInit {
     });
 
     this.form.get('username').statusChanges.subscribe(status => {
-      this.nameControlIsValid = status === 'VALID';
+      this.nameIsValid = status === 'VALID';
     });
 
     this.form.get('email').statusChanges.subscribe(status => {
-      this.emailControlIsValid = status === 'VALID';
+      this.emailIsValid = status === 'VALID';
     });
 
     this.form.get('password').statusChanges.subscribe(status => {
-      this.passwordControlIsValid = status === 'VALID';
+      this.passwordIsValid = status === 'VALID';
     });
 
     this.form.get('confirmPassword').statusChanges.subscribe(status => {
-      this.confirmPasswordControlIsValid = status === 'VALID';
+      this.confirmPasswordIsValid = status === 'VALID';
     });
 
     this.form.get('profileImage').statusChanges.subscribe(status => {
@@ -113,8 +113,8 @@ export class RegisterComponent implements OnInit {
 
   resetForm() {
     this.form.reset();
-    this.emailControlIsValid = true;
-    this.passwordControlIsValid = true;
+    this.emailIsValid = true;
+    this.passwordIsValid = true;
     this.loading = false;
   }
 

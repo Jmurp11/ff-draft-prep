@@ -14,9 +14,10 @@ export class LoginComponent implements OnInit, OnDestroy {
   authSub$: Subscription;
   loginSub$: Subscription;
   form: FormGroup;
-  emailControlIsValid = true;
-  passwordControlIsValid = true;
-  loading = false;
+  emailIsValid: boolean;
+  passwordIsValid: boolean;
+  username: string;
+  loading: boolean;
   dismissSnackbar = 'Dismiss';
 
   constructor(
@@ -26,8 +27,12 @@ export class LoginComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
+    this.loading = false;
+    this.emailIsValid = true;
+    this.passwordIsValid = true;
     this.authSub$ = this._auth.user.subscribe(user => {
       if (user) {
+        this.username = user.username;
         this.router.navigate(['/dashboard']);
       }
     });
@@ -36,7 +41,7 @@ export class LoginComponent implements OnInit, OnDestroy {
       if (response) {
         if (response.success) {
           this.router.navigate(['dashboard']);
-          this.openSnackBar('Success! Welcome back!', this.dismissSnackbar);
+          this.openSnackBar(`Success! Welcome back ${this.username}!`, this.dismissSnackbar);
           this.resetForm();
         } else {
           this.openSnackBar(response.message, this.dismissSnackbar);
@@ -57,11 +62,11 @@ export class LoginComponent implements OnInit, OnDestroy {
     });
 
     this.form.get('email').statusChanges.subscribe(status => {
-      this.emailControlIsValid = status === 'VALID';
+      this.emailIsValid = status === 'VALID';
     });
 
     this.form.get('password').statusChanges.subscribe(status => {
-      this.passwordControlIsValid = status === 'VALID';
+      this.passwordIsValid = status === 'VALID';
     });
   }
 
@@ -82,10 +87,14 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.router.navigate(['./register']);
   }
 
+  onForgotPasswordClick() {
+    this.router.navigate(['./auth/forgot-password']);
+  }
+  
   resetForm() {
     this.form.reset();
-    this.emailControlIsValid = true;
-    this.passwordControlIsValid = true;
+    this.emailIsValid = true;
+    this.passwordIsValid = true;
     this.loading = false;
   }
 
