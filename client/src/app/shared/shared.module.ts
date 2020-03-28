@@ -6,6 +6,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { GraphQLModule } from '../graphql.module';
 import { AppMaterialModule } from '../app-material.module';
 import { RouterModule } from '@angular/router';
+import { NoteModule } from '../notes/note.module';
 
 @NgModule({
   declarations: [

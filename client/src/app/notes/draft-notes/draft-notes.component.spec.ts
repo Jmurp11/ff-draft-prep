@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { NoteCardComponent } from './note-card.component';
+import { DraftNotesComponent } from './draft-notes.component';
 
-describe('NoteCardComponent', () => {
-  let component: NoteCardComponent;
-  let fixture: ComponentFixture<NoteCardComponent>;
+describe('DraftNotesComponent', () => {
+  let component: DraftNotesComponent;
+  let fixture: ComponentFixture<DraftNotesComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ NoteCardComponent ]
+      declarations: [ DraftNotesComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(NoteCardComponent);
+    fixture = TestBed.createComponent(DraftNotesComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

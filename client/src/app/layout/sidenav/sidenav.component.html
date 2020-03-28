@@ -7,7 +7,12 @@
     </mat-list-item>
     <mat-divider></mat-divider>
     <mat-list-item>
-      <button mat-icon-button (click)="navigateTo(1)">
+      <mat-menu #draftMenu="matMenu">
+        <button mat-menu-item (click)="navigateTo(1)">Draft Prep</button>
+        <button mat-menu-item (click)="navigateTo(2)">Mock Draft Lobby</button>
+      </mat-menu>
+
+      <button mat-icon-button [matMenuTriggerFor]="draftMenu">
         <mat-icon>view_list</mat-icon> Draft
      </button>
     </mat-list-item>
