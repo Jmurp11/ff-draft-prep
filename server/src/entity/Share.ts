@@ -16,13 +16,16 @@ export class Share extends BaseEntity {
     @PrimaryGeneratedColumn('uuid')
     id!: string;
 
-    @ManyToOne(() => User)
+    @ManyToOne(() => User, user => user.shares, {
+        eager: true,
+        onDelete: 'CASCADE'
+    })
     @JoinColumn({ name: 'user' })
     @Field(() => User)
     @Column("uuid")
     user!: string;
 
-    @ManyToOne(() => Note, {
+    @ManyToOne(() => Note, note => note.shares, {
         eager: true,
         onDelete: 'CASCADE'
     })

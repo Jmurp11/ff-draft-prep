@@ -4,9 +4,10 @@ import {
     BaseEntity,
     JoinColumn,
     PrimaryGeneratedColumn,
-    ManyToOne
+    ManyToOne,
+    OneToMany
 } from "typeorm";
-import { Player, User } from './index';
+import { Like, Player, Share, User } from './index';
 import { ObjectType, Field } from "type-graphql";
 
 @Entity("notes")
@@ -47,6 +48,14 @@ export class Note extends BaseEntity {
     @Field()
     @Column("boolean", { default: false })
     isPrivate!: boolean;
+
+    @Field(() => [Like], { nullable: true })
+    @OneToMany(() => Like, like => like.note)
+    likes: Like[];
+
+    @Field(() => [Share], { nullable: true })
+    @OneToMany(() => Share, share => share.note)
+    shares: Share[];
 
     @Field(() => Date)
     @Column("timestamp")

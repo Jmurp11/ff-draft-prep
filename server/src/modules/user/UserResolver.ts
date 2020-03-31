@@ -21,13 +21,16 @@ export class UserResolver {
     @UseMiddleware(isAuth, logger)
     @Query(() => [User])
     async users() {
-        return User.find();
+        return User.find({
+            relations: ['likes', 'notes', 'notes.likes', 'notes.shares', 'shares']
+        });
     }
 
     @UseMiddleware(isAuth, logger)
     @Query(() => User)
     async user(@Arg('id') id: string) {
         return User.findOne({
+            relations: ['likes', 'notes', 'notes.likes', 'notes.shares', 'shares'],
             where: {
                 id
             }
@@ -38,6 +41,7 @@ export class UserResolver {
     @Query(() => User)
     async userByUsername(@Arg('username') username: string) {
         return User.findOne({
+            relations: ['likes', 'notes', 'notes.likes', 'notes.shares', 'shares'],
             where: {
                 username
             }
@@ -48,6 +52,7 @@ export class UserResolver {
     @Query(() => User)
     async userByEmail(@Arg('email') email: string) {
         return User.findOne({
+            relations: ['likes', 'notes', 'notes.likes', 'notes.shares', 'shares'],
             where: {
                 email
             }

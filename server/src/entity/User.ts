@@ -4,9 +4,11 @@ import {
     Column,
     PrimaryGeneratedColumn,
     BaseEntity,
-    BeforeInsert
+    BeforeInsert,
+    OneToMany
 } from "typeorm";
 import { ObjectType, Field } from 'type-graphql';
+import { Like, Note, Share } from '.';
 
 @Entity("users")
 @ObjectType()
@@ -58,6 +60,18 @@ export class User extends BaseEntity {
     @Field()
     @Column("int", { default: 0 })
     tokenVersion: number;
+
+    @Field(() => [Note], { nullable: true })
+    @OneToMany(() => Note, note => note.user)
+    notes: Note[];
+
+    @Field(() => [Like], { nullable: true })
+    @OneToMany(() => Like, like => like.user)
+    likes: Like[];
+
+    @Field(() => [Share], { nullable: true })
+    @OneToMany(() => Share, share => share.user)
+    shares: Share[];
 
     @BeforeInsert()
     async hashPassword() {

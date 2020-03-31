@@ -16,7 +16,7 @@ export class Like extends BaseEntity {
     @PrimaryGeneratedColumn('uuid')
     id!: string;
 
-    @ManyToOne(() => User, {
+    @ManyToOne(() => User, user => user.likes, {
         eager: true,
         onDelete: 'CASCADE'
     })
@@ -25,7 +25,7 @@ export class Like extends BaseEntity {
     @Column("uuid")
     user!: string;
 
-    @ManyToOne(() => Note, {
+    @ManyToOne(() => Note, note => note.likes, {
         eager: true,
         onDelete: 'CASCADE'
     })

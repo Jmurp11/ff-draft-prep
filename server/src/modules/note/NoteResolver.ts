@@ -12,7 +12,7 @@ export class NoteResolver {
     async notes() {
         return getRepository(Note)
             .find({
-                relations: ['user', 'player'],
+                relations: ['user', 'player', 'likes', 'shares'],
                 order: {
                     creationTime: 'DESC'
                 }
@@ -24,7 +24,7 @@ export class NoteResolver {
     async note(@Arg('id') id: string) {
         return getRepository(Note)
             .findOne({
-                relations: ['user', 'player'],
+                relations: ['user', 'player', 'likes', 'shares'],
                 where: { id },
                 order: {
                     creationTime: 'DESC'
@@ -37,7 +37,7 @@ export class NoteResolver {
     async publicNotes() {
         return getRepository(Note)
             .find({
-                relations: ['user', 'player'],
+                relations: ['user', 'player', 'likes', 'shares'],
                 where: {
                     isPrivate: false
                 },
@@ -53,7 +53,7 @@ export class NoteResolver {
     async userNotes(@Arg('user') user: string) {
         return getRepository(Note)
             .find({
-                relations: ['user', 'player'],
+                relations: ['user', 'player', 'likes', 'shares'],
                 where: {
                     user
                 },
