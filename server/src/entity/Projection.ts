@@ -5,11 +5,11 @@ import {
     JoinColumn,
     PrimaryGeneratedColumn,
     ManyToOne
-} from "typeorm";
-import { Player } from "./index";
-import { ObjectType, Field } from "type-graphql";
+} from 'typeorm';
+import { Player } from './index';
+import { ObjectType, Field } from 'type-graphql';
 
-@Entity("projections")
+@Entity('projections')
 @ObjectType()
 export class Projection extends BaseEntity {
     @Field()
@@ -19,58 +19,58 @@ export class Projection extends BaseEntity {
     @ManyToOne(() => Player)
     @JoinColumn({ name: 'player' })
     @Field(() => Player)
-    @Column("text")
-    player!: number;
+    @Column('text')
+    player!: string;
 
     @Field()
-    @Column("float")
+    @Column('float')
     completions!: number;
 
     @Field()
-    @Column("float")
+    @Column('float')
     attempts!: number;
 
     @Field()
-    @Column("float")
+    @Column('float')
     passYards!: number;
 
     @Field()
-    @Column("float")
+    @Column('float')
     passTd!: number;
 
     @Field()
-    @Column("float")
+    @Column('float')
     interception!: number;
 
     @Field()
-    @Column("float")
+    @Column('float')
     carries!: number;
 
     @Field()
-    @Column("float")
+    @Column('float')
     rushYards!: number;
 
     @Field()
-    @Column("float")
+    @Column('float')
     rushTd!: number;
 
     @Field()
-    @Column("float")
+    @Column('float')
     fumbles!: number;
 
     @Field()
-    @Column("float")
+    @Column('float')
     receptions!: number;
 
     @Field()
-    @Column("float")
+    @Column('float')
     receivingYards!: number;
 
     @Field()
-    @Column("float")
+    @Column('float')
     receivingTd!: number;
 
     @Field()
-    @Column("float")
+    @Column('float')
     fantasyPoints!: number;
 }

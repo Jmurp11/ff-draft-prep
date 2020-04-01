@@ -5,32 +5,26 @@ import {
     JoinColumn,
     PrimaryGeneratedColumn,
     ManyToOne
-} from "typeorm";
+} from 'typeorm';
 import { Note, User } from './index';
-import { ObjectType, Field } from "type-graphql";
+import { ObjectType, Field } from 'type-graphql';
 
-@Entity("likes")
+@Entity('likes')
 @ObjectType()
 export class Like extends BaseEntity {
     @Field()
     @PrimaryGeneratedColumn('uuid')
     id!: string;
 
-    @ManyToOne(() => User, user => user.likes, {
-        eager: true,
-        onDelete: 'CASCADE'
-    })
+    @ManyToOne(() => User, user => user.likes)
     @JoinColumn({ name: 'user' })
     @Field(() => User)
-    @Column("uuid")
+    @Column('uuid')
     user!: string;
 
-    @ManyToOne(() => Note, note => note.likes, {
-        eager: true,
-        onDelete: 'CASCADE'
-    })
+    @ManyToOne(() => Note, note => note.likes)
     @JoinColumn({ name: 'note' })
     @Field(() => Note)
-    @Column("uuid")
+    @Column('uuid')
     note!: string;
 }

@@ -5,23 +5,21 @@ import {
     BaseEntity,
     JoinColumn,
     ManyToOne
-} from "typeorm";
-import { ObjectType, Field } from "type-graphql";
-import { Player, User } from "./";
+} from 'typeorm';
+import { ObjectType, Field } from 'type-graphql';
+import { Player, User } from './';
 
-@Entity("targets")
+@Entity('targets')
 @ObjectType()
 export class Target extends BaseEntity {
     @Field()
     @PrimaryGeneratedColumn('uuid')
     id!: string;
 
-    @ManyToOne(() => User, {
-        eager: true
-    })
+    @ManyToOne(() => User)
     @JoinColumn({ name: 'user' })
     @Field(() => User)
-    @Column("text")
+    @Column('text')
     user!: string;
 
     @ManyToOne(() => Player, {

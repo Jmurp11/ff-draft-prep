@@ -22,7 +22,7 @@ export class UserResolver {
     @Query(() => [User])
     async users() {
         return User.find({
-            relations: ['likes', 'notes', 'notes.likes', 'notes.shares', 'shares']
+            relations: ['likes', 'notes', 'notes.likes', 'notes.shares', 'shares', 'targets', 'ranks']
         });
     }
 
@@ -30,7 +30,7 @@ export class UserResolver {
     @Query(() => User)
     async user(@Arg('id') id: string) {
         return User.findOne({
-            relations: ['likes', 'notes', 'notes.likes', 'notes.shares', 'shares'],
+            relations: ['likes', 'notes', 'notes.likes', 'notes.shares', 'shares', 'targets', 'ranks'],
             where: {
                 id
             }
@@ -41,7 +41,7 @@ export class UserResolver {
     @Query(() => User)
     async userByUsername(@Arg('username') username: string) {
         return User.findOne({
-            relations: ['likes', 'notes', 'notes.likes', 'notes.shares', 'shares'],
+            relations: ['likes', 'notes', 'notes.likes', 'notes.shares', 'shares', 'targets', 'ranks'],
             where: {
                 username
             }
@@ -52,7 +52,7 @@ export class UserResolver {
     @Query(() => User)
     async userByEmail(@Arg('email') email: string) {
         return User.findOne({
-            relations: ['likes', 'notes', 'notes.likes', 'notes.shares', 'shares'],
+            relations: ['likes', 'notes', 'notes.likes', 'notes.shares', 'shares', 'targets', 'ranks'],
             where: {
                 email
             }

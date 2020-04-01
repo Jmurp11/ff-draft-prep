@@ -8,6 +8,7 @@ export class TeamResolver {
     @Query(() => [Team])
     async teams() {
         return Team.find({
+            relations: ['stats'],
             order: {
                 abbreviation: 'ASC'
             }
@@ -17,6 +18,7 @@ export class TeamResolver {
     @Query(() => Team)
     async team(@Arg('id') id: string) {
         return Team.findOne({
+            relations: ['stats'],
             where: {
                 id
             }
@@ -35,6 +37,7 @@ export class TeamResolver {
     @Mutation(() => Result)
     async createTeam(
         @Arg('input') {
+            id,
             city,
             nickname,
             abbreviation,
@@ -43,6 +46,7 @@ export class TeamResolver {
     ): Promise<Result> {
 
         await Team.create({
+            id,
             city,
             nickname,
             abbreviation,

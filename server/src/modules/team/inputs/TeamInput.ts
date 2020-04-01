@@ -3,6 +3,9 @@ import { TeamExists } from '../validators/teamExists';
 
 @InputType()
 export class TeamInput {
+    @Field() 
+    id: number;
+    
     @Field()
     city: string;
 

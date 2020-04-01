@@ -3,8 +3,7 @@ import { getRepository } from "typeorm";
 import {
     Player,
     Projection,
-    Team,
-    TeamStats
+    Team
 } from '../../entity';
 import { Result } from '../../shared';
 import { ProjectionInput } from './inputs/ProjectionInput';
@@ -39,33 +38,23 @@ export class ProjectionResolver {
     ): Promise<Result> {
         const teamResult = await Team.findOne({ where: { abbreviation: team } });
 
-        const teamStatsResult = await TeamStats.findOne({
-            where: { id: teamResult!.id }
+        const teamId = teamResult!.id;
+
+        const player = await getRepository(Player)
+        .findOne({
+            relations: ['team'],
+            where: [
+                {
+                    firstName,
+                    lastName,
+                    team: teamId
+                }
+            ]
         });
 
-        const teamId = teamStatsResult!.id;
-
-        const players = await getRepository(Player)
-            .find({
-                relations: ['team'],
-                where: [
-                    {
-                        team: teamId
-                    }
-                ]
-            });
-
-        let id = 0;
-
-        players.forEach(el => {
-            if (el.firstName === firstName && el.lastName === lastName) {
-                id = el.id;
-            }
-        });
-
-        if (id !== 0) {
+        if (player) {
             await Projection.create({
-                player: id,
+                player: player.id,
                 completions,
                 attempts,
                 passTd,

@@ -5,32 +5,26 @@ import {
     JoinColumn,
     PrimaryGeneratedColumn,
     ManyToOne
-} from "typeorm";
+} from 'typeorm';
 import { Note, User } from './index';
-import { ObjectType, Field } from "type-graphql";
+import { ObjectType, Field } from 'type-graphql';
 
-@Entity("shares")
+@Entity('shares')
 @ObjectType()
 export class Share extends BaseEntity {
     @Field()
     @PrimaryGeneratedColumn('uuid')
     id!: string;
 
-    @ManyToOne(() => User, user => user.shares, {
-        eager: true,
-        onDelete: 'CASCADE'
-    })
+    @ManyToOne(() => User, user => user.shares)
     @JoinColumn({ name: 'user' })
     @Field(() => User)
-    @Column("uuid")
+    @Column('uuid')
     user!: string;
 
-    @ManyToOne(() => Note, note => note.shares, {
-        eager: true,
-        onDelete: 'CASCADE'
-    })
+    @ManyToOne(() => Note, note => note.shares)
     @JoinColumn({ name: 'note' })
     @Field(() => Note)
-    @Column("uuid")
+    @Column('uuid')
     note!: string;
 }

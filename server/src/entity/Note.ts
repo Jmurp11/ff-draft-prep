@@ -6,23 +6,21 @@ import {
     PrimaryGeneratedColumn,
     ManyToOne,
     OneToMany
-} from "typeorm";
+} from 'typeorm';
 import { Like, Player, Share, User } from './index';
-import { ObjectType, Field } from "type-graphql";
+import { ObjectType, Field } from 'type-graphql';
 
-@Entity("notes")
+@Entity('notes')
 @ObjectType()
 export class Note extends BaseEntity {
     @Field()
     @PrimaryGeneratedColumn('uuid')
     id!: string;
 
-    @ManyToOne(() => User, {
-        eager: true
-    })
+    @ManyToOne(() => User)
     @JoinColumn({ name: 'user' })
     @Field(() => User)
-    @Column("uuid")
+    @Column('uuid')
     user!: string;
 
     @ManyToOne(() => Player, {
@@ -30,23 +28,23 @@ export class Note extends BaseEntity {
     })
     @JoinColumn({ name: 'player' })
     @Field(() => Player)
-    @Column("text")
+    @Column('text')
     player!: number;
 
     @Field()
-    @Column("text")
+    @Column('text')
     title!: string;
 
     @Field()
-    @Column("text")
+    @Column('text')
     body!: string;
 
     @Field()
-    @Column("text")
+    @Column('text')
     source!: string;
 
     @Field()
-    @Column("boolean", { default: false })
+    @Column('boolean', { default: false })
     isPrivate!: boolean;
 
     @Field(() => [Like], { nullable: true })
@@ -58,6 +56,6 @@ export class Note extends BaseEntity {
     shares: Share[];
 
     @Field(() => Date)
-    @Column("timestamp")
+    @Column('timestamp')
     creationTime!: string;
 }
