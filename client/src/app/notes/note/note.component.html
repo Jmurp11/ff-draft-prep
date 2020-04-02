@@ -6,10 +6,10 @@
     <mat-card class="note-card" *ngIf="!loading">
       <mat-card-header>
         <div mat-card-avatar class="note-header-image" [ngStyle]="{ 'background-color': backgroundColor}"></div>
-        <mat-card-title *ngIf="isPlayerPreSet">{{ currentPlayer.player.name  }}
+        <mat-card-title *ngIf="isPlayerPreSet">{{ currentPlayer.name  }}
         </mat-card-title>
-        <mat-card-subtitle *ngIf="isPlayerPreSet">{{ currentPlayer.player.team.team.abbreviation }} -
-          {{currentPlayer.player.position }}
+        <mat-card-subtitle *ngIf="isPlayerPreSet">{{ currentPlayer.team.abbreviation }} -
+          {{currentPlayer.position }}
         </mat-card-subtitle>
       </mat-card-header>
       <mat-card-content>
@@ -24,7 +24,7 @@
 
         <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
           <mat-option *ngFor="let player of filteredOptions | async" [value]="player">
-            {{ player.name }} {{ player.team.team.abbreviation }} - {{ player.position }}
+            {{ player.name }} {{ player.team.abbreviation }} - {{ player.position }}
           </mat-option>
         </mat-autocomplete>
 

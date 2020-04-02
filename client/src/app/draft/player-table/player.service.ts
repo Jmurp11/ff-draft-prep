@@ -13,5 +13,4 @@ export class PlayerService {
   updateCurrentPlayer(player: Player) {
     this.currentPlayer.next(player);
   }
-
 }

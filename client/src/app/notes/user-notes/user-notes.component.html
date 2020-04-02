@@ -10,7 +10,7 @@
           <mat-card-subtitle>{{ note.user.username }} - {{ note.creationTime | date: "MMM dd, yyyy hh:mm " }}
           </mat-card-subtitle>
           <mat-card-subtitle>{{ note.player.firstName}} {{ note.player.lastName }}
-            {{ note.player.team.team.abbreviation }} - {{ note.player.position }}</mat-card-subtitle>
+            {{ note.player.team.abbreviation }} - {{ note.player.position }}</mat-card-subtitle>
         </mat-card-header>
         <mat-card-content>
           <div class='card-content'>{{ note.body }}</div>

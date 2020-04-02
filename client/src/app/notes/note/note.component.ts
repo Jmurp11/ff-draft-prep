@@ -68,9 +68,9 @@ export class NoteComponent implements AfterContentInit, OnDestroy {
 
         this.curPlayer$ = this._player.currentPlayer.subscribe(data => {
           this.currentPlayer = data;
-          this.form.get('player').setValue(this.currentPlayer.player.id);
+          this.form.get('player').setValue(this.currentPlayer.id);
 
-          switch (this.currentPlayer.player.position) {
+          switch (this.currentPlayer.position) {
             case 'QB':
               this.backgroundColor = 'lightskyblue';
               break;
@@ -173,7 +173,7 @@ export class NoteComponent implements AfterContentInit, OnDestroy {
     let isPrivate = this.form.get('isPrivate').value;
 
     if (this.isPlayerPreSet) {
-      player = this.currentPlayer.player.id;
+      player = this.currentPlayer.id;
     } else {
       const ph = this.form.get('player').value;
       player = ph.id;
@@ -202,11 +202,11 @@ export class NoteComponent implements AfterContentInit, OnDestroy {
   displayFn(player: any): string {
     if (!this.isPlayerPreSet) {
       if (player) {
-        return `${player.name} ${player.team.team.abbreviation} - ${player.position}`;
+        return `${player.name} ${player.team.abbreviation} - ${player.position}`;
       }
     } else {
-      return `${this.currentPlayer.player.name}
-        ${this.currentPlayer.player.team.team.abbreviation} - ${this.currentPlayer.player.position}`;
+      return `${this.currentPlayer.name}
+        ${this.currentPlayer.team.abbreviation} - ${this.currentPlayer.position}`;
     }
   }
 

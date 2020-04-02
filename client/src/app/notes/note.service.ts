@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
-import { createNote, userNotes, publicNotes, deleteNote, addLike, createShare, likedNotes } from './queries';
+import { createNote, userNotes, notes, deleteNote, addLike, createShare, likedNotes } from './queries';
 import { BehaviorSubject } from 'rxjs';
-import { AuthService } from '../auth/auth.service';
 
 export interface NoteResponse {
   success: boolean;
@@ -40,13 +39,13 @@ export class NoteService {
       },
       refetchQueries: [
         {
-          query: userNotes,
+          query: user,
           variables: {
             user
           }
         },
         {
-          query: publicNotes
+          query: notes
         }
       ]
     }).subscribe(({ data }) => {
@@ -82,7 +81,7 @@ export class NoteService {
           }
         },
         {
-          query: publicNotes
+          query: notes
         }
       ]
     }).subscribe(({ data }) => {

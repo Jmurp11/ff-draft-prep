@@ -1,6 +1,7 @@
 export interface Note {
   id: string;
   user: {
+    id: string;
     username: string;
     profileImage: string;
   };
@@ -10,10 +11,9 @@ export interface Note {
     lastName: string;
     name: string;
     team: {
-      team: {
-        abbreviation: string;
-      }
-    }
+      abbreviation: string;
+
+    };
     position: string;
   };
   title: string;

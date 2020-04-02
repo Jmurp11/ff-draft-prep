@@ -110,36 +110,12 @@ export const notes = gql
         title
         body
         source
-        isPrivate
-        creationTime
-      }
-    }
-  `;
-
-export const publicNotes = gql
-  `
-    query {
-      publicNotes {
-        id
-        user {
+        likes {
           username
-          profileImage
         }
-        player {
-          id
-          firstName
-          lastName
-          name
-          team {
-            team {
-              abbreviation
-            }
-          }
-          position
+        shares {
+          username
         }
-        title
-        body
-        source
         isPrivate
         creationTime
       }

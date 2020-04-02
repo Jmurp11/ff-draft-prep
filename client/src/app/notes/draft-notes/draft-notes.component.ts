@@ -60,12 +60,12 @@ export class DraftNotesComponent implements AfterContentInit, OnDestroy {
           this.currentPlayer = data;
           this.playerNotes = [];
           this.notes.forEach(note => {
-            if (note.player.id === this.currentPlayer.player.id) {
+            if (note.player.id === this.currentPlayer.id) {
               this.playerNotes.push(note);
             }
           });
 
-          switch (this.currentPlayer.player.position) {
+          switch (this.currentPlayer.position) {
             case 'QB':
               this.backgroundColor = 'lightskyblue';
               break;

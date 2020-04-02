@@ -5,10 +5,11 @@ import { MatTableDataSource } from '@angular/material/table';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Subscription } from 'rxjs';
 import { Apollo } from 'apollo-angular';
-import { projections } from './queries';
+import { players } from './queries';
 import { Player } from './player.model';
 import { PlayerService } from './player.service';
 import { NoteService } from '../../notes/note.service';
+import { AuthService } from 'src/app/auth/auth.service';
 
 @Component({
   selector: 'app-player-table',
@@ -25,9 +26,11 @@ import { NoteService } from '../../notes/note.service';
 
 export class PlayerTableComponent implements OnInit, OnDestroy {
   dataSource: MatTableDataSource<Player>;
+  currentUser: string;
   players: Player[];
   loading: boolean;
   query$: Subscription;
+  auth$: Subscription;
   lastSelectedPlayer: Player;
   selectedPlayers: Player[];
   isDraft: boolean;
@@ -45,6 +48,7 @@ export class PlayerTableComponent implements OnInit, OnDestroy {
 
   constructor(
     private apollo: Apollo,
+    private _auth: AuthService,
     private _note: NoteService,
     private _player: PlayerService
   ) { }
@@ -54,13 +58,21 @@ export class PlayerTableComponent implements OnInit, OnDestroy {
     this.players = [];
     this.selectedPlayers = [];
 
+    this.auth$ = this._auth.user.subscribe(user => {
+      this.currentUser = user.id;
+    });
+
     this.query$ = this.apollo.watchQuery<any>({
-      query: projections
+      query: players,
+      variables: {
+        user: this.currentUser
+      }
+
     })
       .valueChanges
       .subscribe(({ data, loading }) => {
         this.loading = loading;
-        data.projections.forEach((el: any) => {
+        data.players.forEach((el: any) => {
           el.selected = false;
           this.players.push(el);
         });
@@ -74,8 +86,8 @@ export class PlayerTableComponent implements OnInit, OnDestroy {
             if (
               key === 'player' &&
               (
-                filteredData.player.firstName.toLowerCase().includes(transformedFilter)
-                || filteredData.player.lastName.toLowerCase().includes(transformedFilter)
+                filteredData.firstName.toLowerCase().includes(transformedFilter)
+                || filteredData.lastName.toLowerCase().includes(transformedFilter)
               )
             ) {
               valid = true;
@@ -144,6 +156,9 @@ export class PlayerTableComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     if (this.query$) {
       this.query$.unsubscribe();
+    }
+    if (this.auth$) {
+      this.auth$.unsubscribe();
     }
   }
 }

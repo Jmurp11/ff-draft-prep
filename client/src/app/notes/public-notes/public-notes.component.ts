@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { publicNotes } from '../queries';
+import { notes } from '../queries';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from '../../auth/auth.service';
 import { Apollo } from 'apollo-angular';
@@ -39,12 +39,12 @@ export class PublicNotesComponent implements OnInit, OnDestroy {
     });
 
     this.query$ = this.apollo.watchQuery<any>({
-      query: publicNotes
+      query: notes
     })
       .valueChanges
       .subscribe(({ data, loading }) => {
         this.loading = loading;
-        this.notes = data.publicNotes;
+        this.notes = data.notes;
       });
 
     this.like$ = this._note.likeStatus.subscribe(response => {

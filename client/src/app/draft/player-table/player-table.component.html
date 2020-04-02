@@ -45,103 +45,103 @@
 
       <ng-container matColumnDef="player.rank">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Rank </th>
-        <td mat-cell *matCellDef="let player"> {{player.player.rank}} </td>
+        <td mat-cell *matCellDef="let player"> {{player.defaultRank.rank}} </td>
       </ng-container>
 
       <ng-container matColumnDef="player.adp">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> ADP </th>
-        <td mat-cell *matCellDef="let player"> {{player.player.adp}} </td>
+        <td mat-cell *matCellDef="let player"> {{player.defaultRank.adp}} </td>
       </ng-container>
 
       <ng-container matColumnDef="player.lastName">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
-        <td mat-cell *matCellDef="let player" class="bold-font"> {{ player.player.initialName }}
+        <td mat-cell *matCellDef="let player" class="bold-font"> {{ player.initialName }}
         </td>
       </ng-container>
 
       <ng-container matColumnDef="player.position">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> POS </th>
-        <td mat-cell *matCellDef="let player"> {{player.player.position}} </td>
+        <td mat-cell *matCellDef="let player"> {{player.position}} </td>
       </ng-container>
 
       <ng-container matColumnDef="player.team.abbreviation">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Team </th>
-        <td mat-cell *matCellDef="let player"> {{player.player.team.team.abbreviation}} </td>
+        <td mat-cell *matCellDef="let player"> {{player.team.abbreviation}} </td>
       </ng-container>
 
       <ng-container matColumnDef="player.tier">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Tier </th>
-        <td mat-cell *matCellDef="let player" class="bold-font"> {{player.player.tier}} </td>
+        <td mat-cell *matCellDef="let player" class="bold-font"> {{player.defaultRank.tier}} </td>
       </ng-container>
 
       <ng-container matColumnDef="player.team.bye">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Bye </th>
-        <td mat-cell *matCellDef="let player"> {{player.player.team.bye}} </td>
+        <td mat-cell *matCellDef="let player"> {{player.team.stats.bye}} </td>
       </ng-container>
 
       <ng-container matColumnDef="completions">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> CMP </th>
-        <td mat-cell *matCellDef="let player"> {{player.completions}} </td>
+        <td mat-cell *matCellDef="let player"> {{player.projection.completions}} </td>
       </ng-container>
 
       <ng-container matColumnDef="attempts">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> ATT </th>
-        <td mat-cell *matCellDef="let player"> {{player.attempts}} </td>
+        <td mat-cell *matCellDef="let player"> {{player.projection.attempts}} </td>
       </ng-container>
 
       <ng-container matColumnDef="passYards">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Pass YDS </th>
-        <td mat-cell *matCellDef="let player"> {{player.passYards}} </td>
+        <td mat-cell *matCellDef="let player"> {{player.projection.passYards}} </td>
       </ng-container>
 
       <ng-container matColumnDef="passTd">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Pass TD </th>
-        <td mat-cell *matCellDef="let player"> {{player.passTd}} </td>
+        <td mat-cell *matCellDef="let player"> {{player.projection.passTd}} </td>
       </ng-container>
 
       <ng-container matColumnDef="interception">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> INT </th>
-        <td mat-cell *matCellDef="let player"> {{player.interception}} </td>
+        <td mat-cell *matCellDef="let player"> {{player.projection.interception}} </td>
       </ng-container>
 
       <ng-container matColumnDef="carries">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> CAR </th>
-        <td mat-cell *matCellDef="let player"> {{player.carries}} </td>
+        <td mat-cell *matCellDef="let player"> {{player.projection.carries}} </td>
       </ng-container>
 
       <ng-container matColumnDef="rushYards">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Rush YDS </th>
-        <td mat-cell *matCellDef="let player"> {{player.rushYards}} </td>
+        <td mat-cell *matCellDef="let player"> {{player.projection.rushYards}} </td>
       </ng-container>
 
       <ng-container matColumnDef="rushTd">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Rush TD </th>
-        <td mat-cell *matCellDef="let player"> {{player.rushTd}} </td>
+        <td mat-cell *matCellDef="let player"> {{player.projection.rushTd}} </td>
       </ng-container>
 
       <ng-container matColumnDef="fumbles">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> FUM </th>
-        <td mat-cell *matCellDef="let player"> {{player.fumbles}} </td>
+        <td mat-cell *matCellDef="let player"> {{player.projection.fumbles}} </td>
       </ng-container>
 
       <ng-container matColumnDef="receptions">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> REC </th>
-        <td mat-cell *matCellDef="let player"> {{player.receptions}} </td>
+        <td mat-cell *matCellDef="let player"> {{player.projection.receptions}} </td>
       </ng-container>
 
       <ng-container matColumnDef="receivingYards">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> REC YDS </th>
-        <td mat-cell *matCellDef="let player"> {{player.receivingYards}} </td>
+        <td mat-cell *matCellDef="let player"> {{player.projection.receivingYards}} </td>
       </ng-container>
 
       <ng-container matColumnDef="receivingTd">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> REC TD </th>
-        <td mat-cell *matCellDef="let player"> {{player.receivingTd}} </td>
+        <td mat-cell *matCellDef="let player"> {{player.projection.receivingTd}} </td>
       </ng-container>
 
       <ng-container matColumnDef="fantasyPoints">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Fantasy PTS </th>
-        <td mat-cell *matCellDef="let player" class="bold-font"> {{player.fantasyPoints}} </td>
+        <td mat-cell *matCellDef="let player" class="bold-font"> {{player.projection.fantasyPoints}} </td>
       </ng-container>
 
       <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
@@ -152,73 +152,73 @@
               <span class="team-info-col team-logo">
                 <div>
                   <div class="team-info-offense-rank" [ngClass]="{
-                      'green-text': player.player.team.rank <= 12,
-                      'orange-text': player.player.team.rank > 12 && player.player.team.rank <= 20,
-                      'red-text': player.player.team.rank > 20
+                      'green-text': player.team.stats.rank <= 12,
+                      'orange-text': player.team.stats.rank > 12 && player.team.stats.rank <= 20,
+                      'red-text': player.team.stats.rank > 20
                     }">
-                    <span class="label">Offense Rank: </span>{{player.player.team.rank}}</div>
+                    <span class="label">Offense Rank: </span>{{player.team.stats.rank}}</div>
                 </div>
                 <div>
-                  <img [src]=player.player.team.team.imageUrl>
+                  <img [src]=player.team.imageUrl>
                 </div>
               </span>
               <span class="team-info-col">
-                <div class="team-info"><span class="label">Total Points: </span>{{player.player.team.pointsFor}}</div>
-                <div class="team-info"><span class="label">Total Yards: </span>{{player.player.team.yards}}</div>
-                <div class="team-info"><span class="label">Yards Per Play: </span>{{player.player.team.yardsPerPlay}}
+                <div class="team-info"><span class="label">Total Points: </span>{{player.team.stats.pointsFor}}</div>
+                <div class="team-info"><span class="label">Total Yards: </span>{{player.team.stats.yards}}</div>
+                <div class="team-info"><span class="label">Yards Per Play: </span>{{player.team.stats.yardsPerPlay}}
                 </div>
                 <div class="team-info" [ngClass]="{
-                    'green-text': player.player.team.offensiveLineRank <= 12,
-                    'orange-text': player.player.team.offensiveLineRank > 12 && player.player.team.offensiveLineRank <= 20,
-                    'red-text': player.player.team.offensiveLineRank > 20
+                    'green-text': player.team.stats.offensiveLineRank <= 12,
+                    'orange-text': player.team.stats.offensiveLineRank > 12 && player.team.stats.offensiveLineRank <= 20,
+                    'red-text': player.team.stats.offensiveLineRank > 20
                   }">
                   <span class="label">Offensive Line Rank:
-                  </span>{{player.player.team.offensiveLineRank}}</div>
+                  </span>{{player.team.stats.offensiveLineRank}}</div>
                 <div class="team-info"><span class="label">Score Percentage:
-                  </span>{{player.player.team.scorePercentage}}
+                  </span>{{player.team.stats.scorePercentage}}
                 </div>
                 <div class="team-info"><span class="label">Turnover Percentage:
-                  </span>{{player.player.team.turnoverPercentage}}</div>
+                  </span>{{player.team.stats.turnoverPercentage}}</div>
               </span>
               <span class="team-info-col">
                 <div class="team-info" [ngClass]="{
-                    'green-text': player.player.team.passRank <= 12,
-                    'orange-text': player.player.team.passRank > 12 && player.player.team.passRank <= 20,
-                    'red-text': player.player.team.passRank > 20
+                    'green-text': player.team.stats.passRank <= 12,
+                    'orange-text': player.team.stats.passRank > 12 && player.team.stats.passRank <= 20,
+                    'red-text': player.team.stats.passRank > 20
                   }">
-                  <span class="label">Pass Rank: </span>{{player.player.team.passRank}}</div>
+                  <span class="label">Pass Rank: </span>{{player.team.stats.passRank}}</div>
                 <div class="team-info"><span class="label">Team Pass Attempts:
-                  </span>{{player.player.team.passAttempts}}
+                  </span>{{player.team.stats.passAttempts}}
                 </div>
                 <div class="team-info"><span class="label">Team Pass Completions:
-                  </span>{{player.player.team.passCompletions}}</div>
-                <div class="team-info"><span class="label">Team Pass Yards: </span>{{player.player.team.passYards}}
+                  </span>{{player.team.stats.passCompletions}}</div>
+                <div class="team-info"><span class="label">Team Pass Yards: </span>{{player.team.stats.passYards}}
                 </div>
-                <div class="team-info"><span class="label">Team Pass TD: </span>{{player.player.team.passTd}}</div>
+                <div class="team-info"><span class="label">Team Pass TD: </span>{{player.team.stats.passTd}}</div>
                 <div class="team-info"><span class="label">Net Yards Per Pass:
-                  </span>{{player.player.team.netYardsPerPass}}
+                  </span>{{player.team.stats.netYardsPerPass}}
                 </div>
               </span>
               <span class="team-info-col">
                 <div class="team-info" [ngClass]="{
-                    'green-text': player.player.team.rushRank <= 12,
-                    'orange-text': player.player.team.rushRank > 12 && player.player.team.rushRank <= 20,
-                    'red-text': player.player.team.rushRank > 20
+                    'green-text': player.team.stats.rushRank <= 12,
+                    'orange-text': player.team.stats.rushRank > 12 && player.team.stats.rushRank <= 20,
+                    'red-text': player.team.stats.rushRank > 20
                   }">
-                  <span class="label">Rush Rank: </span>{{player.player.team.rushRank}}</div>
+                  <span class="label">Rush Rank: </span>{{player.team.stats.rushRank}}</div>
                 <div class="team-info" [ngClass]="{
-                    'green-text': player.player.team.runningBackSoS <= 12,
-                    'orange-text': player.player.team.runningBackSoS > 12 && player.player.team.runningBackSoS <= 20,
-                    'red-text': player.player.team.runningBackSoS > 20
+                    'green-text': player.team.stats.runningBackSoS <= 12,
+                    'orange-text': player.team.stats.runningBackSoS > 12 && player.team.stats.runningBackSoS <= 20,
+                    'red-text': player.team.stats.runningBackSoS > 20
                   }">
-                  <span class="label">Running Back SoS: </span>{{player.player.team.runningBackSoS}}
+                  <span class="label">Running Back SoS: </span>{{player.team.stats.runningBackSoS}}
                 </div>
-                <div class="team-info"><span class="label">Team Rush Attempts: </span>{{player.player.team.rushAttempt}}
+                <div class="team-info"><span class="label">Team Rush Attempts: </span>{{player.team.stats.rushAttempt}}
                 </div>
-                <div class="team-info"><span class="label">Team Rush Yards: </span>{{player.player.team.rushYards}}
+                <div class="team-info"><span class="label">Team Rush Yards: </span>{{player.team.stats.rushYards}}
                 </div>
-                <div class="team-info"><span class="label">Team Rush TD: </span>{{player.player.team.rushTd}}</div>
-                <div class="team-info"><span class="label">Yards Per Rush: </span>{{player.player.team.yardsPerRush}}
+                <div class="team-info"><span class="label">Team Rush TD: </span>{{player.team.stats.rushTd}}</div>
+                <div class="team-info"><span class="label">Yards Per Rush: </span>{{player.team.stats.yardsPerRush}}
                 </div>
               </span>
             </div>
@@ -230,14 +230,12 @@
       <tr mat-row *matRowDef="let player; columns: columnsToDisplay;" class="player-row"
         [class.expanded-row]="expandedPlayer === player" [ngClass]="{
             'isSelected': player.selected,
-            'isQb': player.player.position === 'QB',
-            'isRb': player.player.position === 'RB',
-            'isWr': player.player.position === 'WR',
-            'isTe': player.player.position === 'TE'
-          }"
-          (click)="onRowClick(player)"
-          (dblclick)="onRowDoubleClick(player)"
-          matTooltip="Double-click the row to expand team details">
+            'isQb': player.position === 'QB',
+            'isRb': player.position === 'RB',
+            'isWr': player.position === 'WR',
+            'isTe': player.position === 'TE'
+          }" (click)="onRowClick(player)" (dblclick)="onRowDoubleClick(player)"
+        matTooltip="Double-click the row to expand team details">
       </tr>
       <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="detail-row"></tr>
     </table>

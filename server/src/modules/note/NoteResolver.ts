@@ -13,6 +13,9 @@ export class NoteResolver {
         return getRepository(Note)
             .find({
                 relations: ['user', 'player', 'likes', 'shares'],
+                where: {
+                    isPrivate: false
+                },
                 order: {
                     creationTime: 'DESC'
                 }
@@ -26,37 +29,6 @@ export class NoteResolver {
             .findOne({
                 relations: ['user', 'player', 'likes', 'shares'],
                 where: { id },
-                order: {
-                    creationTime: 'DESC'
-                }
-            });
-    }
-
-    @UseMiddleware(logger)
-    @Query(() => [Note])
-    async publicNotes() {
-        return getRepository(Note)
-            .find({
-                relations: ['user', 'player', 'likes', 'shares'],
-                where: {
-                    isPrivate: false
-                },
-                order: {
-                    creationTime: 'DESC'
-                }
-            });
-    }
-
-
-    @UseMiddleware(isAuth, logger)
-    @Query(() => [Note])
-    async userNotes(@Arg('user') user: string) {
-        return getRepository(Note)
-            .find({
-                relations: ['user', 'player', 'likes', 'shares'],
-                where: {
-                    user
-                },
                 order: {
                     creationTime: 'DESC'
                 }
