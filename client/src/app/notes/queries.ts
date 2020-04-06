@@ -2,7 +2,7 @@ import gql from 'graphql-tag';
 
 export const createNote = gql
   `
-    mutation createNote($user: String!, $player: Float!, $title: String!, $body: String!,
+    mutation createNote($user: String!, $player: String!, $title: String!, $body: String!,
         $source: String!, $isPrivate: Boolean!) {
       createNote(input: { user: $user, player: $player, title: $title, body: $body,
         source: $source, isPrivate: $isPrivate }) {
@@ -101,9 +101,7 @@ export const notes = gql
           lastName
           name
           team {
-            team {
-              abbreviation
-            }
+            abbreviation
           }
           position
         }
@@ -111,75 +109,17 @@ export const notes = gql
         body
         source
         likes {
-          username
-        }
-        shares {
-          username
-        }
-        isPrivate
-        creationTime
-      }
-    }
-  `;
-
-export const userNotes = gql
-  `
-    query userNotes($user: String!){
-      userNotes(user: $user) {
-        id
-        user {
-          username
-          profileImage
-        }
-        player {
-          id
-          firstName
-          lastName
-          name
-          team {
-            team {
-              abbreviation
-            }
-          }
-          position
-        }
-        title
-        body
-        source
-        isPrivate
-        creationTime
-      }
-    }
-  `;
-
-export const likedNotes = gql
-  `
-    query likes($userId: String!){
-      likes(userId: $userId) {
-        note {
-          id
           user {
             username
-            profileImage
           }
-          player {
-            id
-            firstName
-            lastName
-            name
-            team {
-              team {
-                abbreviation
-              }
-            }
-            position
-          }
-          title
-          body
-          source
-          isPrivate
-          creationTime
         }
+        shares {
+          user {
+            username
+          }
+        }
+        isPrivate
+        creationTime
       }
     }
   `;
@@ -194,11 +134,9 @@ export const players = gql
         name
         position
         team {
-          team {
-            city
-            abbreviation
-            nickname
-          }
+          city
+          abbreviation
+          nickname
         }
       }
     }

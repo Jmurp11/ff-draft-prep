@@ -2,6 +2,7 @@ export class User {
   id: string;
   email: string;
   username: string;
+  profileImage: string;
   private _token: string;
   private _tokenExpiration: Date;
 
@@ -9,12 +10,14 @@ export class User {
     id: string,
     email: string,
     username: string,
+    profileImage: string,
     _token: string,
     _tokenExpiration: Date
   ) {
     this.id = id;
     this.email = email;
     this.username = username;
+    this.profileImage = profileImage;
     this._token = _token;
     this._tokenExpiration = _tokenExpiration;
   }

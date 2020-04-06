@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
-import { createTarget, deleteTarget, targets } from './queries';
+import { createTarget, deleteTarget } from './queries';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { AuthService } from '../auth/auth.service';
-
+import { user as userQuery } from '../shared/user/queries';
 
 export interface TargetResponse {
   success: boolean;
@@ -26,7 +26,7 @@ export class TargetService {
 
   createTarget(
     user: string,
-    player: number,
+    player: string,
     round: number
   ) {
     this.apollo.mutate({
@@ -38,7 +38,7 @@ export class TargetService {
       },
       refetchQueries: [
         {
-          query: targets,
+          query: userQuery,
           variables: {
             user
           }
@@ -77,7 +77,7 @@ export class TargetService {
       },
       refetchQueries: [
         {
-          query: targets,
+          query: userQuery,
           variables: {
             user
           }

@@ -5,16 +5,9 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { NavbarComponent } from './layout/navbar/navbar.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { NoteComponent } from './notes/note/note.component';
 import { HomeComponent } from './home/home.component';
-import { UserNotesComponent } from './notes/user-notes/user-notes.component';
-import { PublicNotesComponent } from './notes/public-notes/public-notes.component';
 import { NoteDialogComponent } from './notes/note-dialog/note-dialog.component';
-import { FooterComponent } from './layout/footer/footer.component';
-import { SidenavComponent } from './layout/sidenav/sidenav.component';
-import { LikedNotesComponent } from './notes/liked-notes/liked-notes.component';
 import { AuthModule } from './auth/auth.module';
 import { TargetModule } from './target/target.module';
 import { SharedModule } from './shared/shared.module';

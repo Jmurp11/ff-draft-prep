@@ -29,7 +29,7 @@ export class Note extends BaseEntity {
     @JoinColumn({ name: 'player' })
     @Field(() => Player)
     @Column('text')
-    player!: number;
+    player!: string;
 
     @Field()
     @Column('text')
@@ -48,11 +48,15 @@ export class Note extends BaseEntity {
     isPrivate!: boolean;
 
     @Field(() => [Like], { nullable: true })
-    @OneToMany(() => Like, like => like.note)
+    @OneToMany(() => Like, like => like.note, {
+        eager: true
+    })
     likes: Like[];
 
     @Field(() => [Share], { nullable: true })
-    @OneToMany(() => Share, share => share.note)
+    @OneToMany(() => Share, share => share.note, {
+        eager: true
+    })
     shares: Share[];
 
     @Field(() => Date)

@@ -6,7 +6,7 @@ export interface Note {
     profileImage: string;
   };
   player: {
-    id: number;
+    id: string;
     firstName: string;
     lastName: string;
     name: string;

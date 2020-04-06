@@ -28,7 +28,7 @@ export class Target extends BaseEntity {
     @JoinColumn({ name: 'player' })
     @Field(() => Player)
     @Column()
-    player!: number;
+    player!: string;
 
     @Field()
     @Column()

@@ -52,6 +52,7 @@ export class AuthService {
           data.login.success.user.id,
           data.login.success.user.email,
           data.login.success.user.username,
+          data.login.success.user.profileImage,
           data.login.success.accessToken,
           data.login.success.expiresIn
         );
@@ -75,6 +76,7 @@ export class AuthService {
       id: string;
       email: string;
       username: string;
+      profileImage: string;
       _token: string;
       _tokenExpiration: string;
     } = JSON.parse(localStorage.getItem('user'));
@@ -87,6 +89,7 @@ export class AuthService {
       userData.id,
       userData.email,
       userData.username,
+      userData.profileImage,
       userData._token,
       new Date(userData._tokenExpiration)
     );
@@ -158,11 +161,12 @@ export class AuthService {
     id: string,
     email: string,
     username: string,
+    profileImage: string,
     token: string,
     expiresIn: number
   ) {
     const expirationDate = new Date(new Date().getTime() + expiresIn * 1000);
-    const user = new User(id, email, username, token, expirationDate);
+    const user = new User(id, email, username, profileImage, token, expirationDate);
     this.user.next(user);
     this.autoLogout(id, expiresIn * 1000);
     localStorage.setItem('user', JSON.stringify(user));
@@ -249,26 +253,4 @@ export class AuthService {
       console.log(error);
     });
   }
-/**
-  setRefreshToken(token: string) {
-    this.refreshToken.next(token);
-  }
-
-  async fetchRefreshToken() {
-    let result: string;
-
-    fetch('http://localhost:4000/refresh_token', {
-      method: 'POST',
-      credentials: 'include'
-    }).then(async data => {
-      const object = await data.json();
-      if (!object.accessToken) {
-        result = '';
-        this.setRefreshToken(result);
-      }
-      result = object.accessToken;
-      this.setRefreshToken(result);
-    });
-  }
-*/
 }

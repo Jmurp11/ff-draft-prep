@@ -22,7 +22,22 @@ export class UserResolver {
     @Query(() => [User])
     async users() {
         return User.find({
-            relations: ['likes', 'notes', 'notes.likes', 'notes.shares', 'shares', 'targets', 'ranks']
+            relations: [
+                'likes',
+                'likes.note',
+                'likes.note.user',
+                'likes.user',
+                'notes',
+                'notes.likes',
+                'notes.likes.note',
+                'notes.likes.user',
+                'notes.shares',
+                'shares',
+                'shares.note',
+                'shares.user',
+                'targets',
+                'ranks'
+            ]
         });
     }
 
@@ -30,7 +45,17 @@ export class UserResolver {
     @Query(() => User)
     async user(@Arg('id') id: string) {
         return User.findOne({
-            relations: ['likes', 'notes', 'notes.likes', 'notes.shares', 'shares', 'targets', 'ranks'],
+            relations: [
+                'likes',
+                'likes.note',
+                'likes.user',
+                'notes',
+                'notes.likes',
+                'notes.shares',
+                'shares',
+                'targets',
+                'ranks'
+            ],
             where: {
                 id
             }
@@ -41,7 +66,17 @@ export class UserResolver {
     @Query(() => User)
     async userByUsername(@Arg('username') username: string) {
         return User.findOne({
-            relations: ['likes', 'notes', 'notes.likes', 'notes.shares', 'shares', 'targets', 'ranks'],
+            relations: [
+                'likes',
+                'likes.note',
+                'likes.user',
+                'notes',
+                'notes.likes',
+                'notes.shares',
+                'shares',
+                'targets',
+                'ranks'
+            ],
             where: {
                 username
             }
@@ -52,14 +87,24 @@ export class UserResolver {
     @Query(() => User)
     async userByEmail(@Arg('email') email: string) {
         return User.findOne({
-            relations: ['likes', 'notes', 'notes.likes', 'notes.shares', 'shares', 'targets', 'ranks'],
+            relations: [
+                'likes',
+                'likes.note',
+                'likes.user',
+                'notes',
+                'notes.likes',
+                'notes.shares',
+                'shares',
+                'targets',
+                'ranks'
+            ],
             where: {
                 email
             }
         });
     }
 
-    
+
     @Mutation(() => Result)
     async register(
         @Arg('input') { email, password, username, profileImage }: RegisterInput
@@ -317,7 +362,7 @@ export class UserResolver {
         }
     }
 
-    @UseMiddleware(isAuth, isAdmin, logger)    
+    @UseMiddleware(isAuth, isAdmin, logger)
     @Mutation(() => Boolean)
     async revokeRefreshTokensForUser(@Arg('userId') userId: string): Promise<Boolean> {
         await getConnection()

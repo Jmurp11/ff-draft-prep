@@ -7,7 +7,7 @@
     </div>
     <app-note></app-note>
     <mat-divider></mat-divider>
-    <app-draft-notes></app-draft-notes>
+    <app-note [notesInput]="" [userIdInput]="" [loadingInput]=""></app-note >
   </mat-drawer>
 
   <div class="main-loading" *ngIf="loading">

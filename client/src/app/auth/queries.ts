@@ -9,6 +9,7 @@ export const login = gql
           id
           email
           username
+          profileImage
         }
         accessToken
         expiresIn

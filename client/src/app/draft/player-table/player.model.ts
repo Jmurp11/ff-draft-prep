@@ -1,5 +1,5 @@
 export interface Player {
-  id: number;
+  id: string;
   firstName: string;
   lastName: string;
   name: string;
@@ -69,7 +69,7 @@ export interface Player {
       profileImage: string;
     };
     player: {
-      id: number;
+      id: string;
       firstName: string;
       lastName: string;
       name: string;

@@ -7,6 +7,77 @@ export const userByUsername = gql
       id
       email
       username
+      profileImage
+      notes {
+        id
+        user {
+          username
+          profileImage
+        }
+        player {
+          id
+          firstName
+          lastName
+          name
+          team {
+            team {
+              abbreviation
+            }
+          }
+          position
+        }
+        title
+        body
+        source
+        likes {
+          note {
+            id
+            user {
+              username
+              profileImage
+            }
+            player {
+              id
+              firstName
+              lastName
+              name
+              team {
+                team {
+                  abbreviation
+                }
+              }
+              position
+            }
+            title
+            body
+            source
+          }
+        }
+        shares {
+          id
+          user {
+            username
+            profileImage
+          }
+          player {
+            id
+            firstName
+            lastName
+            name
+            team {
+              team {
+                abbreviation
+              }
+            }
+            position
+          }
+          title
+          body
+          source
+        }
+        isPrivate
+        creationTime
+      }
     }
   }
 `;
