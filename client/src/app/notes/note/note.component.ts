@@ -25,10 +25,12 @@ export class NoteComponent implements OnInit, OnChanges, OnDestroy {
   auth$: Subscription;
   like$: Subscription;
   share$: Subscription;
+  hasNotes$: Subscription;
   currentUser: User;
   notes: any;
   userId: string;
   loading: boolean;
+  hasNotes: boolean;
 
   constructor(
     private _auth: AuthService,
@@ -43,11 +45,7 @@ export class NoteComponent implements OnInit, OnChanges, OnDestroy {
     this.notes = this.notesInput;
     this.userId = this.userIdInput;
 
-    console.log(this.loadingInput, this.notesInput, this.userIdInput);
-
-    this.auth$ = this._auth.user.subscribe(user => {
-      this.currentUser = user;
-    });
+    this.auth$ = this._auth.user.subscribe(user => this.currentUser = user);
 
     this.like$ = this._note.likeStatus.subscribe(response => {
       if (response) {
@@ -70,17 +68,14 @@ export class NoteComponent implements OnInit, OnChanges, OnDestroy {
         switch (propName) {
           case 'loadingInput': {
             this.loading = this.loadingInput;
-            console.log(this.loading);
             break;
           }
           case 'userIdInput': {
             this.userId = this.userIdInput;
-            console.log(this.userId);
             break;
           }
           case 'notesInput': {
             this.notes = this.notesInput;
-            console.log(this.notes);
             break;
           }
         }

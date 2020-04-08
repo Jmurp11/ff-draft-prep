@@ -27,7 +27,7 @@
           </span>
         </div>
         <div class="card-ctr">
-          <app-note [notesInput]="userNotes" [userIdInput]="userId" [loadingInput]="userLoading"></app-note>
+          <app-note [notesInput]="userNotes" [userIdInput]="userId" [loadingInput]="userNoteLoading"></app-note>
         </div>
       </mat-tab>
       <mat-tab label="My Favorites">
@@ -42,13 +42,13 @@
           </span>
         </div>
         <div class="card-ctr">
-          <app-note [notesInput]="likedNotes" [userIdInput]="userId" [loadingInput]="userLoading"></app-note>
+          <app-note [notesInput]="likedNotes" [userIdInput]="userId" [loadingInput]="likedNoteLoading"></app-note>
         </div>
       </mat-tab>
     </mat-tab-group>
   </div>
 
   <div fxFlex="25%" class="targetList">
-    <app-target [targetsInput]="targets" [loadingInput]="userLoading"></app-target>
+    <app-target [targetsInput]="targets" [userInput]="userId" [loadingInput]="userLoading"></app-target>
   </div>
 </div>

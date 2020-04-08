@@ -5,7 +5,7 @@ import { meQuery, user } from './queries';
 @Injectable({
   providedIn: 'root'
 })
-export class UserService {
+export class UserQueryService {
 
   constructor(private apollo: Apollo) { }
 

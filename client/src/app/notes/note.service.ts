@@ -25,15 +25,15 @@ export class NoteService {
   }
 
   setDeleteStatus(response: NoteResponse) {
-    this.noteStatus.next(response);
+    this.deleteStatus.next(response);
   }
 
   setLikeStatus(response: NoteResponse) {
-    this.noteStatus.next(response);
+    this.likeStatus.next(response);
   }
 
   setShareStatus(response: NoteResponse) {
-    this.noteStatus.next(response);
+    this.shareStatus.next(response);
   }
 
   prepopulatePlayer(val: boolean) {

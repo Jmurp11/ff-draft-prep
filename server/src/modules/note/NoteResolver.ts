@@ -4,22 +4,37 @@ import { Result } from '../../shared';
 import { NoteInput } from './inputs';
 import { getRepository } from 'typeorm';
 import { isAuth, logger } from '../../middleware';
+import { DeleteNoteInput } from './inputs/DeleteNoteInput';
 
 @Resolver()
 export class NoteResolver {
     @UseMiddleware(isAuth, logger)
     @Query(() => [Note])
-    async notes() {
-        return getRepository(Note)
-            .find({
-                relations: ['user', 'player', 'likes', 'shares'],
-                where: {
-                    isPrivate: false
-                },
-                order: {
-                    creationTime: 'DESC'
-                }
-            });
+    async notes(
+        @Arg('user', { nullable: true }) user: string) {
+        if (user) {
+            return getRepository(Note)
+                .find({
+                    relations: ['user', 'player', 'likes', 'shares'],
+                    where: {
+                        user
+                    },
+                    order: {
+                        creationTime: 'DESC'
+                    }
+                });
+        } else {
+            return getRepository(Note)
+                .find({
+                    relations: ['user', 'player', 'likes', 'shares'],
+                    where: {
+                        isPrivate: false
+                    },
+                    order: {
+                        creationTime: 'DESC'
+                    }
+                });
+        }
     }
 
     @UseMiddleware(isAuth, logger)
@@ -93,7 +108,10 @@ export class NoteResolver {
     @UseMiddleware(isAuth, logger)
     @Mutation(() => Result)
     async deleteNote(
-        @Arg('id') id: string
+        @Arg('input') {
+            id,
+            user
+        }: DeleteNoteInput
     ): Promise<Result> {
         const note = await Note.findOne({
             where: {
@@ -108,6 +126,17 @@ export class NoteResolver {
                     {
                         path: 'note',
                         message: 'Note does not exist!'
+                    }
+                ]
+            }
+        }
+
+        if (note.user !== user) {
+            return {
+                errors: [
+                    {
+                        path: 'note',
+                        message: 'User did not create this note!'
                     }
                 ]
             }

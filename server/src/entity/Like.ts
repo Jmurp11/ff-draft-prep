@@ -16,7 +16,9 @@ export class Like extends BaseEntity {
     @PrimaryGeneratedColumn('uuid')
     id!: string;
 
-    @ManyToOne(() => User, user => user.likes)
+    @ManyToOne(() => User, user => user.likes, {
+        eager: true
+    })
     @JoinColumn({ name: 'user' })
     @Field(() => User)
     @Column('uuid')
@@ -27,4 +29,8 @@ export class Like extends BaseEntity {
     @Field(() => Note)
     @Column('uuid')
     note!: string;
+
+    @Field(() => Date)
+    @Column('timestamp')
+    creationTime!: string;
 }

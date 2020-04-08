@@ -64,35 +64,30 @@ export class User extends BaseEntity {
 
     @Field(() => [Note], { nullable: true })
     @OneToMany(() => Note, note => note.user, {
-        eager: true,
         onDelete: 'CASCADE'
     })
     notes: Note[];
 
     @Field(() => [Like], { nullable: true })
     @OneToMany(() => Like, like => like.user, {
-        eager: true,
         onDelete: 'CASCADE'
     })
     likes: Like[];
 
     @Field(() => [Share], { nullable: true })
     @OneToMany(() => Share, share => share.user, {
-        eager: true,
         onDelete: 'CASCADE'
     })
     shares: Share[];
 
     @Field(() => [Target], { nullable: true })
     @OneToMany(() => Target, target => target.user, {
-        eager: true,
         onDelete: 'CASCADE'
     })
     targets: Target[];
 
     @Field(() => [Rank], { nullable: true })
     @OneToMany(() => Rank, ranks => ranks.user, {
-        eager: true,
         onDelete: 'CASCADE'
     })
     ranks: Rank[];

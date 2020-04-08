@@ -17,7 +17,9 @@ export class Note extends BaseEntity {
     @PrimaryGeneratedColumn('uuid')
     id!: string;
 
-    @ManyToOne(() => User)
+    @ManyToOne(() => User, {
+        eager: true
+    })
     @JoinColumn({ name: 'user' })
     @Field(() => User)
     @Column('uuid')
@@ -28,7 +30,7 @@ export class Note extends BaseEntity {
     })
     @JoinColumn({ name: 'player' })
     @Field(() => Player)
-    @Column('text')
+    @Column('uuid')
     player!: string;
 
     @Field()

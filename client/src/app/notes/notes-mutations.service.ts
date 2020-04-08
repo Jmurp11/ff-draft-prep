@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
-import { addLike, createNote, createShare, deleteNote, notes } from './queries';
-import { user as userQuery } from '../shared/user/queries';
+import { addLike, createNote, createShare, deleteNote, notes, likes } from './queries';
 import { NoteService } from './note.service';
 
 @Injectable({
@@ -31,12 +30,6 @@ export class NotesMutationsService {
       },
       refetchQueries: [
         {
-          query: userQuery,
-          variables: {
-            user
-          }
-        },
-        {
           query: notes
         }
       ]
@@ -63,15 +56,10 @@ export class NotesMutationsService {
     this.apollo.mutate({
       mutation: deleteNote,
       variables: {
-        id
+        id,
+        user
       },
       refetchQueries: [
-        {
-          query: userQuery,
-          variables: {
-            user
-          }
-        },
         {
           query: notes
         }
@@ -104,9 +92,9 @@ export class NotesMutationsService {
       },
       refetchQueries: [
         {
-          query: userQuery,
+          query: likes,
           variables: {
-            userId: user
+            user
           }
         }
       ]

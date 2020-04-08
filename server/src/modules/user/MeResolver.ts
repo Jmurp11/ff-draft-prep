@@ -20,6 +20,8 @@ export class MeResolver {
             return User.findOne({
                 relations: [
                     'likes',
+                    'likes.user',
+                    'likes.note',
                     'notes',
                     'shares',
                     'targets',

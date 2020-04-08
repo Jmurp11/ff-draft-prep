@@ -15,10 +15,14 @@ export class TargetComponent implements OnInit, OnChanges, OnDestroy {
   targetsInput: any;
 
   @Input()
+  userInput: string;
+
+  @Input()
   loadingInput: boolean;
 
   targets: any;
   loading: boolean;
+  user: string;
   deleteStatus$: Subscription;
   hasTargets: boolean;
   rounds: number[];
@@ -32,11 +36,6 @@ export class TargetComponent implements OnInit, OnChanges, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.loading = this.loadingInput;
-    this.targets = this.targetsInput;
-
-    console.log(this.loadingInput, this.targetsInput);
-
     this.deleteStatus$ = this._target.deleteStatus.subscribe(response => {
       if (response) {
         this.openSnackBar(response.message, this.dismiss);
@@ -51,12 +50,17 @@ export class TargetComponent implements OnInit, OnChanges, OnDestroy {
         switch (propName) {
           case 'loadingInput': {
             this.loading = this.loadingInput;
-            console.log(this.loading);
             break;
           }
           case 'targetsInput': {
             this.targets = this.targetsInput;
-            console.log(this.targets);
+            if (this.targets.length > 0) {
+              this.hasTargets = true;
+            }
+            break;
+          }
+          case 'userInput': {
+            this.user = this.userInput;
             break;
           }
         }
@@ -74,7 +78,7 @@ export class TargetComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   deleteTarget(target: any) {
-    this._target.deleteTarget(target.id);
+    this._target.deleteTarget(target.id, this.user);
   }
 
   openSnackBar(message: string, action: string) {

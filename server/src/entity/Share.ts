@@ -16,7 +16,9 @@ export class Share extends BaseEntity {
     @PrimaryGeneratedColumn('uuid')
     id!: string;
 
-    @ManyToOne(() => User, user => user.shares)
+    @ManyToOne(() => User, user => user.shares, {
+        eager: true
+    })
     @JoinColumn({ name: 'user' })
     @Field(() => User)
     @Column('uuid')

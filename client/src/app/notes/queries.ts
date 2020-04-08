@@ -18,8 +18,11 @@ export const createNote = gql
 
 export const deleteNote = gql
   `
-    mutation deleteNote($id: String!) {
-      deleteNote(id: $id) {
+    mutation deleteNote($id: String!, $user: String!) {
+      deleteNote(input: {
+        id: $id,
+        user: $user
+      }) {
         success {
           message
         }
@@ -88,17 +91,16 @@ export const deleteShare = gql
 
 export const notes = gql
   `
-    query {
-      notes {
+    query notes($user: String) {
+      notes(user: $user) {
         id
         user {
+          id
           username
           profileImage
         }
         player {
           id
-          firstName
-          lastName
           name
           team {
             abbreviation
@@ -109,21 +111,106 @@ export const notes = gql
         body
         source
         likes {
+          id
           user {
+            id
             username
           }
         }
         shares {
+          id
           user {
+            id
             username
           }
         }
-        isPrivate
         creationTime
       }
     }
   `;
 
+export const note = gql
+  `
+    query note($id: String!) {
+      note(id: $id) {
+        id
+        user {
+          id
+          username
+          profileImage
+        }
+        player {
+          id
+          name
+          team {
+            abbreviation
+          }
+          position
+        }
+        title
+        body
+        source
+        likes {
+          id
+          user {
+            id
+            username
+          }
+        }
+        shares {
+          id
+          user {
+            id
+            username
+          }
+        }
+        creationTime
+      }
+    }
+  `;
+
+
+export const likes = gql
+  `
+    query likes($user: String!) {
+      likes(user: $user) {
+        id
+        note {
+          user {
+            id
+            username
+            profileImage
+          }
+          player {
+            id
+            name
+            team {
+              abbreviation
+            }
+            position
+          }
+          title
+          body
+          source
+          likes {
+            id
+            user {
+              id
+              username
+            }
+          }
+          shares {
+            id
+            user {
+              id
+              username
+            }
+          }
+          creationTime
+        }
+      }
+    }
+  `;
 export const players = gql
   `
     query {

@@ -16,7 +16,9 @@ export class Rank extends BaseEntity {
     @PrimaryGeneratedColumn('uuid')
     id!: string;
 
-    @ManyToOne(() => User, user => user.ranks)
+    @ManyToOne(() => User, user => user.ranks, {
+        eager: true
+    })
     @JoinColumn({ name: 'user' })
     @Field(() => User)
     @Column('uuid')

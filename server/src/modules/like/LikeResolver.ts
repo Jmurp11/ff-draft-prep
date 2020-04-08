@@ -1,5 +1,5 @@
 import { Resolver, Query, Mutation, Arg, UseMiddleware, Int } from 'type-graphql';
-import { Like } from '../../entity';
+import { Like, Note } from '../../entity';
 import { Result } from '../../shared';
 import { LikeInput } from './inputs/LikeInput';
 import { getRepository } from 'typeorm';
@@ -9,14 +9,17 @@ import { isAuth, logger } from '../../middleware';
 export class LikeResolver {
     @UseMiddleware(isAuth, logger)
     @Query(() => [Like])
-    async likes(@Arg('userId') userId: string) { 
+    async likes(@Arg('user') user: string) { 
         return getRepository(Like)
             .find({
                 relations: ['user', 'note', 'note.user'],
                 where: {
                     user: {
-                        id: userId
+                        id: user
                     }
+                },
+                order: {
+                    creationTime: 'DESC'
                 }
             });
     }
@@ -54,12 +57,19 @@ export class LikeResolver {
             note
         }: LikeInput
     ): Promise<Result> {
+        console.log(user, note);
         const likeExists = await Like.findOne({
             where: {
                 user,
                 note
             },
             select: ['id']
+        });
+
+        const n = await Note.findOne({
+            where: {
+                id: note
+            }
         });
 
         if (likeExists) {
@@ -75,7 +85,8 @@ export class LikeResolver {
 
         await Like.create({
             user,
-            note
+            note,
+            creationTime: n?.creationTime
         }).save();
 
         return {

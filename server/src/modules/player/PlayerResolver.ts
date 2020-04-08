@@ -10,25 +10,41 @@ export class PlayerResolver {
     async players(@Arg('user', { nullable: true }) user: string) {
         if (user) {
             return getRepository(Player)
-            .find({
-                relations: ['team', 'projection', 'rank', 'defaultRank'],
-                where: {
-                    rank: {
-                        user: user
+                .find({
+                    relations: [
+                        'team',
+                        'projection',
+                        'rank',
+                        'defaultRank',
+                        'notes',
+                        'notes.user',
+                        'notes.likes'
+                    ],
+                    where: {
+                        rank: {
+                            user: user
+                        }
+                    },
+                    order: {
+                        lastName: 'ASC'
                     }
-                },
-                order: {
-                    lastName: 'ASC'
-                }
-            });
+                });
         } else {
             return getRepository(Player)
-            .find({
-                relations: ['team', 'projection', 'rank', 'defaultRank'],
-                order: {
-                    lastName: 'ASC'
-                }
-            });
+                .find({
+                    relations: [
+                        'team',
+                        'projection',
+                        'rank',
+                        'defaultRank',
+                        'notes',
+                        'notes.user',
+                        'notes.likes'
+                    ],
+                    order: {
+                        lastName: 'ASC'
+                    }
+                });
         }
     }
 
@@ -36,7 +52,15 @@ export class PlayerResolver {
     async player(@Arg('id') id: string) {
         return getRepository(Player)
             .findOne({
-                relations: ['team', 'projection', 'rank', 'defaultRank'],
+                relations: [
+                    'team',
+                    'projection',
+                    'rank',
+                    'defaultRank',
+                    'notes',
+                    'notes.user',
+                    'notes.likes'
+                ],
                 where: { id }
             });
     }

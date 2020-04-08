@@ -16,7 +16,9 @@ export class Target extends BaseEntity {
     @PrimaryGeneratedColumn('uuid')
     id!: string;
 
-    @ManyToOne(() => User)
+    @ManyToOne(() => User, {
+        eager: true
+    })
     @JoinColumn({ name: 'user' })
     @Field(() => User)
     @Column('text')
