@@ -54,6 +54,7 @@ export class TargetComponent implements OnInit, OnChanges, OnDestroy {
           }
           case 'targetsInput': {
             this.targets = this.targetsInput;
+            this.targets.sort((a, b) => a.round - b.round);
             if (this.targets.length > 0) {
               this.hasTargets = true;
             }
