@@ -89,6 +89,46 @@ export const deleteShare = gql
     }
 `;
 
+export const publicNotes = gql
+  `
+    query {
+      notes(user: null) {
+        id
+        user {
+          id
+          username
+          profileImage
+        }
+        player {
+          id
+          name
+          team {
+            abbreviation
+          }
+          position
+        }
+        title
+        body
+        source
+        likes {
+          id
+          user {
+            id
+            username
+          }
+        }
+        shares {
+          id
+          user {
+            id
+            username
+          }
+        }
+        creationTime
+      }
+    }
+  `;
+
 export const notes = gql
   `
     query notes($user: String) {

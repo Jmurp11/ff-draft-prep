@@ -65,6 +65,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
       });
 
       this.likeNotes$ = this._noteQ.likes(this.userId).subscribe(({ data, loading }) => {
+        this.likedNotes = [];
+
         data.likes.forEach(like => {
           this.likedNotes.push(like.note);
         });
