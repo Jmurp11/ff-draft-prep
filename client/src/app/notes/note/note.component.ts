@@ -40,10 +40,7 @@ export class NoteComponent implements OnInit, OnChanges, OnDestroy {
   ) { }
 
   ngOnInit() {
-
-    this.loading = this.loadingInput;
-    this.notes = this.notesInput;
-    this.userId = this.userIdInput;
+    this.loading = true;
 
     this.auth$ = this._auth.user.subscribe(user => this.currentUser = user);
 

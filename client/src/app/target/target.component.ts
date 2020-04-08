@@ -36,6 +36,7 @@ export class TargetComponent implements OnInit, OnChanges, OnDestroy {
   ) { }
 
   ngOnInit() {
+    this.loading = true;
     this.deleteStatus$ = this._target.deleteStatus.subscribe(response => {
       if (response) {
         this.openSnackBar(response.message, this.dismiss);
