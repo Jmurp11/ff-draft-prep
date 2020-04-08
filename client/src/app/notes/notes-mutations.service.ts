@@ -59,6 +59,7 @@ export class NotesMutationsService {
   }
 
   deleteNote(id: string, user: string) {
+    console.log(id);
     this.apollo.mutate({
       mutation: deleteNote,
       variables: {

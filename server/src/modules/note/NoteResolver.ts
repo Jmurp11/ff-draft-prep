@@ -117,10 +117,10 @@ export class NoteResolver {
             where: {
                 id
             },
-            select: ['id']
+            select: ['id', 'user']
         });
 
-        if (!note) {
+        if (!note!.id) {
             return {
                 errors: [
                     {
@@ -131,7 +131,9 @@ export class NoteResolver {
             }
         }
 
-        if (note.user !== user) {
+        if (note!.user !== user) {
+            console.log(note);
+            console.log(note!.user, user);
             return {
                 errors: [
                     {

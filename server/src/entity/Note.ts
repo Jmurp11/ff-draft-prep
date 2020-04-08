@@ -51,13 +51,15 @@ export class Note extends BaseEntity {
 
     @Field(() => [Like], { nullable: true })
     @OneToMany(() => Like, like => like.note, {
-        eager: true
+        eager: true,
+        onDelete: 'CASCADE'
     })
     likes: Like[];
 
     @Field(() => [Share], { nullable: true })
     @OneToMany(() => Share, share => share.note, {
-        eager: true
+        eager: true,
+        onDelete: 'CASCADE'
     })
     shares: Share[];
 

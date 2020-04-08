@@ -17,14 +17,17 @@ export class Like extends BaseEntity {
     id!: string;
 
     @ManyToOne(() => User, user => user.likes, {
-        eager: true
+        eager: true,
+        onDelete: 'CASCADE'
     })
     @JoinColumn({ name: 'user' })
     @Field(() => User)
     @Column('uuid')
     user!: string;
 
-    @ManyToOne(() => Note, note => note.likes)
+    @ManyToOne(() => Note, note => note.likes, {
+        onDelete: 'CASCADE'
+    })
     @JoinColumn({ name: 'note' })
     @Field(() => Note)
     @Column('uuid')
