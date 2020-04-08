@@ -9,7 +9,7 @@ import { isAuth, logger } from '../../middleware';
 export class LikeResolver {
     @UseMiddleware(isAuth, logger)
     @Query(() => [Like])
-    async likes(@Arg('user') user: string) { 
+    async likes(@Arg('user') user: string) {
         return getRepository(Like)
             .find({
                 relations: ['user', 'note', 'note.user'],
@@ -40,13 +40,13 @@ export class LikeResolver {
     @Query(() => Int)
     async likesCount(@Arg('noteId') noteId: string) {
         return getRepository(Like)
-        .count({
-            where: {
-                note: {
-                    id: noteId
+            .count({
+                where: {
+                    note: {
+                        id: noteId
+                    }
                 }
-            }
-        });
+            });
     }
 
     @UseMiddleware(isAuth, logger)
@@ -57,7 +57,6 @@ export class LikeResolver {
             note
         }: LikeInput
     ): Promise<Result> {
-        console.log(user, note);
         const likeExists = await Like.findOne({
             where: {
                 user,

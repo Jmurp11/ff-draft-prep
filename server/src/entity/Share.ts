@@ -24,7 +24,9 @@ export class Share extends BaseEntity {
     @Column('uuid')
     user!: string;
 
-    @ManyToOne(() => Note, note => note.shares)
+    @ManyToOne(() => Note, note => note.shares, {
+        onDelete: 'CASCADE'
+    })
     @JoinColumn({ name: 'note' })
     @Field(() => Note)
     @Column('uuid')

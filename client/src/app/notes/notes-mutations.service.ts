@@ -16,8 +16,6 @@ export class NotesMutationsService {
   createNote(
     user: string, player: string, title: string, body: string,
     source: string, isPrivate: boolean) {
-    console.log('create note');
-
     this.apollo.mutate({
       mutation: createNote,
       variables: {
@@ -59,7 +57,6 @@ export class NotesMutationsService {
   }
 
   deleteNote(id: string, user: string) {
-    console.log(id);
     this.apollo.mutate({
       mutation: deleteNote,
       variables: {
