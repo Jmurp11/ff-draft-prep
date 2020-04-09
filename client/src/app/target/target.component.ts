@@ -4,6 +4,7 @@ import { TargetDialogComponent } from './target-dialog/target-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { TargetService } from './target.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-target',
@@ -32,6 +33,7 @@ export class TargetComponent implements OnInit, OnChanges, OnDestroy {
   constructor(
     private dialog: MatDialog,
     private _target: TargetService,
+    private router: Router,
     private snackbar: MatSnackBar
   ) { }
 
@@ -82,6 +84,10 @@ export class TargetComponent implements OnInit, OnChanges, OnDestroy {
 
   deleteTarget(target: any) {
     this._target.deleteTarget(target.id, this.user);
+  }
+
+  navigateToPlayer(player: string) {
+    this.router.navigate([`./d/player/${player}`]);
   }
 
   openSnackBar(message: string, action: string) {

@@ -26,6 +26,7 @@ export const meQuery = gql
           id
           initialName
           team {
+            id
             abbreviation
           }
           position

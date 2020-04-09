@@ -10,7 +10,11 @@
 
     <ng-container matColumnDef="name">
       <th mat-header-cell *matHeaderCellDef width="35%"> Name </th>
-      <td mat-cell *matCellDef="let target"> {{ target.player.initialName }} </td>
+      <td mat-cell *matCellDef="let target">
+        <button style="padding: 0px;" mat-button color="primary" (click)="navigateToPlayer(target.player.id)">
+          {{ target.player.initialName }}
+        </button>
+      </td>
     </ng-container>
 
     <ng-container matColumnDef="team">

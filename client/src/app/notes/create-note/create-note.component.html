@@ -6,10 +6,10 @@
     <mat-card class="note-card" *ngIf="!loading">
       <mat-card-header>
         <div mat-card-avatar class="note-header-image" [style.backgroundImage]="'url(' + user.profileImage + ')'"></div>
-        <mat-card-title *ngIf="isPlayerPreSet">{{ currentPlayer.name  }}
+        <mat-card-title *ngIf="isPlayerPreSet">{{ (currentPlayer !== null) ? currentPlayer.name : '' }}
         </mat-card-title>
-        <mat-card-subtitle *ngIf="isPlayerPreSet">{{ currentPlayer.team.abbreviation }} -
-          {{currentPlayer.position }}
+        <mat-card-subtitle *ngIf="isPlayerPreSet">{{ (currentPlayer !== null) ? currentPlayer.team.abbreviation : '' }} -
+          {{ (currentPlayer !== null) ? currentPlayer.position : '' }}
         </mat-card-subtitle>
       </mat-card-header>
       <mat-card-content>

@@ -103,6 +103,7 @@ export const publicNotes = gql
           id
           name
           team {
+            id
             abbreviation
           }
           position
@@ -143,6 +144,7 @@ export const notes = gql
           id
           name
           team {
+            id
             abbreviation
           }
           position
@@ -183,6 +185,7 @@ export const note = gql
           id
           name
           team {
+            id
             abbreviation
           }
           position
@@ -225,6 +228,7 @@ export const likes = gql
             id
             name
             team {
+              id
               abbreviation
             }
             position
@@ -261,6 +265,7 @@ export const players = gql
         name
         position
         team {
+          id
           city
           abbreviation
           nickname

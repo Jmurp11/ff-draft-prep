@@ -7,7 +7,9 @@ import { getRepository } from 'typeorm';
 @Resolver()
 export class PlayerResolver {
     @Query(() => [Player])
-    async players(@Arg('user', { nullable: true }) user: string) {
+    async players(
+        @Arg('user', { nullable: true }) user: string
+    ) {
         if (user) {
             return getRepository(Player)
                 .find({
@@ -20,14 +22,9 @@ export class PlayerResolver {
                         'notes.user',
                         'notes.likes'
                     ],
-                    where: {
-                        rank: {
-                            user: user
-                        }
-                    },
                     order: {
                         lastName: 'ASC'
-                    }
+                    },
                 });
         } else {
             return getRepository(Player)

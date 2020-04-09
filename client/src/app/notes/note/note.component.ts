@@ -5,6 +5,7 @@ import { User } from '../../auth/user.model';
 import { Subscription } from 'rxjs';
 import { NotesMutationsService } from '../notes-mutations.service';
 import { NoteService } from '../note.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-note',
@@ -22,6 +23,9 @@ export class NoteComponent implements OnInit, OnChanges, OnDestroy {
   @Input()
   loadingInput: boolean;
 
+  @Input()
+  isTableInput: boolean;
+
   auth$: Subscription;
   like$: Subscription;
   share$: Subscription;
@@ -31,11 +35,13 @@ export class NoteComponent implements OnInit, OnChanges, OnDestroy {
   userId: string;
   loading: boolean;
   hasNotes: boolean;
+  isTable: boolean;
 
   constructor(
     private _auth: AuthService,
     private _note: NoteService,
     private _noteM: NotesMutationsService,
+    private router: Router,
     private snackbar: MatSnackBar
   ) { }
 
@@ -75,6 +81,10 @@ export class NoteComponent implements OnInit, OnChanges, OnDestroy {
             this.notes = this.notesInput;
             break;
           }
+          case 'isTableInput': {
+            this.isTable = this.isTableInput;
+            break;
+          }
         }
       }
     }
@@ -96,6 +106,14 @@ export class NoteComponent implements OnInit, OnChanges, OnDestroy {
 
   createShare(note: any) {
     this._noteM.createShare(this.currentUser.id, note.id);
+  }
+
+  navigateToProfile(username: string) {
+    this.router.navigate([`./u/profile/${username}`]);
+  }
+
+  navigateToPlayer(player: string) {
+    this.router.navigate([`./d/player/${player}`]);
   }
 
   ngOnDestroy() {

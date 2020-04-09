@@ -11,8 +11,8 @@ export interface Note {
     lastName: string;
     name: string;
     team: {
+      id: string;
       abbreviation: string;
-
     };
     position: string;
   };

@@ -3,9 +3,9 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription, Observable } from 'rxjs';
 import { map, startWith, filter } from 'rxjs/operators';
-import { PlayerService } from '../../draft/player-table/player.service';
+import { PlayerService } from '../../draft/player/player.service';
 import { AuthService } from '../../auth/auth.service';
-import { Player } from '../../draft/player-table/player.model';
+import { Player } from '../../draft/player/player.model';
 import { MatDialogRef } from '@angular/material/dialog';
 import { NoteDialogComponent } from '../note-dialog/note-dialog.component';
 import { players } from '../queries';
@@ -52,6 +52,29 @@ export class CreateNoteComponent implements AfterContentInit, OnDestroy {
   ngAfterContentInit() {
     this.loading = true;
     this.players = [];
+
+    this.currentPlayer = {
+      id: '',
+      firstName: '',
+      lastName: '',
+      initialName: '',
+      name: '',
+      team: {
+        id: '',
+        city: '',
+        nickname: '',
+        abbreviation: '',
+        imageUrl: '',
+        stats: null,
+      },
+      rank: null,
+      defaultRank: null,
+      projection: null,
+      notes: null,
+      position: '',
+      depthChartPos: 0,
+      selected: false
+    };
 
     this.dismiss = 'Dismiss';
     this.playerIsValid = true;
@@ -179,7 +202,6 @@ export class CreateNoteComponent implements AfterContentInit, OnDestroy {
       isPrivate = false;
     }
 
-    console.log(user, title, player, body, source, isPrivate);
     this._noteM.createNote(user, player, title, body, source, isPrivate);
 
     if (!this.isPlayerPreSet) {
@@ -224,6 +246,7 @@ export class CreateNoteComponent implements AfterContentInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    this.resetForm();
     if (this.authSub$) {
       this.authSub$.unsubscribe();
     }

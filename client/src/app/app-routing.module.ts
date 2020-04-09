@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { AuthGuard } from './auth/auth.guard';
-import { PlayerTableComponent } from './draft/player-table/player-table.component';
+import { PlayerTableComponent } from './draft/player/player-table/player-table.component';
 import { HomeComponent } from './home/home.component';
 
 const routes: Routes = [
@@ -10,21 +10,21 @@ const routes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
   {
-    path: 'auth',
+    path: 'a',
     loadChildren: async () => {
       const module = await import('./auth/auth.module');
       return module.AuthModule;
     }
   },
   {
-    path: 'users',
+    path: 'u',
     loadChildren: async () => {
       const module = await import('./profile/profile.module');
       return module.ProfileModule;
     }
   },
   {
-    path: 'prep',
+    path: 'd',
     loadChildren: async () => {
       const module = await import('./draft/draft.module');
       return module.DraftModule;

@@ -13,9 +13,13 @@ mat-grid-list {
 }
 
 .card-content {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-content: space-between;
-    padding: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: space-between;
+  padding: 10px;
+}
+
+.note-btn {
+  padding: 0px;
 }

@@ -11,6 +11,7 @@ import { Apollo } from 'apollo-angular';
 })
 export class ProfileDetailComponent implements OnInit, OnDestroy {
   query$: Subscription;
+  route$: Subscription;
   loading: boolean;
   user: {
     id: string;
@@ -34,7 +35,7 @@ export class ProfileDetailComponent implements OnInit, OnDestroy {
       username: '',
       profileImage: ''
     };
-    this.route.params
+    this.route$ = this.route.params
       .subscribe((params: Params) => {
         this.username = params['username'];
         this.query$ = this.apollo.watchQuery<any>({
@@ -64,6 +65,11 @@ export class ProfileDetailComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.query$.unsubscribe();
+    if (this.query$) {
+      this.query$.unsubscribe();
+    }
+    if (this.route$) {
+      this.route$.unsubscribe();
+    }
   }
 }
