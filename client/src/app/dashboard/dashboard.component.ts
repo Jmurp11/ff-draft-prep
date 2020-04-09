@@ -39,13 +39,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
     private dialog: MatDialog,
     private _note: NoteService,
     private _noteQ: NotesQueriesService,
-    private _user: UserQueryService
+    private _userQ: UserQueryService
   ) { }
 
   ngOnInit() {
     this.likedNotes = [];
 
-    this.user$ = this._user.me().subscribe(({ data, loading }) => {
+    this.user$ = this._userQ.me().subscribe(({ data, loading }) => {
       this.user = data.me;
       this.userId = this.user.id;
       this.targets = this.user.targets;
