@@ -6,7 +6,7 @@ export class NoteInput {
     user: string;
 
     @Field()
-    player: number;
+    player: string;
 
     @Field()
     title: string;

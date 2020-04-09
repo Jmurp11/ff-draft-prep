@@ -1,0 +1,10 @@
+<div class="loading-div" *ngIf="loading">
+  <loading-spinner></loading-spinner>
+</div>
+<div *ngIf="!loading">
+  <div>Name: {{ player.name }}</div>
+  <div>Team: {{ player.team.city }} {{ player.team.nickname }}</div>
+  <div>Position: {{ player.position }}</div>
+  <div>Depth Chart: {{ player.depthChartPos }}</div>
+  <div>Rank: {{ (player.defaultRank !== null) ? player.defaultRank.rank : 'Not Ranked' }}</div>
+</div>

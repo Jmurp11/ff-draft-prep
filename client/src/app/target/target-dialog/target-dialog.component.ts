@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
-import { TargetService } from '../target.service';
 
 @Component({
   selector: 'app-target-dialog',
@@ -11,7 +10,6 @@ export class TargetDialogComponent implements OnInit {
 
   constructor(
     public dialogRef: MatDialogRef<TargetDialogComponent>,
-    private _target: TargetService
   ) { }
 
   ngOnInit() { }

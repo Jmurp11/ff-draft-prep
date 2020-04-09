@@ -5,11 +5,11 @@ import {
     BaseEntity,
     JoinColumn,
     ManyToOne
-} from "typeorm";
-import { ObjectType, Field } from "type-graphql";
-import { Player, User } from "./";
+} from 'typeorm';
+import { ObjectType, Field } from 'type-graphql';
+import { Player, User } from './';
 
-@Entity("targets")
+@Entity('targets')
 @ObjectType()
 export class Target extends BaseEntity {
     @Field()
@@ -21,7 +21,7 @@ export class Target extends BaseEntity {
     })
     @JoinColumn({ name: 'user' })
     @Field(() => User)
-    @Column("text")
+    @Column('text')
     user!: string;
 
     @ManyToOne(() => Player, {
@@ -30,7 +30,7 @@ export class Target extends BaseEntity {
     @JoinColumn({ name: 'player' })
     @Field(() => Player)
     @Column()
-    player!: number;
+    player!: string;
 
     @Field()
     @Column()

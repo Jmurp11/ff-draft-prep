@@ -1,59 +1,48 @@
-<div class='add-note-card'>
-  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="form">
-    <div class="loading-div" *ngIf="loading">
-      <loading-spinner></loading-spinner>
-    </div>
-    <mat-card class="note-card" *ngIf="!loading">
+<div class="loading-div" *ngIf="loading">
+  <loading-spinner></loading-spinner>
+</div>
+<div [ngClass]="{ 'note-cards-player': isTable, 'note-cards-dash': !isTable}" *ngIf="!loading">
+  <div fxLayout="column" fxLayoutAlign="center" fxLayoutGap="0.5%" *ngFor="let note of notes">
+    <mat-card class="note-card">
       <mat-card-header>
-        <div mat-card-avatar class="note-header-image" [ngStyle]="{ 'background-color': backgroundColor}"></div>
-        <mat-card-title *ngIf="isPlayerPreSet">{{ currentPlayer.player.name  }}
+        <div mat-card-avatar class="note-header-image" [style.backgroundImage]="'url(' + note.user.profileImage + ')'">
+        </div>
+        <mat-card-title>
+          {{ note.title }}
         </mat-card-title>
-        <mat-card-subtitle *ngIf="isPlayerPreSet">{{ currentPlayer.player.team.team.abbreviation }} -
-          {{currentPlayer.player.position }}
+        <mat-card-subtitle>
+          <button class="note-btn" mat-button color="primary" (click)="navigateToPlayer(note.player.id)">
+            {{ note.player.name }} {{ note.player.position }} - {{ note.player.team.abbreviation }}
+          </button>
+        </mat-card-subtitle>
+        <mat-card-subtitle>
+          <button class="note-btn" mat-button (click)="navigateToProfile(note.user.username)">
+            <mat-icon>account_circle</mat-icon> {{ note.user.username }}
+          </button>
         </mat-card-subtitle>
       </mat-card-header>
       <mat-card-content>
-        <section class="checkbox-section">
-          <mat-checkbox color="primary" formControlName="isPrivate">Private</mat-checkbox>
-        </section>
-
-        <mat-form-field class="note-input" *ngIf="!isPlayerPreSet">
-          <input matInput placeholder="Player" formControlName="player" class="form-control"
-            [matAutocomplete]="auto">
-        </mat-form-field>
-
-        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
-          <mat-option *ngFor="let player of filteredOptions | async" [value]="player">
-            {{ player.name }} {{ player.team.team.abbreviation }} - {{ player.position }}
-          </mat-option>
-        </mat-autocomplete>
-
-        <mat-form-field class="note-input">
-          <input matInput placeholder="Title" formControlName="title" class="form-control">
-        </mat-form-field>
-
-        <mat-form-field class="note-input">
-          <textarea matInput placeholder="Note" formControlName="note" class="form-control"></textarea>
-        </mat-form-field>
-
-        <mat-form-field>
-          <mat-label>Source</mat-label>
-          <mat-select formControlName="source" class="form-control">
-            <mat-option *ngFor="let source of sources" [value]="source">
-              {{ source }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
+        <div class='card-content'>{{ note.body }}</div>
+        <div class='card-content'>Source: {{ note.source }}</div>
+        <div class="card-content">{{ note.creationTime | date: "MMM dd, yyyy hh:mm " }}</div>
       </mat-card-content>
-      <mat-card-actions>
-        <div class="form-group">
-          <button mat-raised-button color="primary" [disabled]="loading" class="btn btn-primary note-btn"
-            (click)="onSubmit()">
-            <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
-            Save
+      <mat-card-actions fxLayout="row" fxAlign="center center" fxLayoutGap="5.0%">
+        <div class="action-btn" fxFlex="30%">
+          <button mat-icon-button color="accent" (click)="addLike(note)">
+            <mat-icon>favorite</mat-icon>
+          </button>
+        </div>
+        <div class="action-btn" fxFlex="30%">
+          <button mat-icon-button color="primary" (click)="createShare(note)">
+            <mat-icon>share</mat-icon>
+          </button>
+        </div>
+        <div class="action-btn" fxFlex="30%">
+          <button mat-icon-button color="warn" (click)="deleteNote(note)">
+            <mat-icon>delete</mat-icon>
           </button>
         </div>
       </mat-card-actions>
     </mat-card>
-  </form>
-</div>
+    <mat-divider></mat-divider>
+  </div>

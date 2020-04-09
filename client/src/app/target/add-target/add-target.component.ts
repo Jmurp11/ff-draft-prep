@@ -9,6 +9,7 @@ import { Apollo } from 'apollo-angular';
 import { Subscription, Observable } from 'rxjs';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { players } from '../../notes/queries';
+import { User } from '../../auth/user.model';
 
 @Component({
   selector: 'app-add-target',
@@ -22,7 +23,7 @@ export class AddTargetComponent implements AfterContentInit, OnDestroy {
   players$: Subscription;
   filteredOptions: Observable<any[]>;
   form: FormGroup;
-  userId: string;
+  user: User;
   loading: boolean;
   players: any[];
   rounds: number[];
@@ -73,7 +74,7 @@ export class AddTargetComponent implements AfterContentInit, OnDestroy {
     });
 
     this.user$ = this._auth.user.subscribe(user => {
-      this.userId = user.id;
+      this.user = user;
     });
 
     this.players$ = this.apollo.watchQuery<any>({
@@ -109,7 +110,7 @@ export class AddTargetComponent implements AfterContentInit, OnDestroy {
       return;
     }
 
-    const user = this.userId;
+    const user = this.user.id;
     const player = this.form.get('player').value;
     const round = this.form.get('rounds').value;
 
@@ -129,7 +130,7 @@ export class AddTargetComponent implements AfterContentInit, OnDestroy {
 
   displayFn(player: any): string {
     if (player) {
-      return `${player.name} ${player.team.team.abbreviation} - ${player.position}`;
+      return `${player.name} ${player.team.abbreviation} - ${player.position}`;
     }
   }
 

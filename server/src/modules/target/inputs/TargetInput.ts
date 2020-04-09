@@ -6,7 +6,7 @@ export class TargetInput {
     user: string;
 
     @Field()
-    player: number;
+    player: string;
 
     @Field()
     round: number;

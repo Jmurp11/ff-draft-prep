@@ -1,5 +1,5 @@
 import { Resolver, Query, Mutation, Arg } from 'type-graphql';
-import { Player, Team, TeamStats } from '../../entity';
+import { Player } from '../../entity';
 import { Result } from '../../shared';
 import { PlayerInput } from './inputs/PlayerInput';
 import { getRepository } from 'typeorm';
@@ -7,23 +7,59 @@ import { getRepository } from 'typeorm';
 @Resolver()
 export class PlayerResolver {
     @Query(() => [Player])
-    async players() {
-        return getRepository(Player)
-        .find({
-            relations: ['team', 'team.team'],
-            order: {
-                lastName: 'ASC'
-            }
-        });
+    async players(
+        @Arg('user', { nullable: true }) user: string
+    ) {
+        if (user) {
+            return getRepository(Player)
+                .find({
+                    relations: [
+                        'team',
+                        'projection',
+                        'rank',
+                        'defaultRank',
+                        'notes',
+                        'notes.user',
+                        'notes.likes'
+                    ],
+                    order: {
+                        lastName: 'ASC'
+                    },
+                });
+        } else {
+            return getRepository(Player)
+                .find({
+                    relations: [
+                        'team',
+                        'projection',
+                        'rank',
+                        'defaultRank',
+                        'notes',
+                        'notes.user',
+                        'notes.likes'
+                    ],
+                    order: {
+                        lastName: 'ASC'
+                    }
+                });
+        }
     }
 
     @Query(() => Player)
     async player(@Arg('id') id: string) {
         return getRepository(Player)
-        .findOne({
-            relations: ['team', 'team.team'], 
-            where: { id }
-        });
+            .findOne({
+                relations: [
+                    'team',
+                    'projection',
+                    'rank',
+                    'defaultRank',
+                    'notes',
+                    'notes.user',
+                    'notes.likes'
+                ],
+                where: { id }
+            });
     }
 
     @Mutation(() => Result)
@@ -33,23 +69,12 @@ export class PlayerResolver {
             lastName,
             team,
             position,
-            rank,
-            adp,
-            tier
+            depthChartPos
         }: PlayerInput
     ): Promise<Result> {
-        const teamResult = await Team.findOne({
-            where: { abbreviation: team }
-        });
-
-        const teamStatsResult = await TeamStats.findOne({
-            where: { id: teamResult!.id }
-        });
-
-        const teamId = teamStatsResult!.id;
 
         const playerExists = await Player.findOne({
-            where: { firstName, lastName, teamId, position },
+            where: { firstName, lastName, team, position },
             select: ["id"]
         });
 
@@ -67,11 +92,9 @@ export class PlayerResolver {
         await Player.create({
             firstName,
             lastName,
-            team: teamId,
+            team,
             position,
-            rank,
-            adp,
-            tier
+            depthChartPos
         }).save();
 
         return {
