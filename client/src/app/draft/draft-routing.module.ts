@@ -5,7 +5,8 @@ import { AuthGuard } from '../auth/auth.guard';
 import { DraftLobbyComponent } from './draft-lobby/draft-lobby.component';
 import { DraftPrepComponent } from './draft-prep/draft-prep.component';
 import { MockDraftComponent } from './mock-draft/mock-draft.component';
-
+import { PlayerComponent } from './player/player.component';
+import { PlayerDetailComponent } from './player/player-detail/player-detail.component';
 
 const draftRoutes: Routes = [
     {
@@ -28,6 +29,17 @@ const draftRoutes: Routes = [
                 ]
             }
         ]
+    },
+    {
+      path: 'player',
+      component: PlayerComponent,
+      canActivate: [AuthGuard],
+      children: [
+        {
+          path: ':id',
+          component: PlayerDetailComponent
+        }
+      ]
     }
 ];
 

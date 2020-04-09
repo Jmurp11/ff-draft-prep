@@ -2,7 +2,7 @@ import gql from 'graphql-tag';
 
 export const createNote = gql
   `
-    mutation createNote($user: String!, $player: Float!, $title: String!, $body: String!,
+    mutation createNote($user: String!, $player: String!, $title: String!, $body: String!,
         $source: String!, $isPrivate: Boolean!) {
       createNote(input: { user: $user, player: $player, title: $title, body: $body,
         source: $source, isPrivate: $isPrivate }) {
@@ -18,8 +18,11 @@ export const createNote = gql
 
 export const deleteNote = gql
   `
-    mutation deleteNote($id: String!) {
-      deleteNote(id: $id) {
+    mutation deleteNote($id: String!, $user: String!) {
+      deleteNote(input: {
+        id: $id,
+        user: $user
+      }) {
         success {
           message
         }
@@ -86,128 +89,172 @@ export const deleteShare = gql
     }
 `;
 
-export const notes = gql
-  `
-    query {
-      notes {
-        id
-        user {
-          username
-          profileImage
-        }
-        player {
-          id
-          firstName
-          lastName
-          name
-          team {
-            team {
-              abbreviation
-            }
-          }
-          position
-        }
-        title
-        body
-        source
-        isPrivate
-        creationTime
-      }
-    }
-  `;
-
 export const publicNotes = gql
   `
     query {
-      publicNotes {
+      notes(user: null) {
         id
         user {
+          id
           username
           profileImage
         }
         player {
           id
-          firstName
-          lastName
           name
           team {
-            team {
-              abbreviation
-            }
+            id
+            abbreviation
           }
           position
         }
         title
         body
         source
-        isPrivate
-        creationTime
-      }
-    }
-  `;
-
-export const userNotes = gql
-  `
-    query userNotes($user: String!){
-      userNotes(user: $user) {
-        id
-        user {
-          username
-          profileImage
-        }
-        player {
-          id
-          firstName
-          lastName
-          name
-          team {
-            team {
-              abbreviation
-            }
-          }
-          position
-        }
-        title
-        body
-        source
-        isPrivate
-        creationTime
-      }
-    }
-  `;
-
-export const likedNotes = gql
-  `
-    query likes($userId: String!){
-      likes(userId: $userId) {
-        note {
+        likes {
           id
           user {
+            id
+            username
+          }
+        }
+        shares {
+          id
+          user {
+            id
+            username
+          }
+        }
+        creationTime
+      }
+    }
+  `;
+
+export const notes = gql
+  `
+    query notes($user: String) {
+      notes(user: $user) {
+        id
+        user {
+          id
+          username
+          profileImage
+        }
+        player {
+          id
+          name
+          team {
+            id
+            abbreviation
+          }
+          position
+        }
+        title
+        body
+        source
+        likes {
+          id
+          user {
+            id
+            username
+          }
+        }
+        shares {
+          id
+          user {
+            id
+            username
+          }
+        }
+        creationTime
+      }
+    }
+  `;
+
+export const note = gql
+  `
+    query note($id: String!) {
+      note(id: $id) {
+        id
+        user {
+          id
+          username
+          profileImage
+        }
+        player {
+          id
+          name
+          team {
+            id
+            abbreviation
+          }
+          position
+        }
+        title
+        body
+        source
+        likes {
+          id
+          user {
+            id
+            username
+          }
+        }
+        shares {
+          id
+          user {
+            id
+            username
+          }
+        }
+        creationTime
+      }
+    }
+  `;
+
+
+export const likes = gql
+  `
+    query likes($user: String!) {
+      likes(user: $user) {
+        id
+        note {
+          user {
+            id
             username
             profileImage
           }
           player {
             id
-            firstName
-            lastName
             name
             team {
-              team {
-                abbreviation
-              }
+              id
+              abbreviation
             }
             position
           }
           title
           body
           source
-          isPrivate
+          likes {
+            id
+            user {
+              id
+              username
+            }
+          }
+          shares {
+            id
+            user {
+              id
+              username
+            }
+          }
           creationTime
         }
       }
     }
   `;
-
 export const players = gql
   `
     query {
@@ -218,11 +265,10 @@ export const players = gql
         name
         position
         team {
-          team {
-            city
-            abbreviation
-            nickname
-          }
+          id
+          city
+          abbreviation
+          nickname
         }
       }
     }

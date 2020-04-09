@@ -5,7 +5,7 @@ export interface Target {
       id: string;
     };
     player: {
-      id: number;
+      id: string;
       name: string;
       team: {
         team: {

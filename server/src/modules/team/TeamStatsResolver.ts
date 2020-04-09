@@ -58,7 +58,7 @@ export class TeamStatsResolver {
             }
         });
 
-        if (!team) {
+        if (!teamResult) {
             return {
                 errors: [
                     {
@@ -70,7 +70,7 @@ export class TeamStatsResolver {
         }
 
         await TeamStats.create({
-            team: teamResult!.id,
+            team,
             bye,
             rank,
             passRank,

@@ -7,6 +7,7 @@ export const userByUsername = gql
       id
       email
       username
+      profileImage
     }
   }
 `;

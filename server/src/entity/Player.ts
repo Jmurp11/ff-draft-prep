@@ -1,60 +1,71 @@
 import {
-    Entity,
-    Column,
-    PrimaryGeneratedColumn,
-    BaseEntity,
-    JoinColumn,
-    ManyToOne
-} from "typeorm";
-import { ObjectType, Field, Root } from "type-graphql";
-import { TeamStats } from "./";
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  BaseEntity,
+  JoinColumn,
+  ManyToOne,
+  OneToOne,
+  OneToMany
+} from 'typeorm';
+import { ObjectType, Field, Root } from 'type-graphql';
+import { Team, Rank, Projection, DefaultRank } from './';
+import { Note } from './Note';
 
-@Entity("players")
+@Entity('players')
 @ObjectType()
 export class Player extends BaseEntity {
-    @Field()
-    @PrimaryGeneratedColumn()
-    id!: number;
+  @Field()
+  @PrimaryGeneratedColumn('uuid')
+  id!: string;
 
-    @Field()
-    @Column("text")
-    firstName!: string;
+  @Field()
+  @Column('text')
+  firstName!: string;
 
-    @Field()
-    @Column("text")
-    lastName!: string;
+  @Field()
+  @Column('text')
+  lastName!: string;
 
-    @Field()
-    name(@Root() parent: Player): string {
-      return `${parent.firstName} ${parent.lastName}`;
-    }
-    
-    @Field()
-    initialName(@Root() parent: Player): string {
-      return `${parent.firstName.substring(0, 1)}. ${parent.lastName}`;
-    }
+  @Field()
+  name(@Root() parent: Player): string {
+    return `${parent.firstName} ${parent.lastName}`;
+  }
 
-    @ManyToOne(() => TeamStats, {
-        eager: true
-    })
-    @JoinColumn({ name: 'team' })
-    @Field(() => TeamStats, { nullable: true })
-    @Column("int")
-    team!: number;
+  @Field()
+  initialName(@Root() parent: Player): string {
+    return `${parent.firstName.substring(0, 1)}. ${parent.lastName}`;
+  }
 
-    @Field()
-    @Column("text")
-    position!: string;
+  @ManyToOne(() => Team, {
+    eager: true
+  })
+  @JoinColumn({ name: 'team' })
+  @Field(() => Team, { nullable: true })
+  @Column('int')
+  team!: number;
 
-    @Field()
-    @Column("int")
-    rank!: number;
+  @Field()
+  @Column('text')
+  position!: string;
 
-    @Field()
-    @Column("float")
-    adp!: number;
+  @Field()
+  @Column('int')
+  depthChartPos!: number;
 
-    @Field()
-    @Column("text")
-    tier!: string;
+  @OneToOne(() => Projection, projection => projection.player)
+  @Field(() => Projection, { nullable: true })
+  projection: Projection;
+
+  @OneToMany(() => Rank, rank => rank.player)
+  @Field(() => [Rank], { nullable: true })
+  rank: Rank[];
+
+  @OneToOne(() => DefaultRank, defaultRank => defaultRank.player)
+  @Field(() => DefaultRank, { nullable: true })
+  defaultRank: DefaultRank;
+
+  @OneToMany(() => Note, note => note.player)
+  @Field(() => [Note], { nullable: true })
+  notes: Note[];
 }

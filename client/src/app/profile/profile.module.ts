@@ -5,6 +5,8 @@ import { EditProfileComponent } from './edit-profile/edit-profile.component';
 import { ProfileRoutingModule } from './profile-routing.module';
 import { ProfileDetailComponent } from './profile-detail/profile-detail.component';
 import { RouterModule } from '@angular/router';
+import { NoteModule } from '../notes/note.module';
+import { TargetModule } from '../target/target.module';
 
 @NgModule({
   declarations: [
@@ -20,6 +22,8 @@ import { RouterModule } from '@angular/router';
   imports: [
     RouterModule,
     ProfileRoutingModule,
+    NoteModule,
+    TargetModule,
     SharedModule
   ]
 })

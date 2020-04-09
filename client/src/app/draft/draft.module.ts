@@ -2,12 +2,14 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { SharedModule } from '../shared/shared.module';
 import { DraftComponent } from './draft.component';
-import { PlayerTableComponent } from './player-table/player-table.component';
+import { PlayerTableComponent } from './player/player-table/player-table.component';
 import { DraftPrepComponent } from './draft-prep/draft-prep.component';
 import { DraftLobbyComponent } from './draft-lobby/draft-lobby.component';
 import { MockDraftComponent } from './mock-draft/mock-draft.component';
 import { DraftRoutingModule } from './draft-routing.module';
 import { NoteModule } from '../notes/note.module';
+import { PlayerDetailComponent } from './player/player-detail/player-detail.component';
+import { PlayerComponent } from './player/player.component';
 
 @NgModule({
   declarations: [
@@ -15,14 +17,18 @@ import { NoteModule } from '../notes/note.module';
     DraftLobbyComponent,
     DraftPrepComponent,
     MockDraftComponent,
-    PlayerTableComponent
+    PlayerComponent,
+    PlayerTableComponent,
+    PlayerDetailComponent
   ],
   exports: [
     DraftComponent,
     DraftLobbyComponent,
     DraftPrepComponent,
     MockDraftComponent,
-    PlayerTableComponent
+    PlayerComponent,
+    PlayerTableComponent,
+    PlayerDetailComponent
   ],
   imports: [
     RouterModule,

@@ -11,7 +11,6 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./register.component.css']
 })
 export class RegisterComponent implements OnInit {
-  id: number;
   form: FormGroup;
   register$: Subscription;
   nameIsValid = true;

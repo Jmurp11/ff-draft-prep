@@ -5,7 +5,7 @@
     </div>
     <mat-card class="target-card" *ngIf="!loading">
       <mat-card-header>
-        <div mat-card-avatar class="note-header-image" [ngStyle]="{ 'background-color': backgroundColor}"></div>
+        <div mat-card-avatar class="note-header-image" [style.backgroundImage]="'url(' + user.profileImage + ')'"></div>
       </mat-card-header>
 
       <mat-card-content>
@@ -15,7 +15,7 @@
 
         <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
           <mat-option *ngFor="let player of filteredOptions | async" [value]="player">
-            {{ player.name }} {{ player.team.team.abbreviation }} - {{ player.position }}
+            {{ player.name }} {{ player.team.abbreviation }} - {{ player.position }}
           </mat-option>
         </mat-autocomplete>
 

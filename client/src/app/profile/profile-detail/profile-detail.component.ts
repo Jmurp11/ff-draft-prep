@@ -11,11 +11,13 @@ import { Apollo } from 'apollo-angular';
 })
 export class ProfileDetailComponent implements OnInit, OnDestroy {
   query$: Subscription;
+  route$: Subscription;
   loading: boolean;
   user: {
     id: string;
     email: string;
     username: string;
+    profileImage: string;
   };
   username: string;
 
@@ -30,9 +32,10 @@ export class ProfileDetailComponent implements OnInit, OnDestroy {
     this.user = {
       id: '',
       email: '',
-      username: ''
+      username: '',
+      profileImage: ''
     };
-    this.route.params
+    this.route$ = this.route.params
       .subscribe((params: Params) => {
         this.username = params['username'];
         this.query$ = this.apollo.watchQuery<any>({
@@ -47,7 +50,8 @@ export class ProfileDetailComponent implements OnInit, OnDestroy {
             this.user = {
               id: data.userByUsername.id,
               email: data.userByUsername.email,
-              username: data.userByUsername.username
+              username: data.userByUsername.username,
+              profileImage: data.userByUsername.profileImage
             };
             if (!this.user) {
               this.router.navigate(['dashboard']);
@@ -61,6 +65,11 @@ export class ProfileDetailComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.query$.unsubscribe();
+    if (this.query$) {
+      this.query$.unsubscribe();
+    }
+    if (this.route$) {
+      this.route$.unsubscribe();
+    }
   }
 }

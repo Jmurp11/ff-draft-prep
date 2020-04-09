@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../auth.service';
 import { Subscription } from 'rxjs';
@@ -9,7 +9,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   templateUrl: './confirm-user.component.html',
   styleUrls: ['./confirm-user.component.css']
 })
-export class ConfirmUserComponent implements OnInit {
+export class ConfirmUserComponent implements OnInit, OnDestroy {
   token: string;
   auth$: Subscription;
   dismissSnackbar: string;

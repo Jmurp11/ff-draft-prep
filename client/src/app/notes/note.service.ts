@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Apollo } from 'apollo-angular';
-import { createNote, userNotes, publicNotes, deleteNote, addLike, createShare, likedNotes } from './queries';
 import { BehaviorSubject } from 'rxjs';
-import { AuthService } from '../auth/auth.service';
+import { Note } from './note.model';
 
 export interface NoteResponse {
   success: boolean;
@@ -17,155 +15,25 @@ export class NoteService {
   deleteStatus = new BehaviorSubject<NoteResponse>(null);
   likeStatus = new BehaviorSubject<NoteResponse>(null);
   shareStatus = new BehaviorSubject<NoteResponse>(null);
-  hasNotes = new BehaviorSubject<boolean>(null);
   clearNoteForm = new BehaviorSubject<boolean>(null);
   populatePlayer = new BehaviorSubject<boolean>(true);
 
-  constructor(
-    private apollo: Apollo
-  ) { }
+  constructor() { }
 
-  createNote(
-    user: string, player: number, title: string, body: string,
-    source: string, isPrivate: boolean) {
-    this.apollo.mutate({
-      mutation: createNote,
-      variables: {
-        user,
-        player,
-        title,
-        body,
-        source,
-        isPrivate
-      },
-      refetchQueries: [
-        {
-          query: userNotes,
-          variables: {
-            user
-          }
-        },
-        {
-          query: publicNotes
-        }
-      ]
-    }).subscribe(({ data }) => {
-      if (!data.createNote.success) {
-        const response = {
-          success: false,
-          message: data.createNote.errors[0].message
-        };
-
-        this.noteStatus.next(response);
-      } else {
-        const response = {
-          success: true,
-          message: data.createNote.success[0].message
-        };
-
-        this.noteStatus.next(response);
-      }
-    });
+  setNoteStatus(response: NoteResponse) {
+    this.noteStatus.next(response);
   }
 
-  deleteNote(id: string, user: string) {
-    this.apollo.mutate({
-      mutation: deleteNote,
-      variables: {
-        id
-      },
-      refetchQueries: [
-        {
-          query: userNotes,
-          variables: {
-            user
-          }
-        },
-        {
-          query: publicNotes
-        }
-      ]
-    }).subscribe(({ data }) => {
-      if (!data.deleteNote.success) {
-        const response = {
-          success: false,
-          message: data.deleteNote.errors[0].message
-        };
-
-        this.noteStatus.next(response);
-      } else {
-        const response = {
-          success: true,
-          message: data.deleteNote.success[0].message
-        };
-
-        this.noteStatus.next(response);
-      }
-    });
+  setDeleteStatus(response: NoteResponse) {
+    this.deleteStatus.next(response);
   }
 
-  addLike(user: string, note: string) {
-    this.apollo.mutate({
-      mutation: addLike,
-      variables: {
-        user,
-        note
-      },
-      refetchQueries: [
-        {
-          query: likedNotes,
-          variables: {
-            userId: user
-          }
-        }
-      ]
-    }).subscribe(({ data }) => {
-      if (!data.addLike.success) {
-        const response = {
-          success: false,
-          message: data.addLike.errors[0].message
-        };
-
-        this.likeStatus.next(response);
-      } else {
-        const response = {
-          success: true,
-          message: data.addLike.success[0].message
-        };
-
-        this.likeStatus.next(response);
-      }
-    });
+  setLikeStatus(response: NoteResponse) {
+    this.likeStatus.next(response);
   }
 
-  createShare(user: string, note: string) {
-    this.apollo.mutate({
-      mutation: createShare,
-      variables: {
-        user,
-        note
-      }
-    }).subscribe(({ data }) => {
-      if (!data.createShare.success) {
-        const response = {
-          success: false,
-          message: data.createShare.errors[0].message
-        };
-
-        this.shareStatus.next(response);
-      } else {
-        const response = {
-          success: true,
-          message: data.createShare.success[0].message
-        };
-
-        this.shareStatus.next(response);
-      }
-    });
-  }
-
-  setHasNotes(hasNotes: boolean) {
-    this.hasNotes.next(hasNotes);
+  setShareStatus(response: NoteResponse) {
+    this.shareStatus.next(response);
   }
 
   prepopulatePlayer(val: boolean) {

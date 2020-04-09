@@ -9,17 +9,11 @@ export class PlayerInput {
     lastName: string;
 
     @Field()
-    team: string;
+    team: number;
 
     @Field()
     position: string;
 
     @Field()
-    rank!: number;
-
-    @Field()
-    adp!: number;
-
-    @Field()
-    tier!: string;
+    depthChartPos!: number;
 }

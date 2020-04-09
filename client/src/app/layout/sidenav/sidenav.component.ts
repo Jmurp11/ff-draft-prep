@@ -32,9 +32,9 @@ export class SidenavComponent implements OnInit, OnDestroy {
 
     this.links = [
       './dashboard',
-      `./prep/draft/${this.username}/draft-prep`,
-      './prep/draft/draft-lobby',
-      `./users/profile/${this.username}`
+      `./d/draft/${this.username}/draft-prep`,
+      './d/draft/draft-lobby',
+      `./u/profile/${this.username}`
     ];
   }
 

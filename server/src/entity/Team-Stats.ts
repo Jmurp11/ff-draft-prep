@@ -5,115 +5,112 @@ import {
     BaseEntity,
     ManyToOne,
     JoinColumn
-} from "typeorm";
-import { ObjectType, Field } from "type-graphql";
-import { Team } from "../entity";
+} from 'typeorm';
+import { ObjectType, Field } from 'type-graphql';
+import { Team } from '../entity';
 
-@Entity("teamstats")
+@Entity('teamstats')
 @ObjectType()
 export class TeamStats extends BaseEntity {
     @Field()
     @PrimaryGeneratedColumn()
     id!: number;
 
-    @ManyToOne(() => Team, {
-        eager: true
-    })
-    @JoinColumn({ name: 'team'})
-    @Field(() => Team)
-    @Column("int")
+    @ManyToOne(() => Team)
+    @JoinColumn({ name: 'team' })
+    @Field(() => Team, { nullable: true })
+    @Column('int', { nullable: true })
     team!: number;
 
     @Field()
-    @Column("int")
+    @Column('int')
     bye!: number;
 
-
     @Field()
-    @Column("int")
+    @Column('int')
     rank!: number;
 
     @Field()
-    @Column("int")
+    @Column('int')
     passRank!: number;
 
     @Field()
-    @Column("int")
+    @Column('int')
     rushRank!: number;
 
     @Field()
-    @Column("float")
+    @Column('float')
     pointsFor!: number;
 
     @Field()
-    @Column("float")
+    @Column('float')
     yards!: number;
 
     @Field()
-    @Column("float")
+    @Column('float')
     plays!: number;
 
     @Field()
-    @Column("float")
+    @Column('float')
     yardsPerPlay!: number;
 
     @Field()
-    @Column("float")
+    @Column('float')
     turnovers!: number;
 
     @Field()
-    @Column("float")
+    @Column('float')
     passAttempts!: number;
 
     @Field()
-    @Column("float")
+    @Column('float')
     passCompletions!: number;
 
     @Field()
-    @Column("float")
+    @Column('float')
     passYards!: number;
 
     @Field()
-    @Column("float")
+    @Column('float')
     passTd!: number;
 
     @Field()
-    @Column("float")
+    @Column('float')
     interception!: number;
 
     @Field()
-    @Column("float")
+    @Column('float')
     netYardsPerPass!: number;
 
     @Field()
-    @Column("float")
+    @Column('float')
     rushAttempt!: number;
 
     @Field()
-    @Column("float")
+    @Column('float')
     rushYards!: number;
 
     @Field()
-    @Column("float")
+    @Column('float')
     rushTd!: number;
 
     @Field()
-    @Column("float")
+    @Column('float')
     yardsPerRush!: number;
 
     @Field()
-    @Column("float")
+    @Column('float')
     scorePercentage!: number;
 
     @Field()
-    @Column("float")
+    @Column('float')
     turnoverPercentage!: number;
 
     @Field()
-    @Column("float")
+    @Column('float')
     offensiveLineRank!: number;
 
     @Field()
-    @Column("float")
+    @Column('float')
     runningBackSoS!: number;
 }

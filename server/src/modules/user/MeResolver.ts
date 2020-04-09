@@ -18,6 +18,15 @@ export class MeResolver {
             const token = authorization.split(" ")[1];
             const payload: any = verify(token, process.env.ACCESS_TOKEN_SECRET!);
             return User.findOne({
+                relations: [
+                    'likes',
+                    'likes.user',
+                    'likes.note',
+                    'notes',
+                    'shares',
+                    'targets',
+                    'ranks'
+                ],
                 where: {
                     id: payload.userId
                 }
