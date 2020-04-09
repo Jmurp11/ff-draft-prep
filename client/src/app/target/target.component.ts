@@ -20,7 +20,7 @@ export class TargetComponent implements OnInit, OnChanges, OnDestroy {
   @Input()
   loadingInput: boolean;
 
-  targets: any;
+  targets: any[];
   loading: boolean;
   user: string;
   deleteStatus$: Subscription;
@@ -37,6 +37,7 @@ export class TargetComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnInit() {
     this.loading = true;
+
     this.deleteStatus$ = this._target.deleteStatus.subscribe(response => {
       if (response) {
         this.openSnackBar(response.message, this.dismiss);
@@ -54,7 +55,7 @@ export class TargetComponent implements OnInit, OnChanges, OnDestroy {
             break;
           }
           case 'targetsInput': {
-            this.targets = this.targetsInput;
+            this.targets = this.targetsInput || [];
             this.targets.sort((a, b) => a.round - b.round);
             if (this.targets.length > 0) {
               this.hasTargets = true;
