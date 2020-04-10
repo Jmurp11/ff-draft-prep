@@ -119,6 +119,8 @@ export const player = gql
       team {
         id
         abbreviation
+        city
+        nickname
         stats {
           id
           bye

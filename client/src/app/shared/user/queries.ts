@@ -12,6 +12,18 @@ export const user = gql
     }
 `;
 
+export const users = gql
+  `
+    query {
+      users {
+        id
+        username
+        email
+        profileImage
+      }
+    }
+`;
+
 export const meQuery = gql
   `
   query {

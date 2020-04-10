@@ -27,7 +27,7 @@
       <ng-container matColumnDef="draft">
         <th mat-header-cell *matHeaderCellDef mat-sort-header></th>
         <td mat-cell *matCellDef="let player">
-          <button mat-icon-button color="accent" (click)="toggleRow(player)">
+          <button mat-icon-button color="primary" (click)="toggleRow(player)">
             <mat-icon>{{ player.selected ? 'undo' : 'add' }}</mat-icon>
           </button>
         </td>
@@ -36,7 +36,7 @@
       <ng-container matColumnDef="note">
         <th mat-header-cell *matHeaderCellDef mat-sort-header></th>
         <td mat-cell *matCellDef="let player">
-          <button mat-icon-button color="accent" (click)="drawer.toggle()" (click)="addNoteClick()">
+          <button mat-icon-button color="primary" (click)="drawer.toggle()" (click)="addNoteClick()">
             <mat-icon>note_add</mat-icon>
           </button>
         </td>

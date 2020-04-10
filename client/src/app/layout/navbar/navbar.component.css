@@ -3,7 +3,7 @@
 }
 
 .title {
-  font-size: 28px;
+  font-size: 2em;
   font-weight: bold;
   font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
 }
@@ -20,42 +20,13 @@
 }
 
 .menu-option {
-  font-size: 18px;
-  padding: 15px;
-}
-
-.middle-options {
-  display: flex;
-  justify-content: space-between;
-  align-content: space-between
-}
-
-.span1 {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  justify-content: center;
-  align-items: center;
-  align-content: space-between;
-}
-
-.span2 {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  justify-content: flex-end;
-  align-items: center;
-  align-content: space-between;
+  font-size: 1.125em;
 }
 
 .nav-button {
-  font-size: 16px;
+  font-size: 1em;
 }
 
 .fill-space {
   flex: 1 1 auto;
-}
-
-.home-btn {
-  padding-left: 10px;
 }

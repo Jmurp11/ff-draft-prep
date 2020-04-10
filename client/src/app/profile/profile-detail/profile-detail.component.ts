@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router, Params } from '@angular/router';
-import { userByUsername } from '../queries';
+import { user } from '../../shared/user/queries';
 import { Subscription } from 'rxjs';
 import { Apollo } from 'apollo-angular';
 
@@ -39,7 +39,7 @@ export class ProfileDetailComponent implements OnInit, OnDestroy {
       .subscribe((params: Params) => {
         this.username = params['username'];
         this.query$ = this.apollo.watchQuery<any>({
-          query: userByUsername,
+          query: user,
           variables: {
             username: this.username
           }
