@@ -2,18 +2,18 @@ import { NgModule } from '@angular/core';
 import { SharedModule } from '../shared/shared.module';
 import { NavbarComponent } from './navbar/navbar.component';
 import { FooterComponent } from './footer/footer.component';
-import { SidenavComponent } from './sidenav/sidenav.component';
+import { SearchbarComponent } from './searchbar/searchbar.component';
 
 @NgModule({
     declarations: [
         NavbarComponent,
         FooterComponent,
-        SidenavComponent
+        SearchbarComponent
     ],
     exports: [
         NavbarComponent,
         FooterComponent,
-        SidenavComponent
+        SearchbarComponent
     ],
     imports: [
         SharedModule

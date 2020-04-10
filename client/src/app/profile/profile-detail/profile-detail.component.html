@@ -4,9 +4,10 @@
 
 <div *ngIf="!loading">
   <button mat-raised-button color="accent" (click)="navigateToEdit()">Edit Profile</button>
-
-  <div>{{ user.username }}</div>
-  <div>{{ user.id }}</div>
-  <div>{{ user.email }}</div>
-  <div>{{ user.profileImage }}</div>
+  <div>
+    <div>ID: {{ user.id }}</div>
+    <div>Username: {{ user.username }}</div>
+    <div>Email: {{ user.email }}</div>
+    <div>Profile Image: {{ user.profileImage }}</div>
+  </div>
 </div>

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
-import { meQuery, user } from './queries';
+import { meQuery, user, users } from './queries';
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +15,12 @@ export class UserQueryService {
       variables: {
         username
       }
+    }).valueChanges;
+  }
+
+  users() {
+    return this.apollo.watchQuery<any>({
+      query: users
     }).valueChanges;
   }
 
