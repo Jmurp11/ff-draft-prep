@@ -3,6 +3,7 @@ import { ActivatedRoute, Router, Params } from '@angular/router';
 import { user } from '../../shared/user/queries';
 import { Subscription } from 'rxjs';
 import { Apollo } from 'apollo-angular';
+import { UserQueryService } from 'src/app/shared/user/user-query.service';
 
 @Component({
   selector: 'app-profile-detail',
@@ -10,7 +11,7 @@ import { Apollo } from 'apollo-angular';
   styleUrls: ['./profile-detail.component.css']
 })
 export class ProfileDetailComponent implements OnInit, OnDestroy {
-  query$: Subscription;
+  user$: Subscription;
   route$: Subscription;
   loading: boolean;
   user: {
@@ -22,7 +23,7 @@ export class ProfileDetailComponent implements OnInit, OnDestroy {
   username: string;
 
   constructor(
-    private apollo: Apollo,
+    private _userQ: UserQueryService,
     private route: ActivatedRoute,
     private router: Router
   ) { }
@@ -38,13 +39,7 @@ export class ProfileDetailComponent implements OnInit, OnDestroy {
     this.route$ = this.route.params
       .subscribe((params: Params) => {
         this.username = params['username'];
-        this.query$ = this.apollo.watchQuery<any>({
-          query: user,
-          variables: {
-            username: this.username
-          }
-        })
-          .valueChanges
+        this.user$ = this._userQ.user(this.username)
           .subscribe(({ data, loading }) => {
             this.loading = loading;
             this.user = {
@@ -61,15 +56,15 @@ export class ProfileDetailComponent implements OnInit, OnDestroy {
   }
 
   navigateToEdit() {
-    this.router.navigate([`edit`], { relativeTo: this.route });
+    return this.router.navigate([`edit`], { relativeTo: this.route });
   }
 
   ngOnDestroy() {
-    if (this.query$) {
-      this.query$.unsubscribe();
+    if (this.user$) {
+      return this.user$.unsubscribe();
     }
     if (this.route$) {
-      this.route$.unsubscribe();
+      return this.route$.unsubscribe();
     }
   }
 }
