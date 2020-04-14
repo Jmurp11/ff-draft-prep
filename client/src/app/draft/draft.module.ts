@@ -10,6 +10,7 @@ import { DraftRoutingModule } from './draft-routing.module';
 import { NoteModule } from '../notes/note.module';
 import { PlayerDetailComponent } from './player/player-detail/player-detail.component';
 import { PlayerComponent } from './player/player.component';
+import { PlayerStatsComponent } from './player/player-detail/player-stats/player-stats.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { PlayerComponent } from './player/player.component';
     MockDraftComponent,
     PlayerComponent,
     PlayerTableComponent,
-    PlayerDetailComponent
+    PlayerDetailComponent,
+    PlayerStatsComponent
   ],
   exports: [
     DraftComponent,

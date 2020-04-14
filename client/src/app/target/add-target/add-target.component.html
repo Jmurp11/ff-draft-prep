@@ -33,8 +33,11 @@
         <div class="form-group">
           <button mat-raised-button color="primary" [disabled]="loading" class="btn btn-primary note-btn"
             (click)="onSubmit()">
-            <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
             Save
+          </button>
+          <button mat-raised-button color="warn" [disabled]="loading" class="btn btn-primary note-btn"
+            (click)="onCancel()">
+            Cancel
           </button>
         </div>
       </mat-card-actions>

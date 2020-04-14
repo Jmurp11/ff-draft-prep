@@ -1,5 +1,5 @@
-.search-field {
-  font-size: 0.725em;
+.searchbar {
+  font-size: 0.825em;
   min-width: 6.250em;
-  height: 2.750em;
+  height: auto;
 }

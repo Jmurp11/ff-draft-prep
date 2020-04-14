@@ -119,8 +119,7 @@ export const player = gql
       team {
         id
         abbreviation
-        city
-        nickname
+        fullName
         stats {
           id
           bye
@@ -209,5 +208,12 @@ export const player = gql
         rank
       }
     }
+  }
+`;
+
+export const avgTargetRound = gql
+`
+  query avgTargetRound($player: String!) {
+    avgTargetRound(player: $player)
   }
 `;

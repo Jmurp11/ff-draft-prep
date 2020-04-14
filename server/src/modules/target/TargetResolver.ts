@@ -1,9 +1,10 @@
-import { Resolver, Query, Mutation, Arg, UseMiddleware } from 'type-graphql';
+import { Resolver, Query, Mutation, Arg, UseMiddleware, Float } from 'type-graphql';
 import { Target } from '../../entity';
 import { Result } from '../../shared';
 import { TargetInput } from './inputs/TargetInput';
 import { getRepository } from 'typeorm';
 import { isAuth, logger } from '../../middleware';
+import { TargetByPlayerUserInput } from './inputs/TargetByPlayerUserInput';
 
 @Resolver()
 export class TargetResolver {
@@ -31,6 +32,37 @@ export class TargetResolver {
                 where: { id }
             });
     }
+
+    @UseMiddleware(isAuth, logger)
+    @Query(() => Target)
+    async targetByPlayerUser(
+        @Arg('input') {
+            user,
+            player
+        }:TargetByPlayerUserInput
+    ) {
+        return getRepository(Target)
+            .findOne({
+                relations: ['user', 'player'],
+                where: { user, player }
+            });
+    }
+
+    @UseMiddleware(isAuth, logger)
+    @Query(() => Float, { nullable: true })
+    async avgTargetRound(@Arg('player') player: string) {
+        let sum = 0;
+
+        const countTargeted = await getRepository(Target)
+            .findAndCount({
+                relations: ['player'],
+                where: { player }
+            });
+        countTargeted[0].forEach(el => sum = sum + el.round);
+
+        return sum / countTargeted[1];
+    }
+
 
     @UseMiddleware(isAuth, logger)
     @Mutation(() => Result)

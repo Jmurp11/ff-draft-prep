@@ -1,10 +1,88 @@
-<div class="loading-div" *ngIf="loading">
-  <loading-spinner></loading-spinner>
-</div>
-<div *ngIf="!loading">
-  <div>Name: {{ player.name }}</div>
-  <div>Team: {{ player.team.city }} {{ player.team.nickname }}</div>
-  <div>Position: {{ player.position }}</div>
-  <div>Depth Chart: {{ player.depthChartPos }}</div>
-  <div>Rank: {{ (player.defaultRank !== null) ? player.defaultRank.rank : 'Not Ranked' }}</div>
+<div class="container">
+  <div class="loading-div" *ngIf="loading">
+    <loading-spinner></loading-spinner>
+  </div>
+  <div class="height width" *ngIf="!loading" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="0.5%">
+    <div class="height width" fxFlex="85%" fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="0.5%">
+      <div class="height width" fxFlex="10%"></div>
+
+      <div class="height width" fxFlex="80%">
+        <div class="height width" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="0.5%">
+          <div class="center width" fxFlex="12%">
+            <div>
+              <span class="title">
+                {{ player.name }}
+              </span>
+              <span class="title2">
+                {{ player.position }}
+              </span>
+            </div>
+            <div class="title2"> {{ player.team.fullName }}</div>
+            <div>
+              <span>
+                <button mat-icon-button color="accent" (click)="addTarget()" *ngIf="!userTarget">
+                  <mat-icon>my_location</mat-icon>
+                </button>
+                <button mat-icon-button disabled *ngIf="userTarget">
+                  <mat-icon>my_location</mat-icon>
+                </button>
+              </span>
+              <span>
+                <button mat-icon-button color="accent" (click)="addNote()">
+                  <mat-icon>note_add</mat-icon>
+                </button>
+              </span>
+            </div>
+          </div>
+          <mat-divider></mat-divider>
+          <div class="center width" fxFlex="3%">
+            <div class="width" fxLayout="row" fxlayoutAlign="center" fxLayoutGap="0.5%">
+              <span fxFlex="25%">
+                <span class="bold">
+                  Rank:
+                </span> {{ player.defaultRank.rank }}
+              </span>
+              <span fxFlex="25%">
+                <span class="bold">
+                  Current Target Round:
+                </span> {{ (userTarget !== 0) ? userTarget : 'N/A' }}
+              </span>
+              <span fxFlex="25%">
+                <span class="bold">
+                  Average Round Targeted:
+                </span> {{ (avgTargetRound) ? avgTargetRound : 'N/A' }}
+              </span>
+              <span fxFlex="25%">
+                <span class="bold">
+                  Fantasy Points:
+                </span> {{ player.projection.fantasyPoints }}
+              </span>
+            </div>
+          </div>
+          <mat-divider></mat-divider>
+          <div class="center width" fxFlex="25%">
+            <app-player-stats [playerInput]="player"></app-player-stats>
+          </div>
+          <div class="crd-ctr height width" fxFlex="55%">
+            <mat-tab-group style="height: 100%; overflow: auto;">
+              <mat-tab label="My Notes">
+                <div class="card-ctr">
+                  <app-note [notesInput]="userNotes" [userIdInput]="user.id" [isTableInput]="false"
+                    [loadingInput]="userLoading"></app-note>
+                </div>
+              </mat-tab>
+              <mat-tab label="Latest Notes">
+                <div class="card-ctr">
+                  <app-note [notesInput]="playerNotes" [userIdInput]="user.id" [isTableInput]="false"
+                    [loadingInput]="playerLoading">
+                  </app-note>
+                </div>
+              </mat-tab>
+            </mat-tab-group>
+          </div>
+        </div>
+      </div>
+      <div class="height width" fxFlex="10%"></div>
+    </div>
+  </div>
 </div>

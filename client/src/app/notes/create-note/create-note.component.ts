@@ -64,6 +64,7 @@ export class CreateNoteComponent implements AfterContentInit, OnDestroy {
         city: '',
         nickname: '',
         abbreviation: '',
+        fullName: '',
         imageUrl: '',
         stats: null,
       },
@@ -227,8 +228,9 @@ export class CreateNoteComponent implements AfterContentInit, OnDestroy {
     }
   }
 
-  onCancel() {
-    this.form.reset();
+  cancel(): void {
+    this.dialogRef.close();
+    this._note.resetForm(true);
   }
 
   resetForm() {

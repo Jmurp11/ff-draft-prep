@@ -6,8 +6,8 @@ import {
     PrimaryColumn,
     OneToOne
 } from 'typeorm';
-import { ObjectType, Field } from 'type-graphql';
-import { TeamStats } from './Team-Stats';
+import { ObjectType, Field, Root } from 'type-graphql';
+import { TeamStats } from '.';
 
 @Entity('teams')
 @ObjectType()
@@ -23,6 +23,11 @@ export class Team extends BaseEntity {
     @Field()
     @Column('text')
     nickname!: string;
+
+    @Field()
+    fullName(@Root() parent: Team): string {
+      return `${parent.city} ${parent.nickname}`;
+    }
 
     @Field()
     @Column('text')

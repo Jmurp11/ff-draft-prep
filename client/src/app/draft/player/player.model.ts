@@ -8,6 +8,7 @@ export interface Player {
     id: string;
     city: string;
     nickname: string;
+    fullName: string;
     abbreviation: string;
     imageUrl: string;
     stats: {

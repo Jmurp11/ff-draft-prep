@@ -135,7 +135,7 @@ export class AddTargetComponent implements AfterContentInit, OnDestroy {
   }
 
   onCancel() {
-    this.form.reset();
+    this.dialogRef.close();
   }
 
   resetForm() {
