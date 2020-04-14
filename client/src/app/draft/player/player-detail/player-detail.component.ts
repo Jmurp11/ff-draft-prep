@@ -27,6 +27,7 @@ export class PlayerDetailComponent implements OnInit, OnDestroy {
   user$: Subscription;
   target$: Subscription;
   user: User;
+  userId: string;
   id: string;
   player: Player;
   avgTargetRound: number;
@@ -49,7 +50,7 @@ export class PlayerDetailComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.loading = true;
-    this.userTarget = 0;
+    this.userTarget = null;
 
     this.route.params
       .subscribe((params: Params) => {
@@ -57,6 +58,7 @@ export class PlayerDetailComponent implements OnInit, OnDestroy {
         this.user$ = this._userQ.me()
           .subscribe(({ data }) => {
             this.user = data.me;
+            this.userId = this.user.id;
 
             this.player$ = this._playerQ.player(this.id)
               .subscribe(({ data, loading }) => {
@@ -74,7 +76,14 @@ export class PlayerDetailComponent implements OnInit, OnDestroy {
                     this.userNotes = data.notesByPlayerUser;
                   });
                 this.target$ = this._target.targetByPlayerUser(this.user.id, this.id)
-                  .subscribe(({ data }) => this.userTarget = data.targetByPlayerUser.round);
+                  .subscribe(({ data }) => {
+                    if (data.targetByPlayerUser) {
+                      this.userTarget = data.targetByPlayerUser.round;
+                    } else {
+                      this.userTarget = null;
+                    }
+
+                  });
                 this.avgTarget$ = this._playerQ.avgTargetRound(this.id)
                   .subscribe(({ data }) => {
                     this.avgTargetRound = data.avgTargetRound;

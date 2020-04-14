@@ -31,3 +31,15 @@
   height: 100%;
   width: 100%;
 }
+
+.inner {
+  height: 90%;
+}
+
+.sidenav {
+  display: flex;
+  flex-direction: column;
+  align-content: space-between;
+  width: 25%;
+  padding: 0.625em;
+}

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { Player } from '../../player.model';
 
 @Component({
@@ -6,7 +6,7 @@ import { Player } from '../../player.model';
   templateUrl: './player-stats.component.html',
   styleUrls: ['./player-stats.component.css']
 })
-export class PlayerStatsComponent implements OnInit {
+export class PlayerStatsComponent implements OnInit, OnChanges {
 
   @Input()
   playerInput: Player;
@@ -17,6 +17,19 @@ export class PlayerStatsComponent implements OnInit {
 
   ngOnInit() {
     this.player = this.playerInput;
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    for (const propName in changes) {
+      if (changes.hasOwnProperty(propName)) {
+        switch (propName) {
+          case 'playerInput': {
+            this.player = this.playerInput;
+            break;
+          }
+        }
+      }
+    }
   }
 
   divide(val1: number, val2: number) {

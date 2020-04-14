@@ -1,0 +1,31 @@
+<div class="loading-div" *ngIf="loading">
+  <loading-spinner></loading-spinner>
+</div>
+
+<div *ngIf="!loading" style="width: 100%; height: 100%;">
+  <table mat-table [dataSource]="depthChart" class="mat-elevation-z8">
+
+    <ng-container matColumnDef="depthChartPos">
+      <th mat-header-cell *matHeaderCellDef> Depth Chart Pos. </th>
+      <td mat-cell *matCellDef="let player"> {{ player.depthChartPos }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef> Name </th>
+      <td mat-cell *matCellDef="let player">
+        <button class="note-btn" mat-button color="primary" (click)="navigateToPlayer(player.id)">
+          {{ player.name }}
+        </button>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="rank">
+      <th mat-header-cell *matHeaderCellDef> Rank </th>
+      <td mat-cell *matCellDef="let player"> {{ (player.defaultRank) ? player.defaultRank.rank : 'N/A' }} </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayColumns"></tr>
+    <tr mat-row *matRowDef="let player; columns: displayColumns;"
+      [ngClass]="{'isCurPlayer': player.id === curPlayer.id}"></tr>
+  </table>
+</div>
