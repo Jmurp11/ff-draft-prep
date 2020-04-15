@@ -52,25 +52,30 @@
         <mat-divider></mat-divider>
         <div class="center height width" fxFlex="3%">
           <div class="width" fxLayout="row" fxlayoutAlign="center" fxLayoutGap="0.5%">
-            <span fxFlex="25%">
+            <span fxFlex="20%">
               <span class="bold">
                 Rank:
               </span> {{ (player.defaultRank) ? player.defaultRank.rank : 'N/A' }}
             </span>
-            <span fxFlex="25%">
+            <span fxFlex="20%">
               <span class="bold">
                 Current Target Round:
               </span> {{ (userTarget) ? userTarget : 'N/A' }}
             </span>
-            <span fxFlex="25%">
+            <span fxFlex="20%">
               <span class="bold">
                 Average Round Targeted:
               </span> {{ (avgTargetRound) ? avgTargetRound : 'N/A' }}
             </span>
-            <span fxFlex="25%">
+            <span fxFlex="20%">
               <span class="bold">
                 Fantasy Points:
               </span> {{ (player.projection) ? player.projection.fantasyPoints : 0.0 }}
+            </span>
+            <span fxFlex="20%">
+              <span class="bold">
+                Bye:
+              </span> {{ player.team.stats.bye }}
             </span>
           </div>
         </div>

@@ -12,6 +12,7 @@ import { NoteService } from '../../../notes/note.service';
 import { NoteDialogComponent } from '../../../notes/note-dialog/note-dialog.component';
 import { TargetDialogComponent } from '../../../target/target-dialog/target-dialog.component';
 import { TargetService } from 'src/app/target/target.service';
+import { PlayerService } from '../player.service';
 
 @Component({
   selector: 'app-player-detail',
@@ -40,6 +41,7 @@ export class PlayerDetailComponent implements OnInit, OnDestroy {
 
   constructor(
     private _playerQ: PlayerGqlService,
+    private _player: PlayerService,
     private _noteQ: NotesQueriesService,
     private _userQ: UserQueryService,
     private dialog: MatDialog,
@@ -55,6 +57,7 @@ export class PlayerDetailComponent implements OnInit, OnDestroy {
     this.route.params
       .subscribe((params: Params) => {
         this.id = params['id'];
+
         this.user$ = this._userQ.me()
           .subscribe(({ data }) => {
             this.user = data.me;
@@ -64,6 +67,8 @@ export class PlayerDetailComponent implements OnInit, OnDestroy {
               .subscribe(({ data, loading }) => {
                 this.loading = loading;
                 this.player = data.player;
+
+                this._player.updateCurrentPlayer(this.player);
 
                 this.playerNotes$ = this._noteQ.notesByPlayer(this.id)
                   .subscribe(({ data, loading }) => {
@@ -105,7 +110,7 @@ export class PlayerDetailComponent implements OnInit, OnDestroy {
   }
 
   addNote(): void {
-    this._note.prepopulatePlayer(false);
+    this._note.prepopulatePlayer(true);
     const dialogRef = this.dialog.open(NoteDialogComponent, {
       width: '850px',
       height: '600px'
@@ -115,6 +120,7 @@ export class PlayerDetailComponent implements OnInit, OnDestroy {
   }
 
   addTarget() {
+    this._target.prepopulatePlayer(true);
     const dialogRef = this.dialog.open(TargetDialogComponent, {
       width: '500px',
       height: '400px'

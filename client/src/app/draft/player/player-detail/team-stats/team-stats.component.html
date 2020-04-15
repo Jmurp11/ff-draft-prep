@@ -2,30 +2,112 @@
   <loading-spinner></loading-spinner>
 </div>
 
-<div *ngIf="!loading" style="width: 100%; height: 100%;">
-  <table mat-table [dataSource]="depthChart" class="mat-elevation-z8">
+<mat-accordion>
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title class="bold">
+        Depth Chart
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <table mat-table [dataSource]="depthChart" class="mat-elevation-z8">
 
-    <ng-container matColumnDef="depthChartPos">
-      <th mat-header-cell *matHeaderCellDef> Depth Chart Pos. </th>
-      <td mat-cell *matCellDef="let player"> {{ player.depthChartPos }} </td>
-    </ng-container>
+      <ng-container matColumnDef="depthChartPos">
+        <th mat-header-cell *matHeaderCellDef> Depth Chart Pos. </th>
+        <td mat-cell *matCellDef="let player"> {{ player.depthChartPos }} </td>
+      </ng-container>
 
-    <ng-container matColumnDef="name">
-      <th mat-header-cell *matHeaderCellDef> Name </th>
-      <td mat-cell *matCellDef="let player">
-        <button class="note-btn" mat-button color="primary" (click)="navigateToPlayer(player.id)">
-          {{ player.name }}
-        </button>
-      </td>
-    </ng-container>
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef> Name </th>
+        <td mat-cell *matCellDef="let player">
+          <button class="note-btn" mat-button color="primary" (click)="navigateToPlayer(player.id)">
+            {{ player.name }}
+          </button>
+        </td>
+      </ng-container>
 
-    <ng-container matColumnDef="rank">
-      <th mat-header-cell *matHeaderCellDef> Rank </th>
-      <td mat-cell *matCellDef="let player"> {{ (player.defaultRank) ? player.defaultRank.rank : 'N/A' }} </td>
-    </ng-container>
+      <ng-container matColumnDef="rank">
+        <th mat-header-cell *matHeaderCellDef> Rank </th>
+        <td mat-cell *matCellDef="let player"> {{ (player.defaultRank) ? player.defaultRank.rank : 'N/A' }} </td>
+      </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="displayColumns"></tr>
-    <tr mat-row *matRowDef="let player; columns: displayColumns;"
-      [ngClass]="{'isCurPlayer': player.id === curPlayer.id}"></tr>
-  </table>
-</div>
+      <tr mat-header-row *matHeaderRowDef="displayColumns"></tr>
+      <tr mat-row *matRowDef="let player; columns: displayColumns;"
+        [ngClass]="{'isCurPlayer': player.id === curPlayer.id}"></tr>
+    </table>
+  </mat-expansion-panel>
+
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title class="bold">
+        2020 Ranks
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <div class="center">
+      <div fxLayout="row" fxLayoutAlign="center" fxLayoutGap="0.5%">
+        <span fxFlex="30%" class="item">
+          <span class="bold">Rank:</span> {{ curPlayer.team.stats.rank }}</span>
+        <span fxFlex="30%" class="item">
+          <span class="bold">Pass Rank:</span> {{ curPlayer.team.stats.passRank }}</span>
+        <span fxFlex="30%" class="item">
+          <span class="bold">Rush Rank:</span>
+          {{ curPlayer.team.stats.rushRank }}
+        </span>
+      </div>
+    </div>
+  </mat-expansion-panel>
+
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title class="bold">
+        2019 Stats
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <div class="center">
+      <div fxLayout="row" fxLayoutAlign="center" fxLayoutGap="0.5%">
+        <span fxFlex="25%" class="item">
+          <span class="bold">Pass Attempts:</span>
+          {{ curPlayer.team.stats.passAttempts }}
+        </span>
+        <span fxFlex="25%" class="item">
+          <span class="bold">Pass Yards:</span> {{ curPlayer.team.stats.passYards }}
+        </span>
+        <span fxFlex="25%" class="item">
+          <span class="bold">Passing Touchdowns:</span>
+          {{ curPlayer.team.stats.passTd }}
+        </span>
+        <span fxFlex="25%" class="item">
+          <span class="bold">Net Yards Per Pass:</span>
+          {{ curPlayer.team.stats.netYardsPerPass }}
+        </span>
+      </div>
+      <div fxLayout="row" fxLayoutAlign="center" fxLayoutGap="0.5%">
+        <span fxFlex="25%" class="item">
+          <span class="bold">Rush Attempts:</span>
+          {{ curPlayer.team.stats.rushAttempts }}
+        </span>
+        <span fxFlex="25%" class="item">
+          <span class="bold">Rush Yards:</span> {{ curPlayer.team.stats.rushYards }}
+        </span>
+        <span fxFlex="25%" class="item">
+          <span class="bold">Rushing Touchdowns:</span>
+          {{ curPlayer.team.stats.rushTd }}
+        </span>
+        <span fxFlex="25%" class="item">
+          <span class="bold">Yards Per Rush:</span>
+          {{ curPlayer.team.stats.yardsPerRush }}
+        </span>
+      </div>
+      <div fxLayout="row" fxLayoutAlign="center" fxLayoutGap="0.5%">
+        <span fxFlex="25%" class="item">
+          <span class="bold">Scoring Percentage:</span> {{ curPlayer.team.stats.scorePercentage }}
+        </span>
+        <span fxFlex="25%" class="item">
+          <span class="bold">Turnover Percentage:</span>
+          {{ curPlayer.team.stats.turnoverPercentage }}
+        </span>
+        <span fxFlex="25%" class="item"></span>
+        <span fxFlex="25%" class="item"></span>
+      </div>
+    </div>
+  </mat-expansion-panel>
+</mat-accordion>

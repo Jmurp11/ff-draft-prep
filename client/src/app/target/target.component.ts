@@ -74,6 +74,7 @@ export class TargetComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   addTarget() {
+    this._target.prepopulatePlayer(false);
     const dialogRef = this.dialog.open(TargetDialogComponent, {
       width: '500px',
       height: '400px'

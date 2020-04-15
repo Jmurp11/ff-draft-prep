@@ -18,6 +18,7 @@ export class TargetService {
   targetStatus = new BehaviorSubject<TargetResponse>(null);
   deleteStatus = new BehaviorSubject<TargetResponse>(null);
   clearTargetForm = new BehaviorSubject<boolean>(null);
+  populatePlayer = new BehaviorSubject<boolean>(null);
 
   constructor(
     private apollo: Apollo
@@ -123,6 +124,11 @@ export class TargetService {
         user
       }
     }).valueChanges;
+  }
+
+
+  prepopulatePlayer(val: boolean) {
+    this.populatePlayer.next(val);
   }
 
   resetResponse() {
