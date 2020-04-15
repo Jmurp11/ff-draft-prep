@@ -1,18 +1,7 @@
-.card-ctr {
-  width: 97%;
-}
-
 .ctr {
   height: 100%;
   width: 100%;
 }
-
-.crd-ctr {
-  height: 100%;
-  width: 100%;
-  overflow: auto;
-}
-
 
 .targetList {
   border-left-style: ridge;

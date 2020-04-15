@@ -70,6 +70,7 @@ export class PlayerTableComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.loading = true;
+    this.updateCurrentPlayer(null);
     this.players = [];
     this.selectedPlayers = [];
     this.notes = [];

@@ -60,10 +60,11 @@ export class CreateNoteComponent implements AfterContentInit, OnDestroy {
       initialName: '',
       name: '',
       team: {
-        id: '',
+        id: null,
         city: '',
         nickname: '',
         abbreviation: '',
+        fullName: '',
         imageUrl: '',
         stats: null,
       },
@@ -91,20 +92,6 @@ export class CreateNoteComponent implements AfterContentInit, OnDestroy {
       'None'
     ];
 
-    this.popPlayer$ = this._note.populatePlayer.subscribe(populate => {
-      if (!populate) {
-        this.isPlayerPreSet = false;
-        this.currentPlayer = null;
-      } else {
-        this.isPlayerPreSet = true;
-
-        this.curPlayer$ = this._player.currentPlayer.subscribe(data => {
-          this.currentPlayer = data;
-          this.form.get('player').setValue(this.currentPlayer.id);
-        });
-      }
-    });
-
     this.form = new FormGroup({
       player: new FormControl(null, {
         updateOn: 'change',
@@ -124,6 +111,20 @@ export class CreateNoteComponent implements AfterContentInit, OnDestroy {
       source: new FormControl(null, {
         updateOn: 'blur'
       })
+    });
+
+    this.popPlayer$ = this._note.populatePlayer.subscribe(populate => {
+      if (!populate) {
+        this.isPlayerPreSet = false;
+        this.currentPlayer = null;
+      } else {
+        this.isPlayerPreSet = true;
+
+        this.curPlayer$ = this._player.currentPlayer.subscribe(data => {
+          this.currentPlayer = data;
+          this.form.get('player').setValue(this.currentPlayer.id);
+        });
+      }
     });
 
     this.noteStatus$ = this._note.noteStatus.subscribe(response => {
@@ -227,8 +228,9 @@ export class CreateNoteComponent implements AfterContentInit, OnDestroy {
     }
   }
 
-  onCancel() {
-    this.form.reset();
+  cancel(): void {
+    this.dialogRef.close();
+    this._note.resetForm(true);
   }
 
   resetForm() {

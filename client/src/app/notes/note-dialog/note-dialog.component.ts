@@ -15,9 +15,4 @@ export class NoteDialogComponent implements OnInit {
   ) { }
 
   ngOnInit() { }
-
-  cancel(): void {
-    this.dialogRef.close();
-    this._note.resetForm(true);
-  }
 }

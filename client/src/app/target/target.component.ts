@@ -74,6 +74,7 @@ export class TargetComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   addTarget() {
+    this._target.prepopulatePlayer(false);
     const dialogRef = this.dialog.open(TargetDialogComponent, {
       width: '500px',
       height: '400px'
@@ -83,7 +84,7 @@ export class TargetComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   deleteTarget(target: any) {
-    this._target.deleteTarget(target.id, this.user);
+    this._target.deleteTarget(target.id, this.user, target.player.id);
   }
 
   navigateToPlayer(player: string) {

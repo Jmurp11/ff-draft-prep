@@ -136,7 +136,7 @@ div.resetButtonContainer {
   flex-direction: column;
   align-content: space-between;
   width: 25%;
-  padding: 10px;
+  padding: 0.625em;
 }
 
 .close-btn-ctr {

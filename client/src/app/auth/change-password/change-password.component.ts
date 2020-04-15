@@ -65,7 +65,7 @@ export class ChangePasswordComponent implements OnInit {
     this.password = this.form.get('password').value;
 
     this._auth.changePassword(this.token, this.password);
-    
+
     this.loading = true;
   }
 
@@ -82,6 +82,8 @@ export class ChangePasswordComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    this.change$.unsubscribe();
+    if (this.change$) {
+      this.change$.unsubscribe();
+    }
   }
 }

@@ -1,10 +1,97 @@
-<div class="loading-div" *ngIf="loading">
-  <loading-spinner></loading-spinner>
-</div>
-<div *ngIf="!loading">
-  <div>Name: {{ player.name }}</div>
-  <div>Team: {{ player.team.city }} {{ player.team.nickname }}</div>
-  <div>Position: {{ player.position }}</div>
-  <div>Depth Chart: {{ player.depthChartPos }}</div>
-  <div>Rank: {{ (player.defaultRank !== null) ? player.defaultRank.rank : 'Not Ranked' }}</div>
-</div>
+<mat-drawer-container class="inner" autosize>
+  <mat-drawer class="sidenav" mode="side" position="end" opened="true" disableClose="true">
+    <mat-tab-group>
+      <mat-tab label="My Notes">
+        <div class="card-ctr">
+          <app-note [notesInput]="userNotes" [userIdInput]="userId" [isTableInput]="true" [loadingInput]="userLoading">
+          </app-note>
+        </div>
+      </mat-tab>
+      <mat-tab label="Latest Notes">
+        <div class="card-ctr">
+          <app-note [notesInput]="playerNotes" [userIdInput]="userId" [isTableInput]="true"
+            [loadingInput]="playerLoading">
+          </app-note>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </mat-drawer>
+  <div class="loading-div" *ngIf="loading">
+    <loading-spinner></loading-spinner>
+  </div>
+  <div class="height width" *ngIf="!loading" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="0.5%">
+    <div class="height width" fxFlex="95%" fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="0.5%">
+      <div fxFlex="5%"></div>
+      <div fxFlex="80%" class="height width" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="0.5%">
+        <div class="center height width" fxFlex="17%">
+          <div>
+            <span class="title">
+              {{ player.name }}
+            </span>
+            <span class="title2">
+              {{ player.position }}
+            </span>
+          </div>
+          <div class="title2"> {{ player.team.fullName }}</div>
+          <div>
+            <span>
+              <button mat-icon-button color="accent" (click)="addTarget()" *ngIf="!userTarget">
+                <mat-icon>my_location</mat-icon>
+              </button>
+              <button mat-icon-button disabled *ngIf="userTarget">
+                <mat-icon>my_location</mat-icon>
+              </button>
+            </span>
+            <span>
+              <button mat-icon-button color="accent" (click)="addNote()">
+                <mat-icon>note_add</mat-icon>
+              </button>
+            </span>
+          </div>
+        </div>
+        <mat-divider></mat-divider>
+        <div class="center height width" fxFlex="3%">
+          <div class="width" fxLayout="row" fxlayoutAlign="center" fxLayoutGap="0.5%">
+            <span fxFlex="20%">
+              <span class="bold">
+                Rank:
+              </span> {{ (player.defaultRank) ? player.defaultRank.rank : 'N/A' }}
+            </span>
+            <span fxFlex="20%">
+              <span class="bold">
+                Current Target Round:
+              </span> {{ (userTarget) ? userTarget : 'N/A' }}
+            </span>
+            <span fxFlex="20%">
+              <span class="bold">
+                Average Round Targeted:
+              </span> {{ (avgTargetRound) ? avgTargetRound : 'N/A' }}
+            </span>
+            <span fxFlex="20%">
+              <span class="bold">
+                Fantasy Points:
+              </span> {{ (player.projection) ? player.projection.fantasyPoints : 0.0 }}
+            </span>
+            <span fxFlex="20%">
+              <span class="bold">
+                Bye:
+              </span> {{ player.team.stats.bye }}
+            </span>
+          </div>
+        </div>
+        <mat-divider></mat-divider>
+        <div class="height width" fxFlex="80%">
+          <mat-tab-group>
+            <mat-tab label="Stats">
+              <app-player-stats [playerInput]="player"></app-player-stats>
+            </mat-tab>
+            <mat-tab label="Team">
+              <app-team-stats [playerInput]="player"></app-team-stats>
+            </mat-tab>
+          </mat-tab-group>
+        </div>
+      </div>
+      <div fxFlex="5%"></div>
+    </div>
+  </div>
+</mat-drawer-container>
