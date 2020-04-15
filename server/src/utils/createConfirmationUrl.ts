@@ -7,5 +7,5 @@ export const createConfirmationUrl = async (userId: string): Promise<string> => 
 
     await redis.set(`${confirmationPrefix}${token}`, userId, "ex", 60*60*24) // 1 day expiration
 
-    return `${baseUrl}/auth/confirm/${token}`;
+    return `${baseUrl}/a/confirm/${token}`;
 }

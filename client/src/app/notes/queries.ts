@@ -104,6 +104,7 @@ export const publicNotes = gql
           name
           team {
             id
+            fullName
             abbreviation
           }
           position
@@ -145,6 +146,91 @@ export const notes = gql
           name
           team {
             id
+            fullName
+            abbreviation
+          }
+          position
+        }
+        title
+        body
+        source
+        likes {
+          id
+          user {
+            id
+            username
+          }
+        }
+        shares {
+          id
+          user {
+            id
+            username
+          }
+        }
+        creationTime
+      }
+    }
+  `;
+
+export const notesByPlayer = gql
+  `
+    query notesByPlayer($player: String!) {
+      notesByPlayer(player: $player) {
+        id
+        user {
+          id
+          username
+          profileImage
+        }
+        player {
+          id
+          name
+          team {
+            id
+            fullName
+            abbreviation
+          }
+          position
+        }
+        title
+        body
+        source
+        likes {
+          id
+          user {
+            id
+            username
+          }
+        }
+        shares {
+          id
+          user {
+            id
+            username
+          }
+        }
+        creationTime
+      }
+    }
+  `;
+
+export const notesByPlayerUser = gql
+  `
+    query notesByPlayerUser($player: String!, $user: String!) {
+      notesByPlayerUser(input: { player: $player, user: $user }) {
+        id
+        user {
+          id
+          username
+          profileImage
+        }
+        player {
+          id
+          name
+          team {
+            id
+            fullName
             abbreviation
           }
           position
@@ -186,6 +272,7 @@ export const note = gql
           name
           team {
             id
+            fullName
             abbreviation
           }
           position

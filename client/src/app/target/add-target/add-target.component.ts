@@ -10,6 +10,8 @@ import { Subscription, Observable } from 'rxjs';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { players } from '../../notes/queries';
 import { User } from '../../auth/user.model';
+import { Player } from '../../draft/player/player.model';
+import { PlayerService } from 'src/app/draft/player/player.service';
 
 @Component({
   selector: 'app-add-target',
@@ -21,9 +23,13 @@ export class AddTargetComponent implements AfterContentInit, OnDestroy {
   addStatus$: Subscription;
   clearForm$: Subscription;
   players$: Subscription;
+  popPlayer$: Subscription;
+  curPlayer$: Subscription;
   filteredOptions: Observable<any[]>;
   form: FormGroup;
   user: User;
+  currentPlayer: Player;
+  isPlayerPreset: boolean;
   loading: boolean;
   players: any[];
   rounds: number[];
@@ -36,6 +42,7 @@ export class AddTargetComponent implements AfterContentInit, OnDestroy {
     private _auth: AuthService,
     public dialogRef: MatDialogRef<TargetDialogComponent>,
     private _target: TargetService,
+    private _player: PlayerService,
     private snackbar: MatSnackBar) { }
 
   ngAfterContentInit() {
@@ -75,6 +82,20 @@ export class AddTargetComponent implements AfterContentInit, OnDestroy {
 
     this.user$ = this._auth.user.subscribe(user => {
       this.user = user;
+    });
+
+    this.popPlayer$ = this._target.populatePlayer.subscribe(populate => {
+      if (!populate) {
+        this.isPlayerPreset = false;
+        this.currentPlayer = null;
+      } else {
+        this.isPlayerPreset = true;
+
+        this.curPlayer$ = this._player.currentPlayer.subscribe(data => {
+          this.currentPlayer = data;
+          this.form.get('player').setValue(this.currentPlayer);
+        });
+      }
     });
 
     this.players$ = this.apollo.watchQuery<any>({
@@ -135,7 +156,7 @@ export class AddTargetComponent implements AfterContentInit, OnDestroy {
   }
 
   onCancel() {
-    this.form.reset();
+    this.dialogRef.close();
   }
 
   resetForm() {
@@ -152,9 +173,23 @@ export class AddTargetComponent implements AfterContentInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.user$.unsubscribe();
-    this.addStatus$.unsubscribe();
-    this.players$.unsubscribe();
-    this.clearForm$.unsubscribe();
+    if (this.user$) {
+      this.user$.unsubscribe();
+    }
+    if (this.addStatus$) {
+      this.addStatus$.unsubscribe();
+    }
+    if (this.players$) {
+      this.players$.unsubscribe();
+    }
+    if (this.clearForm$) {
+      this.clearForm$.unsubscribe();
+    }
+    if (this.popPlayer$) {
+      this.popPlayer$.unsubscribe();
+    }
+    if (this.curPlayer$) {
+      this.curPlayer$.unsubscribe();
+    }
   }
 }

@@ -5,9 +5,10 @@ export interface Player {
   initialName: string;
   name: string;
   team: {
-    id: string;
+    id: number;
     city: string;
     nickname: string;
+    fullName: string;
     abbreviation: string;
     imageUrl: string;
     stats: {
@@ -74,10 +75,8 @@ export interface Player {
       lastName: string;
       name: string;
       team: {
-        team: {
-          abbreviation: string;
-        }
-      }
+        abbreviation: string;
+      };
       position: string;
     };
     title: string;

@@ -8,7 +8,8 @@
         <div mat-card-avatar class="note-header-image" [style.backgroundImage]="'url(' + user.profileImage + ')'"></div>
         <mat-card-title *ngIf="isPlayerPreSet">{{ (currentPlayer !== null) ? currentPlayer.name : '' }}
         </mat-card-title>
-        <mat-card-subtitle *ngIf="isPlayerPreSet">{{ (currentPlayer !== null) ? currentPlayer.team.abbreviation : '' }} -
+        <mat-card-subtitle *ngIf="isPlayerPreSet">{{ (currentPlayer !== null) ? currentPlayer.team.abbreviation : '' }}
+          -
           {{ (currentPlayer !== null) ? currentPlayer.position : '' }}
         </mat-card-subtitle>
       </mat-card-header>
@@ -18,8 +19,7 @@
         </section>
 
         <mat-form-field class="note-input" *ngIf="!isPlayerPreSet">
-          <input matInput placeholder="Player" formControlName="player" class="form-control"
-            [matAutocomplete]="auto">
+          <input matInput placeholder="Player" formControlName="player" class="form-control" [matAutocomplete]="auto">
         </mat-form-field>
 
         <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
@@ -49,8 +49,11 @@
         <div class="form-group">
           <button mat-raised-button color="primary" [disabled]="loading" class="btn btn-primary note-btn"
             (click)="onSubmit()">
-            <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
             Save
+          </button>
+          <button mat-raised-button color="warn" [disabled]="loading" class="btn btn-primary note-btn"
+            (click)="cancel()" *ngIf="!isPlayerPreSet">
+            Cancel
           </button>
         </div>
       </mat-card-actions>

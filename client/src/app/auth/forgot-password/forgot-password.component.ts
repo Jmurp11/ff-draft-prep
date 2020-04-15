@@ -75,7 +75,7 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy {
   onForgotPasswordClick() {
     this.router.navigate(['./auth/forgot-password']);
   }
-  
+
   resetForm() {
     this.form.reset();
     this.emailIsValid = true;
@@ -88,6 +88,8 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.forgotPass$.unsubscribe();
+    if (this.forgotPass$) {
+      this.forgotPass$.unsubscribe();
+    }
   }
 }

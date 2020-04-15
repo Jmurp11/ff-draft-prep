@@ -17,7 +17,7 @@ mat-grid-list {
   flex-direction: column;
   justify-content: center;
   align-content: space-between;
-  padding: 10px;
+  padding: 0.6250em;
 }
 
 .note-btn {

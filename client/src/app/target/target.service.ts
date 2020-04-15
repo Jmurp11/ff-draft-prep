@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
-import { createTarget, deleteTarget } from './queries';
+import { createTarget, deleteTarget, targetByPlayerUser } from './queries';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { meQuery } from '../shared/user/queries';
+import { avgTargetRound } from '../draft/player/queries';
 
 export interface TargetResponse {
   success: boolean;
@@ -17,6 +18,7 @@ export class TargetService {
   targetStatus = new BehaviorSubject<TargetResponse>(null);
   deleteStatus = new BehaviorSubject<TargetResponse>(null);
   clearTargetForm = new BehaviorSubject<boolean>(null);
+  populatePlayer = new BehaviorSubject<boolean>(null);
 
   constructor(
     private apollo: Apollo
@@ -37,6 +39,19 @@ export class TargetService {
       refetchQueries: [
         {
           query: meQuery
+        },
+        {
+          query: targetByPlayerUser,
+          variables: {
+            user,
+            player
+          }
+        },
+        {
+          query: avgTargetRound,
+          variables: {
+            player
+          }
         }
       ]
     }).subscribe(({ data }) => {
@@ -58,7 +73,7 @@ export class TargetService {
     });
   }
 
-  deleteTarget(id: string, user: string) {
+  deleteTarget(id: string, user: string, player: string) {
     this.apollo.mutate({
       mutation: deleteTarget,
       variables: {
@@ -67,6 +82,19 @@ export class TargetService {
       refetchQueries: [
         {
           query: meQuery
+        },
+        {
+          query: targetByPlayerUser,
+          variables: {
+            user,
+            player
+          }
+        },
+        {
+          query: avgTargetRound,
+          variables: {
+            player
+          }
         }
       ]
     }).subscribe(({ data }) => {
@@ -86,6 +114,21 @@ export class TargetService {
         this.deleteStatus.next(response);
       }
     });
+  }
+
+  targetByPlayerUser(user: string, player: string) {
+    return this.apollo.watchQuery<any>({
+      query: targetByPlayerUser,
+      variables: {
+        player,
+        user
+      }
+    }).valueChanges;
+  }
+
+
+  prepopulatePlayer(val: boolean) {
+    this.populatePlayer.next(val);
   }
 
   resetResponse() {

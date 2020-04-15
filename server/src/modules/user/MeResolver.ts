@@ -32,7 +32,6 @@ export class MeResolver {
                 }
             });
         } catch (err) {
-            console.log(err);
             return undefined;
         }
     }

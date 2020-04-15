@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
-import { addLike, createNote, createShare, deleteNote, notes, likes, publicNotes } from './queries';
+import { addLike, createNote, createShare, deleteNote, notes, likes, publicNotes, notesByPlayer, notesByPlayerUser } from './queries';
 import { NoteService } from './note.service';
 
 @Injectable({
@@ -35,6 +35,21 @@ export class NotesMutationsService {
         },
         {
           query: publicNotes
+        },
+        ,
+        {
+          query: notesByPlayer,
+          variables: {
+            player
+          }
+        },
+        ,
+        {
+          query: notesByPlayerUser,
+          variables: {
+            player,
+            user
+          }
         }
       ]
     }).subscribe(({ data }) => {

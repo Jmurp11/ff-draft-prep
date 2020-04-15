@@ -2,53 +2,58 @@
   <div>
     <h2 class="title">Target List</h2>
   </div>
-  <div *ngIf="!hasTargets">
-    <button mat-raised-button color="accent" (click)="addTarget()">Start Adding Targets</button>
+  <div class="loading-div" *ngIf="loading">
+    <loading-spinner></loading-spinner>
   </div>
 
-  <table mat-table [dataSource]="targets" *ngIf="hasTargets">
+  <div *ngIf="!loading">
+    <div *ngIf="!hasTargets">
+      <button mat-raised-button color="accent" (click)="addTarget()">Start Adding Targets</button>
+    </div>
 
-    <ng-container matColumnDef="name">
-      <th mat-header-cell *matHeaderCellDef width="35%"> Name </th>
-      <td mat-cell *matCellDef="let target">
-        <button style="padding: 0px;" mat-button color="primary" (click)="navigateToPlayer(target.player.id)">
-          {{ target.player.initialName }}
-        </button>
-      </td>
-    </ng-container>
+    <table mat-table [dataSource]="targets" *ngIf="hasTargets">
 
-    <ng-container matColumnDef="team">
-      <th mat-header-cell *matHeaderCellDef width="15%"> Team </th>
-      <td mat-cell *matCellDef="let target"> {{ target.player.team.abbreviation }} </td>
-    </ng-container>
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef width="35%"> Name </th>
+        <td mat-cell *matCellDef="let target">
+          <button style="padding: 0px;" mat-button color="primary" (click)="navigateToPlayer(target.player.id)">
+            {{ target.player.initialName }}
+          </button>
+        </td>
+      </ng-container>
 
-    <ng-container matColumnDef="position">
-      <th mat-header-cell *matHeaderCellDef width="15%"> Position </th>
-      <td mat-cell *matCellDef="let target"> {{ target.player.position }} </td>
-    </ng-container>
+      <ng-container matColumnDef="team">
+        <th mat-header-cell *matHeaderCellDef width="15%"> Team </th>
+        <td mat-cell *matCellDef="let target"> {{ target.player.team.abbreviation }} </td>
+      </ng-container>
 
-    <ng-container matColumnDef="round">
-      <th mat-header-cell *matHeaderCellDef width="15%"> TAR RD </th>
-      <td mat-cell *matCellDef="let target"> RD {{target.round}} </td>
-    </ng-container>
+      <ng-container matColumnDef="position">
+        <th mat-header-cell *matHeaderCellDef width="15%"> Position </th>
+        <td mat-cell *matCellDef="let target"> {{ target.player.position }} </td>
+      </ng-container>
 
-    <ng-container matColumnDef="clear">
-      <th mat-header-cell *matHeaderCellDef width="15%"></th>
-      <td mat-cell *matCellDef="let target">
-        <button mat-icon-button color="accent" (click)="deleteTarget(target)">
-          <mat-icon>clear</mat-icon>
-        </button>
-      </td>
-    </ng-container>
+      <ng-container matColumnDef="round">
+        <th mat-header-cell *matHeaderCellDef width="15%"> TAR RD </th>
+        <td mat-cell *matCellDef="let target"> RD {{target.round}} </td>
+      </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-  </table>
+      <ng-container matColumnDef="clear">
+        <th mat-header-cell *matHeaderCellDef width="15%"></th>
+        <td mat-cell *matCellDef="let target">
+          <button mat-icon-button color="accent" (click)="deleteTarget(target)">
+            <mat-icon>clear</mat-icon>
+          </button>
+        </td>
+      </ng-container>
 
-  <div class="center padding" *ngIf="hasTargets">
-    <button mat-icon-button color="accent" (click)="addTarget()">
-      <mat-icon>add</mat-icon>
-    </button>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+    <div class="center padding" *ngIf="hasTargets">
+      <button mat-icon-button color="accent" (click)="addTarget()">
+        <mat-icon>add</mat-icon>
+      </button>
+    </div>
   </div>
-
 </div>

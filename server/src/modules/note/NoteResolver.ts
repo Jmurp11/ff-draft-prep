@@ -5,6 +5,7 @@ import { NoteInput } from './inputs';
 import { getRepository } from 'typeorm';
 import { isAuth, logger } from '../../middleware';
 import { DeleteNoteInput } from './inputs/DeleteNoteInput';
+import { NotesByPlayerUserInput } from './inputs/NotesByPlayerUserInput';
 
 @Resolver()
 export class NoteResolver {
@@ -35,6 +36,41 @@ export class NoteResolver {
                     }
                 });
         }
+    }
+
+    @UseMiddleware(isAuth, logger)
+    @Query(() => [Note])
+    async notesByPlayer(
+        @Arg('player') player: string) {
+        return getRepository(Note)
+            .find({
+                relations: ['user', 'player', 'likes', 'shares'],
+                where: {
+                    player
+                },
+                order: {
+                    creationTime: 'DESC'
+                }
+            });
+    }
+
+    @UseMiddleware(isAuth, logger)
+    @Query(() => [Note])
+    async notesByPlayerUser(
+        @Arg('input') {
+            player,
+            user
+        }: NotesByPlayerUserInput) {
+        return getRepository(Note)
+            .find({
+                relations: ['user', 'player', 'likes', 'shares'],
+                where: {
+                    player, user
+                },
+                order: {
+                    creationTime: 'DESC'
+                }
+            });
     }
 
     @UseMiddleware(isAuth, logger)
@@ -132,8 +168,6 @@ export class NoteResolver {
         }
 
         if (note!.user !== user) {
-            console.log(note);
-            console.log(note!.user, user);
             return {
                 errors: [
                     {

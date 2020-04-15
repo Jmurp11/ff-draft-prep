@@ -30,3 +30,15 @@ export const deleteTarget = gql
     }
   `;
 
+export const targetByPlayerUser = gql
+  `
+    query targetByPlayerUser($player: String!, $user: String!) {
+      targetByPlayerUser(input: {
+        player: $player,
+        user: $user
+      }) {
+        id
+        round
+      }
+    }
+  `;

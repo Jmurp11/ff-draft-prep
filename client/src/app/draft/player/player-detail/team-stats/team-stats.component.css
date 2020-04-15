@@ -1,0 +1,8 @@
+table {
+  width: 100%;
+  overflow: auto;
+}
+
+tr.isCurPlayer {
+  background-color: lightgreen;
+}

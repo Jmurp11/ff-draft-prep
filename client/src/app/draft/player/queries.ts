@@ -119,8 +119,7 @@ export const player = gql
       team {
         id
         abbreviation
-        city
-        nickname
+        fullName
         stats {
           id
           bye
@@ -205,6 +204,29 @@ export const player = gql
         rank
       }
       rank {
+        id
+        rank
+      }
+    }
+  }
+`;
+
+export const avgTargetRound = gql
+`
+  query avgTargetRound($player: String!) {
+    avgTargetRound(player: $player)
+  }
+`;
+
+export const depthChart = gql
+`
+  query($team: Float!, $position: String!) {
+    depthChart(input: { team: $team, position: $position }) {
+      id
+      name
+      position
+      depthChartPos
+      defaultRank {
         id
         rank
       }
