@@ -48,6 +48,8 @@ export class ConfirmUserComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.auth$.unsubscribe();
+    if (this.auth$) {
+      this.auth$.unsubscribe();
+    }
   }
 }

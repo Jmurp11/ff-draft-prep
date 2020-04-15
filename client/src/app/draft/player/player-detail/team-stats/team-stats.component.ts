@@ -21,6 +21,7 @@ export class TeamStatsComponent implements OnInit, OnChanges, OnDestroy {
   curPlayer: Player;
   depthChart: any[];
   loading: boolean;
+  year: number;
 
   constructor(
     private _playerQ: PlayerGqlService,
@@ -29,6 +30,7 @@ export class TeamStatsComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnInit() {
     this.depthChart = [];
+    this.year = new Date().getFullYear();
   }
 
   ngOnChanges(changes: SimpleChanges) {
