@@ -11,6 +11,7 @@ import { NoteModule } from '../notes/note.module';
 import { PlayerDetailComponent } from './player/player-detail/player-detail.component';
 import { PlayerComponent } from './player/player.component';
 import { PlayerStatsComponent } from './player/player-detail/player-stats/player-stats.component';
+import { TeamStatsComponent } from './player/player-detail/team-stats/team-stats.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { PlayerStatsComponent } from './player/player-detail/player-stats/player
     PlayerComponent,
     PlayerTableComponent,
     PlayerDetailComponent,
-    PlayerStatsComponent
+    PlayerStatsComponent,
+    TeamStatsComponent
   ],
   exports: [
     DraftComponent,

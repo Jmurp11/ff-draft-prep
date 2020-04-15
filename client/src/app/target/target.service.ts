@@ -41,16 +41,16 @@ export class TargetService {
         },
         {
           query: targetByPlayerUser,
-          variables: [
+          variables: {
             user,
             player
-          ]
+          }
         },
         {
           query: avgTargetRound,
-          variables: [
+          variables: {
             player
-          ]
+          }
         }
       ]
     }).subscribe(({ data }) => {
@@ -72,7 +72,7 @@ export class TargetService {
     });
   }
 
-  deleteTarget(id: string, user: string) {
+  deleteTarget(id: string, user: string, player: string) {
     this.apollo.mutate({
       mutation: deleteTarget,
       variables: {
@@ -81,6 +81,19 @@ export class TargetService {
       refetchQueries: [
         {
           query: meQuery
+        },
+        {
+          query: targetByPlayerUser,
+          variables: {
+            user,
+            player
+          }
+        },
+        {
+          query: avgTargetRound,
+          variables: {
+            player
+          }
         }
       ]
     }).subscribe(({ data }) => {

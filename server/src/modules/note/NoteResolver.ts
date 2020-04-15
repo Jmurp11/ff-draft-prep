@@ -168,8 +168,6 @@ export class NoteResolver {
         }
 
         if (note!.user !== user) {
-            console.log(note);
-            console.log(note!.user, user);
             return {
                 errors: [
                     {

@@ -34,12 +34,12 @@ export class TargetResolver {
     }
 
     @UseMiddleware(isAuth, logger)
-    @Query(() => Target)
+    @Query(() => Target, { nullable: true })
     async targetByPlayerUser(
         @Arg('input') {
             user,
             player
-        }:TargetByPlayerUserInput
+        }: TargetByPlayerUserInput
     ) {
         return getRepository(Target)
             .findOne({

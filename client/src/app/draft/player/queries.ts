@@ -217,3 +217,19 @@ export const avgTargetRound = gql
     avgTargetRound(player: $player)
   }
 `;
+
+export const depthChart = gql
+`
+  query($team: Float!, $position: String!) {
+    depthChart(input: { team: $team, position: $position }) {
+      id
+      name
+      position
+      depthChartPos
+      defaultRank {
+        id
+        rank
+      }
+    }
+  }
+`;

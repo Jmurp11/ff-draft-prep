@@ -60,7 +60,7 @@ export class CreateNoteComponent implements AfterContentInit, OnDestroy {
       initialName: '',
       name: '',
       team: {
-        id: '',
+        id: null,
         city: '',
         nickname: '',
         abbreviation: '',

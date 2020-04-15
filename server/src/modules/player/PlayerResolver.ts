@@ -3,6 +3,7 @@ import { Player } from '../../entity';
 import { Result } from '../../shared';
 import { PlayerInput } from './inputs/PlayerInput';
 import { getRepository } from 'typeorm';
+import { DepthChartInput } from './inputs/DepthChartInput';
 
 @Resolver()
 export class PlayerResolver {
@@ -43,6 +44,35 @@ export class PlayerResolver {
                     }
                 });
         }
+    }
+
+    @Query(() => [Player])
+    async depthChart(
+        @Arg('input')
+        {
+            team,
+            position
+        }: DepthChartInput
+    ) {
+        return getRepository(Player)
+            .find({
+                relations: [
+                    'team',
+                    'projection',
+                    'rank',
+                    'defaultRank',
+                    'notes',
+                    'notes.user',
+                    'notes.likes'
+                ],
+                where: {
+                    team,
+                    position
+                },
+                order: {
+                    depthChartPos: 'ASC'
+                }
+            });
     }
 
     @Query(() => Player)

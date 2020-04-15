@@ -82,7 +82,6 @@ export class PlayerDetailComponent implements OnInit, OnDestroy {
                     } else {
                       this.userTarget = null;
                     }
-
                   });
                 this.avgTarget$ = this._playerQ.avgTargetRound(this.id)
                   .subscribe(({ data }) => {

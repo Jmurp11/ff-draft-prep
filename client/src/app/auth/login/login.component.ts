@@ -4,8 +4,6 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from '../auth.service';
 import { Subscription } from 'rxjs';
-import { UserQueryService } from 'src/app/shared/user/user-query.service';
-import { UserService } from 'src/app/shared/user/user.service';
 
 @Component({
   selector: 'app-login',

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
-import { player, players, avgTargetRound } from './queries';
+import { player, players, avgTargetRound, depthChart } from './queries';
 
 @Injectable({
   providedIn: 'root'
@@ -27,11 +27,21 @@ export class PlayerGqlService {
     }).valueChanges;
   }
 
-  avgTargetRound(player: string) {
+  avgTargetRound(id: string) {
     return this.apollo.watchQuery<any>({
       query: avgTargetRound,
       variables: {
-        player
+        player: id
+      }
+    }).valueChanges;
+  }
+
+  depthChart(team: number, position: string) {
+    return this.apollo.watchQuery<any>({
+      query: depthChart,
+      variables: {
+        team,
+        position
       }
     }).valueChanges;
   }
