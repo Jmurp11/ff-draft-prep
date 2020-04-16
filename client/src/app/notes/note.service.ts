@@ -17,6 +17,7 @@ export class NoteService {
   shareStatus = new BehaviorSubject<NoteResponse>(null);
   clearNoteForm = new BehaviorSubject<boolean>(null);
   populatePlayer = new BehaviorSubject<boolean>(true);
+  isCancelBtnVisible = new BehaviorSubject<boolean>(true);
 
   constructor() { }
 
@@ -34,6 +35,10 @@ export class NoteService {
 
   setShareStatus(response: NoteResponse) {
     this.shareStatus.next(response);
+  }
+
+  setIsCancelBtnVisible(val: boolean) {
+    this.isCancelBtnVisible.next(val);
   }
 
   prepopulatePlayer(val: boolean) {
