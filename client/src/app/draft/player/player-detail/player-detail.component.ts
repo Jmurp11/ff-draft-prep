@@ -131,8 +131,6 @@ export class PlayerDetailComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this._player.updateCurrentPlayer(null);
-
     if (this.player$) {
       this.player$.unsubscribe();
     }
