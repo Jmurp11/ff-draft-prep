@@ -70,7 +70,6 @@ export class PlayerTableComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.loading = true;
-    this.updateCurrentPlayer(null);
     this.players = [];
     this.selectedPlayers = [];
     this.notes = [];
@@ -150,6 +149,7 @@ export class PlayerTableComponent implements OnInit, OnDestroy {
   }
 
   addNoteClick() {
+    this._note.setIsCancelBtnVisible(false);
     this._note.prepopulatePlayer(true);
   }
 

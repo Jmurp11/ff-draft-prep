@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
-import { likes, note, notes, publicNotes, notesByPlayer, notesByPlayerUser } from './queries';
+import { likes, note, notes, players, publicNotes, notesByPlayer, notesByPlayerUser } from './queries';
 
 @Injectable({
   providedIn: 'root'
@@ -61,5 +61,12 @@ export class NotesQueriesService {
     return this.apollo.watchQuery<any>({
       query: publicNotes
     }).valueChanges;
+  }
+
+  players() {
+    return this.apollo.watchQuery<any>({
+      query: players
+    })
+      .valueChanges;
   }
 }

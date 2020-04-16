@@ -52,7 +52,7 @@
             Save
           </button>
           <button mat-raised-button color="warn" [disabled]="loading" class="btn btn-primary note-btn"
-            (click)="cancel()" *ngIf="!isPlayerPreSet">
+            (click)="cancel()" *ngIf="isCancelBtnVisible">
             Cancel
           </button>
         </div>

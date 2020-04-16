@@ -35,8 +35,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
   userNoteLoading: boolean;
   hasNotes: boolean;
 
-  // nera metric employeecapacity analysis (pick one that runs at 2am)
-
   constructor(
     private dialog: MatDialog,
     private _note: NoteService,
@@ -78,6 +76,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   openDialog(): void {
+    this._note.setIsCancelBtnVisible(true);
     this._note.prepopulatePlayer(false);
     const dialogRef = this.dialog.open(NoteDialogComponent, {
       width: '850px',

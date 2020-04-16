@@ -110,6 +110,7 @@ export class PlayerDetailComponent implements OnInit, OnDestroy {
   }
 
   addNote(): void {
+    this._note.setIsCancelBtnVisible(true);
     this._note.prepopulatePlayer(true);
     const dialogRef = this.dialog.open(NoteDialogComponent, {
       width: '850px',

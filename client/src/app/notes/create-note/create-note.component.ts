@@ -11,8 +11,8 @@ import { NoteDialogComponent } from '../note-dialog/note-dialog.component';
 import { players } from '../queries';
 import { NotesMutationsService } from '../notes-mutations.service';
 import { NoteService } from '../note.service';
-import { Apollo } from 'apollo-angular';
 import { User } from '../../auth/user.model';
+import { NotesQueriesService } from '../notes-queries.service';
 
 @Component({
   selector: 'app-create-note',
@@ -26,6 +26,8 @@ export class CreateNoteComponent implements AfterContentInit, OnDestroy {
   popPlayer$: Subscription;
   clearForm$: Subscription;
   players$: Subscription;
+  cancel$: Subscription;
+
   filteredOptions: Observable<any[]>;
   form: FormGroup;
   currentPlayer: Player;
@@ -35,18 +37,19 @@ export class CreateNoteComponent implements AfterContentInit, OnDestroy {
   sources: string[];
   players: any[];
   isPlayerPreSet: boolean;
+  isCancelBtnVisible: boolean;
   dismiss: string;
   playerIsValid: boolean;
   titleIsValid: boolean;
   noteIsValid: boolean;
 
   constructor(
-    private apollo: Apollo,
     private _player: PlayerService,
     private _auth: AuthService,
     public dialogRef: MatDialogRef<NoteDialogComponent>,
     private _note: NoteService,
     private _noteM: NotesMutationsService,
+    private _noteQ: NotesQueriesService,
     private snackbar: MatSnackBar) { }
 
   ngAfterContentInit() {
@@ -127,6 +130,9 @@ export class CreateNoteComponent implements AfterContentInit, OnDestroy {
       }
     });
 
+    this.cancel$ = this._note.isCancelBtnVisible
+      .subscribe(val => this.isCancelBtnVisible = val);
+
     this.noteStatus$ = this._note.noteStatus.subscribe(response => {
       if (response) {
         this.openSnackBar(response.message, this.dismiss);
@@ -146,10 +152,7 @@ export class CreateNoteComponent implements AfterContentInit, OnDestroy {
       this.user = user;
     });
 
-    this.players$ = this.apollo.watchQuery<any>({
-      query: players
-    })
-      .valueChanges
+    this.players$ = this._noteQ.players()
       .subscribe(({ data, loading }) => {
         this.loading = loading;
         data.players.forEach((player: any) => {
@@ -263,6 +266,9 @@ export class CreateNoteComponent implements AfterContentInit, OnDestroy {
     }
     if (this.clearForm$) {
       this.clearForm$.unsubscribe();
+    }
+    if (this.cancel$) {
+      this.cancel$.unsubscribe();
     }
   }
 }
