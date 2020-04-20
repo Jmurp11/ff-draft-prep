@@ -1,6 +1,8 @@
 <mat-drawer-container class="container" autosize>
   <mat-drawer #drawer class="sidenav" mode="side" position="end" opened="true" disableClose="true">
-    <app-target [targetsInput]="targets" [userInput]="userId" [loadingInput]="userLoading"></app-target>
+    <div class="targetList">
+      <app-target [targetsInput]="targets" [userInput]="userId" [loadingInput]="userLoading"></app-target>
+    </div>
   </mat-drawer>
 
   <mat-tab-group fxFlex="100%">
