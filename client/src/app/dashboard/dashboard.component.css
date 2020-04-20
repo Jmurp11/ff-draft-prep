@@ -17,3 +17,14 @@
   padding: 20px;
   text-align: center;
 }
+
+.container {
+  height: 93%;
+}
+
+.sidenav {
+  display: flex;
+  flex-direction: column;
+  align-content: space-between;
+  width: 25%;
+}

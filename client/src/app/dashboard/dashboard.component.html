@@ -1,57 +1,53 @@
-<div class="ctr" fxLayout="row" fxLayoutAlign="center" fxLayoutGap="1.0%">
-
-  <div class="crd-ctr" fxFlex="75%" fxLayout="column" fxFlexAlign="center center">
-
-    <mat-tab-group fxFlex="90%">
-      <mat-tab label="My Notes">
-        <div class="padding">
-          <span>
-            <button mat-fab color="primary" (click)="openDialog()" *ngIf="hasNotes">
-              <mat-icon>note_add</mat-icon>
-            </button>
-            <button mat-raised-button color="primary" (click)="openDialog()" *ngIf="!hasNotes">
-              Start Adding Notes
-            </button>
-          </span>
-        </div>
-        <div class="card-ctr">
-          <app-note [notesInput]="userNotes" [userIdInput]="userId" [isTableInput]="false"
-            [loadingInput]="userNoteLoading"></app-note>
-        </div>
-      </mat-tab>
-      <mat-tab label="Trending Notes">
-        <div class="padding">
-          <span>
-            <button mat-fab color="primary" (click)="openDialog()">
-              <mat-icon>note_add</mat-icon>
-            </button>
-          </span>
-        </div>
-        <div class="card-ctr">
-          <app-note [notesInput]="notes" [userIdInput]="userId" [isTableInput]="false" [loadingInput]="noteLoading">
-          </app-note>
-        </div>
-      </mat-tab>
-      <mat-tab label="My Favorites">
-        <div class="padding">
-          <span>
-            <button mat-fab color="primary" (click)="openDialog()" *ngIf="hasNotes">
-              <mat-icon>note_add</mat-icon>
-            </button>
-            <button mat-raised-button color="primary" (click)="openDialog()" *ngIf="!hasNotes">
-              Start Adding Notes
-            </button>
-          </span>
-        </div>
-        <div class="card-ctr">
-          <app-note [notesInput]="likedNotes" [userIdInput]="userId" [isTableInput]="false"
-            [loadingInput]="likedNoteLoading"></app-note>
-        </div>
-      </mat-tab>
-    </mat-tab-group>
-  </div>
-
-  <div fxFlex="25%" class="targetList">
+<mat-drawer-container class="container" autosize>
+  <mat-drawer #drawer class="sidenav" mode="side" position="end" opened="true" disableClose="true">
     <app-target [targetsInput]="targets" [userInput]="userId" [loadingInput]="userLoading"></app-target>
-  </div>
-</div>
+  </mat-drawer>
+
+  <mat-tab-group fxFlex="100%">
+    <mat-tab label="My Notes">
+      <div class="padding">
+        <span>
+          <button mat-fab color="primary" (click)="openDialog()" *ngIf="hasNotes">
+            <mat-icon>note_add</mat-icon>
+          </button>
+          <button mat-raised-button color="primary" (click)="openDialog()" *ngIf="!hasNotes">
+            Start Adding Notes
+          </button>
+        </span>
+      </div>
+      <div class="card-ctr">
+        <app-note [notesInput]="userNotes" [userIdInput]="userId" [isTableInput]="false"
+          [loadingInput]="userNoteLoading"></app-note>
+      </div>
+    </mat-tab>
+    <mat-tab label="Trending Notes">
+      <div class="padding">
+        <span>
+          <button mat-fab color="primary" (click)="openDialog()">
+            <mat-icon>note_add</mat-icon>
+          </button>
+        </span>
+      </div>
+      <div class="card-ctr">
+        <app-note [notesInput]="notes" [userIdInput]="userId" [isTableInput]="false" [loadingInput]="noteLoading">
+        </app-note>
+      </div>
+    </mat-tab>
+    <mat-tab label="My Favorites">
+      <div class="padding">
+        <span>
+          <button mat-fab color="primary" (click)="openDialog()" *ngIf="hasNotes">
+            <mat-icon>note_add</mat-icon>
+          </button>
+          <button mat-raised-button color="primary" (click)="openDialog()" *ngIf="!hasNotes">
+            Start Adding Notes
+          </button>
+        </span>
+      </div>
+      <div class="card-ctr">
+        <app-note [notesInput]="likedNotes" [userIdInput]="userId" [isTableInput]="false"
+          [loadingInput]="likedNoteLoading"></app-note>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+</mat-drawer-container>
