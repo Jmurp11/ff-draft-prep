@@ -1,7 +1,4 @@
-<div class="loading-div" *ngIf="loading">
-  <loading-spinner></loading-spinner>
-</div>
-<div [ngClass]="{ 'note-cards-player': isTable, 'note-cards-dash': !isTable}" *ngIf="!loading">
+<div [ngClass]="{ 'note-cards-player': isTable, 'note-cards-dash': !isTable}">
   <div fxLayout="column" fxLayoutAlign="center" fxLayoutGap="0.5%" *ngFor="let note of notes">
     <mat-card class="note-card">
       <mat-card-header>

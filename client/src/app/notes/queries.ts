@@ -131,6 +131,48 @@ export const publicNotes = gql
     }
   `;
 
+export const userNotes = gql
+  `
+    query notes($user: String, $isCurrentUser: Boolean) {
+      notes(user: $user, isCurrentUser: $isCurrentUser) {
+        id
+        user {
+          id
+          username
+          profileImage
+        }
+        player {
+          id
+          name
+          team {
+            id
+            fullName
+            abbreviation
+          }
+          position
+        }
+        title
+        body
+        source
+        likes {
+          id
+          user {
+            id
+            username
+          }
+        }
+        shares {
+          id
+          user {
+            id
+            username
+          }
+        }
+        creationTime
+      }
+    }
+  `;
+
 export const notes = gql
   `
     query notes($user: String) {
@@ -299,6 +341,26 @@ export const note = gql
     }
   `;
 
+export const noteCount = gql
+  `
+    query noteCount($user: String!) {
+      noteCount(user: $user)
+    }
+  `;
+
+export const userLikesCount = gql
+  `
+    query userLikesCount($user: String!) {
+      userLikesCount(user: $user)
+    }
+  `;
+
+export const userGeneratedLikesCount = gql
+  `
+    query userGeneratedLikesCount($user: String!) {
+      userGeneratedLikesCount(user: $user)
+    }
+  `;
 
 export const likes = gql
   `

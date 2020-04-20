@@ -41,13 +41,13 @@ export class NavbarComponent implements OnInit, OnDestroy {
       if (user) {
         this.userId = user.id;
         this.username = user.username;
+
+        this.users$ = this._user.users().subscribe(({ data }) => this.users = data.users);
+        this.players$ = this._player.players(this.userId).subscribe(({ data }) => this.players = data.players);
       }
     });
 
     this.layout$ = this._layout.isSearchActive.subscribe(isActive => this.isSearchActive = isActive);
-
-    this.users$ = this._user.users().subscribe(({ data }) => this.users = data.users);
-    this.players$ = this._player.players(this.userId).subscribe(({ data }) => this.players = data.players);
   }
 
   goToDashboard() {

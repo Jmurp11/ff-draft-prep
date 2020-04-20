@@ -8,6 +8,7 @@ export const user = gql
         username
         email
         profileImage
+        creationTime
       }
     }
 `;

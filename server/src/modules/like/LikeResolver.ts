@@ -50,6 +50,31 @@ export class LikeResolver {
     }
 
     @UseMiddleware(isAuth, logger)
+    @Query(() => Int)
+    async userLikesCount(@Arg('user') user: string) {
+        return getRepository(Like)
+            .count({
+                where: {
+                    user
+                }
+            });
+    }
+
+    @UseMiddleware(isAuth, logger)
+    @Query(() => Int)
+    async userGeneratedLikesCount(@Arg('user') user: string) {
+        return getRepository(Like)
+            .count({
+                relations: ['note', 'note.user'],
+                where: {
+                    note: {
+                        user
+                    }
+                }
+            });
+    }
+
+    @UseMiddleware(isAuth, logger)
     @Mutation(() => Result)
     async addLike(
         @Arg('input') {

@@ -26,13 +26,13 @@
         <div class="center height width" fxFlex="17%">
           <div>
             <span class="title">
-              {{ player.name }}
+              {{ player.name | titlecase }}
             </span>
             <span class="title2">
-              {{ player.position }}
+              {{ player.position | titlecase }}
             </span>
           </div>
-          <div class="title2"> {{ player.team.fullName }}</div>
+          <div class="title2"> {{ player.team.fullName | titlecase }}</div>
           <div>
             <span>
               <button mat-icon-button color="accent" (click)="addTarget()" *ngIf="!userTarget">

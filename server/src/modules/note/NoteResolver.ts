@@ -1,4 +1,4 @@
-import { Resolver, Query, Mutation, Arg, UseMiddleware } from 'type-graphql';
+import { Resolver, Query, Mutation, Arg, UseMiddleware, Int } from 'type-graphql';
 import { Note } from '../../entity';
 import { Result } from '../../shared';
 import { NoteInput } from './inputs';
@@ -12,18 +12,33 @@ export class NoteResolver {
     @UseMiddleware(isAuth, logger)
     @Query(() => [Note])
     async notes(
-        @Arg('user', { nullable: true }) user: string) {
+        @Arg('user', { nullable: true }) user: string,
+        @Arg('isCurrentUser', { nullable: true }) isCurrentUser: boolean) {
         if (user) {
-            return getRepository(Note)
-                .find({
-                    relations: ['user', 'player', 'likes', 'shares'],
-                    where: {
-                        user
-                    },
-                    order: {
-                        creationTime: 'DESC'
-                    }
-                });
+            if (isCurrentUser) {
+                return getRepository(Note)
+                    .find({
+                        relations: ['user', 'player', 'likes', 'shares'],
+                        where: {
+                            user
+                        },
+                        order: {
+                            creationTime: 'DESC'
+                        }
+                    });
+            } else {
+                return getRepository(Note)
+                    .find({
+                        relations: ['user', 'player', 'likes', 'shares'],
+                        where: {
+                            user,
+                            isPrivate: false
+                        },
+                        order: {
+                            creationTime: 'DESC'
+                        }
+                    });
+            }
         } else {
             return getRepository(Note)
                 .find({
@@ -82,6 +97,17 @@ export class NoteResolver {
                 where: { id },
                 order: {
                     creationTime: 'DESC'
+                }
+            });
+    }
+
+    @UseMiddleware(isAuth, logger)
+    @Query(() => Int)
+    async noteCount(@Arg('user') user: string) {
+        return getRepository(Note)
+            .count({
+                where: {
+                    user
                 }
             });
     }

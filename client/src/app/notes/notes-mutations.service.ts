@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
-import { addLike, createNote, createShare, deleteNote, notes, likes, publicNotes, notesByPlayer, notesByPlayerUser } from './queries';
+import { addLike, createNote, createShare, deleteNote, notes, likes, publicNotes, notesByPlayer, notesByPlayerUser, noteCount, userGeneratedLikesCount, userLikesCount } from './queries';
 import { NoteService } from './note.service';
 
 @Injectable({
@@ -48,6 +48,12 @@ export class NotesMutationsService {
           query: notesByPlayerUser,
           variables: {
             player,
+            user
+          }
+        },
+        {
+          query: noteCount,
+          variables: {
             user
           }
         }
@@ -118,6 +124,18 @@ export class NotesMutationsService {
       refetchQueries: [
         {
           query: likes,
+          variables: {
+            user
+          }
+        },
+        {
+          query: userLikesCount,
+          variables: {
+            user
+          }
+        },
+        {
+          query: userGeneratedLikesCount,
           variables: {
             user
           }

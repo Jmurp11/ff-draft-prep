@@ -1,13 +1,46 @@
-<div class="main-loading" *ngIf="loading">
-  <loading-spinner></loading-spinner>
-</div>
-
-<div *ngIf="!loading">
-  <button mat-raised-button color="accent" (click)="navigateToEdit()">Edit Profile</button>
-  <div>
-    <div>ID: {{ user.id }}</div>
-    <div>Username: {{ user.username }}</div>
-    <div>Email: {{ user.email }}</div>
-    <div>Profile Image: {{ user.profileImage }}</div>
+<mat-drawer-container class="container" autosize>
+  <mat-drawer class="sidenav" mode="side" position="end" opened="true" disableClose="true">
+    <div class="card-ctr">
+      <app-note [notesInput]="notes" [userIdInput]="user.id" [isTableInput]="true" [loadingInput]="loading">
+      </app-note>
+    </div>
+  </mat-drawer>
+  <div class="main-loading" *ngIf="loading">
+    <loading-spinner></loading-spinner>
   </div>
-</div>
+  <div class="container" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="0.5%" *ngIf="!loading">
+    <div class="container" fxFlex="30%" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="0.5%">
+      <div class="profileImage" [style.backgroundImage]="'url(' + user.profileImage + ')'">
+      </div>
+      <div class="title">{{ user.username | titlecase }}</div>
+      <div class="title2">
+        <span>
+          Member Since: {{ user.creationTime | date: "MMMM d, yyyy " }}
+        </span>
+        <span *ngIf="isCurrentUser">
+          <button mat-icon-button color="accent" (click)="navigateToEdit()">
+            <mat-icon>edit</mat-icon>
+          </button>
+        </span>
+      </div>
+    </div>
+
+    <mat-divider></mat-divider>
+
+    <div class="center container" fxFlex="3%">
+      <div class="width" fxLayout="row" fxlayoutAlign="center" fxLayoutGap="0.5%">
+        <span fxFlex="30%" class="item">
+          <span class="bold">Total Notes:</span> {{ notesCount }}</span>
+        <span fxFlex="30%" class="item">
+          <span class="bold">Liked Notes:</span> {{ likesCount }}</span>
+        <span fxFlex="30%" class="item">
+          <span class="bold">Likes Generated:</span> {{ likesGenCount }}</span>
+      </div>
+    </div>
+
+    <mat-divider></mat-divider>
+
+    <div fxFlex="65%"></div>
+
+  </div>
+</mat-drawer-container>
