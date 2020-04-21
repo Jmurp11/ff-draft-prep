@@ -12,8 +12,8 @@ mat-card-content {
 }
 
 .note-header-image {
-  height: 40px;
-  width: 40px;
+  height: 2.500em;
+  width: 2.500em;
   border-radius: 50%;
   flex-shrink: 0;
 }
