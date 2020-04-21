@@ -388,4 +388,33 @@ export class UserResolver {
 
         return true;
     };
+
+    @UseMiddleware(isAuth, logger)
+    @Mutation(() => Result)
+    async updateUserProfileImage(
+        @Arg('id') id: string,
+        @Arg('image') image: string
+    ): Promise<Result> {
+        const result = await User.update({ id }, { profileImage: image });
+
+        if (result.affected !== 1) {
+            return {
+                errors: [
+                    {
+                        path: 'edit',
+                        message: 'Something went wrong! Edit did not save correctly!'
+                    }
+                ]
+            }
+        }
+
+        return {
+            success: [
+                {
+                    path: 'edit',
+                    message: 'Profile Image updated!'
+                }
+            ]
+        }
+    }
 }

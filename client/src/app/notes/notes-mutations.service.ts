@@ -1,6 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
-import { addLike, createNote, createShare, deleteNote, notes, likes, publicNotes, notesByPlayer, notesByPlayerUser, noteCount, userGeneratedLikesCount, userLikesCount } from './queries';
+import {
+  addLike, createNote, createShare, deleteNote, notes, likes,
+  publicNotes, notesByPlayer, notesByPlayerUser, noteCount,
+  userGeneratedLikesCount, userLikesCount
+} from './queries';
 import { NoteService } from './note.service';
 
 @Injectable({

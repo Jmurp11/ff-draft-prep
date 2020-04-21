@@ -49,3 +49,17 @@ export const meQuery = gql
     }
   }
 `;
+
+export const updateUser = gql
+  `
+    mutation updateUserProfileImage($id: String!, $image: String!) {
+      updateUserProfileImage(id: $id, image: $image) {
+        success {
+          message
+        }
+        errors {
+          message
+        }
+      }
+    }
+  `;

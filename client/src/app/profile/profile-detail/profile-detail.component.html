@@ -9,7 +9,8 @@
     <loading-spinner></loading-spinner>
   </div>
   <div class="container" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="0.5%" *ngIf="!loading">
-    <div class="container" fxFlex="30%" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="0.5%">
+    <div class="container" fxFlex="30%" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="0.5%"
+      *ngIf="!isEdit">
       <div class="profileImage" [style.backgroundImage]="'url(' + user.profileImage + ')'">
       </div>
       <div class="title">{{ user.username | titlecase }}</div>
@@ -18,13 +19,34 @@
           Member Since: {{ user.creationTime | date: "MMMM d, yyyy " }}
         </span>
         <span *ngIf="isCurrentUser">
-          <button mat-icon-button color="accent" (click)="navigateToEdit()">
+          <button mat-icon-button color="accent" (click)="onEdit()">
             <mat-icon>edit</mat-icon>
           </button>
         </span>
       </div>
     </div>
-
+    <div *ngIf="isEdit" class="container center" fxFlex="30%" fxLayout="column" fxLayoutAlign="center center"
+      fxLayoutGap="0.5%">
+      <form class="form" [formGroup]="form" (ngSubmit)="onEditSubmit()">
+        <div class="form-group">
+          <mat-form-field appearance="standard">
+            <mat-label>Update Profile Image</mat-label>
+            <input matInput placeholder="Enter Profile Image URL (optional)" type="text" formControlName="profileImage"
+              class="form-control" />
+          </mat-form-field>
+          <div class="invalid-label" *ngIf="!isValidImage">Must be JPG, JPEG, PNG, or GIF file</div>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="center center"
+        fxLayoutGap="0.5%">
+          <span fxFlex="50%">
+            <button mat-raised-button color="primary" (click)="onEditSubmit()">Save</button>
+          </span>
+          <span fxFlex="50%">
+            <button mat-raised-button color="warn" (click)="onEdit()">Cancel</button>
+          </span>
+        </div>
+      </form>
+    </div>
     <mat-divider></mat-divider>
 
     <div class="center container" fxFlex="3%">
