@@ -8,11 +8,10 @@
 }
 
 .sidenav {
-  text-align: center;
   display: flex;
   flex-direction: column;
   align-content: space-between;
-  width: 28%;
+  width: 30%;
 }
 
 .title {
