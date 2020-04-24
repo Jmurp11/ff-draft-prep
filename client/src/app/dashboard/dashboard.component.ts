@@ -7,6 +7,7 @@ import { Note } from '../notes/note.model';
 import { NotesQueriesService } from '../notes/notes-queries.service';
 import { UserQueryService } from '../shared/user/user-query.service';
 import { User } from '../shared/user/user.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
@@ -40,6 +41,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     private _note: NoteService,
     private _noteQ: NotesQueriesService,
     private _userQ: UserQueryService,
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -84,6 +86,16 @@ export class DashboardComponent implements OnInit, OnDestroy {
     });
 
     dialogRef.afterClosed().subscribe(result => { });
+  }
+
+  navigateToDraft(num: number) {
+    if (num === 1) {
+      this.router.navigate([`/d/draft/${this.user.username}/draft-prep`]);
+    } else if (num === 2) {
+      this.router.navigate([`/d/draft/draft-lobby`]);
+    } else {
+      throw new Error('Number must be 1 or 2');
+    }
   }
 
   ngOnDestroy() {

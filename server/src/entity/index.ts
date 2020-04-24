@@ -1,5 +1,6 @@
 export { Like } from './Like';
 export { Note } from './Note';
+export { Notification } from './Notification';
 export { Player } from './Player';
 export { DefaultRank } from './DefaultRank';
 export { Rank } from './Rank';

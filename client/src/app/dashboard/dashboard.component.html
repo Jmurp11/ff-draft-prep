@@ -5,51 +5,70 @@
     </div>
   </mat-drawer>
 
-  <mat-tab-group fxFlex="100%">
-    <mat-tab label="My Notes">
-      <div class="padding">
-        <span>
-          <button mat-fab color="primary" (click)="openDialog()" *ngIf="hasNotes">
-            <mat-icon>note_add</mat-icon>
+  <div fxFlexLayout="row" fxLayoutAlign="center center" fxLayoutGap="0.5%">
+    <div fxFlex="30%">
+      <div>
+        <mat-list-item>
+          <mat-menu #draftMenu="matMenu">
+            <button mat-menu-item (click)="navigateToDraft(1)">Draft Prep</button>
+            <button mat-menu-item (click)="navigateToDraft(2)">Mock Draft Lobby</button>
+          </mat-menu>
+
+          <button mat-raised-button color="primary" [matMenuTriggerFor]="draftMenu">
+            Draft
           </button>
-          <button mat-raised-button color="primary" (click)="openDialog()" *ngIf="!hasNotes">
-            Start Adding Notes
-          </button>
-        </span>
+        </mat-list-item>
       </div>
-      <div class="card-ctr">
-        <app-note [notesInput]="userNotes" [userIdInput]="userId" [isTableInput]="false"
-          [loadingInput]="userNoteLoading"></app-note>
-      </div>
-    </mat-tab>
-    <mat-tab label="Trending Notes">
-      <div class="padding">
-        <span>
-          <button mat-fab color="primary" (click)="openDialog()">
-            <mat-icon>note_add</mat-icon>
-          </button>
-        </span>
-      </div>
-      <div class="card-ctr">
-        <app-note [notesInput]="notes" [userIdInput]="userId" [isTableInput]="false" [loadingInput]="noteLoading">
-        </app-note>
-      </div>
-    </mat-tab>
-    <mat-tab label="My Favorites">
-      <div class="padding">
-        <span>
-          <button mat-fab color="primary" (click)="openDialog()" *ngIf="hasNotes">
-            <mat-icon>note_add</mat-icon>
-          </button>
-          <button mat-raised-button color="primary" (click)="openDialog()" *ngIf="!hasNotes">
-            Start Adding Notes
-          </button>
-        </span>
-      </div>
-      <div class="card-ctr">
-        <app-note [notesInput]="likedNotes" [userIdInput]="userId" [isTableInput]="false"
-          [loadingInput]="likedNoteLoading"></app-note>
-      </div>
-    </mat-tab>
-  </mat-tab-group>
+    </div>
+
+    <div fxFlex="70%">
+      <mat-tab-group>
+        <mat-tab label="My Notes">
+          <div class="padding">
+            <span>
+              <button mat-fab color="primary" (click)="openDialog()" *ngIf="hasNotes">
+                <mat-icon>note_add</mat-icon>
+              </button>
+              <button mat-raised-button color="primary" (click)="openDialog()" *ngIf="!hasNotes">
+                Start Adding Notes
+              </button>
+            </span>
+          </div>
+          <div class="card-ctr">
+            <app-note [notesInput]="userNotes" [userIdInput]="userId" [isTableInput]="false"
+              [loadingInput]="userNoteLoading"></app-note>
+          </div>
+        </mat-tab>
+        <mat-tab label="Trending Notes">
+          <div class="padding">
+            <span>
+              <button mat-fab color="primary" (click)="openDialog()">
+                <mat-icon>note_add</mat-icon>
+              </button>
+            </span>
+          </div>
+          <div class="card-ctr">
+            <app-note [notesInput]="notes" [userIdInput]="userId" [isTableInput]="false" [loadingInput]="noteLoading">
+            </app-note>
+          </div>
+        </mat-tab>
+        <mat-tab label="My Favorites">
+          <div class="padding">
+            <span>
+              <button mat-fab color="primary" (click)="openDialog()" *ngIf="hasNotes">
+                <mat-icon>note_add</mat-icon>
+              </button>
+              <button mat-raised-button color="primary" (click)="openDialog()" *ngIf="!hasNotes">
+                Start Adding Notes
+              </button>
+            </span>
+          </div>
+          <div class="card-ctr">
+            <app-note [notesInput]="likedNotes" [userIdInput]="userId" [isTableInput]="false"
+              [loadingInput]="likedNoteLoading"></app-note>
+          </div>
+        </mat-tab>
+      </mat-tab-group>
+    </div>
+  </div>
 </mat-drawer-container>

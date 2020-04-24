@@ -6,8 +6,8 @@ import {
     PrimaryGeneratedColumn,
     ManyToOne
 } from 'typeorm';
-import { Note, User } from './index';
 import { ObjectType, Field } from 'type-graphql';
+import { Note, User } from './index';
 
 @Entity('shares')
 @ObjectType()

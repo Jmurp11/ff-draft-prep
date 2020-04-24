@@ -29,6 +29,13 @@ const routes: Routes = [
       return module.DraftModule;
     }
   },
+  {
+    path: 'n',
+    loadChildren: async () => {
+      const module = await import('./notes/note.module');
+      return module.NoteModule;
+    }
+  },
   { path: '**', redirectTo: 'dashboard' }
 ];
 

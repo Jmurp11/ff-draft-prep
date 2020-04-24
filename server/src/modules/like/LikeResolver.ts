@@ -1,9 +1,12 @@
-import { Resolver, Query, Mutation, Arg, UseMiddleware, Int } from 'type-graphql';
+import { Resolver, Query, Mutation, Arg, UseMiddleware, Int, PubSub, PubSubEngine } from 'type-graphql';
 import { Like, Note } from '../../entity';
 import { Result } from '../../shared';
 import { LikeInput } from './inputs/LikeInput';
 import { getRepository } from 'typeorm';
 import { isAuth, logger } from '../../middleware';
+
+
+const NOTIFICATION = 'NOTIFICATION';
 
 @Resolver()
 export class LikeResolver {
@@ -77,6 +80,7 @@ export class LikeResolver {
     @UseMiddleware(isAuth, logger)
     @Mutation(() => Result)
     async addLike(
+        @PubSub() pubSub: PubSubEngine,
         @Arg('input') {
             user,
             note
@@ -112,6 +116,14 @@ export class LikeResolver {
             note,
             creationTime: n?.creationTime
         }).save();
+
+        const payload = {
+            user,
+            note,
+            type: 'like'
+        };
+
+        await pubSub.publish(NOTIFICATION, payload);
 
         return {
             success: [

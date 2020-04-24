@@ -6,5 +6,5 @@ export class SubscriptionInput {
     user: string;
 
     @Field()
-    player: number;
+    note: string;
 }

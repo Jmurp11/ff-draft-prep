@@ -24,6 +24,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   username: string;
   players: any;
   users: any;
+  hasNotifications: boolean;
 
   constructor(
     public dialog: MatDialog,
@@ -35,6 +36,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
+    this.hasNotifications = false;
     this.auth$ = this._auth.user.subscribe(user => {
       this.isAuth = !!user;
 

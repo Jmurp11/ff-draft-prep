@@ -9,21 +9,6 @@
 
   <span class="fill-space" *ngIf="isAuth"></span>
 
-  <span *ngIf="isAuth">
-    <mat-list-item>
-      <mat-menu #draftMenu="matMenu">
-        <button mat-menu-item (click)="navigateToDraft(1)">Draft Prep</button>
-        <button mat-menu-item (click)="navigateToDraft(2)">Mock Draft Lobby</button>
-      </mat-menu>
-
-      <button mat-icon-button [matMenuTriggerFor]="draftMenu">
-        <mat-icon>view_list</mat-icon> Draft
-      </button>
-    </mat-list-item>
-  </span>
-
-  <span class="fill-space" *ngIf="isSearchActive"></span>
-
   <span *ngIf="isSearchActive">
     <app-searchbar [resultsInput]="users" [searchTypeInput]="searchType" *ngIf="searchType"></app-searchbar>
     <app-searchbar [resultsInput]="players" [searchTypeInput]="searchType" *ngIf="!searchType"></app-searchbar>
@@ -49,7 +34,7 @@
         </button>
       </mat-menu>
 
-      <button mat-icon-button class="menu-option" [matMenuTriggerFor]="searchMenu" *ngIf="!isSearchActive">
+      <button mat-icon-button class="menu-option" [matMenuTriggerFor]="searchMenu" [disabled]="isSearchActive">
         <mat-icon>search</mat-icon>
       </button>
     </span>
@@ -70,7 +55,11 @@
         </button>
       </mat-menu>
 
-      <button mat-icon-button class="menu-option" [matMenuTriggerFor]="notifMenu">
+      <button mat-icon-button class="menu-option" color="accent" [matMenuTriggerFor]="notifMenu" *ngIf="hasNotifications">
+        <mat-icon>notifications_active</mat-icon>
+      </button>
+
+      <button mat-icon-button class="menu-option" *ngIf="!hasNotifications">
         <mat-icon>notifications</mat-icon>
       </button>
     </span>
