@@ -81,7 +81,7 @@ export class NotesMutationsService {
     });
   }
 
-  deleteNote(id: string, user: string) {
+  deleteNote(id: string, user: string, player: string) {
     this.apollo.mutate({
       mutation: deleteNote,
       variables: {
@@ -97,6 +97,27 @@ export class NotesMutationsService {
         },
         {
           query: publicNotes
+        },
+        ,
+        {
+          query: notesByPlayer,
+          variables: {
+            player
+          }
+        },
+        ,
+        {
+          query: notesByPlayerUser,
+          variables: {
+            player,
+            user
+          }
+        },
+        {
+          query: noteCount,
+          variables: {
+            user
+          }
         }
       ]
     }).subscribe(({ data }) => {

@@ -6,12 +6,6 @@ mat-card-content {
     height: 100%;
 }
 
-mat-grid-list {
-  margin:0;
-  padding:0;
-  height:100%;
-}
-
 .card-content {
   display: flex;
   flex-direction: column;
@@ -21,5 +15,9 @@ mat-grid-list {
 }
 
 .note-btn {
-  padding: 0px;
+  padding: 0em;
+}
+
+.title {
+  font-size: 1.000em;
 }

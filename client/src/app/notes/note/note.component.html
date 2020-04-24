@@ -5,7 +5,9 @@
         <div mat-card-avatar class="note-header-image" [style.backgroundImage]="'url(' + note.user.profileImage + ')'">
         </div>
         <mat-card-title>
-          {{ note.title }}
+          <button mat-button class="title note-btn" (click)="navigateToNote(note.id)">
+            {{ note.title | titlecase}}
+          </button>
         </mat-card-title>
         <mat-card-subtitle>
           <button class="note-btn" mat-button color="primary" (click)="navigateToPlayer(note.player.id)">
@@ -13,9 +15,16 @@
           </button>
         </mat-card-subtitle>
         <mat-card-subtitle>
-          <button class="note-btn" mat-button (click)="navigateToProfile(note.user.username)">
-            <mat-icon>account_circle</mat-icon> {{ note.user.username }}
-          </button>
+          <span>
+            <button class="note-btn" mat-button (click)="navigateToProfile(note.user.username)">
+              <mat-icon>account_circle</mat-icon> {{ note.user.username }}
+            </button>
+          </span>
+          <span *ngIf="this.currentUser.id === note.user.id">
+            <button mat-icon-button color="warn" (click)="deleteNote(note)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </span>
         </mat-card-subtitle>
       </mat-card-header>
       <mat-card-content>
@@ -25,18 +34,18 @@
       </mat-card-content>
       <mat-card-actions fxLayout="row" fxAlign="center center" fxLayoutGap="5.0%">
         <div class="action-btn" fxFlex="30%">
+          <button mat-icon-button color="primary" (click)="addComment(note)">
+            <mat-icon>add_comment</mat-icon>
+          </button>
+        </div>
+        <div class="action-btn" fxFlex="30%">
           <button mat-icon-button color="accent" (click)="addLike(note)">
-            <mat-icon>favorite</mat-icon>
+            <mat-icon>favorite</mat-icon> {{ getCount(note.likes) }}
           </button>
         </div>
         <div class="action-btn" fxFlex="30%">
           <button mat-icon-button color="primary" (click)="createShare(note)">
             <mat-icon>share</mat-icon>
-          </button>
-        </div>
-        <div class="action-btn" fxFlex="30%">
-          <button mat-icon-button color="warn" (click)="deleteNote(note)">
-            <mat-icon>delete</mat-icon>
           </button>
         </div>
       </mat-card-actions>

@@ -1,0 +1,63 @@
+<div>
+  <div class="main-loading" *ngIf="loading">
+    <loading-spinner></loading-spinner>
+  </div>
+
+  <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="0.5%" *ngIf="!loading">
+    <div fxFlex="20%"></div>
+
+    <div fxFlex="60%">
+      <mat-card class="note-card" (click)="navigateToNote(note.id)">
+        <mat-card-header>
+          <div mat-card-avatar class="note-header-image"
+            [style.backgroundImage]="'url(' + note.user.profileImage + ')'">
+          </div>
+          <mat-card-title>
+            {{ note.title }}
+          </mat-card-title>
+          <mat-card-subtitle>
+            <button class="note-btn" mat-button color="primary" (click)="navigateToPlayer(note.player.id)">
+              {{ note.player.name }} {{ note.player.position }} - {{ note.player.team.abbreviation }}
+            </button>
+          </mat-card-subtitle>
+          <mat-card-subtitle>
+            <span>
+              <button class="note-btn" mat-button (click)="navigateToProfile(note.user.username)">
+                <mat-icon>account_circle</mat-icon> {{ note.user.username }}
+              </button>
+            </span>
+            <span *ngIf="userId === note.user.id">
+              <button mat-icon-button color="warn" (click)="deleteNote(note)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </span>
+          </mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <div class='card-content'>{{ note.body }}</div>
+          <div class='card-content'>Source: {{ note.source }}</div>
+          <div class="card-content">{{ note.creationTime | date: "MMM dd, yyyy hh:mm " }}</div>
+        </mat-card-content>
+        <mat-card-actions fxLayout="row" fxAlign="center center" fxLayoutGap="5.0%">
+          <div class="action-btn" fxFlex="30%">
+            <button mat-icon-button color="primary" (click)="addComment(note)">
+              <mat-icon>add_comment</mat-icon>
+            </button>
+          </div>
+          <div class="action-btn" fxFlex="30%">
+            <button mat-icon-button color="accent" (click)="addLike(note)">
+              <mat-icon>favorite</mat-icon> {{ likeCount }}
+            </button>
+          </div>
+          <div class="action-btn" fxFlex="30%">
+            <button mat-icon-button color="primary" (click)="createShare(note)">
+              <mat-icon>share</mat-icon>
+            </button>
+          </div>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+
+    <div fxFlex="20%"></div>
+  </div>
+</div>

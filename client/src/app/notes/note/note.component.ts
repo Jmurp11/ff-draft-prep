@@ -29,6 +29,7 @@ export class NoteComponent implements OnInit, OnChanges, OnDestroy {
   auth$: Subscription;
   like$: Subscription;
   share$: Subscription;
+  delete$: Subscription;
   hasNotes$: Subscription;
   currentUser: User;
   notes: any;
@@ -51,6 +52,13 @@ export class NoteComponent implements OnInit, OnChanges, OnDestroy {
     this.auth$ = this._auth.user.subscribe(user => this.currentUser = user);
 
     this.like$ = this._note.likeStatus.subscribe(response => {
+      if (response) {
+        this.openSnackBar(response.message, 'Dismiss');
+        this._note.resetResponse();
+      }
+    });
+
+    this.delete$ = this._note.deleteStatus.subscribe(response => {
       if (response) {
         this.openSnackBar(response.message, 'Dismiss');
         this._note.resetResponse();
@@ -97,7 +105,11 @@ export class NoteComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   deleteNote(note: any) {
-    this._noteM.deleteNote(note.id, this.currentUser.id);
+    this._noteM.deleteNote(note.id, this.currentUser.id, note.player.id);
+  }
+
+  addComment(note: any) {
+    console.log('Add comment');
   }
 
   addLike(note: any) {
@@ -108,12 +120,22 @@ export class NoteComponent implements OnInit, OnChanges, OnDestroy {
     this._noteM.createShare(this.currentUser.id, note.id);
   }
 
+  navigateToNote(note: string) {
+    this.router.navigate([`./n/note/${note}`]);
+  }
+
   navigateToProfile(username: string) {
     this.router.navigate([`./u/profile/${username}`]);
   }
 
   navigateToPlayer(player: string) {
     this.router.navigate([`./d/player/${player}`]);
+  }
+
+  getCount(arr: any) {
+    let count = 0;
+    arr.forEach(el => count++);
+    return count;
   }
 
   ngOnDestroy() {
@@ -123,8 +145,11 @@ export class NoteComponent implements OnInit, OnChanges, OnDestroy {
     if (this.like$) {
       this.like$.unsubscribe();
     }
-    if (this.like$) {
-      this.like$.unsubscribe();
+    if (this.share$) {
+      this.share$.unsubscribe();
+    }
+    if (this.delete$) {
+      this.delete$.unsubscribe();
     }
   }
 }
