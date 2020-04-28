@@ -2,8 +2,10 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Store } from '@ngrx/store';
 import { AuthService } from '../auth.service';
 import { Subscription } from 'rxjs';
+import * as fromApp from '../../store/app.reducer';
 
 @Component({
   selector: 'app-login',
@@ -23,6 +25,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   constructor(
     private router: Router,
     private _auth: AuthService,
+    private store: Store<fromApp.AppState>,
     private snackbar: MatSnackBar
   ) { }
 
@@ -30,12 +33,15 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.loading = false;
     this.emailIsValid = true;
     this.passwordIsValid = true;
-    this.authSub$ = this._auth.user.subscribe(user => {
-      if (user) {
-        this.username = user.username;
-        this.router.navigate(['/dashboard']);
-      }
-    });
+
+    this.authSub$ = this.store.select('user')
+      .subscribe(data => {
+        if (data.user) {
+          console.log(true, `${JSON.stringify(data.user)}`);
+          this.username = data.user.username;
+          this.router.navigate(['/dashboard']);
+        }
+      });
 
     this.loginSub$ = this._auth.loginStatus.subscribe(response => {
       if (response) {

@@ -1,11 +1,12 @@
 import { Component, OnDestroy, Input, SimpleChanges, OnChanges, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { AuthService } from '../../auth/auth.service';
 import { User } from '../../auth/user.model';
 import { Subscription } from 'rxjs';
 import { NotesMutationsService } from '../notes-mutations.service';
 import { NoteService } from '../note.service';
 import { Router } from '@angular/router';
+import {Store} from '@ngrx/store';
+import * as fromApp from '../../store/app.reducer';
 
 @Component({
   selector: 'app-note',
@@ -39,17 +40,18 @@ export class NoteComponent implements OnInit, OnChanges, OnDestroy {
   isTable: boolean;
 
   constructor(
-    private _auth: AuthService,
     private _note: NoteService,
     private _noteM: NotesMutationsService,
     private router: Router,
-    private snackbar: MatSnackBar
+    private snackbar: MatSnackBar,
+    private store: Store<fromApp.AppState>
   ) { }
 
   ngOnInit() {
     this.loading = true;
 
-    this.auth$ = this._auth.user.subscribe(user => this.currentUser = user);
+    this.auth$ = this.store.select('user')
+      .subscribe(data => this.currentUser = data.user);
 
     this.like$ = this._note.likeStatus.subscribe(response => {
       if (response) {

@@ -1,17 +1,17 @@
 import { Component, AfterContentInit, OnDestroy } from '@angular/core';
 import { TargetService } from '../target.service';
 import { MatDialogRef } from '@angular/material/dialog';
+import { Store } from '@ngrx/store';
 import { map, startWith, filter } from 'rxjs/operators';
 import { TargetDialogComponent } from '../target-dialog/target-dialog.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { AuthService } from 'src/app/auth/auth.service';
 import { Apollo } from 'apollo-angular';
 import { Subscription, Observable } from 'rxjs';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { players } from '../../notes/queries';
 import { User } from '../../auth/user.model';
 import { Player } from '../../draft/player/player.model';
-import { PlayerService } from 'src/app/draft/player/player.service';
+import * as fromApp from '../../store/app.reducer';
 
 @Component({
   selector: 'app-add-target',
@@ -39,10 +39,9 @@ export class AddTargetComponent implements AfterContentInit, OnDestroy {
 
   constructor(
     private apollo: Apollo,
-    private _auth: AuthService,
     public dialogRef: MatDialogRef<TargetDialogComponent>,
     private _target: TargetService,
-    private _player: PlayerService,
+    private store: Store<fromApp.AppState>,
     private snackbar: MatSnackBar) { }
 
   ngAfterContentInit() {
@@ -80,9 +79,8 @@ export class AddTargetComponent implements AfterContentInit, OnDestroy {
       }
     });
 
-    this.user$ = this._auth.user.subscribe(user => {
-      this.user = user;
-    });
+    this.user$ = this.store.select('user')
+      .subscribe(data => this.user = data.user);
 
     this.popPlayer$ = this._target.populatePlayer.subscribe(populate => {
       if (!populate) {
@@ -91,10 +89,11 @@ export class AddTargetComponent implements AfterContentInit, OnDestroy {
       } else {
         this.isPlayerPreset = true;
 
-        this.curPlayer$ = this._player.currentPlayer.subscribe(data => {
-          this.currentPlayer = data;
-          this.form.get('player').setValue(this.currentPlayer);
-        });
+        this.curPlayer$ = this.store.select('player')
+          .subscribe(data => {
+            this.currentPlayer = data.player;
+            this.form.get('player').setValue(this.currentPlayer);
+          });
       }
     });
 

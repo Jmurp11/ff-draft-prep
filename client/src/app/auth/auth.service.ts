@@ -1,9 +1,12 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
 import { login, register, logout, confirmUser, forgotPassword, changePassword } from './queries';
 import { Apollo } from 'apollo-angular';
 import { User } from './user.model';
-import { Router } from '@angular/router';
+import * as fromApp from '../store/app.reducer';
+import * as AuthActions from './store/auth.action';
 
 export interface LoginResponse {
   success: boolean;
@@ -30,7 +33,8 @@ export class AuthService {
 
   constructor(
     private apollo: Apollo,
-    private router: Router
+    private router: Router,
+    private store: Store<fromApp.AppState>
   ) { }
 
   login(email: string, password: string) {
@@ -95,7 +99,17 @@ export class AuthService {
     );
 
     if (loadedUser.token) {
-      this.user.next(loadedUser);
+      this.store.dispatch(
+        new AuthActions.Login({
+          id: loadedUser.id,
+          email: loadedUser.email,
+          username: loadedUser.username,
+          profileImage: loadedUser.profileImage,
+          token: loadedUser.token,
+          expirationDate: new Date(userData._tokenExpiration)
+        })
+      );
+
       const expirationDuration =
         new Date(userData._tokenExpiration).getTime() -
         new Date().getTime();
@@ -142,7 +156,9 @@ export class AuthService {
     }).subscribe(({ data }) => {
       this.router.navigate(['home']);
       this.apollo.getClient().resetStore();
-      this.user.next(null);
+      this.store.dispatch(
+        new AuthActions.Logout()
+      );
       this.loginStatus.next(null);
       localStorage.removeItem('user');
       return data;
@@ -167,7 +183,16 @@ export class AuthService {
   ) {
     const expirationDate = new Date(new Date().getTime() + expiresIn * 1000);
     const user = new User(id, email, username, profileImage, token, expirationDate);
-    this.user.next(user);
+    this.store.dispatch(
+      new AuthActions.Login({
+        id,
+        email,
+        username,
+        profileImage,
+        token,
+        expirationDate
+      })
+    );
     this.autoLogout(id, expiresIn * 1000);
     localStorage.setItem('user', JSON.stringify(user));
   }

@@ -2,17 +2,16 @@ import { Component, ViewChild, OnDestroy, OnInit } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { Store } from '@ngrx/store';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Subscription } from 'rxjs';
-import { Apollo } from 'apollo-angular';
-import { players } from '../queries';
 import { Player } from '../player.model';
 import { PlayerService } from '../player.service';
 import { NoteService } from '../../../notes/note.service';
-import { AuthService } from 'src/app/auth/auth.service';
 import { PlayerGqlService } from '../player-gql.service';
-import { UserQueryService } from 'src/app/shared/user/user-query.service';
-import { Note } from 'src/app/notes/note.model';
+import { UserQueryService } from '../../../shared/user/user-query.service';
+import { UpdatePlayer } from '../store/player.action';
+
 
 @Component({
   selector: 'app-player-table',
@@ -32,6 +31,7 @@ export class PlayerTableComponent implements OnInit, OnDestroy {
 
   players$: Subscription;
   user$: Subscription;
+  currentPlayer$: Subscription;
 
   lastSelectedPlayer: Player;
   selectedPlayers: Player[];
@@ -65,7 +65,8 @@ export class PlayerTableComponent implements OnInit, OnDestroy {
     private _note: NoteService,
     private _player: PlayerService,
     private _playerQ: PlayerGqlService,
-    private _user: UserQueryService
+    private _user: UserQueryService,
+    private store: Store<{ player: Player }>
   ) { }
 
   ngOnInit() {
@@ -118,8 +119,12 @@ export class PlayerTableComponent implements OnInit, OnDestroy {
         });
     });
 
-    this._player.currentPlayer.subscribe(current => {
-      this.notes = current.notes;
+    this.currentPlayer$ = this.store.select('player').subscribe(player => {
+      this.currentPlayer = player;
+
+      if (player.notes) {
+        this.notes = player.notes;
+      }
     });
   }
 
@@ -145,7 +150,7 @@ export class PlayerTableComponent implements OnInit, OnDestroy {
   }
 
   updateCurrentPlayer(player: Player) {
-    return this._player.updateCurrentPlayer(player);
+    return this.store.dispatch(new UpdatePlayer(player));
   }
 
   addNoteClick() {
@@ -154,7 +159,7 @@ export class PlayerTableComponent implements OnInit, OnDestroy {
   }
 
   onRowClick(player: Player) {
-    this.updateCurrentPlayer(player);
+    return this.updateCurrentPlayer(player);
   }
 
   onRowDoubleClick(player: Player) {
@@ -177,6 +182,9 @@ export class PlayerTableComponent implements OnInit, OnDestroy {
     }
     if (this.user$) {
       this.user$.unsubscribe();
+    }
+    if (this.currentPlayer$) {
+      this.currentPlayer$.unsubscribe();
     }
   }
 }

@@ -4,7 +4,8 @@ import { HttpLinkModule, HttpLink } from 'apollo-angular-link-http';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { ApolloLink } from 'apollo-link';
 import { setContext } from 'apollo-link-context';
-import { AuthService } from './auth/auth.service';
+import { Store } from '@ngrx/store';
+import * as fromApp from './store/app.reducer';
 
 // const uri = 'https://draftshark-api.herokuapp.com/'; UAT
 const uri = 'http://127.0.0.1:4000/graphql'; // DEV
@@ -17,17 +18,18 @@ export class GraphQLModule {
   constructor(
     private apollo: Apollo,
     private httpLink: HttpLink,
-    private _auth: AuthService
+    private store: Store<fromApp.AppState>
   ) {
     let token: string;
 
-    this._auth.user.subscribe(user => {
-      if (user) {
-        token = user.token;
-      } else {
-        token = '';
-      }
-    });
+    this.store.select('user')
+      .subscribe(data => {
+        if (data.user) {
+          token = data.user.token;
+        } else {
+          token = '';
+        }
+      });
 
     const basic = setContext((operation, context) => ({
       headers: {
@@ -47,5 +49,5 @@ export class GraphQLModule {
     this.apollo.create({ link, cache });
   }
 
-  setUp() {}
+  setUp() { }
 }

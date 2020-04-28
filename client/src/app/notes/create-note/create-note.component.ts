@@ -1,18 +1,18 @@
 import { Component, OnDestroy, AfterContentInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Store } from '@ngrx/store';
 import { Subscription, Observable } from 'rxjs';
-import { map, startWith, filter } from 'rxjs/operators';
-import { PlayerService } from '../../draft/player/player.service';
+import { map, startWith, filter, take } from 'rxjs/operators';
 import { AuthService } from '../../auth/auth.service';
 import { Player } from '../../draft/player/player.model';
 import { MatDialogRef } from '@angular/material/dialog';
 import { NoteDialogComponent } from '../note-dialog/note-dialog.component';
-import { players } from '../queries';
 import { NotesMutationsService } from '../notes-mutations.service';
 import { NoteService } from '../note.service';
 import { User } from '../../auth/user.model';
 import { NotesQueriesService } from '../notes-queries.service';
+import * as fromApp from '../../store/app.reducer';
 
 @Component({
   selector: 'app-create-note',
@@ -36,6 +36,7 @@ export class CreateNoteComponent implements AfterContentInit, OnDestroy {
   loading: boolean;
   sources: string[];
   players: any[];
+  player: any;
   isPlayerPreSet: boolean;
   isCancelBtnVisible: boolean;
   dismiss: string;
@@ -44,41 +45,28 @@ export class CreateNoteComponent implements AfterContentInit, OnDestroy {
   noteIsValid: boolean;
 
   constructor(
-    private _player: PlayerService,
     private _auth: AuthService,
     public dialogRef: MatDialogRef<NoteDialogComponent>,
     private _note: NoteService,
     private _noteM: NotesMutationsService,
     private _noteQ: NotesQueriesService,
+    private store: Store<fromApp.AppState>,
     private snackbar: MatSnackBar) { }
 
   ngAfterContentInit() {
     this.loading = true;
     this.players = [];
-
-    this.currentPlayer = {
+    this.player = {
       id: '',
-      firstName: '',
-      lastName: '',
-      initialName: '',
       name: '',
-      team: {
-        id: null,
-        city: '',
-        nickname: '',
-        abbreviation: '',
-        fullName: '',
-        imageUrl: '',
-        stats: null,
-      },
-      rank: null,
-      defaultRank: null,
-      projection: null,
-      notes: null,
-      position: '',
-      depthChartPos: 0,
-      selected: false
+      abbreviation: '',
+      position: ''
     };
+
+    this.curPlayer$ = this.store.select('player')
+      .subscribe(data => {
+        this.currentPlayer = data.player;
+      });
 
     this.dismiss = 'Dismiss';
     this.playerIsValid = true;
@@ -122,11 +110,7 @@ export class CreateNoteComponent implements AfterContentInit, OnDestroy {
         this.currentPlayer = null;
       } else {
         this.isPlayerPreSet = true;
-
-        this.curPlayer$ = this._player.currentPlayer.subscribe(data => {
-          this.currentPlayer = data;
-          this.form.get('player').setValue(this.currentPlayer.id);
-        });
+        this.form.get('player').setValue(this.currentPlayer.id);
       }
     });
 
@@ -148,9 +132,8 @@ export class CreateNoteComponent implements AfterContentInit, OnDestroy {
       }
     });
 
-    this.authSub$ = this._auth.user.subscribe(user => {
-      this.user = user;
-    });
+    this.authSub$ = this.store.select('user')
+      .subscribe(data => this.user = data.user);
 
     this.players$ = this._noteQ.players()
       .subscribe(({ data, loading }) => {
@@ -194,7 +177,7 @@ export class CreateNoteComponent implements AfterContentInit, OnDestroy {
     let isPrivate = this.form.get('isPrivate').value;
 
     if (this.isPlayerPreSet) {
-      player = this.currentPlayer.id;
+      player = this.player.id;
     } else {
       const ph = this.form.get('player').value;
       player = ph.id;
@@ -226,8 +209,8 @@ export class CreateNoteComponent implements AfterContentInit, OnDestroy {
         return `${player.name} ${player.team.abbreviation} - ${player.position}`;
       }
     } else {
-      return `${this.currentPlayer.name}
-        ${this.currentPlayer.team.abbreviation} - ${this.currentPlayer.position}`;
+      return `${this.player.name}
+        ${this.player.team.abbreviation} - ${this.player.position}`;
     }
   }
 

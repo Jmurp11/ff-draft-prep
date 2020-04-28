@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
 import { AuthService } from './auth/auth.service';
+import * as fromApp from './store/app.reducer';
 
 @Component({
   selector: 'app-root',
@@ -11,13 +13,13 @@ export class AppComponent implements OnInit {
   isAuth: boolean;
 
   constructor(
-    private _auth: AuthService
+    private _auth: AuthService,
+    private store: Store<fromApp.AppState>
   ) { }
 
   async ngOnInit() {
-    this._auth.user.subscribe(user => {
-      this.isAuth = !!user;
-    });
+    this.store.select('user')
+      .subscribe(data => this.isAuth = !!data.user);
 
     await this._auth.autoLogin();
   }

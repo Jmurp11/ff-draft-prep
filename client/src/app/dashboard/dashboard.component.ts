@@ -15,7 +15,6 @@ import { Router } from '@angular/router';
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit, OnDestroy {
-  auth$: Subscription;
   likeNotes$: Subscription;
   notes$: Subscription;
   userNotes$: Subscription;

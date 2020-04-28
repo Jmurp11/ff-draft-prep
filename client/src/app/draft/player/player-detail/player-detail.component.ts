@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { PlayerGqlService } from '../player-gql.service';
+import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute, Params } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
@@ -11,8 +11,9 @@ import { UserQueryService } from '../../../shared/user/user-query.service';
 import { NoteService } from '../../../notes/note.service';
 import { NoteDialogComponent } from '../../../notes/note-dialog/note-dialog.component';
 import { TargetDialogComponent } from '../../../target/target-dialog/target-dialog.component';
-import { TargetService } from 'src/app/target/target.service';
-import { PlayerService } from '../player.service';
+import { TargetService } from '../../../target/target.service';
+import { PlayerGqlService } from '../player-gql.service';
+import { UpdatePlayer } from '../store/player.action';
 
 @Component({
   selector: 'app-player-detail',
@@ -41,13 +42,13 @@ export class PlayerDetailComponent implements OnInit, OnDestroy {
 
   constructor(
     private _playerQ: PlayerGqlService,
-    private _player: PlayerService,
     private _noteQ: NotesQueriesService,
     private _userQ: UserQueryService,
     private dialog: MatDialog,
     private _note: NoteService,
     private _target: TargetService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private store: Store<{ player: { player: Player } }>
   ) { }
 
   ngOnInit() {
@@ -68,7 +69,7 @@ export class PlayerDetailComponent implements OnInit, OnDestroy {
                 this.loading = loading;
                 this.player = data.player;
 
-                this._player.updateCurrentPlayer(this.player);
+                this.store.dispatch(new UpdatePlayer(this.player));
 
                 this.playerNotes$ = this._noteQ.notesByPlayer(this.id)
                   .subscribe(({ data, loading }) => {

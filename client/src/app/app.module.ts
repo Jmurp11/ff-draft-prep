@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
+import { StoreModule } from '@ngrx/store';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -17,6 +18,7 @@ import { RouterModule } from '@angular/router';
 import { DraftModule } from './draft/draft.module';
 import { NoteModule } from './notes/note.module';
 import { LayoutModule } from './layout/layout.module';
+import { appReducer } from './store/app.reducer';
 
 @NgModule({
   declarations: [
@@ -38,6 +40,7 @@ import { LayoutModule } from './layout/layout.module';
     ProfileModule,
     RouterModule,
     SharedModule,
+    StoreModule.forRoot(appReducer),
     TargetModule
   ],
   providers: [],

@@ -1,11 +1,13 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { AuthService } from '../../auth/auth.service';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
 import { PlayerGqlService } from 'src/app/draft/player/player-gql.service';
 import { UserQueryService } from 'src/app/shared/user/user-query.service';
 import { LayoutService } from '../layout.service';
+import * as fromApp from '../../store/app.reducer';
+import { AuthService } from 'src/app/auth/auth.service';
 
 @Component({
   selector: 'app-navbar',
@@ -32,22 +34,24 @@ export class NavbarComponent implements OnInit, OnDestroy {
     private _layout: LayoutService,
     private _player: PlayerGqlService,
     private _user: UserQueryService,
-    private router: Router
+    private router: Router,
+    private store: Store<fromApp.AppState>
   ) { }
 
   ngOnInit() {
     this.hasNotifications = false;
-    this.auth$ = this._auth.user.subscribe(user => {
-      this.isAuth = !!user;
+    this.auth$ = this.store.select('user')
+      .subscribe(data => {
+        this.isAuth = !!data.user;
 
-      if (user) {
-        this.userId = user.id;
-        this.username = user.username;
+        if (data.user) {
+          this.userId = data.user.id;
+          this.username = data.user.username;
 
-        this.users$ = this._user.users().subscribe(({ data }) => this.users = data.users);
-        this.players$ = this._player.players(this.userId).subscribe(({ data }) => this.players = data.players);
-      }
-    });
+          this.users$ = this._user.users().subscribe(({ data }) => this.users = data.users);
+          this.players$ = this._player.players(this.userId).subscribe(({ data }) => this.players = data.players);
+        }
+      });
 
     this.layout$ = this._layout.isSearchActive.subscribe(isActive => this.isSearchActive = isActive);
   }
