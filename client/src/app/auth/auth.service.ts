@@ -23,7 +23,6 @@ export interface AuthResponse {
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   userInStorage = JSON.parse(localStorage.getItem('user'));
-  user = new BehaviorSubject<User>(null);
   loginStatus = new BehaviorSubject<LoginResponse>(null);
   registerStatus = new BehaviorSubject<AuthResponse>(null);
   confirmStatus = new BehaviorSubject<AuthResponse>(null);

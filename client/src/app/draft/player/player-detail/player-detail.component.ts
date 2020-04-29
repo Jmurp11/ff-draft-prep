@@ -14,6 +14,7 @@ import { TargetDialogComponent } from '../../../target/target-dialog/target-dial
 import { TargetService } from '../../../target/target.service';
 import { PlayerGqlService } from '../player-gql.service';
 import { UpdatePlayer } from '../store/player.action';
+import * as fromApp from '../../../store/app.reducer';
 
 @Component({
   selector: 'app-player-detail',
@@ -48,7 +49,7 @@ export class PlayerDetailComponent implements OnInit, OnDestroy {
     private _note: NoteService,
     private _target: TargetService,
     private route: ActivatedRoute,
-    private store: Store<{ player: { player: Player } }>
+    private store: Store<fromApp.AppState>
   ) { }
 
   ngOnInit() {

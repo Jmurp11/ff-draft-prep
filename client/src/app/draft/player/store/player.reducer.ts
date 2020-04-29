@@ -15,7 +15,7 @@ export const playerReducer = (state: State = initialState, action: UpdatePlayer)
       return {
         ...state,
         player: action.payload
-      }
+      };
     default:
       return state;
   }

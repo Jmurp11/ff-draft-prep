@@ -37,7 +37,6 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.authSub$ = this.store.select('user')
       .subscribe(data => {
         if (data.user) {
-          console.log(true, `${JSON.stringify(data.user)}`);
           this.username = data.user.username;
           this.router.navigate(['/dashboard']);
         }

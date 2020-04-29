@@ -6,12 +6,11 @@ import { Store } from '@ngrx/store';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Subscription } from 'rxjs';
 import { Player } from '../player.model';
-import { PlayerService } from '../player.service';
 import { NoteService } from '../../../notes/note.service';
 import { PlayerGqlService } from '../player-gql.service';
 import { UserQueryService } from '../../../shared/user/user-query.service';
 import { UpdatePlayer } from '../store/player.action';
-
+import * as fromApp from '../../../store/app.reducer';
 
 @Component({
   selector: 'app-player-table',
@@ -63,10 +62,8 @@ export class PlayerTableComponent implements OnInit, OnDestroy {
 
   constructor(
     private _note: NoteService,
-    private _player: PlayerService,
     private _playerQ: PlayerGqlService,
-    private _user: UserQueryService,
-    private store: Store<{ player: Player }>
+    private store: Store<fromApp.AppState>
   ) { }
 
   ngOnInit() {
@@ -75,57 +72,59 @@ export class PlayerTableComponent implements OnInit, OnDestroy {
     this.selectedPlayers = [];
     this.notes = [];
 
-    this.user$ = this._user.me().subscribe(({ data, loading }) => {
-      this.currentUser = data.me.id;
+    this.currentPlayer$ = this.store.select('player')
+      .subscribe(data => {
+        console.log(data);
+        this.currentPlayer = data.player;
 
-      this.players$ = this._playerQ.players(this.currentUser)
-        .subscribe(({ data, loading }) => {
-          this.loading = loading;
+        if (data.player.notes) {
+          this.notes = data.player.notes;
+          console.log(this.notes);
+        }
+      });
 
-          data.players.forEach((el: any) => {
-            el.selected = false;
-            this.players.push(el);
-          });
+    this.user$ = this.store.select('user')
+      .subscribe(data => {
+        this.currentUser = data.user.id;
 
-          // this.players.sort((a, b) => a.defaultRank.rank - b.defaultRank.rank);
+        this.players$ = this._playerQ.players(this.currentUser)
+          .subscribe(({ data, loading }) => {
+            this.loading = loading;
 
-          this.dataSource = new MatTableDataSource(this.players);
-          this.dataSource.filterPredicate = (filteredData, filter: string) => {
-            let valid = false;
-
-            const transformedFilter = filter.trim().toLowerCase();
-
-            Object.keys(filteredData).map(key => {
-              if (
-                key === 'player' &&
-                (
-                  filteredData.firstName.toLowerCase().includes(transformedFilter)
-                  || filteredData.lastName.toLowerCase().includes(transformedFilter)
-                )
-              ) {
-                valid = true;
-              } else {
-                if (('' + filteredData[key]).toLowerCase().includes(transformedFilter)) {
-                  valid = true;
-                }
-              }
+            data.players.forEach((el: any) => {
+              el.selected = false;
+              this.players.push(el);
             });
 
-            return valid;
-          };
-          this.dataSource.sortingDataAccessor = this.sortingDataAccessor;
-          this.dataSource.paginator = this.paginator;
-          this.dataSource.sort = this.sort;
-        });
-    });
+            this.dataSource = new MatTableDataSource(this.players);
+            this.dataSource.filterPredicate = (filteredData, filter: string) => {
+              let valid = false;
 
-    this.currentPlayer$ = this.store.select('player').subscribe(player => {
-      this.currentPlayer = player;
+              const transformedFilter = filter.trim().toLowerCase();
 
-      if (player.notes) {
-        this.notes = player.notes;
-      }
-    });
+              Object.keys(filteredData).map(key => {
+                if (
+                  key === 'player' &&
+                  (
+                    filteredData.firstName.toLowerCase().includes(transformedFilter)
+                    || filteredData.lastName.toLowerCase().includes(transformedFilter)
+                  )
+                ) {
+                  valid = true;
+                } else {
+                  if (('' + filteredData[key]).toLowerCase().includes(transformedFilter)) {
+                    valid = true;
+                  }
+                }
+              });
+
+              return valid;
+            };
+            this.dataSource.sortingDataAccessor = this.sortingDataAccessor;
+            this.dataSource.paginator = this.paginator;
+            this.dataSource.sort = this.sort;
+          });
+      });
   }
 
   applyFilter(filterValue: string) {

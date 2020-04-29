@@ -3,10 +3,10 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Store } from '@ngrx/store';
 import { Subscription, Observable } from 'rxjs';
-import { map, startWith, filter, take } from 'rxjs/operators';
+import { map, startWith, filter } from 'rxjs/operators';
+import { MatDialogRef } from '@angular/material/dialog';
 import { AuthService } from '../../auth/auth.service';
 import { Player } from '../../draft/player/player.model';
-import { MatDialogRef } from '@angular/material/dialog';
 import { NoteDialogComponent } from '../note-dialog/note-dialog.component';
 import { NotesMutationsService } from '../notes-mutations.service';
 import { NoteService } from '../note.service';
@@ -45,7 +45,6 @@ export class CreateNoteComponent implements AfterContentInit, OnDestroy {
   noteIsValid: boolean;
 
   constructor(
-    private _auth: AuthService,
     public dialogRef: MatDialogRef<NoteDialogComponent>,
     private _note: NoteService,
     private _noteM: NotesMutationsService,
@@ -104,15 +103,16 @@ export class CreateNoteComponent implements AfterContentInit, OnDestroy {
       })
     });
 
-    this.popPlayer$ = this._note.populatePlayer.subscribe(populate => {
-      if (!populate) {
-        this.isPlayerPreSet = false;
-        this.currentPlayer = null;
-      } else {
-        this.isPlayerPreSet = true;
-        this.form.get('player').setValue(this.currentPlayer.id);
-      }
-    });
+    this.popPlayer$ = this._note.populatePlayer
+      .subscribe(populate => {
+        if (!populate) {
+          this.isPlayerPreSet = false;
+          this.currentPlayer = null;
+        } else {
+          this.isPlayerPreSet = true;
+          this.form.get('player').setValue(this.currentPlayer.id);
+        }
+      });
 
     this.cancel$ = this._note.isCancelBtnVisible
       .subscribe(val => this.isCancelBtnVisible = val);
@@ -177,7 +177,7 @@ export class CreateNoteComponent implements AfterContentInit, OnDestroy {
     let isPrivate = this.form.get('isPrivate').value;
 
     if (this.isPlayerPreSet) {
-      player = this.player.id;
+      player = this.currentPlayer.id;
     } else {
       const ph = this.form.get('player').value;
       player = ph.id;
