@@ -18,7 +18,7 @@ export class NoteResolver {
             if (isCurrentUser) {
                 return getRepository(Note)
                     .find({
-                        relations: ['user', 'player', 'likes', 'shares'],
+                        relations: ['user', 'player', 'likes'],
                         where: {
                             user
                         },
@@ -29,7 +29,7 @@ export class NoteResolver {
             } else {
                 return getRepository(Note)
                     .find({
-                        relations: ['user', 'player', 'likes', 'shares'],
+                        relations: ['user', 'player', 'likes'],
                         where: {
                             user,
                             isPrivate: false
@@ -42,7 +42,7 @@ export class NoteResolver {
         } else {
             return getRepository(Note)
                 .find({
-                    relations: ['user', 'player', 'likes', 'shares'],
+                    relations: ['user', 'player', 'likes'],
                     where: {
                         isPrivate: false
                     },
@@ -59,7 +59,7 @@ export class NoteResolver {
         @Arg('player') player: string) {
         return getRepository(Note)
             .find({
-                relations: ['user', 'player', 'likes', 'shares'],
+                relations: ['user', 'player', 'likes'],
                 where: {
                     player
                 },
@@ -78,7 +78,7 @@ export class NoteResolver {
         }: NotesByPlayerUserInput) {
         return getRepository(Note)
             .find({
-                relations: ['user', 'player', 'likes', 'shares'],
+                relations: ['user', 'player', 'likes'],
                 where: {
                     player, user
                 },
@@ -93,7 +93,7 @@ export class NoteResolver {
     async note(@Arg('id') id: string) {
         return getRepository(Note)
             .findOne({
-                relations: ['user', 'player', 'likes', 'shares'],
+                relations: ['user', 'player', 'likes'],
                 where: { id },
                 order: {
                     creationTime: 'DESC'

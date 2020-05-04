@@ -1,7 +1,7 @@
 import { Resolver, Query, Mutation, Arg, UseMiddleware, Int, PubSub, PubSubEngine } from 'type-graphql';
-import { Like, Note } from '../../entity';
+import { Score, Note } from '../../entity';
 import { Result } from '../../shared';
-import { LikeInput } from './inputs/LikeInput';
+import { ScoreInput } from './inputs/ScoreInput';
 import { getRepository } from 'typeorm';
 import { isAuth, logger } from '../../middleware';
 
@@ -9,11 +9,11 @@ import { isAuth, logger } from '../../middleware';
 const NOTIFICATION = 'NOTIFICATION';
 
 @Resolver()
-export class LikeResolver {
+export class ScoreResolver {
     @UseMiddleware(isAuth, logger)
-    @Query(() => [Like])
-    async likes(@Arg('user') user: string) {
-        return getRepository(Like)
+    @Query(() => [Score])
+    async scores(@Arg('user') user: string) {
+        return getRepository(Score)
             .find({
                 relations: ['user', 'note', 'note.user'],
                 where: {
@@ -28,9 +28,9 @@ export class LikeResolver {
     }
 
     @UseMiddleware(isAuth, logger)
-    @Query(() => Like)
-    async like(@Arg('id') id: string) {
-        return getRepository(Like)
+    @Query(() => Score)
+    async score(@Arg('id') id: string) {
+        return getRepository(Score)
             .find({
                 relations: ['user', 'note', 'note.user'],
                 where: {
@@ -41,8 +41,8 @@ export class LikeResolver {
 
     @UseMiddleware(isAuth, logger)
     @Query(() => Int)
-    async likesCount(@Arg('noteId') noteId: string) {
-        return getRepository(Like)
+    async totalScores(@Arg('noteId') noteId: string) {
+        return getRepository(Score)
             .count({
                 where: {
                     note: {
@@ -54,8 +54,31 @@ export class LikeResolver {
 
     @UseMiddleware(isAuth, logger)
     @Query(() => Int)
-    async userLikesCount(@Arg('user') user: string) {
-        return getRepository(Like)
+    async noteScore(@Arg('noteId') noteId: string) {
+        const positive = await getRepository(Score)
+            .find({
+                where: {
+                    id: noteId,
+                    response: true
+                }
+            });
+
+        const negative = await getRepository(Score)
+            .find({
+                where: {
+                    id: noteId,
+                    response: false
+                }
+            });
+
+    
+        return positive.length - negative.length;
+    }
+
+    @UseMiddleware(isAuth, logger)
+    @Query(() => Int)
+    async userScoresCount(@Arg('user') user: string) {
+        return getRepository(Score)
             .count({
                 where: {
                     user
@@ -65,8 +88,8 @@ export class LikeResolver {
 
     @UseMiddleware(isAuth, logger)
     @Query(() => Int)
-    async userGeneratedLikesCount(@Arg('user') user: string) {
-        return getRepository(Like)
+    async userGeneratedScoresCount(@Arg('user') user: string) {
+        return getRepository(Score)
             .count({
                 relations: ['note', 'note.user'],
                 where: {
@@ -79,14 +102,15 @@ export class LikeResolver {
 
     @UseMiddleware(isAuth, logger)
     @Mutation(() => Result)
-    async addLike(
+    async addScore(
         @PubSub() pubSub: PubSubEngine,
         @Arg('input') {
             user,
-            note
-        }: LikeInput
+            note,
+            response
+        }: ScoreInput
     ): Promise<Result> {
-        const likeExists = await Like.findOne({
+        const scoreExists = await Score.findOne({
             where: {
                 user,
                 note
@@ -100,27 +124,29 @@ export class LikeResolver {
             }
         });
 
-        if (likeExists) {
+        if (scoreExists) {
             return {
                 errors: [
                     {
-                        path: 'Like',
-                        message: 'User has already liked this note!'
+                        path: 'Score',
+                        message: 'User has already scored this note!'
                     }
                 ]
             }
         }
 
-        await Like.create({
+        await Score.create({
             user,
             note,
+            response,
             creationTime: n?.creationTime
         }).save();
 
         const payload = {
             user,
             note,
-            type: 'like'
+            response,
+            type: 'score'
         };
 
         await pubSub.publish(NOTIFICATION, payload);
@@ -128,43 +154,8 @@ export class LikeResolver {
         return {
             success: [
                 {
-                    path: 'Like',
-                    message: 'Successfully liked this note!'
-                }
-            ]
-        }
-    }
-
-    @UseMiddleware(isAuth, logger)
-    @Mutation(() => Result)
-    async deleteLike(
-        @Arg('id') id: string
-    ): Promise<Result> {
-        const like = await Like.findOne({
-            where: {
-                id
-            },
-            select: ['id']
-        });
-
-        if (!like) {
-            return {
-                errors: [
-                    {
-                        path: 'Like',
-                        message: 'User did not like this note!'
-                    }
-                ]
-            }
-        }
-
-        await Like.delete({ id });
-
-        return {
-            success: [
-                {
-                    path: 'Like',
-                    message: 'Successfully removed like!'
+                    path: 'Score',
+                    message: 'Successfully scored this note!'
                 }
             ]
         }

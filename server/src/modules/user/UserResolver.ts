@@ -31,10 +31,7 @@ export class UserResolver {
                 'notes.likes',
                 'notes.likes.note',
                 'notes.likes.user',
-                'notes.shares',
-                'shares',
-                'shares.note',
-                'shares.user',
+                'notes',
                 'targets',
                 'ranks'
             ]
@@ -51,8 +48,6 @@ export class UserResolver {
                 'likes.user',
                 'notes',
                 'notes.likes',
-                'notes.shares',
-                'shares',
                 'targets',
                 'ranks'
             ],
@@ -72,8 +67,6 @@ export class UserResolver {
                 'likes.user',
                 'notes',
                 'notes.likes',
-                'notes.shares',
-                'shares',
                 'targets',
                 'ranks'
             ],
@@ -93,8 +86,6 @@ export class UserResolver {
                 'likes.user',
                 'notes',
                 'notes.likes',
-                'notes.shares',
-                'shares',
                 'targets',
                 'ranks'
             ],

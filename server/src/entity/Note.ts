@@ -7,7 +7,7 @@ import {
     ManyToOne,
     OneToMany
 } from 'typeorm';
-import { Like, Player, Share, User } from './index';
+import { Score, Player, User } from './index';
 import { ObjectType, Field } from 'type-graphql';
 
 @Entity('notes')
@@ -49,19 +49,12 @@ export class Note extends BaseEntity {
     @Column('boolean', { default: false })
     isPrivate!: boolean;
 
-    @Field(() => [Like], { nullable: true })
-    @OneToMany(() => Like, like => like.note, {
+    @Field(() => [Score], { nullable: true })
+    @OneToMany(() => Score, score => score.note, {
         eager: true,
         onDelete: 'CASCADE'
     })
-    likes: Like[];
-
-    @Field(() => [Share], { nullable: true })
-    @OneToMany(() => Share, share => share.note, {
-        eager: true,
-        onDelete: 'CASCADE'
-    })
-    shares: Share[];
+    score: Score[];
 
     @Field(() => Date)
     @Column('timestamp')
