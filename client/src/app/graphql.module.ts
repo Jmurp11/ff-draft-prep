@@ -48,6 +48,4 @@ export class GraphQLModule {
 
     this.apollo.create({ link, cache });
   }
-
-  setUp() { }
 }
