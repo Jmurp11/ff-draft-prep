@@ -2,8 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { AuthService } from 'src/app/auth/auth.service';
 import { Subscription } from 'rxjs';
+import { Store } from '@ngrx/store';
+import * as fromApp from '../../store/app.reducer';
+import * as AuthActions from '../store/auth.action';
 
 @Component({
   selector: 'app-register',
@@ -13,35 +15,47 @@ import { Subscription } from 'rxjs';
 export class RegisterComponent implements OnInit {
   form: FormGroup;
   register$: Subscription;
-  nameIsValid = true;
-  emailIsValid = true;
-  passwordIsValid = true;
-  confirmPasswordIsValid = true;
-  passwordEqualConfirmPasswordIsValid = true;
-  isValidImage = true;
-  loading = false;
+  nameIsValid: boolean;
+  emailIsValid: boolean;
+  passwordIsValid: boolean;
+  confirmPasswordIsValid: boolean;
+  passwordEqualConfirmPasswordIsValid: boolean;
+  isValidImage: boolean;
+  loading: boolean;
+  authError: string;
   dismissSnackbar = 'Dismiss';
 
   constructor(
-    private _auth: AuthService,
     private router: Router,
-    private snackbar: MatSnackBar
+    private snackbar: MatSnackBar,
+    private store: Store<fromApp.AppState>
   ) { }
 
   ngOnInit() {
+    this.nameIsValid = true;
+    this.emailIsValid = true;
+    this.passwordIsValid = true;
+    this.confirmPasswordIsValid = true;
+    this.passwordEqualConfirmPasswordIsValid = true;
+    this.isValidImage = true;
+    this.loading = false;
     const pattern = '(http)?s?:?(\/\/[^"\']*\.(?:png|jpg|jpeg|gif))';
-    this.register$ = this._auth.registerStatus.subscribe(response => {
-      if (response) {
-        if (response.success) {
-          this.router.navigate(['login']);
-          this.openSnackBar('Thanks for registering! Check your email for confirmation!', this.dismissSnackbar);
+
+    this.register$ = this.store.select('auth')
+      .subscribe(data => {
+        this.loading = data.loading;
+        this.authError = data.authError;
+
+        if (this.authError) {
+          this.openSnackBar(this.authError, this.dismissSnackbar);
           this.resetForm();
         } else {
-          this.openSnackBar(response.message, this.dismissSnackbar);
-          this.resetForm();
+          if (data.actionStatus) {
+            this.openSnackBar(`Thanks for registering! Check your email for confirmation!`, this.dismissSnackbar);
+            this.resetForm();
+          }
         }
-      }
-    });
+      });
 
     this.form = new FormGroup({
       username: new FormControl(null, {
@@ -92,11 +106,13 @@ export class RegisterComponent implements OnInit {
     if (this.form.get('password').value === this.form.get('confirmPassword').value) {
       this.loading = true;
 
-      await this._auth.register(
-        this.form.get('email').value,
-        this.form.get('password').value,
-        this.form.get('username').value,
-        this.form.get('profileImage').value
+      this.store.dispatch(new AuthActions.SignupStart(
+        {
+          email: this.form.get('email').value,
+          password: this.form.get('password').value,
+          username: this.form.get('username').value,
+          profileImage: this.form.get('profileImage').value
+        })
       );
     } else {
       this.passwordEqualConfirmPasswordIsValid = false;

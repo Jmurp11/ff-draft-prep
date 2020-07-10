@@ -83,7 +83,7 @@ export class PlayerTableComponent implements OnInit, OnDestroy {
         }
       });
 
-    this.user$ = this.store.select('user')
+    this.user$ = this.store.select('auth')
       .subscribe(data => {
         this.currentUser = data.user.id;
 

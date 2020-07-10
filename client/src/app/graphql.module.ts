@@ -22,7 +22,7 @@ export class GraphQLModule {
   ) {
     let token: string;
 
-    this.store.select('user')
+    this.store.select('auth')
       .subscribe(data => {
         if (data.user) {
           token = data.user.token;

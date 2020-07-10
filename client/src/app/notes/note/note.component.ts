@@ -50,7 +50,7 @@ export class NoteComponent implements OnInit, OnChanges, OnDestroy {
   ngOnInit() {
     this.loading = true;
 
-    this.auth$ = this.store.select('user')
+    this.auth$ = this.store.select('auth')
       .subscribe(data => this.currentUser = data.user);
 
     this.like$ = this._note.likeStatus.subscribe(response => {

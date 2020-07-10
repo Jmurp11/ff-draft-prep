@@ -5,7 +5,6 @@ import { Store } from '@ngrx/store';
 import { Subscription, Observable } from 'rxjs';
 import { map, startWith, filter } from 'rxjs/operators';
 import { MatDialogRef } from '@angular/material/dialog';
-import { AuthService } from '../../auth/auth.service';
 import { Player } from '../../draft/player/player.model';
 import { NoteDialogComponent } from '../note-dialog/note-dialog.component';
 import { NotesMutationsService } from '../notes-mutations.service';
@@ -132,7 +131,7 @@ export class CreateNoteComponent implements AfterContentInit, OnDestroy {
       }
     });
 
-    this.authSub$ = this.store.select('user')
+    this.authSub$ = this.store.select('auth')
       .subscribe(data => this.user = data.user);
 
     this.players$ = this._noteQ.players()

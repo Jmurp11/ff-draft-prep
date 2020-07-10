@@ -40,7 +40,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.hasNotifications = false;
-    this.auth$ = this.store.select('user')
+    this.auth$ = this.store.select('auth')
       .subscribe(data => {
         this.isAuth = !!data.user;
 

@@ -1,8 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AuthService } from '../auth.service';
 import { Subscription } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import * as fromApp from '../../store/app.reducer';
+import * as AuthActions from '../store/auth.action';
+import { Store } from '@ngrx/store';
 
 @Component({
   selector: 'app-confirm-user',
@@ -13,11 +15,11 @@ export class ConfirmUserComponent implements OnInit, OnDestroy {
   token: string;
   auth$: Subscription;
   dismissSnackbar: string;
+  authMessage: string;
 
   constructor(
-    private _auth: AuthService,
     private route: ActivatedRoute,
-    private router: Router,
+    private store: Store<fromApp.AppState>,
     private snackbar: MatSnackBar
   ) { }
 
@@ -25,20 +27,21 @@ export class ConfirmUserComponent implements OnInit, OnDestroy {
     this.dismissSnackbar = 'Dismiss';
     this.token = this.route.snapshot.paramMap.get('token');
 
-    this.auth$ = this._auth.confirmStatus.subscribe(response => {
-      if (response) {
-        if (response.success) {
-          this.router.navigate(['login']);
-          this.openSnackBar('User is confirmed!', this.dismissSnackbar);
+    this.auth$ = this.store.select('auth')
+      .subscribe(data => {
+        this.authMessage = data.authError;
+        if (this.authMessage) {
+          this.openSnackBar(this.authMessage, this.dismissSnackbar);
         } else {
-          this.openSnackBar(response.message, this.dismissSnackbar);
+          if (data.actionStatus) {
+            this.openSnackBar(`User confirmed!`, this.dismissSnackbar);
+          }
         }
-      }
-    });
+      });
   }
 
   onConfirmClick() {
-    return this._auth.confirmUser(this.token);
+    return this.store.dispatch(new AuthActions.ConfirmUserStart({token: this.token}));
   }
 
   openSnackBar(message: string, action: string) {

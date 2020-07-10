@@ -3,9 +3,9 @@ import { Router } from '@angular/router';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Store } from '@ngrx/store';
-import { AuthService } from '../auth.service';
 import { Subscription } from 'rxjs';
 import * as fromApp from '../../store/app.reducer';
+import * as AuthActions from '../store/auth.action';
 
 @Component({
   selector: 'app-login',
@@ -13,47 +13,27 @@ import * as fromApp from '../../store/app.reducer';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit, OnDestroy {
-  authSub$: Subscription;
-  loginSub$: Subscription;
+  auth$: Subscription;
+  login$: Subscription;
   form: FormGroup;
   emailIsValid: boolean;
   passwordIsValid: boolean;
   username: string;
+  authMessage: string;
   loading: boolean;
-  dismissSnackbar = 'Dismiss';
+  dismissSnackbar: string;
 
   constructor(
     private router: Router,
-    private _auth: AuthService,
     private store: Store<fromApp.AppState>,
     private snackbar: MatSnackBar
   ) { }
 
   ngOnInit() {
+    this.dismissSnackbar = 'Dismiss';
     this.loading = false;
     this.emailIsValid = true;
     this.passwordIsValid = true;
-
-    this.authSub$ = this.store.select('user')
-      .subscribe(data => {
-        if (data.user) {
-          this.username = data.user.username;
-          this.router.navigate(['/dashboard']);
-        }
-      });
-
-    this.loginSub$ = this._auth.loginStatus.subscribe(response => {
-      if (response) {
-        if (response.success) {
-          this.router.navigate(['dashboard']);
-          this.openSnackBar(`Success! Welcome back ${this.username}!`, this.dismissSnackbar);
-          this.resetForm();
-        } else {
-          this.openSnackBar(response.message, this.dismissSnackbar);
-          this.resetForm();
-        }
-      }
-    });
 
     this.form = new FormGroup({
       email: new FormControl(null, {
@@ -73,6 +53,26 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.form.get('password').statusChanges.subscribe(status => {
       this.passwordIsValid = status === 'VALID';
     });
+
+    this.auth$ = this.store.select('auth')
+      .subscribe(data => {
+        if (data.user) {
+          this.username = data.user.username;
+          this.router.navigate(['/dashboard']);
+        }
+
+        this.loading = data.loading;
+        this.authMessage = data.authError;
+        if (this.authMessage) {
+          this.openSnackBar(this.authMessage, this.dismissSnackbar);
+          this.resetForm();
+        } else {
+          if (data.actionStatus) {
+            this.openSnackBar(`Success! Welcome back ${this.username}!`, this.dismissSnackbar);
+            this.resetForm();
+          }
+        }
+      });
   }
 
   onSubmit() {
@@ -85,7 +85,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
     this.loading = true;
 
-    this._auth.login(email, password);
+    this.store.dispatch(new AuthActions.LoginStart({ email, password }));
   }
 
   onRegisterClick() {
@@ -110,11 +110,11 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.loginSub$) {
-      this.loginSub$.unsubscribe();
+    if (this.login$) {
+      this.login$.unsubscribe();
     }
-    if (this.authSub$) {
-      this.authSub$.unsubscribe();
+    if (this.auth$) {
+      this.auth$.unsubscribe();
     }
   }
 }

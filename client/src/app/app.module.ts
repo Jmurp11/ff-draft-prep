@@ -19,6 +19,8 @@ import { DraftModule } from './draft/draft.module';
 import { NoteModule } from './notes/note.module';
 import { LayoutModule } from './layout/layout.module';
 import { appReducer } from './store/app.reducer';
+import { EffectsModule } from '@ngrx/effects';
+import { AuthEffects } from './auth/store/auth.effects';
 
 @NgModule({
   declarations: [
@@ -41,6 +43,7 @@ import { appReducer } from './store/app.reducer';
     RouterModule,
     SharedModule,
     StoreModule.forRoot(appReducer),
+    EffectsModule.forRoot([AuthEffects]),
     TargetModule
   ],
   providers: [],

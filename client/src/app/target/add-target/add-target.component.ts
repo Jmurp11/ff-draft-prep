@@ -79,7 +79,7 @@ export class AddTargetComponent implements AfterContentInit, OnDestroy {
       }
     });
 
-    this.user$ = this.store.select('user')
+    this.user$ = this.store.select('auth')
       .subscribe(data => this.user = data.user);
 
     this.popPlayer$ = this._target.populatePlayer.subscribe(populate => {

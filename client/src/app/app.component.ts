@@ -18,7 +18,7 @@ export class AppComponent implements OnInit {
   ) { }
 
   async ngOnInit() {
-    this.store.select('user')
+    this.store.select('auth')
       .subscribe(data => this.isAuth = !!data.user);
 
     await this._auth.autoLogin();

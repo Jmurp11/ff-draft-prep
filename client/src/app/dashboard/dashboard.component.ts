@@ -47,6 +47,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.likedNotes = [];
 
     this.user$ = this._userQ.me().subscribe(({ data, loading }) => {
+      console.log(data.me);
       this.user = data.me;
       this.userId = this.user.id;
       this.targets = this.user.targets;
