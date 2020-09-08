@@ -1,42 +1,98 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { LandingComponent } from './landing/landing.component';
+import { LoginComponent } from './auth/login/login.component';
+import { RegisterComponent } from './auth/register/register.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { AuthGuard } from './auth/auth.guard';
-import { HomeComponent } from './home/home.component';
+import { LayoutComponent } from './ui/layout/layout.component';
+import { NotesComponent } from './notes/notes.component';
+import { PlayersComponent } from './players/players.component';
+import { ProfileComponent } from './profile/profile.component';
+import { DraftComponent } from './drafts/draft/draft.component';
+import { DraftSetUpComponent } from './drafts/draft-set-up/draft-set-up.component';
+import { AdminComponent } from './admin/admin.component';
+import { UsersComponent } from './admin/users/users.component';
+import { AdminFunctionsComponent } from './admin/admin-functions/admin-functions.component';
+
 
 const routes: Routes = [
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
-  { path: 'home', component: HomeComponent },
-  { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
   {
-    path: 'a',
-    loadChildren: async () => {
-      const module = await import('./auth/auth.module');
-      return module.AuthModule;
-    }
+    path: 'login',
+    component: LoginComponent
   },
   {
-    path: 'u',
-    loadChildren: async () => {
-      const module = await import('./profile/profile.module');
-      return module.ProfileModule;
-    }
+    path: 'register',
+    component: RegisterComponent
   },
   {
-    path: 'd',
-    loadChildren: async () => {
-      const module = await import('./draft/draft.module');
-      return module.DraftModule;
-    }
+    path: '',
+    component: LayoutComponent,
+    children: [
+      {
+        path: 'dashboard',
+        component: DashboardComponent,
+        canActivate: [AuthGuard],
+      },
+      {
+        path: 'admin',
+        component: AdminComponent,
+        canActivate: [AuthGuard],
+        children: [
+          {
+            path: 'users',
+            component: UsersComponent,
+          },
+          {
+            path: 'update-data',
+            component: AdminFunctionsComponent,
+          },
+        ]
+      },
+      {
+        path: 'drafts',
+        component: DraftComponent,
+        canActivate: [AuthGuard],
+        children: [
+          {
+            path: 'draft-set-up',
+            component: DraftSetUpComponent,
+          },
+          {
+            path: 'draft-list',
+            component: DraftSetUpComponent,
+          },
+          {
+            path: 'draft',
+            component: DraftComponent,
+          },
+        ]
+      },
+      {
+        path: 'notes',
+        component: NotesComponent,
+      },
+      {
+        path: 'profile',
+        component: ProfileComponent,
+        canActivate: [AuthGuard]
+      },
+      {
+        path: 'players',
+        component: PlayersComponent,
+        canActivate: [AuthGuard]
+      },
+      {
+        path: 'landing',
+        component: LandingComponent
+      },
+      {
+        path: '**',
+        redirectTo: 'access/error/404'
+      }
+    ]
   },
-  {
-    path: 'n',
-    loadChildren: async () => {
-      const module = await import('./notes/note.module');
-      return module.NoteModule;
-    }
-  },
-  { path: '**', redirectTo: 'dashboard' }
 ];
 
 @NgModule({

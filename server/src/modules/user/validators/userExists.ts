@@ -5,6 +5,7 @@ import { User } from '../../../entity';
 export class UserExistsConstraint implements ValidatorConstraintInterface {
 
     async validate(id: string) {
+        console.log('user exists called');
         try {
             const user = await User.findOne({
                 where: {

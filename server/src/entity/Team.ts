@@ -4,10 +4,11 @@ import {
     Column,
     BaseEntity,
     PrimaryColumn,
-    OneToOne
+    OneToOne,
+    ManyToOne
 } from 'typeorm';
 import { ObjectType, Field, Root } from 'type-graphql';
-import { TeamStats } from '.';
+import { TeamStats, Stadium, Standings } from './index';
 
 @Entity('teams')
 @ObjectType()
@@ -34,13 +35,66 @@ export class Team extends BaseEntity {
     abbreviation!: string;
 
     @Field()
+    @Column('int')
+    byeWeek!: number;
+
+    @Field()
     @Column('text')
-    imageUrl!: string;
+    logoUrl!: string;
     
+    @Field()
+    @Column('text')
+    primaryColor!: string;
+
+    @Field()
+    @Column('text')
+    secondaryColor!: string;
+
+    @Field()
+    @Column('text')
+    conference!: string;
+
+    @Field()
+    @Column('text')
+    division!: string;
+
+    @Field()
+    @Column('text')
+    headCoach!: string;
+
+    @Field()
+    @Column('text')
+    offensiveCoordinator!: string;
+
+    @Field()
+    @Column('text')
+    defensiveCoordinator!: string;
+
+    @Field()
+    @Column('text')
+    offensiveScheme!: string;
+
+    @Field()
+    @Column('text')
+    defensiveScheme!: string;
+
+    @ManyToOne(() => Stadium, stadium => stadium.team, {
+        eager: true
+    })
+    @Field(() => Stadium)
+    @Column('int')
+    stadium: number;
+
+    @OneToOne(() => Standings, standings => standings.team, {
+        eager: true
+    })
+    @Field(() => Standings)
+    standings: Standings;
+
     @OneToOne(() => TeamStats, stats => stats.team, {
         eager: true,
         onDelete: 'CASCADE'
     })
-    @Field(() => TeamStats)
+    @Field(() => TeamStats, { nullable: true })
     stats: TeamStats;
 }

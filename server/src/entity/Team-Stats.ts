@@ -24,10 +24,6 @@ export class TeamStats extends BaseEntity {
 
     @Field()
     @Column('int')
-    bye!: number;
-
-    @Field()
-    @Column('int')
     rank!: number;
 
     @Field()
@@ -37,10 +33,6 @@ export class TeamStats extends BaseEntity {
     @Field()
     @Column('int')
     rushRank!: number;
-
-    @Field()
-    @Column('float')
-    pointsFor!: number;
 
     @Field()
     @Column('float')

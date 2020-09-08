@@ -1,4 +1,4 @@
-import { Resolver, Query, Mutation, Arg } from 'type-graphql';
+import { Resolver, Query, Mutation, Arg, UseMiddleware } from 'type-graphql';
 import { getRepository } from "typeorm";
 import {
     Player,
@@ -7,33 +7,37 @@ import {
 } from '../../entity';
 import { Result } from '../../shared';
 import { ProjectionInput } from './inputs/ProjectionInput';
+import { logger } from '../../middleware';
 
 @Resolver()
 export class ProjectionResolver {
+    @UseMiddleware(logger)
     @Query(() => [Projection])
     async projections() {
         return getRepository(Projection)
             .find({
-                relations: ['player', 'player.team', 'player.team.team']
+                relations: ['player', 'player.team', 'player.team.stats']
             });
     }
 
+    @UseMiddleware(logger)
     @Query(() => Projection)
     async projection(@Arg('player') player: string) {
         return getRepository(Projection)
             .findOne({
-                relations: ['player', 'player.team', 'player.team.team'],
+                relations: ['player', 'player.team', 'player.team.stats'],
                 where: { player }
             });
     }
 
+    @UseMiddleware(logger)
     @Mutation(() => Result)
     async createProjection(
         @Arg('input') {
             firstName, lastName, team, completions, attempts,
             passTd, passYards, interception, carries, rushYards, rushTd, fumbles,
             receptions, receivingYards,
-            receivingTd, fantasyPoints
+            receivingTd
         }: ProjectionInput
     ): Promise<Result> {
         const teamResult = await Team.findOne({ where: { abbreviation: team } });
@@ -53,6 +57,7 @@ export class ProjectionResolver {
         });
 
         if (player) {
+            console.log(player.id);
             await Projection.create({
                 player: player.id,
                 completions,
@@ -67,7 +72,6 @@ export class ProjectionResolver {
                 receptions,
                 receivingYards,
                 receivingTd,
-                fantasyPoints
             }).save();
 
             return {

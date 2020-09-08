@@ -1,139 +1,187 @@
-import { Resolver, Query, Mutation, Arg } from 'type-graphql';
+import { Resolver, Query, Mutation, Arg, UseMiddleware, Ctx } from 'type-graphql';
 import { Player } from '../../entity';
-import { Result } from '../../shared';
-import { PlayerInput } from './inputs/PlayerInput';
-import { getRepository } from 'typeorm';
-import { DepthChartInput } from './inputs/DepthChartInput';
+import { Result, MyContext } from '../../shared';
+import { getRepository, SelectQueryBuilder } from 'typeorm';
+import { filterQuery } from '../../utils/filterQuery';
+import { PlayerArgs } from './inputs/PlayerArgs';
+import { PlayerService } from './services/player-service';
+import { logger } from '../../middleware';
+
+const axios = require('axios');
 
 @Resolver()
 export class PlayerResolver {
+    constructor(
+        private _player: PlayerService
+    ) { }
+
+    @UseMiddleware(logger)
     @Query(() => [Player])
     async players(
-        @Arg('user', { nullable: true }) user: string
-    ) {
-        if (user) {
-            return getRepository(Player)
-                .find({
-                    relations: [
-                        'team',
-                        'projection',
-                        'rank',
-                        'defaultRank',
-                        'notes',
-                        'notes.user',
-                        'notes.likes'
-                    ],
-                    order: {
-                        lastName: 'ASC'
-                    },
-                });
-        } else {
-            return getRepository(Player)
-                .find({
-                    relations: [
-                        'team',
-                        'projection',
-                        'rank',
-                        'defaultRank',
-                        'notes',
-                        'notes.user',
-                        'notes.likes'
-                    ],
-                    order: {
-                        lastName: 'ASC'
-                    }
-                });
+        @Ctx() ctx: MyContext,
+        @Arg('input', { nullable: true }) {
+            filterType,
+            team,
+            position,
+            status,
+            take,
+            skip
+        }: PlayerArgs
+    ): Promise<Player[] | undefined> {
+        let where;
+
+        console.log('Context', ctx.payload?.userId);
+        const query: SelectQueryBuilder<Player> = getRepository(Player)
+            .createQueryBuilder('players')
+            .leftJoinAndSelect('players.team', 'team')
+            .leftJoinAndSelect('team.stadium', 'stadium')
+            .leftJoinAndSelect('team.stats', 'stats')
+            .leftJoinAndSelect('team.standings', 'standings')
+            .leftJoinAndSelect('players.projection', 'projection')
+            .leftJoinAndSelect('players.notes', 'notes')
+            .take(take)
+            .skip(skip)
+            .orderBy('players.averageDraftPosition', 'ASC')
+
+        switch (filterType) {
+            case 'byTeam':
+                console.log('byTeam', await this._player.byTeam(team));
+                where = await this._player.byTeam(team);
+                return filterQuery(query, where).getMany();
+            case 'byPosition':
+                where = await this._player.byPosition(position);
+                return filterQuery(query, where).getMany();
+            case 'byStatus':
+                where = await this._player.byStatus(status);
+                return filterQuery(query, where).getMany();
+            case 'byNotStatus':
+                where = await this._player.byNotStatus(status);
+                return filterQuery(query, where).getMany();
+            case 'byDepthChart':
+                where = await this._player.byDepthChart(team, position);
+                return filterQuery(query, where).getMany();
+            default:
+                return query.getMany()
         }
     }
 
-    @Query(() => [Player])
-    async depthChart(
-        @Arg('input')
-        {
-            team,
-            position
-        }: DepthChartInput
-    ) {
-        return getRepository(Player)
-            .find({
-                relations: [
-                    'team',
-                    'projection',
-                    'rank',
-                    'defaultRank',
-                    'notes',
-                    'notes.user',
-                    'notes.likes'
-                ],
-                where: {
-                    team,
-                    position
-                },
-                order: {
-                    depthChartPos: 'ASC'
+    @UseMiddleware(logger)
+    @Query(() => Player)
+    async player(@Arg('input') {
+        filterType,
+        id,
+        firstName,
+        lastName,
+        position
+    }: PlayerArgs): Promise<Player | undefined> {
+        let where;
+
+        const query: SelectQueryBuilder<Player> = getRepository(Player)
+            .createQueryBuilder('players')
+            .leftJoinAndSelect('players.team', 'team')
+            .leftJoinAndSelect('team.stadium', 'stadium')
+            .leftJoinAndSelect('team.stats', 'stats')
+            .leftJoinAndSelect('team.standings', 'standings')
+            .leftJoinAndSelect('players.projection', 'projection')
+            .leftJoinAndSelect('players.notes', 'notes');
+
+
+        switch (filterType) {
+            case 'byId':
+                where = await this._player.byId(id);
+                return filterQuery(query, where).getOne();
+            case 'byName':
+                where = await this._player.byName(firstName, lastName);
+                return filterQuery(query, where).getOne();
+            case 'byNameAndPosition':
+                where = await this._player.byNameAndPosition(firstName, lastName, position);
+                return filterQuery(query, where).getOne();
+            default:
+                return undefined;
+        }
+    }
+
+    @UseMiddleware(logger)
+    @Mutation(() => Result)
+    async updatePlayers(): Promise<Result> {
+
+        try {
+            const response = await axios
+                .get(`https://api.sportsdata.io/v3/nfl/scores/json/Players?key=${process.env.SPORTS_DATA_KEY}`);
+
+            const playerList = response.data;
+
+            playerList.forEach(async (player: any) => {
+                if (player.PositionCategory === 'OFF' &&
+                    (player.Position === 'QB') ||
+                    (player.Position === 'RB') ||
+                    (player.Position === 'WR') ||
+                    (player.Position === 'TE') ||
+                    (player.Position === 'K')) {
+
+                    const playerExists = await Player.findOne({
+                        where: { id: player.PlayerID },
+                        select: ['id']
+                    });
+
+
+                    if (playerExists) {
+                        console.log('update');
+                        await Player.update(
+                            {
+                                id: player.PlayerID
+                            }, {
+                            weight: player.Weight,
+                            team: player.TeamID,
+                            position: player.Position,
+                            status: player.Status,
+                            depthChart: player.depthOrder,
+                            photoUrl: player.PhotoUrl,
+                            averageDraftPosition: player.AverageDraftPosition
+                        });
+                    } else {
+                        console.log('create');
+                        await Player.create({
+                            id: player.PlayerID,
+                            firstName: player.FirstName,
+                            lastName: player.LastName,
+                            heightFeet: player.HeightFeet,
+                            heightInches: player.HeightInches,
+                            weight: player.Weight,
+                            team: player.TeamID,
+                            position: player.Position,
+                            status: player.Status,
+                            depthChart: player.DepthOrder,
+                            photoUrl: player.PhotoUrl,
+                            birthDate: player.BirthDateString,
+                            college: player.College,
+                            draftYear: player.CollegeDraftYear,
+                            draftRound: player.CollegeDraftRound,
+                            draftPick: player.CollegeDraftPick,
+                            isUndrafted: player.IsUndraftedFreeAgent,
+                            averageDraftPosition: player.AverageDraftPosition
+                        }).save();
+                    }
                 }
             });
-    }
 
-    @Query(() => Player)
-    async player(@Arg('id') id: string) {
-        return getRepository(Player)
-            .findOne({
-                relations: [
-                    'team',
-                    'projection',
-                    'rank',
-                    'defaultRank',
-                    'notes',
-                    'notes.user',
-                    'notes.likes'
-                ],
-                where: { id }
-            });
-    }
-
-    @Mutation(() => Result)
-    async createPlayer(
-        @Arg('input') {
-            firstName,
-            lastName,
-            team,
-            position,
-            depthChartPos
-        }: PlayerInput
-    ): Promise<Result> {
-
-        const playerExists = await Player.findOne({
-            where: { firstName, lastName, team, position },
-            select: ["id"]
-        });
-
-        if (playerExists) {
+            return {
+                success: [
+                    {
+                        path: 'player',
+                        message: 'Successfully retrieved Player data!'
+                    }
+                ]
+            }
+        } catch (error) {
             return {
                 errors: [
                     {
                         path: 'player',
-                        message: 'Player already exists!'
+                        message: error
                     }
                 ]
-            };
-        }
-
-        await Player.create({
-            firstName,
-            lastName,
-            team,
-            position,
-            depthChartPos
-        }).save();
-
-        return {
-            success: [
-                {
-                    path: 'player',
-                    message: 'Successfully added player!'
-                }
-            ]
+            }
         }
     }
 }

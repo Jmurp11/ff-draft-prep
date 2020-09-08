@@ -1,24 +1,20 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from './auth/auth.service';
+import { AuthStoreService } from './auth/auth-store.service';
+import { NavStoreService } from './ui/nav-store.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css'],
+  styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  title = 'DraftShark';
-  isAuth: boolean;
+  title = 'client';
 
   constructor(
-    private _auth: AuthService
+    private authStore: AuthStoreService
   ) { }
 
-  async ngOnInit() {
-    this._auth.user.subscribe(user => {
-      this.isAuth = !!user;
-    });
-
-    await this._auth.autoLogin();
+  ngOnInit() {
+    this.authStore.autoLogin();
   }
 }

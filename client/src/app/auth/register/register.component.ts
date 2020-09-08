@@ -1,53 +1,40 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { Router } from '@angular/router';
-import { AuthService } from 'src/app/auth/auth.service';
-import { Subscription } from 'rxjs';
+import { MatDialogRef } from '@angular/material/dialog';
+import { LoginComponent } from '../login/login.component';
+import { Subscription, merge } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
-  styleUrls: ['./register.component.css']
+  styleUrls: ['./register.component.scss']
 })
-export class RegisterComponent implements OnInit {
+export class RegisterComponent implements OnInit, OnDestroy {
+
   form: FormGroup;
-  register$: Subscription;
-  nameIsValid = true;
-  emailIsValid = true;
-  passwordIsValid = true;
-  confirmPasswordIsValid = true;
-  passwordEqualConfirmPasswordIsValid = true;
-  isValidImage = true;
-  loading = false;
-  dismissSnackbar = 'Dismiss';
+  title: string;
+  isEmailValid: boolean;
+  isPasswordValid: boolean;
+  isConfirmPasswordValid: boolean;
+  isPasswordEqualConfirmPasswordValid: boolean;
+  password: string;
+  confirmPassword: string;
+  mergeSub: Subscription;
 
   constructor(
-    private _auth: AuthService,
-    private router: Router,
-    private snackbar: MatSnackBar
+    public dialogRef: MatDialogRef<LoginComponent>
   ) { }
 
-  ngOnInit() {
-    const pattern = '(http)?s?:?(\/\/[^"\']*\.(?:png|jpg|jpeg|gif))';
-    this.register$ = this._auth.registerStatus.subscribe(response => {
-      if (response) {
-        if (response.success) {
-          this.router.navigate(['login']);
-          this.openSnackBar('Thanks for registering! Check your email for confirmation!', this.dismissSnackbar);
-          this.resetForm();
-        } else {
-          this.openSnackBar(response.message, this.dismissSnackbar);
-          this.resetForm();
-        }
-      }
-    });
+  ngOnInit(): void {
+    this.title = 'Sign Up';
+
+    this.isEmailValid = true;
+    this.isPasswordValid = true;
+    this.isConfirmPasswordValid = true;
+    this.isPasswordEqualConfirmPasswordValid = true;
 
     this.form = new FormGroup({
-      username: new FormControl(null, {
-        updateOn: 'blur',
-        validators: [Validators.required, Validators.minLength(2)]
-      }),
       email: new FormControl(null, {
         updateOn: 'blur',
         validators: [Validators.required, Validators.email]
@@ -60,66 +47,36 @@ export class RegisterComponent implements OnInit {
         updateOn: 'blur',
         validators: [Validators.required, Validators.minLength(8)]
       }),
-      profileImage: new FormControl(null, {
+      username: new FormControl(null, {
         updateOn: 'blur',
-        validators: [Validators.pattern(pattern)]
+        validators: [Validators.required]
       })
     });
 
-    this.form.get('username').statusChanges.subscribe(status => {
-      this.nameIsValid = status === 'VALID';
-    });
-
     this.form.get('email').statusChanges.subscribe(status => {
-      this.emailIsValid = status === 'VALID';
+      this.isEmailValid = status === 'VALID';
     });
 
     this.form.get('password').statusChanges.subscribe(status => {
-      this.passwordIsValid = status === 'VALID';
+      this.isPasswordValid = status === 'VALID';
     });
 
     this.form.get('confirmPassword').statusChanges.subscribe(status => {
-      this.confirmPasswordIsValid = status === 'VALID';
+      this.isConfirmPasswordValid = status === 'VALID';
     });
 
-    this.form.get('profileImage').statusChanges.subscribe(status => {
-      this.isValidImage = status === 'VALID';
-    });
-
+    this.mergeSub = merge(
+      this.form.get('password').valueChanges.pipe(map(val => this.password = val)),
+      this.form.get('confirmPassword').valueChanges.pipe(map(val => this.confirmPassword = val))
+    ).subscribe(() => (this.password === this.confirmPassword) ? this.isPasswordEqualConfirmPasswordValid = true :
+      this.isPasswordEqualConfirmPasswordValid = false);
   }
 
-  async onRegisterSubmit() {
-    if (this.form.get('password').value === this.form.get('confirmPassword').value) {
-      this.loading = true;
-
-      await this._auth.register(
-        this.form.get('email').value,
-        this.form.get('password').value,
-        this.form.get('username').value,
-        this.form.get('profileImage').value
-      );
-    } else {
-      this.passwordEqualConfirmPasswordIsValid = false;
-      this.loading = false;
-      this.openSnackBar('Registration failed!', 'Dismiss');
-    }
+  onSubmit() {
+    this.dialogRef.close(this.form.value);
   }
 
-
-  onLoginClick() {
-    this.router.navigate(['./login']);
-  }
-
-  resetForm() {
-    this.form.reset();
-    this.emailIsValid = true;
-    this.passwordIsValid = true;
-    this.loading = false;
-  }
-
-  openSnackBar(message: string, action: string) {
-    this.snackbar.open(message, action, {
-      duration: 5000
-    });
+  ngOnDestroy() {
+    this.mergeSub.unsubscribe();
   }
 }

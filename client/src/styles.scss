@@ -1,18 +1,11 @@
-@import "~font-awesome/css/font-awesome.css";
-
-html, body {
-  height: 100%;
-}
-
+html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
-.auth-btn {
-  margin: 10px;
-}
-
-.form {
-  text-align: center;
-  margin: auto;
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
 }
 
 .form-container {
@@ -21,10 +14,9 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   height: 100%;
 }
 
-.form-card {
-  max-width: 400px;
+.form {
+  text-align: center;
   margin: auto;
-  margin-top: 32px;
 }
 
 .form-group {
@@ -35,80 +27,27 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   color: red;
 }
 
-
-.note-card {
-  max-width: 400;
+.card {
+  width: 95%;
 }
 
-.auth-header-image {
-  background-image: url('./assets/images/profile.png');
+.header-image {
   background-size: cover;
 }
 
-.container {
-  display: flex;
-  justify-content: center;
+.icon-chip {
+  font-size: .688em !important;
+  padding: .250em .500em !important;
+  display: flex !important;
+  flex-direction: row;
   align-items: center;
-  align-content: center;
-}
-
-.loading-div {
-  display: flex;
   justify-content: center;
-  align-items: center;
-  align-content: center;
 }
 
-.main-loading {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  -webkit-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
+.mat-form-field {
+  width: 50%;
 }
 
-.note-card {
-  width: 100%;
-  height: 100%;
-}
-
-
-.note-cards-dash {
-  width: 100%;
-  height: 100%;
-}
-
-.note-cards-player {
-  width: 90%;
-  height: 100%;
-}
-
-mat-divider {
-  padding: .1125em;
-  width: 100%;
-}
-
-.note-header-image {
-  background-size: cover;
-}
-
-.action-btn {
-  text-align: center;
-}
-
-.card-ctr {
-  width: 97%;
-}
-
-.crd-ctr {
-  height: 100%;
-  width: 100%;
-}
-
-.center {
-  text-align: center;
-}
-
-.bold {
-  font-weight: bold;
+.card-div {
+  padding: 0.500em;
 }

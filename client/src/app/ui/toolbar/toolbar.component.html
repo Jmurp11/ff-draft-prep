@@ -1,0 +1,54 @@
+<mat-toolbar color="primary">
+  <span>
+    <button mat-button class="title" (click)="navigateToDashboard()">
+      <span class="title-content"><img class="title-logo" src='../../assets/images/logo-full.svg'></span>
+    </button>
+  </span>
+  <span class="spacer"></span>
+  <span *ngIf="isAuth">
+    <button mat-icon-button class="icon" aria-label="Notifications">
+      <mat-icon>notifications</mat-icon>
+    </button>
+    <button mat-icon-button class="icon" aria-label="Change Theme" [matMenuTriggerFor]="theme">
+      <mat-icon>palette</mat-icon>
+    </button>
+    <mat-menu #theme="matMenu">
+      <div class="colors">
+        <div class="color" *ngFor="let theme of themes" (click)="changeTheme('blue', theme)"
+          [style.background]="theme.baseColor">
+          <mat-icon class="active-icon" *ngIf="theme.isActive">check</mat-icon>
+        </div>
+      </div>
+    </mat-menu>
+    <button mat-icon-button class="icon" [matMenuTriggerFor]="menu" aria-label="Account Menu">
+      <mat-icon>more_vert</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item>
+        <mat-icon>person</mat-icon>
+        <span>Profile</span>
+      </button>
+      <button mat-menu-item>
+        <mat-icon>settings</mat-icon>
+        <span>Account Settings</span>
+      </button>
+      <button mat-menu-item (click)="signOut()">
+        <mat-icon>exit_to_app</mat-icon>
+        <span>Sign Out</span>
+      </button>
+    </mat-menu>
+  </span>
+  <span *ngIf="!isAuth">
+    <button mat-icon-button class="icon" [matMenuTriggerFor]="auth" aria-label="Sign In / Sign Up">
+      <mat-icon>more_vert</mat-icon>
+    </button>
+    <mat-menu #auth="matMenu">
+      <button mat-menu-item (click)="openLoginDialog()">
+        <span>Sign In</span>
+      </button>
+      <button mat-menu-item (click)="openRegisterDialog()">
+        <span>Register</span>
+      </button>
+    </mat-menu>
+  </span>
+</mat-toolbar>

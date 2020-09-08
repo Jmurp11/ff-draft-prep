@@ -1,0 +1,10 @@
+mutation updateTeams {
+  updateTeams {
+    success {
+      message
+    }
+    errors {
+      message
+    }
+  }
+}
