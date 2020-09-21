@@ -1,0 +1,65 @@
+mutation login($data: LoginInput!) {
+  login(input: $data) {
+    success {
+      user {
+        id
+        email
+        username
+        isAdmin
+      }
+      accessToken
+      expiresIn
+    }
+    errors {
+      message
+    }
+  }
+}
+
+mutation register($data: RegisterInput!) {
+  register(input: $data) {
+    success {
+      message
+    }
+    errors {
+      message
+    }
+  }
+}
+
+mutation logout($data: LogoutInput!) {
+  logout(input: $data)
+}
+
+mutation confirmUser($data: String!) {
+  confirmUser(token: $data) {
+    success {
+      message
+    }
+    errors {
+      message
+    }
+  }
+}
+
+mutation forgotPassword($data: String!) {
+  forgotPassword(email: $data) {
+    success {
+      message
+    }
+    errors {
+      message
+    }
+  }
+}
+
+mutation changePassword($data: ChangePasswordInput!) {
+  changePassword(input: $data) {
+    success {
+      message
+    }
+    errors {
+      message
+    }
+  }
+}

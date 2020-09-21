@@ -1,0 +1,10 @@
+mutation updatePlayers {
+  updatePlayers {
+    success {
+      message
+    }
+    errors {
+      message
+    }
+  }
+}

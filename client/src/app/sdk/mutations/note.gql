@@ -1,0 +1,21 @@
+mutation createNote($data: NoteInput!) {
+  createNote(input: $data) {
+    success {
+      message
+    }
+    errors {
+      message
+    }
+  }
+}
+
+mutation deleteNote($data: DeleteNoteInput!) {
+  deleteNote(input: $data) {
+    success {
+      message
+    }
+    errors {
+      message
+    }
+  }
+}

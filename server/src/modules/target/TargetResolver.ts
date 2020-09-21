@@ -1,56 +1,84 @@
-import { Resolver, Query, Mutation, Arg, UseMiddleware, Float } from 'type-graphql';
+import { Resolver, Query, Mutation, Arg, UseMiddleware, Float, Ctx } from 'type-graphql';
 import { Target } from '../../entity';
-import { Result } from '../../shared';
+import { Result, MyContext } from '../../shared';
 import { TargetInput } from './inputs/TargetInput';
-import { getRepository } from 'typeorm';
+import { getRepository, SelectQueryBuilder } from 'typeorm';
 import { isAuth, logger } from '../../middleware';
-import { TargetByPlayerUserInput } from './inputs/TargetByPlayerUserInput';
+import { TargetArgs, DeleteTargetArgs } from './inputs/TargetArgs';
+import { filterQuery } from '../../utils/filterQuery';
+import { TargetService } from './services/target-service';
 
 @Resolver()
 export class TargetResolver {
+    constructor(
+        private _targets: TargetService
+    ) { }
+
     @UseMiddleware(isAuth, logger)
     @Query(() => [Target])
-    async targets(@Arg('user') user: string) {
-        return getRepository(Target)
-            .find({
-                relations: ['user', 'player'],
-                where: {
-                    user
-                },
-                order: {
-                    round: 'ASC'
-                }
-            });
+    async targets(
+        @Ctx() ctx: MyContext,
+        @Arg('input') {
+            filterType,
+            user,
+            player,
+            skip,
+            take
+        }: TargetArgs) {
+        let where;
+
+        console.log('Triggered', ctx);
+
+        const query: SelectQueryBuilder<Target> = getRepository(Target)
+            .createQueryBuilder('targets')
+            .leftJoinAndSelect('targets.user', 'user')
+            .leftJoinAndSelect('targets.player', 'player')
+            .leftJoinAndSelect('player.team', 'team')
+            .take(take)
+            .skip(skip)
+            .orderBy('targets.round', 'ASC')
+
+        switch (filterType) {
+            case 'byCurrentUser':
+                where = await this._targets.byCurrentUser(ctx);
+                return filterQuery(query, where).getMany();
+            case 'byUser':
+                where = await this._targets.byUser(user);
+                return filterQuery(query, where).getMany();
+            case 'byPlayer':
+                where = await this._targets.byPlayer(player);
+                return filterQuery(query, where).getMany();
+            default:
+                return query.getMany()
+        }
     }
 
     @UseMiddleware(isAuth, logger)
     @Query(() => Target)
-    async target(@Arg('id') id: string) {
-        return getRepository(Target)
-            .findOne({
-                relations: ['user', 'player'],
-                where: { id }
-            });
-    }
-
-    @UseMiddleware(isAuth, logger)
-    @Query(() => Target, { nullable: true })
-    async targetByPlayerUser(
+    async target(
         @Arg('input') {
             user,
             player
-        }: TargetByPlayerUserInput
-    ) {
-        return getRepository(Target)
-            .findOne({
-                relations: ['user', 'player'],
-                where: { user, player }
-            });
+        }: TargetArgs) {
+        let where;
+
+        const query: SelectQueryBuilder<Target> = getRepository(Target)
+            .createQueryBuilder('targets')
+            .leftJoinAndSelect('targets.user', 'user')
+            .leftJoinAndSelect('targets.player', 'player')
+            .leftJoinAndSelect('player.team', 'team')
+            .orderBy('targets.round', 'ASC')
+
+        where = await this._targets.byUserAndPlayer(user, player);
+        return filterQuery(query, where).getOne();
     }
 
     @UseMiddleware(isAuth, logger)
     @Query(() => Float, { nullable: true })
-    async avgTargetRound(@Arg('player') player: string) {
+    async avgTargetRound(
+        @Arg('input') {
+            player
+        }: TargetArgs) {
         let sum = 0;
 
         const countTargeted = await getRepository(Target)
@@ -67,12 +95,15 @@ export class TargetResolver {
     @UseMiddleware(isAuth, logger)
     @Mutation(() => Result)
     async createTarget(
+        @Ctx() ctx: MyContext,
         @Arg('input') {
-            user,
             player,
             round
         }: TargetInput
     ): Promise<Result> {
+        console.log(ctx.payload?.userId);
+        const user = ctx.payload?.userId;
+        
         const targetExists = await Target.findOne({
             where: { user, player },
             select: ["id"]
@@ -108,7 +139,9 @@ export class TargetResolver {
     @UseMiddleware(isAuth, logger)
     @Mutation(() => Result)
     async deleteTarget(
-        @Arg('id') id: string
+        @Arg('input') {
+            id
+        }: DeleteTargetArgs
     ): Promise<Result> {
         const target = await Target.findOne({
             where: { id },

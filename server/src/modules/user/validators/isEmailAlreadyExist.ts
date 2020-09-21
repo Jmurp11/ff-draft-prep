@@ -10,6 +10,7 @@ export class IsEmailAlreadyExistConstraint implements ValidatorConstraintInterfa
                 email
             }
         }).then(user => {
+            console.log(user);
             if (user) return false;
             return true;
         });

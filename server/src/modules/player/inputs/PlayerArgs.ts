@@ -2,18 +2,30 @@ import { InputType, Field } from 'type-graphql';
 
 @InputType()
 export class PlayerArgs {
-    @Field()
-    id: string;
+    @Field({ nullable: true })
+    filterType: string;
+    
+    @Field({ nullable: true })
+    id: number;
 
-    @Field()
+    @Field({ nullable: true })
     firstName: string;
 
-    @Field()
+    @Field({ nullable: true })
     lastName: string;
 
-    @Field()
+    @Field({ nullable: true })
     team: number;
 
-    @Field()
+    @Field({ nullable: true })
     position: string;
+
+    @Field({ nullable: true })
+    status: string;
+
+    @Field({ nullable: true })
+    take: number;
+
+    @Field({ nullable: true })
+    skip: number;
 }

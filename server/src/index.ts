@@ -4,7 +4,6 @@ import http from 'http';
 import { createConnection, getConnectionOptions } from 'typeorm';
 import express from 'express';
 import chalk from 'chalk'
-import cors from 'cors';
 import { ApolloServer } from 'apollo-server-express';
 import { buildSchema } from 'type-graphql';
 import session from 'express-session';
@@ -12,22 +11,20 @@ import connectRedis from 'connect-redis';
 import cookieParser from 'cookie-parser';
 import { verify } from 'jsonwebtoken';
 import { redis } from './redis';
-import { redisSessionPrefix } from './constants/constants';
+import { redisSessionPrefix, baseUrl } from './constants/constants';
 import { User } from './entity';
 import { createAccessToken, createRefreshToken } from './shared/auth';
 import { sendRefreshToken } from './shared/sendRefreshToken';
+import Container from './container';
 
 (async () => {
   const app = express();
 
-  app.use(cors({
+  const corOptions = {
     credentials: true,
-    origin:
-      process.env.NODE_ENV === "test"
-        ? "*"
-        : (process.env.FRONTEND_HOST as string) 
-  }));
-
+    origin: [baseUrl]
+  };
+  
   app.use(cookieParser());
   app.post('/refresh_token', async (req, res) => {
     const token = req.cookies.uid;
@@ -94,6 +91,7 @@ import { sendRefreshToken } from './shared/sendRefreshToken';
       authChecker: ({ context: { req } }) => {
         return !!req.session.userId;
       },
+      container: Container,
       dateScalarMode: "isoDate"
     }),
     context: ({ req, res }) => ({ req, res })
@@ -119,7 +117,7 @@ import { sendRefreshToken } from './shared/sendRefreshToken';
     })
   );
 
-  apolloServer.applyMiddleware({ app, cors: false });
+  apolloServer.applyMiddleware({ app, cors: corOptions });
 
   const httpServer = http.createServer(app);
   apolloServer.installSubscriptionHandlers(httpServer);
@@ -128,6 +126,6 @@ import { sendRefreshToken } from './shared/sendRefreshToken';
   const port = process.env.PORT || 4000;
 
   httpServer.listen(port, async () => {
-    console.log(chalk.magentaBright('🏈  Draft Shark server is running on ') + chalk.greenBright('localhost:4000') + chalk.magentaBright('...'));
+    console.log(chalk.magentaBright('🏈  Draft Shark server is running on ') + chalk.greenBright('127.0.0.1:4000') + chalk.magentaBright('...'));
   });
 })();

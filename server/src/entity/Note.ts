@@ -17,9 +17,7 @@ export class Note extends BaseEntity {
     @PrimaryGeneratedColumn('uuid')
     id!: string;
 
-    @ManyToOne(() => User, {
-        eager: true
-    })
+    @ManyToOne(() => User)
     @JoinColumn({ name: 'user' })
     @Field(() => User)
     @Column('uuid')
@@ -30,8 +28,8 @@ export class Note extends BaseEntity {
     })
     @JoinColumn({ name: 'player' })
     @Field(() => Player)
-    @Column('uuid')
-    player!: string;
+    @Column('int')
+    player!: number;
 
     @Field()
     @Column('text')
@@ -40,10 +38,6 @@ export class Note extends BaseEntity {
     @Field()
     @Column('text')
     body!: string;
-
-    @Field()
-    @Column('text')
-    source!: string;
 
     @Field()
     @Column('boolean', { default: false })

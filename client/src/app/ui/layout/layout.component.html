@@ -1,0 +1,49 @@
+<app-toolbar></app-toolbar>
+<mat-sidenav-container class="container">
+  <mat-sidenav #sidenav [(opened)]="sidenavLeftOpened" mode="side" class="sidenavLeft">
+    <div class="nav-container">
+      <mat-divider></mat-divider>
+      <div class="nav-button-container">
+        <button class="nav-button" mat-mini-fab color="primary" matTooltip="Dashboard" (click)="navigate('dashboard')">
+          <mat-icon>home</mat-icon>
+        </button>
+      </div>
+      <mat-divider></mat-divider>
+      <div class="nav-button-container">
+        <button class="nav-button" mat-mini-fab color="primary" matTooltip="Profile" (click)="navigate('profile')">
+          <mat-icon>person</mat-icon>
+        </button>
+      </div>
+      <mat-divider></mat-divider>
+      <div class="nav-button-container">
+        <button class="nav-button" mat-mini-fab color="primary" matTooltip="Draft Tools" (click)="navigate('drafts')">
+          <mat-icon>laptop</mat-icon>
+        </button>
+      </div>
+      <mat-divider></mat-divider>
+      <div class="nav-button-container">
+        <button class="nav-button" mat-mini-fab color="primary" matTooltip="Players" (click)="navigate('players')">
+          <mat-icon>people</mat-icon>
+        </button>
+      </div>
+      <mat-divider></mat-divider>
+      <div class="nav-button-container">
+        <button class="nav-button" mat-mini-fab color="primary" matTooltip="Admin" (click)="navigate('admin')">
+          <mat-icon>check_circle</mat-icon>
+        </button>
+      </div>
+      <mat-divider></mat-divider>
+    </div>
+  </mat-sidenav>
+  <mat-sidenav #targetList [(opened)]="sidenavRightOpened" mode="side" class="sidenavRight" position="end">
+    <app-sidenav-content></app-sidenav-content>
+  </mat-sidenav>
+  <app-breadcrumb></app-breadcrumb>
+
+  <app-loading *ngIf="isLoading"></app-loading>
+
+  <router-outlet *ngIf="!isLoading"></router-outlet>
+
+</mat-sidenav-container>
+
+<app-footer></app-footer>

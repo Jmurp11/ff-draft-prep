@@ -14,92 +14,84 @@ import { ChangePasswordInput } from './inputs/ChangePasswordInput';
 import { LoginResult } from './types/LoginResult';
 import { createAccessToken, createRefreshToken } from '../../shared/auth';
 import { sendRefreshToken } from '../../shared/sendRefreshToken';
-import { getConnection } from 'typeorm';
+import { getConnection, SelectQueryBuilder, getRepository } from 'typeorm';
+import { UpdateImageInput } from './inputs/UpdateImageInput';
+import { UserArgs } from './inputs/UserArgs';
+import { UserService } from './services/user-service';
+import { filterQuery } from '../../utils/filterQuery';
 
 @Resolver()
 export class UserResolver {
-    @UseMiddleware(isAuth, logger)
-    @Query(() => [User])
-    async users() {
-        return User.find({
-            relations: [
-                'likes',
-                'likes.note',
-                'likes.note.user',
-                'likes.user',
-                'notes',
-                'notes.likes',
-                'notes.likes.note',
-                'notes.likes.user',
-                'notes',
-                'targets',
-                'ranks'
-            ]
-        });
-    }
-
-    @UseMiddleware(isAuth, logger)
-    @Query(() => User)
-    async user(@Arg('id') id: string) {
-        return User.findOne({
-            relations: [
-                'likes',
-                'likes.note',
-                'likes.user',
-                'notes',
-                'notes.likes',
-                'targets',
-                'ranks'
-            ],
-            where: {
-                id
-            }
-        });
-    }
-
-    @UseMiddleware(isAuth, logger)
-    @Query(() => User)
-    async userByUsername(@Arg('username') username: string) {
-        return User.findOne({
-            relations: [
-                'likes',
-                'likes.note',
-                'likes.user',
-                'notes',
-                'notes.likes',
-                'targets',
-                'ranks'
-            ],
-            where: {
-                username
-            }
-        });
-    }
+    constructor(
+        private _users: UserService
+    ) { }
 
     @UseMiddleware(logger)
-    @Query(() => User)
-    async userByEmail(@Arg('email') email: string) {
-        return User.findOne({
-            relations: [
-                'likes',
-                'likes.note',
-                'likes.user',
-                'notes',
-                'notes.likes',
-                'targets',
-                'ranks'
-            ],
-            where: {
-                email
-            }
-        });
+    @Query(() => [User])
+    async users(
+        @Arg('input') {
+            filterType,
+            user,
+            take,
+            skip
+        }: UserArgs
+    ) {
+        let where;
+
+        const query: SelectQueryBuilder<User> = getRepository(User)
+            .createQueryBuilder('users')
+            .leftJoinAndSelect('users.notes', 'notes')
+            .leftJoinAndSelect('users.targets', 'targets')
+            .take(take)
+            .skip(skip)
+            .orderBy('users.username', 'ASC');
+
+        if (filterType) {
+            where = await this._users.byUser(user);
+            return filterQuery(query, where).getMany();
+        } else {
+            return query.getMany();
+        }
     }
 
+    @UseMiddleware(isAuth, logger)
+    @Query(() => User)
+    async user(
+        @Arg('input') {
+            filterType,
+            id,
+            username,
+            email
+        }: UserArgs
+    ) {
+        let where;
+
+        const query: SelectQueryBuilder<User> = getRepository(User)
+            .createQueryBuilder('users')
+            .leftJoinAndSelect('users.notes', 'notes')
+            .leftJoinAndSelect('user.targets', 'targets')
+            .orderBy('user.username', 'ASC')
+
+        switch (filterType) {
+            case 'byCurrentUser':
+                where = await this._users.byId(id);
+                return filterQuery(query, where).getOne();
+            case 'byUser':
+                where = await this._users.byEmail(email);
+                return filterQuery(query, where).getOne();
+            case 'byPlayer':
+                where = await this._users.byUsername(username);
+                return filterQuery(query, where).getOne();
+            default:
+                return null;
+        }
+    }
 
     @Mutation(() => Result)
     async register(
         @Arg('input') { email, password, username, profileImage }: RegisterInput
     ): Promise<Result> {
+        
         const creationTime = new Date().toISOString();
 
         const user = await User.create({
@@ -125,13 +117,18 @@ export class UserResolver {
 
     @Mutation(() => LoginResult, { nullable: true })
     async login(
-        @Arg('input') { email, password }: LoginInput,
+        @Arg('input') {
+            email,
+            username,
+            password
+        }: LoginInput,
         @Ctx() { res }: MyContext
     ): Promise<LoginResult> {
         let user = await User.findOne({
-            where: {
-                email
-            }
+            where: [
+                { email },
+                { username }
+            ]
         });
 
         if (!user) {
@@ -383,8 +380,10 @@ export class UserResolver {
     @UseMiddleware(isAuth, logger)
     @Mutation(() => Result)
     async updateUserProfileImage(
-        @Arg('id') id: string,
-        @Arg('image') image: string
+        @Arg('input') {
+            id,
+            image
+        }: UpdateImageInput
     ): Promise<Result> {
         const result = await User.update({ id }, { profileImage: image });
 

@@ -1,0 +1,14 @@
+overwrite: true
+schema: "http://127.0.0.1:4000/graphql"
+documents: "src/**/*.gql"
+generates:
+  src/app/sdk/generated/graphql.ts:
+    config:
+      sdkClass: true
+    plugins:
+      - "typescript"
+      - "typescript-operations"
+      - "typescript-apollo-angular"
+  src/app/sdk/generated/graphql.schema.json:
+    plugins:
+      - "introspection"

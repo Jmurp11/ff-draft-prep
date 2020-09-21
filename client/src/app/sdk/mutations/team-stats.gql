@@ -1,0 +1,10 @@
+mutation addTeamStats($data: TeamStatsInput!) {
+  addTeamStats(input: $data) {
+    success {
+      message
+    }
+    errors {
+      message
+    }
+  }
+}

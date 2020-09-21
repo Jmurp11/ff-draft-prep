@@ -17,7 +17,6 @@ export class Score extends BaseEntity {
     id!: string;
 
     @ManyToOne(() => User, user => user.score, {
-        eager: true,
         onDelete: 'CASCADE'
     })
     @JoinColumn({ name: 'user' })

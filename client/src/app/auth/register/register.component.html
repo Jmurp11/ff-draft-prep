@@ -1,64 +1,47 @@
-<div class="form-container">
-  <div class="main-loading" *ngIf="loading">
-    <loading-spinner></loading-spinner>
+<div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="1.0%">
+  <h1 matDialogTitle>{{ title | titlecase }}</h1>
+
+  <div class="form-container" fxFlex="100%">
+
+    <form [formGroup]="form" class="form">
+
+      <div class="form-group">
+        <mat-form-field appearance="standard">
+          <mat-label>Email</mat-label>
+          <input matInput placeholder="Email" formControlName="email">
+        </mat-form-field>
+        <div class="invalid-label" *ngIf="!isEmailValid">Please enter a valid email</div>
+      </div>
+
+      <div class="form-group">
+        <mat-form-field appearance="standard">
+          <mat-label>Username</mat-label>
+          <input matInput placeholder="Username" formControlName="username">
+        </mat-form-field>
+      </div>
+
+      <div class="form-group">
+        <mat-form-field appearance="standard">
+          <mat-label>Password</mat-label>
+          <input matInput placeholder="Password" formControlName="password" type="password">
+        </mat-form-field>
+        <div class="invalid-label" *ngIf="!isPasswordValid">Password must be at least 8 characters</div>
+      </div>
+
+      <div class="form-group">
+        <mat-form-field appearance="standard">
+          <mat-label>Confirm Password</mat-label>
+          <input matInput placeholder="Please Confirm Password" type="password" formControlName="confirmPassword"
+            class="form-control" secure="true" />
+        </mat-form-field>
+        <div class="invalid-label" *ngIf="!isPasswordEqualConfirmPasswordValid">Password and Confirm Password fields
+          must match</div>
+      </div>
+
+      <div>
+        <button mat-raised-button color="primary" [disabled]="form.invalid" (click)="onSubmit()">Submit</button>
+        <button mat-button color="warn" type="button" (click)="dialogRef.close(false)">Cancel</button>
+      </div>
+    </form>
   </div>
-  <form [formGroup]="form" (ngSubmit)="onRegisterSubmit()" class="form" *ngIf="!loading">
-    <mat-card class="form-card">
-      <mat-card-header>
-        <div mat-card-avatar class="auth-header-image"></div>
-        <mat-card-title>Register</mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <div class="form-group">
-          <mat-form-field appearance="standard">
-            <mat-label>Username</mat-label>
-            <input matInput placeholder="Enter Username" input type="text" formControlName="username"
-              class="form-control" />
-          </mat-form-field>
-          <div class="invalid-label" *ngIf="!nameIsValid">Username must be at least 2 characters</div>
-        </div>
-        <div class="form-group">
-          <mat-form-field appearance="standard">
-            <mat-label>Email</mat-label>
-            <input matInput placeholder="Enter Email" input type="text" formControlName="email" class="form-control" />
-          </mat-form-field>
-          <div class="invalid-label" *ngIf="!emailIsValid">Please enter a valid email</div>
-        </div>
-        <div class="form-group">
-          <mat-form-field appearance="standard">
-            <mat-label>Password</mat-label>
-            <input matInput placeholder="Enter Password" type="password" formControlName="password" class="form-control"
-              secure="true" />
-          </mat-form-field>
-          <div class="invalid-label" *ngIf="!passwordIsValid">Password must be at least 8 characters</div>
-        </div>
-        <div class="form-group">
-          <mat-form-field appearance="standard">
-            <mat-label>Confirm Password</mat-label>
-            <input matInput placeholder="Please Confirm Password" type="password" formControlName="confirmPassword"
-              class="form-control" secure="true" />
-          </mat-form-field>
-          <div class="invalid-label" *ngIf="!passwordEqualConfirmPasswordIsValid">Password and Confirm Password fields
-            must match</div>
-        </div>
-        <div class="form-group">
-          <mat-form-field appearance="standard">
-            <mat-label>Profile Image</mat-label>
-            <input matInput placeholder="Enter Profile Image URL (optional)" type="text" formControlName="profileImage"
-              class="form-control" />
-          </mat-form-field>
-          <div class="invalid-label" *ngIf="!isValidImage">Must be JPG, JPEG, PNG, or GIF file</div>
-        </div>
-      </mat-card-content>
-      <mat-card-actions>
-        <div class="form-group">
-          <button mat-raised-button color="primary" [disabled]="loading" class="btn btn-primary auth-btn">
-            <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
-            Register
-          </button>
-          <button mat-raised-button color="accent" class="auth-btn" (click)="onLoginClick()">Login</button>
-        </div>
-      </mat-card-actions>
-    </mat-card>
-  </form>
 </div>

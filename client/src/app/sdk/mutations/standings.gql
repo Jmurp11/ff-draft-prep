@@ -1,0 +1,10 @@
+mutation updateStandings {
+  updateStandings {
+    success {
+      message
+    }
+    errors {
+      message
+    }
+  }
+}

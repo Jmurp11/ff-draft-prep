@@ -1,0 +1,50 @@
+query notes($data: NoteArgs!){
+  notes(input: $data) {
+    id
+    title
+    body
+    isPrivate
+    creationTime
+    user {
+      id
+      username
+      profileImage
+    }
+    player {
+      id
+      name
+      position
+      photoUrl
+      team {
+        id
+        abbreviation
+      }
+    }
+  }
+}
+
+
+query note($data: NoteArgs!){
+  note(input: $data) {
+    id
+    title
+    body
+    isPrivate
+    creationTime
+    user {
+      id
+      username
+      profileImage
+    }
+    player {
+      id
+      name
+      position
+      photoUrl
+      team {
+        id
+        abbreviation
+      }
+    }
+  }
+}

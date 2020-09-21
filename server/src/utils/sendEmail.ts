@@ -37,7 +37,7 @@ export const sendEmail = async (email: string, url: string, type: string) => {
     });
 
     if (type === 'Confirm') {
-        console.log('confirm');
+        console.log('confirm', url);
         info = await transporter.sendMail(confirm(email, url));
     } else if (type === 'Forgot Password') {
         info = await transporter.sendMail(forgotPassword(email, url));

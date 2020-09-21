@@ -1,0 +1,39 @@
+.spacer {
+  flex: 1 1 auto;
+}
+
+.color {
+  position: relative;
+  width: 36px;
+  height: 36px;
+  display: inline-block;
+  border-radius: 50%;
+  margin: 8px;
+  text-align: center;
+  box-shadow: 0 4px 20px 1px rgba(0,0,0,.06), 0 1px 4px rgba(0,0,0,.03);
+  cursor: pointer;
+  .active-icon {
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin: auto;
+    top: 6px;
+  }
+}
+
+.title {
+  font-size: 2em;
+  font-weight: bold;
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+}
+
+.title-content {
+  display: inline-block;
+  height: 100%;
+}
+
+.title-logo {
+  fill: white;
+  height: 100%;
+  width: 100%;
+}

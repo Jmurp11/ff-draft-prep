@@ -1,0 +1,129 @@
+query teams($data: TeamArgs!) {
+  teams(input: { filterType: null }) {
+    id
+    city
+    nickname
+    fullName
+    abbreviation
+    byeWeek
+    logoUrl
+    primaryColor
+    secondaryColor
+    conference
+    division
+    headCoach
+    offensiveCoordinator
+    defensiveCoordinator
+    offensiveScheme
+    defensiveScheme
+    stats {
+      rank
+      passRank
+      rushRank
+      yards
+      plays
+      yardsPerPlay
+      turnovers
+      passAttempts
+      passCompletions
+      passYards
+      passTd
+      interception
+      netYardsPerPass
+      rushAttempt
+      rushYards
+      rushTd
+      yardsPerRush
+      scorePercentage
+      turnoverPercentage
+      offensiveLineRank
+      runningBackSoS
+    }
+    stadium {
+      name
+      type
+      playingSurface
+      city
+      state
+      country
+    }
+    standings {
+      wins
+      losses
+      ties
+      conferenceWins
+      conferenceTies
+      conferenceLosses
+      divisionWins
+      divisionTies
+      divisionLosses
+      winPercentage
+    }
+  }
+}
+
+query team($data: TeamArgs!) {
+  teams(input: { filterType: null }) {
+    id
+    city
+    nickname
+    fullName
+    abbreviation
+    byeWeek
+    logoUrl
+    primaryColor
+    secondaryColor
+    conference
+    division
+    headCoach
+    offensiveCoordinator
+    defensiveCoordinator
+    offensiveScheme
+    defensiveScheme
+    stats {
+      id
+      rank
+      passRank
+      rushRank
+      yards
+      plays
+      yardsPerPlay
+      turnovers
+      passAttempts
+      passCompletions
+      passYards
+      passTd
+      interception
+      netYardsPerPass
+      rushAttempt
+      rushYards
+      rushTd
+      yardsPerRush
+      scorePercentage
+      turnoverPercentage
+      offensiveLineRank
+      runningBackSoS
+    }
+    stadium {
+      id
+      name
+      type
+      playingSurface
+      city
+      state
+      country
+    }
+    standings {
+      wins
+      losses
+      ties
+      conferenceWins
+      conferenceTies
+      conferenceLosses
+      divisionWins
+      divisionTies
+      divisionLosses
+      winPercentage
+    }
+  }
+}
