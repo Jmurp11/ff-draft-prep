@@ -1,30 +1,30 @@
+/**
 import { NgModule } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
-import { TargetComponent } from './target.component';
-import { TargetDialogComponent } from './target-dialog/target-dialog.component';
-import { AddTargetComponent } from './add-target/add-target.component';
+import { RouterModule } from '@angular/router';
 import { SharedModule } from '../shared/shared.module';
+import { TargetComponent } from './target.component';
+import { TargetsRoutingModule } from './target-routing.module';
+import { TargetsQueryService } from './targets-query.service';
+import { AddTargetComponent } from './add-target/add-target.component';
 
 @NgModule({
   declarations: [
-    AddTargetComponent,
     TargetComponent,
-    TargetDialogComponent
+    AddTargetComponent
   ],
   exports: [
-    AddTargetComponent,
     TargetComponent,
-    TargetDialogComponent
+    AddTargetComponent
   ],
   imports: [
+    TargetsRoutingModule,
+    RouterModule.forChild(TargetsRoutingModule),
     SharedModule
   ],
-  entryComponents: [TargetDialogComponent],
+  entryComponents: [AddTargetComponent],
   providers: [
-    {
-      provide: MatDialogRef,
-      useValue: {}
-    },
+    TargetsQueryService
   ]
 })
 export class TargetModule { }
+*/

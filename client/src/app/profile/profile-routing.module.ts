@@ -1,30 +1,17 @@
-import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
-import { ProfileComponent } from './profile.component';
-import { EditProfileComponent } from './edit-profile/edit-profile.component';
-import { ProfileDetailComponent } from './profile-detail/profile-detail.component';
-import { AuthGuard } from '../auth/auth.guard';
 
-const profileRoutes: Routes = [
+/**
+ import { Routes } from '@angular/router';
+import { ProfileComponent } from './profile.component';
+
+export const ProfileRoutingModule: Routes = [
   {
     path: 'profile',
     component: ProfileComponent,
-    canActivate: [AuthGuard],
-    children: [
-      {
-        path: ':username',
-        component: ProfileDetailComponent
-      },
-      {
-        path: ':username/edit',
-        component: EditProfileComponent
-      }
-    ]
+    data: {
+      title: 'Profile',
+      breadcrumb: 'PROFILE',
+      stateName: 'profile'
+    }
   }
 ];
-
-@NgModule({
-  imports: [RouterModule.forChild(profileRoutes)],
-  exports: [RouterModule]
-})
-export class ProfileRoutingModule { }
+*/

@@ -1,52 +1,39 @@
-<div class='add-target-ctr'>
-  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="form">
-    <div class="loading-div" *ngIf="loading">
-      <loading-spinner></loading-spinner>
-    </div>
-    <mat-card class="target-card" *ngIf="!loading">
-      <mat-card-header>
-        <div mat-card-avatar class="note-header-image" [style.backgroundImage]="'url(' + user.profileImage + ')'"></div>
-        <mat-card-title *ngIf="isPlayerPreset">{{ (currentPlayer !== null) ? currentPlayer.name : '' }}
-        </mat-card-title>
-        <mat-card-subtitle *ngIf="isPlayerPreset">{{ (currentPlayer !== null) ? currentPlayer.team.abbreviation : '' }}
-          -
-          {{ (currentPlayer !== null) ? currentPlayer.position : '' }}
-        </mat-card-subtitle>
-      </mat-card-header>
+<div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="1.0%">
+  <h1 matDialogTitle>{{ title | titlecase }}</h1>
 
-      <mat-card-content>
-        <mat-form-field class="target-input" *ngIf="!isPlayerPreset">
-          <input matInput placeholder="Player" formControlName="player" class="form-control" [matAutocomplete]="auto">
-        </mat-form-field>
+  <div class="form-container" fxFlex="100%">
 
-        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
-          <mat-option *ngFor="let player of filteredOptions | async" [value]="player">
-            {{ player.name }} {{ player.team.abbreviation }} - {{ player.position }}
+    <form [formGroup]="form" class="form">
+
+      <div class="form-group">
+        <mat-form-field appearance="standard">
+          <input type="text" placeholder="Player" matInput formControlName="player" [matAutocomplete]="auto">
+        <button mat-button mat-icon-button matSuffix (click)="reset()">
+          <mat-icon>close</mat-icon>
+        </button>
+        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayPlayer">
+          <mat-option *ngFor="let player of players | slice: 0:5" [value]="player">
+            {{player.name}} {{player.position}} - {{player.team.abbreviation}}
           </mat-option>
         </mat-autocomplete>
+        </mat-form-field>
+      </div>
 
-        <mat-form-field>
+      <div class="form-group">
+        <mat-form-field appearance="standard">
           <mat-label>Round</mat-label>
-          <mat-select formControlName="rounds" class="form-control">
-            <mat-option *ngFor="let round of rounds" [value]="round">
-              {{ round }}
+          <mat-select formControlName="round">
+            <mat-option *ngFor="let round of rounds" [value]="round + 1">
+              {{ round + 1 }}
             </mat-option>
           </mat-select>
         </mat-form-field>
-      </mat-card-content>
+      </div>
 
-      <mat-card-actions>
-        <div class="form-group">
-          <button mat-raised-button color="primary" [disabled]="loading" class="btn btn-primary note-btn"
-            (click)="onSubmit()">
-            Save
-          </button>
-          <button mat-raised-button color="warn" [disabled]="loading" class="btn btn-primary note-btn"
-            (click)="onCancel()">
-            Cancel
-          </button>
-        </div>
-      </mat-card-actions>
-    </mat-card>
-  </form>
+      <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="0.5%">
+        <button mat-raised-button color="primary" [disabled]="form.invalid" (click)="onSubmit()">Submit</button>
+        <button mat-button color="warn" type="button" (click)="dialogRef.close(false)">Cancel</button>
+      </div>
+    </form>
+  </div>
 </div>

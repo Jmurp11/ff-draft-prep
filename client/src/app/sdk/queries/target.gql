@@ -1,0 +1,41 @@
+query targets($data: TargetArgs!) {
+  targets(input: $data) {
+    id
+    round
+    user {
+      id
+      username
+    }
+    player {
+      id
+      name
+      position
+      photoUrl
+      team {
+        id
+        abbreviation
+      }
+    }
+  }
+}
+
+query target($data: TargetArgs!) {
+  target(input: $data) {
+    id
+    round
+    user {
+      id
+      username
+    }
+    player {
+      id
+      name
+      position
+      photoUrl
+      team {
+        id
+        abbreviation
+      }
+    }
+  }
+}

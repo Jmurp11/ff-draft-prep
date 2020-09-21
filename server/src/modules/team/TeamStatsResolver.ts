@@ -27,11 +27,9 @@ export class TeamStatsResolver {
     async addTeamStats(
         @Arg('input') {
             team,
-            bye,
             rank,
             passRank,
             rushRank,
-            pointsFor,
             yards,
             plays,
             yardsPerPlay,
@@ -71,11 +69,9 @@ export class TeamStatsResolver {
 
         await TeamStats.create({
             team,
-            bye,
             rank,
             passRank,
             rushRank,
-            pointsFor,
             yards,
             plays,
             yardsPerPlay,

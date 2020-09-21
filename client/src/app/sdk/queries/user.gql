@@ -1,0 +1,32 @@
+query users($data: UserArgs!) {
+  users(input: $data) {
+    id
+    username
+    email
+    profileImage
+  }
+}
+
+query adminUsers($data: UserArgs!) {
+  users(input: $data) {
+    id
+    email
+    password
+    username
+    confirmed
+    forgotPasswordLock
+    isLoggedIn
+    creationTime
+    lastLoggedIn
+    isAdmin
+  }
+}
+query user($data: UserArgs!) {
+  user(input: $data) {
+    id
+    username
+    email
+    profileImage
+  }
+}
+

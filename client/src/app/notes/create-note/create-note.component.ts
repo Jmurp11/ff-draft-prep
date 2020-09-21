@@ -1,99 +1,36 @@
-import { Component, OnDestroy, AfterContentInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { Subscription, Observable } from 'rxjs';
-import { map, startWith, filter } from 'rxjs/operators';
-import { PlayerService } from '../../draft/player/player.service';
-import { AuthService } from '../../auth/auth.service';
-import { Player } from '../../draft/player/player.model';
-import { MatDialogRef } from '@angular/material/dialog';
-import { NoteDialogComponent } from '../note-dialog/note-dialog.component';
-import { players } from '../queries';
-import { NotesMutationsService } from '../notes-mutations.service';
-import { NoteService } from '../note.service';
-import { User } from '../../auth/user.model';
-import { NotesQueriesService } from '../notes-queries.service';
+import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { Observable, Subscription } from 'rxjs';
+import { switchMap, startWith, map } from 'rxjs/operators';
+import { _filter, findItemWithPropertyValue } from '../../util/lib/objects';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { ApolloAngularSDK, PlayerArgs } from '../../sdk/generated/graphql';
 
 @Component({
   selector: 'app-create-note',
   templateUrl: './create-note.component.html',
-  styleUrls: ['./create-note.component.css']
+  styleUrls: ['./create-note.component.scss']
 })
-export class CreateNoteComponent implements AfterContentInit, OnDestroy {
-  authSub$: Subscription;
-  curPlayer$: Subscription;
-  noteStatus$: Subscription;
-  popPlayer$: Subscription;
-  clearForm$: Subscription;
-  players$: Subscription;
-  cancel$: Subscription;
+export class CreateNoteComponent implements OnInit, OnDestroy {
 
-  filteredOptions: Observable<any[]>;
   form: FormGroup;
-  currentPlayer: Player;
-  backgroundColor: string;
-  user: User;
-  loading: boolean;
-  sources: string[];
+  title: string;
+  players$: Observable<any>;
   players: any[];
-  isPlayerPreSet: boolean;
-  isCancelBtnVisible: boolean;
-  dismiss: string;
-  playerIsValid: boolean;
-  titleIsValid: boolean;
-  noteIsValid: boolean;
+  playersSub: Subscription;
+  formSub: Subscription;
+  isPrivate: boolean;
 
   constructor(
-    private _player: PlayerService,
-    private _auth: AuthService,
-    public dialogRef: MatDialogRef<NoteDialogComponent>,
-    private _note: NoteService,
-    private _noteM: NotesMutationsService,
-    private _noteQ: NotesQueriesService,
-    private snackbar: MatSnackBar) { }
+    @Inject(MAT_DIALOG_DATA) public input: any,
+    public dialogRef: MatDialogRef<CreateNoteComponent>,
+    private apolloSdk: ApolloAngularSDK
+  ) {
+    this.isPrivate = false;
+  }
 
-  ngAfterContentInit() {
-    this.loading = true;
-    this.players = [];
-
-    this.currentPlayer = {
-      id: '',
-      firstName: '',
-      lastName: '',
-      initialName: '',
-      name: '',
-      team: {
-        id: null,
-        city: '',
-        nickname: '',
-        abbreviation: '',
-        fullName: '',
-        imageUrl: '',
-        stats: null,
-      },
-      rank: null,
-      defaultRank: null,
-      projection: null,
-      notes: null,
-      position: '',
-      depthChartPos: 0,
-      selected: false
-    };
-
-    this.dismiss = 'Dismiss';
-    this.playerIsValid = true;
-    this.titleIsValid = true;
-    this.noteIsValid = true;
-
-
-    this.sources = [
-      'CBS',
-      'ESPN',
-      'Local News',
-      'Twitter',
-      'Yahoo',
-      'None'
-    ];
+  ngOnInit(): void {
+    this.title = 'Create Note';
 
     this.form = new FormGroup({
       player: new FormControl(null, {
@@ -104,171 +41,72 @@ export class CreateNoteComponent implements AfterContentInit, OnDestroy {
         updateOn: 'blur',
         validators: [Validators.required]
       }),
-      note: new FormControl(null, {
+      body: new FormControl(null, {
         updateOn: 'blur',
         validators: [Validators.required, Validators.minLength(5)]
       }),
       isPrivate: new FormControl(null, {
         updateOn: 'blur'
       }),
-      source: new FormControl(null, {
-        updateOn: 'blur'
-      })
     });
 
-    this.popPlayer$ = this._note.populatePlayer.subscribe(populate => {
-      if (!populate) {
-        this.isPlayerPreSet = false;
-        this.currentPlayer = null;
-      } else {
-        this.isPlayerPreSet = true;
+    if (this.input) {
+      this.form.get('player').setValue(this.input.payload.player);
+    }
 
-        this.curPlayer$ = this._player.currentPlayer.subscribe(data => {
-          this.currentPlayer = data;
-          this.form.get('player').setValue(this.currentPlayer.id);
-        });
-      }
-    });
-
-    this.cancel$ = this._note.isCancelBtnVisible
-      .subscribe(val => this.isCancelBtnVisible = val);
-
-    this.noteStatus$ = this._note.noteStatus.subscribe(response => {
-      if (response) {
-        this.openSnackBar(response.message, this.dismiss);
-        this.resetForm();
-        this._note.resetResponse();
-      }
-    });
-
-    this.clearForm$ = this._note.clearNoteForm.subscribe(clear => {
-      if (clear) {
-        this.resetForm();
-        this._note.resetForm(false);
-      }
-    });
-
-    this.authSub$ = this._auth.user.subscribe(user => {
-      this.user = user;
-    });
-
-    this.players$ = this._noteQ.players()
-      .subscribe(({ data, loading }) => {
-        this.loading = loading;
-        data.players.forEach((player: any) => {
-          this.players.push(player);
-        });
-      });
-
-    this.filteredOptions = this.form.get('player').valueChanges
+    this.playersSub = this.getPlayers()
       .pipe(
-        startWith(''),
-        filter(value => value !== null),
-        map(value => typeof value === 'string' ? value : value.name),
-        map(value => this._filter(value))
-      );
+        switchMap(output => {
+          return this.form.get('player')
+            .valueChanges
+            .pipe(
+              startWith(''),
+              map(val => {
+                if (typeof val === 'string') {
+                  return _filter<any>(output.data.players, 'name', val);
+                }
+              })
+            );
+        })
+      ).subscribe(val => this.players = val);
 
-    this.form.get('player').statusChanges.subscribe(status => {
-      this.playerIsValid = status === 'VALID';
-    });
-
-    this.form.get('title').statusChanges.subscribe(status => {
-      this.titleIsValid = status === 'VALID';
-    });
-
-    this.form.get('note').statusChanges.subscribe(status => {
-      this.noteIsValid = status === 'VALID';
-    });
+    this.formSub = this.form.get('player')
+      .valueChanges
+      .subscribe(val => {
+        const player = findItemWithPropertyValue(this.players, 'name', val);
+        if (player) {
+          this.form.get('player').setValue(player);
+        }
+      });
   }
 
-  async onSubmit() {
-    if (!this.form.valid) {
-      return;
-    }
+  getPlayers() {
+    const playersInput: PlayerArgs = {
+      filterType: 'byNotStatus',
+      status: 'Inactive'
+    };
 
-    const user = this.user.id;
-    let player: string;
-    const title = this.form.get('title').value;
-    const body = this.form.get('note').value;
-    const source = this.form.get('source').value;
-    let isPrivate = this.form.get('isPrivate').value;
-
-    if (this.isPlayerPreSet) {
-      player = this.currentPlayer.id;
-    } else {
-      const ph = this.form.get('player').value;
-      player = ph.id;
-    }
-
-    this.loading = true;
-
-    if (!isPrivate) {
-      isPrivate = false;
-    }
-
-    this._noteM.createNote(user, player, title, body, source, isPrivate);
-
-    if (!this.isPlayerPreSet) {
-      this.dialogRef.close();
-    }
+    return this.apolloSdk.playersWatch({
+      data: playersInput
+    })
+      .valueChanges;
   }
 
-  _filter(value: string): string[] {
-    if (value) {
-      const filterValue = value.toLowerCase();
-      return this.players.filter(player => player.name.toLowerCase().includes(filterValue));
-    }
+  onSubmit() {
+    this.form.get('isPrivate').setValue(this.isPrivate);
+    this.dialogRef.close(this.form.value);
   }
 
-  displayFn(player: any): string {
-    if (!this.isPlayerPreSet) {
-      if (player) {
-        return `${player.name} ${player.team.abbreviation} - ${player.position}`;
-      }
-    } else {
-      return `${this.currentPlayer.name}
-        ${this.currentPlayer.team.abbreviation} - ${this.currentPlayer.position}`;
-    }
+  reset() {
+    return this.form.get('player').reset();
   }
 
-  cancel(): void {
-    this.dialogRef.close();
-    this._note.resetForm(true);
-  }
-
-  resetForm() {
-    this.form.reset();
-    this.noteIsValid = true;
-    this.titleIsValid = true;
-    this.playerIsValid = true;
-    this.loading = false;
-  }
-
-  openSnackBar(message: string, action: string) {
-    this.snackbar.open(message, action, {
-      duration: 5000
-    });
+  displayPlayer(player: any) {
+    return player && player.name ? `${player.name} ${player.position} - ${player.team.abbreviation}` : '';
   }
 
   ngOnDestroy() {
-    this.resetForm();
-    if (this.authSub$) {
-      this.authSub$.unsubscribe();
-    }
-    if (this.isPlayerPreSet) {
-      this.curPlayer$.unsubscribe();
-    }
-    if (this.noteStatus$) {
-      this.noteStatus$.unsubscribe();
-    }
-    if (this.popPlayer$) {
-      this.popPlayer$.unsubscribe();
-    }
-    if (this.clearForm$) {
-      this.clearForm$.unsubscribe();
-    }
-    if (this.cancel$) {
-      this.cancel$.unsubscribe();
-    }
+    this.playersSub.unsubscribe();
+    this.formSub.unsubscribe();
   }
 }

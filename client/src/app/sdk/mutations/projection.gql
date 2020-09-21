@@ -1,0 +1,10 @@
+mutation createProjection($data: ProjectionInput!) {
+  createProjection(input: $data) {
+    success {
+      message
+    }
+    errors {
+      message
+    }
+  }
+}

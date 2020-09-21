@@ -23,7 +23,6 @@ export class MeResolver {
                     'likes.user',
                     'likes.note',
                     'notes',
-                    'shares',
                     'targets',
                     'ranks'
                 ],

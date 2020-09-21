@@ -16,12 +16,10 @@ export class Target extends BaseEntity {
     @PrimaryGeneratedColumn('uuid')
     id!: string;
 
-    @ManyToOne(() => User, {
-        eager: true
-    })
+    @ManyToOne(() => User)
     @JoinColumn({ name: 'user' })
     @Field(() => User)
-    @Column('text')
+    @Column('uuid')
     user!: string;
 
     @ManyToOne(() => Player, {
@@ -29,8 +27,8 @@ export class Target extends BaseEntity {
     })
     @JoinColumn({ name: 'player' })
     @Field(() => Player)
-    @Column()
-    player!: string;
+    @Column('int')
+    player!: number;
 
     @Field()
     @Column()

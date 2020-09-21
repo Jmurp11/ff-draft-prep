@@ -1,105 +1,69 @@
-import { Component, OnInit, OnDestroy, Input, SimpleChanges, OnChanges } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { TargetDialogComponent } from './target-dialog/target-dialog.component';
-import { MatDialog } from '@angular/material/dialog';
-import { TargetService } from './target.service';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { MatDialogRef, MatDialog } from '@angular/material/dialog';
+import { AddTargetComponent } from './add-target/add-target.component';
+import { TargetInput, TargetsDocument, ApolloAngularSDK } from '../sdk/generated/graphql';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-target',
   templateUrl: './target.component.html',
-  styleUrls: ['./target.component.css']
+  styleUrls: ['./target.component.scss']
 })
-export class TargetComponent implements OnInit, OnChanges, OnDestroy {
-  @Input()
-  targetsInput: any;
-
-  @Input()
-  userInput: string;
-
-  @Input()
-  loadingInput: boolean;
-
-  targets: any[];
-  loading: boolean;
-  user: string;
-  deleteStatus$: Subscription;
-  hasTargets: boolean;
-  rounds: number[];
-  dismiss = 'Dismiss';
-  displayedColumns = ['name', 'team', 'position', 'round', 'clear'];
+export class TargetComponent implements OnInit, OnDestroy {
+  addTargetSub: any;
 
   constructor(
     private dialog: MatDialog,
-    private _target: TargetService,
-    private router: Router,
-    private snackbar: MatSnackBar
-  ) { }
+    private apolloSdk: ApolloAngularSDK,
+    private snack: MatSnackBar) { }
 
-  ngOnInit() {
-    this.loading = true;
-
-    this.deleteStatus$ = this._target.deleteStatus.subscribe(response => {
-      if (response) {
-        this.openSnackBar(response.message, this.dismiss);
-        this._target.resetResponse();
-      }
-    });
+  ngOnInit(): void {
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-    for (const propName in changes) {
-      if (changes.hasOwnProperty(propName)) {
-        switch (propName) {
-          case 'loadingInput': {
-            this.loading = this.loadingInput;
-            break;
-          }
-          case 'targetsInput': {
-            this.targets = this.targetsInput || [];
-            this.targets.sort((a, b) => a.round - b.round);
-            if (this.targets.length > 0) {
-              this.hasTargets = true;
-            }
-            break;
-          }
-          case 'userInput': {
-            this.user = this.userInput;
-            break;
-          }
+  openAddTargetDialog() {
+
+    const dialogRef: MatDialogRef<any> = this.dialog.open(AddTargetComponent, {
+      width: '40em',
+      disableClose: true
+    });
+
+    dialogRef.afterClosed()
+      .subscribe(res => {
+        if (!res) {
+          return;
         }
-      }
-    }
-  }
 
-  addTarget() {
-    this._target.prepopulatePlayer(false);
-    const dialogRef = this.dialog.open(TargetDialogComponent, {
-      width: '500px',
-      height: '400px'
-    });
+        const input: TargetInput = {
+          round: res.round,
+          player: res.player.id
+        };
 
-    dialogRef.afterClosed().subscribe(result => { });
-  }
-
-  deleteTarget(target: any) {
-    this._target.deleteTarget(target.id, this.user, target.player.id);
-  }
-
-  navigateToPlayer(player: string) {
-    this.router.navigate([`./d/player/${player}`]);
-  }
-
-  openSnackBar(message: string, action: string) {
-    this.snackbar.open(message, action, {
-      duration: 5000
-    });
+        this.addTargetSub = this.apolloSdk.createTarget(
+          {
+            data: input
+          },
+          {
+            refetchQueries: [
+              {
+                query: TargetsDocument,
+                variables: {
+                  data: {
+                    filterType: 'byCurrentUser'
+                  }
+                }
+              }
+            ]
+          }
+        )
+          .subscribe(val => {
+            this.snack.open(val.data.createTarget.success[0].message, 'Dismiss', { duration: 4000 });
+          });
+      });
   }
 
   ngOnDestroy() {
-    if (this.deleteStatus$) {
-      this.deleteStatus$.unsubscribe();
+    if (this.addTargetSub) {
+      this.addTargetSub.unsubscribe();
     }
   }
 }

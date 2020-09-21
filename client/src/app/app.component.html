@@ -1,12 +1,1 @@
-<div fxLayout="column" fxFlexFill>
-  <app-navbar></app-navbar>
-  <div class="content" fxLayout="row" fxFlexAlign="start center" fxLayoutGap="1.0%" *ngIf="isAuth">
-    <div fxFlex="100%">
-      <router-outlet></router-outlet>
-    </div>
-  </div>
-  <div fxFlex="100%" *ngIf="!isAuth">
-    <router-outlet></router-outlet>
-  </div>
-  <app-footer class="footer" fxFlexOffset="auto"></app-footer>
-</div>
+<router-outlet></router-outlet>

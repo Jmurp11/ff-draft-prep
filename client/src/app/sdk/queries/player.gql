@@ -1,0 +1,164 @@
+query players($data: PlayerArgs!) {
+  players(input: $data) {
+    id
+    name
+    status
+    position
+    height
+    weight
+    averageDraftPosition
+    depthChart
+    birthDate
+    photoUrl
+    projection {
+      id
+      completions
+      attempts
+      passTd
+      passYards
+      interception
+      carries
+      rushYards
+      rushTd
+      fumbles
+      receptions
+      receivingYards
+      receivingTd
+      touches
+      halfPPRTotalPoints
+      pprTotalPoints
+      totalPoints
+      completionPercentage
+      yardsPerAttempt
+      yardsPerCarry
+      yardsPerReception
+    }
+    team {
+      id
+      city
+      nickname
+      abbreviation
+      fullName
+      primaryColor
+      secondaryColor
+      stats {
+        id
+        rank
+        passRank
+        rushRank
+        plays
+        yardsPerPlay
+        turnovers
+        passAttempts
+        rushAttempt
+        scorePercentage
+        turnoverPercentage
+        offensiveLineRank
+        runningBackSoS
+      }
+      stadium {
+        id
+        name
+        type
+        playingSurface
+        city
+        state
+        country
+      }
+      standings {
+        wins
+        losses
+        ties
+        conferenceWins
+        conferenceTies
+        conferenceLosses
+        divisionWins
+        divisionTies
+        divisionLosses
+        winPercentage
+      }
+    }
+  }
+}
+
+query player($data: PlayerArgs!) {
+  player(input: $data) {
+    id
+    name
+    status
+    position
+    height
+    weight
+    averageDraftPosition
+    depthChart
+    birthDate
+    photoUrl
+    projection {
+      id
+      completions
+      attempts
+      passTd
+      passYards
+      interception
+      carries
+      rushYards
+      rushTd
+      fumbles
+      receptions
+      receivingYards
+      receivingTd
+      touches
+      halfPPRTotalPoints
+      pprTotalPoints
+      totalPoints
+      completionPercentage
+      yardsPerAttempt
+      yardsPerCarry
+      yardsPerReception
+    }
+    team {
+      id
+      city
+      abbreviation
+      fullName
+      primaryColor
+      secondaryColor
+      stats {
+        id
+        rank
+        passRank
+        rushRank
+        plays
+        yardsPerPlay
+        turnovers
+        passAttempts
+        rushAttempt
+        scorePercentage
+        turnoverPercentage
+        offensiveLineRank
+        runningBackSoS
+      }
+      stadium {
+        id
+        name
+        type
+        playingSurface
+        city
+        state
+        country
+      }
+      standings {
+        wins
+        losses
+        ties
+        conferenceWins
+        conferenceTies
+        conferenceLosses
+        divisionWins
+        divisionTies
+        divisionLosses
+        winPercentage
+      }
+    }
+  }
+}

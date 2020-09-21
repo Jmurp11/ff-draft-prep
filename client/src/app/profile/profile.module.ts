@@ -1,30 +1,24 @@
+/**
 import { NgModule } from '@angular/core';
+import { RouterModule } from '@angular/router';
 import { SharedModule } from '../shared/shared.module';
 import { ProfileComponent } from './profile.component';
-import { EditProfileComponent } from './edit-profile/edit-profile.component';
 import { ProfileRoutingModule } from './profile-routing.module';
-import { ProfileDetailComponent } from './profile-detail/profile-detail.component';
-import { RouterModule } from '@angular/router';
-import { NoteModule } from '../notes/note.module';
-import { TargetModule } from '../target/target.module';
 
 @NgModule({
   declarations: [
-    EditProfileComponent,
-    ProfileComponent,
-    ProfileDetailComponent
+    ProfileComponent
   ],
   exports: [
-    EditProfileComponent,
-    ProfileComponent,
-    ProfileDetailComponent
+    ProfileComponent
   ],
   imports: [
-    RouterModule,
     ProfileRoutingModule,
-    NoteModule,
-    TargetModule,
+    RouterModule.forChild(ProfileRoutingModule),
     SharedModule
-  ]
+  ],
+  entryComponents: [],
+  providers: []
 })
 export class ProfileModule { }
+*/

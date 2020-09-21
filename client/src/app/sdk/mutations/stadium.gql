@@ -1,0 +1,10 @@
+mutation updateStadium {
+  updateStadiums {
+    success {
+      message
+    }
+    errors {
+      message
+    }
+  }
+}

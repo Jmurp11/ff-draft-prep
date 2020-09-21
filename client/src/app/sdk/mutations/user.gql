@@ -1,0 +1,10 @@
+    mutation updateUserProfileImage($data: UpdateImageInput!) {
+      updateUserProfileImage(input: $data) {
+        success {
+          message
+        }
+        errors {
+          message
+        }
+      }
+    }

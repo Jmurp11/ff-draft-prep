@@ -1,87 +1,86 @@
-import { Resolver, Query, Mutation, Arg, UseMiddleware } from 'type-graphql';
+import { Resolver, Query, Mutation, Arg, UseMiddleware, Int, Ctx } from 'type-graphql';
 import { Note } from '../../entity';
-import { Result } from '../../shared';
-import { NoteInput } from './inputs';
-import { getRepository } from 'typeorm';
+import { Result, MyContext } from '../../shared';
+import { NoteInput } from './inputs/NoteInput';
+import { getRepository, SelectQueryBuilder } from 'typeorm';
 import { isAuth, logger } from '../../middleware';
 import { DeleteNoteInput } from './inputs/DeleteNoteInput';
-import { NotesByPlayerUserInput } from './inputs/NotesByPlayerUserInput';
+import { filterQuery } from '../../utils/filterQuery';
+import { NoteArgs } from './inputs/NoteArgs';
+import { NoteService } from './services/note-service';
 
 @Resolver()
 export class NoteResolver {
-    @UseMiddleware(isAuth, logger)
+    constructor(
+        private _notes: NoteService
+    ) { }
+
+    @UseMiddleware(logger)
     @Query(() => [Note])
     async notes(
-        @Arg('user', { nullable: true }) user: string) {
-        if (user) {
-            return getRepository(Note)
-                .find({
-                    relations: ['user', 'player', 'likes', 'shares'],
-                    where: {
-                        user
-                    },
-                    order: {
-                        creationTime: 'DESC'
-                    }
-                });
-        } else {
-            return getRepository(Note)
-                .find({
-                    relations: ['user', 'player', 'likes', 'shares'],
-                    where: {
-                        isPrivate: false
-                    },
-                    order: {
-                        creationTime: 'DESC'
-                    }
-                });
+        @Arg('input') {
+            filterType,
+            user,
+            player,
+            skip,
+            take
+        }: NoteArgs,
+        @Ctx() ctx: MyContext
+    ) {
+        let where;
+        console.log(ctx.payload?.userId);
+        const query: SelectQueryBuilder<Note> = getRepository(Note)
+            .createQueryBuilder('notes')
+            .leftJoinAndSelect('notes.user', 'user')
+            .leftJoinAndSelect('notes.player', 'player')
+            .leftJoinAndSelect('player.team', 'team')
+            .take(take)
+            .skip(skip)
+            .orderBy('notes.creationTime', 'DESC')
+
+        switch (filterType) {
+            case 'byCurrentUser':
+                where = await this._notes.byCurrentUser(ctx);
+                return filterQuery(query, where).getMany();
+            case 'byUser':
+                where = await this._notes.byUser(user);
+                return filterQuery(query, where).getMany();
+            case 'byPlayer':
+                console.log(player);
+                where = await this._notes.byPlayer(player);
+                return filterQuery(query, where).getMany();
+            default:
+                return query.getMany()
         }
     }
 
     @UseMiddleware(isAuth, logger)
-    @Query(() => [Note])
-    async notesByPlayer(
-        @Arg('player') player: string) {
-        return getRepository(Note)
-            .find({
-                relations: ['user', 'player', 'likes', 'shares'],
-                where: {
-                    player
-                },
-                order: {
-                    creationTime: 'DESC'
-                }
-            });
-    }
-
-    @UseMiddleware(isAuth, logger)
-    @Query(() => [Note])
-    async notesByPlayerUser(
-        @Arg('input') {
-            player,
-            user
-        }: NotesByPlayerUserInput) {
-        return getRepository(Note)
-            .find({
-                relations: ['user', 'player', 'likes', 'shares'],
-                where: {
-                    player, user
-                },
-                order: {
-                    creationTime: 'DESC'
-                }
-            });
-    }
-
-    @UseMiddleware(isAuth, logger)
     @Query(() => Note)
-    async note(@Arg('id') id: string) {
+    async note(
+        @Arg('input') {
+            user,
+            player
+        }: NoteArgs
+    ) {
+        let where;
+
+        const query: SelectQueryBuilder<Note> = getRepository(Note)
+            .createQueryBuilder('notes')
+            .leftJoinAndSelect('notes.user', 'user')
+            .leftJoinAndSelect('notes.player', 'player')
+            .leftJoinAndSelect('player.team', 'team');
+
+        where = await this._notes.byUserAndPlayer(user, player);
+        return filterQuery(query, where).getOne();
+    }
+
+    @UseMiddleware(isAuth, logger)
+    @Query(() => Int)
+    async noteCount(@Arg('user') user: string) {
         return getRepository(Note)
-            .findOne({
-                relations: ['user', 'player', 'likes', 'shares'],
-                where: { id },
-                order: {
-                    creationTime: 'DESC'
+            .count({
+                where: {
+                    user
                 }
             });
     }
@@ -89,15 +88,15 @@ export class NoteResolver {
     @UseMiddleware(isAuth, logger)
     @Mutation(() => Result)
     async createNote(
+        @Ctx() ctx: MyContext,
         @Arg('input') {
-            user,
             player,
             title,
             body,
-            source,
             isPrivate
         }: NoteInput
     ): Promise<Result> {
+        const user = ctx.payload?.userId;
 
         const titleExists = await Note.findOne({
             where: {
@@ -127,7 +126,6 @@ export class NoteResolver {
             creationTime,
             title,
             body,
-            source,
             isPrivate
         }).save();
 
@@ -144,9 +142,9 @@ export class NoteResolver {
     @UseMiddleware(isAuth, logger)
     @Mutation(() => Result)
     async deleteNote(
+        @Ctx() ctx: MyContext,
         @Arg('input') {
-            id,
-            user
+            id
         }: DeleteNoteInput
     ): Promise<Result> {
         const note = await Note.findOne({
@@ -167,7 +165,7 @@ export class NoteResolver {
             }
         }
 
-        if (note!.user !== user) {
+        if (note!.user !== ctx.payload?.userId) {
             return {
                 errors: [
                     {

@@ -4,7 +4,4 @@ import { InputType, Field } from 'type-graphql';
 export class DeleteNoteInput {
     @Field()
     id: string;
-    
-    @Field()
-    user: string;
 }

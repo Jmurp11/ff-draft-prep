@@ -1,0 +1,21 @@
+mutation createTarget($data: TargetInput!) {
+  createTarget(input: $data) {
+    success {
+      message
+    }
+    errors {
+      message
+    }
+  }
+}
+
+mutation deleteTarget($data: DeleteTargetArgs!) {
+  deleteTarget(input: $data) {
+    success {
+      message
+    }
+    errors {
+      message
+    }
+  }
+}
