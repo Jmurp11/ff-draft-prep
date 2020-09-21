@@ -142,9 +142,9 @@ export class NoteResolver {
     @UseMiddleware(isAuth, logger)
     @Mutation(() => Result)
     async deleteNote(
+        @Ctx() ctx: MyContext,
         @Arg('input') {
-            id,
-            user
+            id
         }: DeleteNoteInput
     ): Promise<Result> {
         const note = await Note.findOne({
@@ -165,7 +165,7 @@ export class NoteResolver {
             }
         }
 
-        if (note!.user !== user) {
+        if (note!.user !== ctx.payload?.userId) {
             return {
                 errors: [
                     {
