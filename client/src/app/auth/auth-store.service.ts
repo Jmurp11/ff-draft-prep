@@ -115,7 +115,7 @@ export class AuthStoreService extends ObservableStore<StoreState> {
         ]
       }
     )
-      .subscribe(res => {
+      .subscribe(() => {
         this.setState({ currentUser: null }, 'LOGOUT');
         this.cookie.deleteAll();
         this.router.navigateByUrl('/landing');

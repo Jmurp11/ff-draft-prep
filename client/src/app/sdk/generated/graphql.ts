@@ -30,7 +30,6 @@ export type ChangePasswordInput = {
 
 export type DeleteNoteInput = {
   id: Scalars['String'];
-  user: Scalars['String'];
 };
 
 export type DeleteTargetArgs = {

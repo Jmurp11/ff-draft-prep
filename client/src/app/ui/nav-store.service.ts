@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { StoreState } from '../AppStore';
 import { ObservableStore } from '@codewithdan/observable-store';
 import { of, Observable } from 'rxjs';
@@ -9,13 +8,11 @@ import { of, Observable } from 'rxjs';
 })
 export class NavStoreService extends ObservableStore<StoreState> {
 
-  constructor(
-    router: Router
-  ) {
+  constructor() {
     super({ trackStateHistory: true, logStateChanges: true });
 
     const initalState = {
-      currentRoute: router.url
+      currentRoute: null
     };
     this.setState(initalState, 'INIT_STATE');
   }

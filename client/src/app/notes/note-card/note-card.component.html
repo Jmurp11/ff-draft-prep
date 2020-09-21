@@ -16,19 +16,24 @@
   </mat-card-content>
 
   <mat-card-actions fxLayout="row" fxAlign="center center" fxLayoutGap="5.0%">
-    <div class="action-btn" fxFlex="30%">
+    <div class="action-btn" [fxFlex]="size">
       <button mat-icon-button color="accent">
         <mat-icon>add_comment</mat-icon>
       </button>
     </div>
-    <div class="action-btn" fxFlex="30%">
+    <div class="action-btn" [fxFlex]="size">
       <button mat-icon-button color="accent">
         <mat-icon>favorite</mat-icon>
       </button>
     </div>
-    <div class="action-btn" fxFlex="30%">
+    <div class="action-btn" [fxFlex]="size">
       <button mat-icon-button color="accent">
         <mat-icon>share</mat-icon>
+      </button>
+    </div>
+    <div class="action-btn" [fxFlex]="size" *ngIf="isAuthor">
+      <button mat-icon-button color="accent" (click)="deleteNote(data.id)">
+        <mat-icon>delete</mat-icon>
       </button>
     </div>
   </mat-card-actions>
