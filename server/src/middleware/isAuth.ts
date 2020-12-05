@@ -3,16 +3,15 @@ import { verify } from 'jsonwebtoken';
 import { MyContext } from "../shared";
 
 export const isAuth: MiddlewareFn<MyContext> = async ({ context }, next) => {
-  const authorization = context.req.headers['authorization'];
+  const token = context.req.cookies['access-token'];
 
-  if (!authorization) {
+  if (!token) {
     throw new Error('not authenticated');
   }
 
   try {
-    const token = authorization!.split(' ')[1];
-    const payload = verify(token, process.env.ACCESS_TOKEN_SECRET!);
-    context.payload = payload as any;
+    const payload = verify(token, process.env.ACCESS_TOKEN_SECRET!) as any;
+    context.payload = payload;
   } catch (err) { }
   return next();
 };

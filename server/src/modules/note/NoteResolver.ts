@@ -28,7 +28,6 @@ export class NoteResolver {
         @Ctx() ctx: MyContext
     ) {
         let where;
-        console.log(ctx.payload?.userId);
         const query: SelectQueryBuilder<Note> = getRepository(Note)
             .createQueryBuilder('notes')
             .leftJoinAndSelect('notes.user', 'user')

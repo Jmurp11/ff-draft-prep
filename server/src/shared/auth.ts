@@ -1,27 +1,28 @@
-import { sign } from 'jsonwebtoken';
+import { Secret, sign } from 'jsonwebtoken';
 import { User } from '../entity'
 
 export const createAccessToken = (user: User) => {
+    const accessTokenSecret: Secret = process.env.ACCESS_TOKEN_SECRET!;
+
     return sign(
         {
-            userId: user!.id,
-            tokenVersion: user!.tokenVersion
+            userId: user?.id
         },
-        process.env.ACCESS_TOKEN_SECRET!,
+        accessTokenSecret,
         {
-            expiresIn: '1h'
-        }
-    )
+            expiresIn: '15min'
+        });
 }
 
 export const createRefreshToken = (user: User) => {
+    const refreshTokenSecret: Secret = process.env.REFRESH_TOKEN_SECRET!;
+
     return sign(
         {
-            userId: user!.id,
-            tokenVersion: user!.tokenVersion
+            userId: user?.id
         },
-        process.env.REFRESH_TOKEN_SECRET!,
+        refreshTokenSecret,
         {
-            expiresIn: '1d'
-        })
+            expiresIn: '7d'
+        });
 }

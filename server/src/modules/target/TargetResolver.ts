@@ -101,7 +101,7 @@ export class TargetResolver {
             round
         }: TargetInput
     ): Promise<Result> {
-        console.log(ctx.payload?.userId);
+        console.log('CTX: ' + ctx.payload?.userId);
         const user = ctx.payload?.userId;
         
         const targetExists = await Target.findOne({
