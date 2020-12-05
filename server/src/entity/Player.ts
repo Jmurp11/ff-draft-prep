@@ -9,7 +9,7 @@ import {
   PrimaryColumn
 } from 'typeorm';
 import { ObjectType, Field, Root } from 'type-graphql';
-import { Team, Projection, Note, DraftPick } from './index';
+import { Team, Projection, Note } from './index';
 
 @Entity('players')
 @ObjectType()
@@ -112,10 +112,4 @@ export class Player extends BaseEntity {
   @OneToMany(() => Note, note => note.player)
   @Field(() => [Note], { nullable: true })
   notes: Note[];
-
-  @Field(() => [DraftPick], { nullable: true })
-  @OneToMany(() => DraftPick, draftPick => draftPick.user, {
-      onDelete: 'CASCADE'
-  })
-  draftPicks: DraftPick[];
 }

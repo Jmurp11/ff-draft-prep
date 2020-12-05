@@ -7,8 +7,5 @@ export class LoginSuccess {
     user?: User;
 
     @Field()
-    accessToken: string;
-
-    @Field()
-    expiresIn: number;
+    message: string;
 }

@@ -3,7 +3,9 @@ import { Injectable } from '@angular/core';
 import * as Apollo from 'apollo-angular';
 import * as ApolloCore from 'apollo-client';
 export type Maybe<T> = T | null;
-export type Exact<T extends { [key: string]: any }> = { [K in keyof T]: T[K] };
+export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
+export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
+export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -36,50 +38,6 @@ export type DeleteTargetArgs = {
   id?: Maybe<Scalars['String']>;
 };
 
-export type Draft = {
-  __typename?: 'Draft';
-  id: Scalars['String'];
-  type: Scalars['String'];
-  numOfTeams: Scalars['Float'];
-  timePerPick: Scalars['Float'];
-  isActive: Scalars['Boolean'];
-  creationTime: Scalars['DateTime'];
-  draftPicks?: Maybe<Array<DraftPick>>;
-};
-
-export type DraftArgs = {
-  filterType?: Maybe<Scalars['String']>;
-  id?: Maybe<Scalars['String']>;
-  type?: Maybe<Scalars['String']>;
-  numOfTeams?: Maybe<Scalars['Float']>;
-  timePerPick?: Maybe<Scalars['Float']>;
-  isActive?: Maybe<Scalars['Boolean']>;
-  creationTime?: Maybe<Scalars['String']>;
-  take?: Maybe<Scalars['Float']>;
-  skip?: Maybe<Scalars['Float']>;
-};
-
-export type DraftPick = {
-  __typename?: 'DraftPick';
-  id: Scalars['String'];
-  user: User;
-  player: Player;
-  pickNumber: Scalars['Float'];
-  creationTime: Scalars['DateTime'];
-  draft: Draft;
-};
-
-export type DraftPickArgs = {
-  filterType?: Maybe<Scalars['String']>;
-  id?: Maybe<Scalars['String']>;
-  draft?: Maybe<Scalars['String']>;
-  user?: Maybe<Scalars['String']>;
-  player?: Maybe<Scalars['Float']>;
-  pickNumber?: Maybe<Scalars['Float']>;
-  take?: Maybe<Scalars['Float']>;
-  skip?: Maybe<Scalars['Float']>;
-};
-
 export type LoginInput = {
   email?: Maybe<Scalars['String']>;
   username?: Maybe<Scalars['String']>;
@@ -95,8 +53,7 @@ export type LoginResult = {
 export type LoginSuccess = {
   __typename?: 'LoginSuccess';
   user?: Maybe<User>;
-  accessToken: Scalars['String'];
-  expiresIn: Scalars['Float'];
+  message: Scalars['String'];
 };
 
 export type LogoutInput = {
@@ -105,11 +62,6 @@ export type LogoutInput = {
 
 export type Mutation = {
   __typename?: 'Mutation';
-  createDraftPick: Result;
-  deleteDraftPick: Result;
-  createDraft: Result;
-  updateDraftStatus: Result;
-  deleteDraft: Result;
   addScore: Result;
   createNote: Result;
   deleteNote: Result;
@@ -130,31 +82,6 @@ export type Mutation = {
   updateUserProfileImage: Result;
   updateStadiums: Result;
   updateStandings: Result;
-};
-
-
-export type MutationCreateDraftPickArgs = {
-  input: DraftPickArgs;
-};
-
-
-export type MutationDeleteDraftPickArgs = {
-  input: DraftPickArgs;
-};
-
-
-export type MutationCreateDraftArgs = {
-  input: DraftArgs;
-};
-
-
-export type MutationUpdateDraftStatusArgs = {
-  input: DraftArgs;
-};
-
-
-export type MutationDeleteDraftArgs = {
-  input: DraftArgs;
 };
 
 
@@ -228,11 +155,6 @@ export type MutationRevokeRefreshTokensForUserArgs = {
 };
 
 
-export type MutationLogoutArgs = {
-  input: LogoutInput;
-};
-
-
 export type MutationUpdateUserProfileImageArgs = {
   input: UpdateImageInput;
 };
@@ -296,7 +218,6 @@ export type Player = {
   averageDraftPosition?: Maybe<Scalars['Float']>;
   projection?: Maybe<Projection>;
   notes?: Maybe<Array<Note>>;
-  draftPicks?: Maybe<Array<DraftPick>>;
 };
 
 export type PlayerArgs = {
@@ -358,10 +279,6 @@ export type ProjectionInput = {
 
 export type Query = {
   __typename?: 'Query';
-  draftPicks: Array<DraftPick>;
-  draftPick: DraftPick;
-  drafts: Array<Draft>;
-  draft: Draft;
   scores: Array<Score>;
   score: Score;
   totalScores: Scalars['Int'];
@@ -388,26 +305,6 @@ export type Query = {
   standings: Array<Standings>;
   standing: Standings;
   me?: Maybe<User>;
-};
-
-
-export type QueryDraftPicksArgs = {
-  input?: Maybe<DraftPickArgs>;
-};
-
-
-export type QueryDraftPickArgs = {
-  input: DraftPickArgs;
-};
-
-
-export type QueryDraftsArgs = {
-  input?: Maybe<DraftArgs>;
-};
-
-
-export type QueryDraftArgs = {
-  input: DraftArgs;
 };
 
 
@@ -728,7 +625,6 @@ export type User = {
   notes?: Maybe<Array<Note>>;
   score?: Maybe<Array<Score>>;
   targets?: Maybe<Array<Target>>;
-  draftPicks?: Maybe<Array<DraftPick>>;
 };
 
 export type UserArgs = {
@@ -752,7 +648,6 @@ export type LoginMutation = (
     { __typename?: 'LoginResult' }
     & { success?: Maybe<(
       { __typename?: 'LoginSuccess' }
-      & Pick<LoginSuccess, 'accessToken' | 'expiresIn'>
       & { user?: Maybe<(
         { __typename?: 'User' }
         & Pick<User, 'id' | 'email' | 'username' | 'isAdmin'>
@@ -783,9 +678,7 @@ export type RegisterMutation = (
   ) }
 );
 
-export type LogoutMutationVariables = Exact<{
-  data: LogoutInput;
-}>;
+export type LogoutMutationVariables = Exact<{ [key: string]: never; }>;
 
 
 export type LogoutMutation = (
@@ -1313,8 +1206,6 @@ export const LoginDocument = gql`
         username
         isAdmin
       }
-      accessToken
-      expiresIn
     }
     errors {
       message
@@ -1351,8 +1242,8 @@ export const RegisterDocument = gql`
     
   }
 export const LogoutDocument = gql`
-    mutation logout($data: LogoutInput!) {
-  logout(input: $data)
+    mutation logout {
+  logout
 }
     `;
 
@@ -2238,7 +2129,7 @@ export const UserDocument = gql`
       return this.registerGql.mutate(variables, options)
     }
     
-    logout(variables: LogoutMutationVariables, options?: MutationOptionsAlone<LogoutMutation, LogoutMutationVariables>) {
+    logout(variables?: LogoutMutationVariables, options?: MutationOptionsAlone<LogoutMutation, LogoutMutationVariables>) {
       return this.logoutGql.mutate(variables, options)
     }
     

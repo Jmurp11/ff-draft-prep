@@ -1,8 +1,9 @@
+import 'dotenv/config';
 import { Resolver, Query, Mutation, Arg, Ctx, UseMiddleware } from 'type-graphql';
 import bcrypt from 'bcryptjs';
 import { v4 } from 'uuid';
 import { User } from '../../entity';
-import { RegisterInput, LoginInput, AdminInput, LogoutInput } from './inputs';
+import { RegisterInput, LoginInput, AdminInput } from './inputs';
 import { Result } from '../../shared';
 import { registerSuccess, loginFailed, confirmEmailError, forgotPasswordLockError } from './messages/messages';
 import { MyContext } from '../../shared';
@@ -12,13 +13,12 @@ import { redis } from '../../redis';
 import { baseUrl, forgotPasswordPrefix, confirmationPrefix } from '../../constants/constants';
 import { ChangePasswordInput } from './inputs/ChangePasswordInput';
 import { LoginResult } from './types/LoginResult';
-import { createAccessToken, createRefreshToken } from '../../shared/auth';
-import { sendRefreshToken } from '../../shared/sendRefreshToken';
 import { getConnection, SelectQueryBuilder, getRepository } from 'typeorm';
 import { UpdateImageInput } from './inputs/UpdateImageInput';
 import { UserArgs } from './inputs/UserArgs';
 import { UserService } from './services/user-service';
 import { filterQuery } from '../../utils/filterQuery';
+import { createTokens, getTokenExpiration } from '../../shared/auth';
 
 @Resolver()
 export class UserResolver {
@@ -91,7 +91,7 @@ export class UserResolver {
     async register(
         @Arg('input') { email, password, username, profileImage }: RegisterInput
     ): Promise<Result> {
-        
+
         const creationTime = new Date().toISOString();
 
         const user = await User.create({
@@ -190,13 +190,17 @@ export class UserResolver {
             }
         });
 
-        sendRefreshToken(res, createRefreshToken(user!));
+        const tokens = createTokens(user!);
+
+        const tokenExpirationDates = getTokenExpiration();
+
+        res.cookie('access-token', tokens.accessToken, { expires: tokenExpirationDates.accessExpires });
+        res.cookie('refresh-token', tokens.refreshToken, { expires: tokenExpirationDates.refreshExpires });
 
         return {
             success: {
                 user,
-                accessToken: createAccessToken(user!),
-                expiresIn: 3600
+                message: `Welcome back, ${user?.username}!`
             }
         };
     }
@@ -364,15 +368,15 @@ export class UserResolver {
 
     @Mutation(() => Boolean)
     async logout(
-        @Arg('input') { userId }: LogoutInput,
-        @Ctx() { res }: MyContext
+        @Ctx() { res, payload }: MyContext
     ) {
         await User.update(
-            { id: userId },
+            { id: payload?.userId },
             { isLoggedIn: false }
         );
 
-        sendRefreshToken(res, "");
+        res.clearCookie('access-token');
+        res.clearCookie('refresh-token');
 
         return true;
     };

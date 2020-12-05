@@ -1,27 +1,35 @@
-import { sign } from 'jsonwebtoken';
+import { Secret, sign } from 'jsonwebtoken';
 import { User } from '../entity'
 
-export const createAccessToken = (user: User) => {
-    return sign(
+export const createTokens = (user: User) => {
+    const accessTokenSecret: Secret = process.env.ACCESS_TOKEN_SECRET!;
+
+    const refreshTokenSecret: Secret = process.env.REFRESH_TOKEN_SECRET!;
+
+    const refreshToken = sign(
         {
-            userId: user!.id,
-            tokenVersion: user!.tokenVersion
+            userId: user?.id
         },
-        process.env.ACCESS_TOKEN_SECRET!,
+        refreshTokenSecret,
         {
-            expiresIn: '1h'
-        }
-    )
+            expiresIn: '7d'
+        });
+
+    const accessToken = sign(
+        {
+            userId: user?.id
+        },
+        accessTokenSecret,
+        {
+            expiresIn: '15min'
+        });
+
+    return { accessToken, refreshToken };
 }
 
-export const createRefreshToken = (user: User) => {
-    return sign(
-        {
-            userId: user!.id,
-            tokenVersion: user!.tokenVersion
-        },
-        process.env.REFRESH_TOKEN_SECRET!,
-        {
-            expiresIn: '1d'
-        })
+export const getTokenExpiration = () => {
+    const accessExpires = new Date(new Date().getTime() + (1000 * 60 * 15));
+    const refreshExpires = new Date(new Date().getTime() + (1000 * 60 * 60 * 24 * 7));
+
+    return { accessExpires, refreshExpires };
 }
