@@ -27,8 +27,6 @@ export class TargetResolver {
         }: TargetArgs) {
         let where;
 
-        console.log('Triggered', ctx);
-
         const query: SelectQueryBuilder<Target> = getRepository(Target)
             .createQueryBuilder('targets')
             .leftJoinAndSelect('targets.user', 'user')
@@ -40,8 +38,13 @@ export class TargetResolver {
 
         switch (filterType) {
             case 'byCurrentUser':
-                where = await this._targets.byCurrentUser(ctx);
-                return filterQuery(query, where).getMany();
+                case 'byCurrentUser':
+                    if (ctx.payload?.userId) {
+                        console.log('Targets: ' + ctx.payload.userId);
+                        where = await this._targets.byCurrentUser(ctx);
+                        return filterQuery(query, where).getMany();
+                    }
+                    return [];
             case 'byUser':
                 where = await this._targets.byUser(user);
                 return filterQuery(query, where).getMany();
@@ -101,7 +104,7 @@ export class TargetResolver {
             round
         }: TargetInput
     ): Promise<Result> {
-        console.log(ctx.payload?.userId);
+        console.log('CTX: ' + ctx.payload?.userId);
         const user = ctx.payload?.userId;
         
         const targetExists = await Target.findOne({

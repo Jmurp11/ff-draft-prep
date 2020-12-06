@@ -8,7 +8,7 @@ import {
     OneToMany
 } from 'typeorm';
 import { ObjectType, Field } from 'type-graphql';
-import { Score, Note, Target, DraftPick } from './index';
+import { Score, Note, Target } from './index';
 
 @Entity('users')
 @ObjectType()
@@ -57,10 +57,6 @@ export class User extends BaseEntity {
     @Column('text', { nullable: true })
     profileImage: string;
 
-    @Field()
-    @Column('int', { default: 0 })
-    tokenVersion: number;
-
     @Field(() => [Note], { nullable: true })
     @OneToMany(() => Note, note => note.user, {
         onDelete: 'CASCADE'
@@ -78,12 +74,6 @@ export class User extends BaseEntity {
         onDelete: 'CASCADE'
     })
     targets: Target[];
-
-    @Field(() => [DraftPick], { nullable: true })
-    @OneToMany(() => DraftPick, draftPick => draftPick.user, {
-        onDelete: 'CASCADE'
-    })
-    draftPicks: DraftPick[];
 
     @BeforeInsert()
     async hashPassword() {

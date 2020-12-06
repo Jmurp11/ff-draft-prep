@@ -1,8 +1,6 @@
-import { ApolloQueryResult } from 'apollo-client';
-import { Me } from './shared/me';
-
+import { User } from './shared/user';
 export interface StoreState {
-  currentUser: ApolloQueryResult<Me> | null ;
+  currentUser: User | null;
   scoringType: string | null;
   currentPlayer: number | null;
   currentRoute: string | null;

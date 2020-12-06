@@ -7,8 +7,6 @@ mutation login($data: LoginInput!) {
         username
         isAdmin
       }
-      accessToken
-      expiresIn
     }
     errors {
       message
@@ -27,8 +25,8 @@ mutation register($data: RegisterInput!) {
   }
 }
 
-mutation logout($data: LogoutInput!) {
-  logout(input: $data)
+mutation logout {
+  logout
 }
 
 mutation confirmUser($data: String!) {

@@ -37,10 +37,11 @@ export class NoteCardComponent implements OnInit, OnChanges {
 
             this.authStore.stateChanged
               .subscribe(state => {
-                if (this.data.user.id === state.currentUser.data.me.id) {
-                  this.isAuthor = true;
-                  this.size = 25;
-                  console.log(this.isAuthor);
+                if (state.currentUser) {
+                  if (this.data.user.id === state.currentUser.id) {
+                    this.isAuthor = true;
+                    this.size = 25;
+                  }
                 }
               });
 

@@ -21,11 +21,11 @@ export class LoginComponent implements OnInit {
 
     this.form = new FormGroup({
       email: new FormControl(null, {
-        updateOn: 'blur',
+        updateOn: 'change',
         validators: [Validators.required, Validators.email]
       }),
       password: new FormControl(null, {
-        updateOn: 'blur',
+        updateOn: 'change',
         validators: [Validators.required]
       })
     });
@@ -35,3 +35,5 @@ export class LoginComponent implements OnInit {
     this.dialogRef.close(this.form.value);
   }
 }
+
+

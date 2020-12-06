@@ -24,11 +24,10 @@ export class AuthGuard implements CanActivate {
     return this.authStore.getCurrentUser()
       .pipe(
         map(res => {
-          if (res.data!.me) {
-            console.log(res.data.me);
+          if (res) {
+            console.log('GUARD: ' + res);
             return true;
           } else {
-            console.log(res);
             this.router.navigate(['/landing'], {
               queryParams: {
                 return: state.url
