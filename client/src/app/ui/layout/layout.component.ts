@@ -25,7 +25,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
     this.userSub = this.authStore.stateChanged
       .subscribe(state => {
         if (state.currentUser) {
-          if (state.currentUser.data.me) {
+          if (state.currentUser) {
             this.sidenavLeftOpened = true;
             this.sidenavRightOpened = true;
             this.isAuth = true;

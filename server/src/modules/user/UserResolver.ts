@@ -13,7 +13,7 @@ import { redis } from '../../redis';
 import { baseUrl, forgotPasswordPrefix, confirmationPrefix } from '../../constants/constants';
 import { ChangePasswordInput } from './inputs/ChangePasswordInput';
 import { LoginResult } from './types/LoginResult';
-import { getConnection, SelectQueryBuilder, getRepository } from 'typeorm';
+import { SelectQueryBuilder, getRepository } from 'typeorm';
 import { UpdateImageInput } from './inputs/UpdateImageInput';
 import { UserArgs } from './inputs/UserArgs';
 import { UserService } from './services/user-service';
@@ -352,18 +352,6 @@ export class UserResolver {
                 }
             ]
         }
-    }
-
-    @UseMiddleware(isAuth, isAdmin, logger)
-    @Mutation(() => Boolean)
-    async revokeRefreshTokensForUser(@Arg('userId') userId: string): Promise<Boolean> {
-        await getConnection()
-            .getRepository('User')
-            .increment({
-                id: userId
-            }, 'tokenVersion', 1);
-
-        return true;
     }
 
     @Mutation(() => Boolean)

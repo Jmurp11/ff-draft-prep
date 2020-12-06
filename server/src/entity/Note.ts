@@ -10,6 +10,11 @@ import {
 import { Score, Player, User } from './index';
 import { ObjectType, Field } from 'type-graphql';
 
+/**
+ * remove player, change to subject
+ * fields for fantasy / gambling
+ * field for sport (NFL, MLB, NHL etc)
+ */
 @Entity('notes')
 @ObjectType()
 export class Note extends BaseEntity {

@@ -17,7 +17,10 @@ export const createTokens = (user: User) => {
 
     const accessToken = sign(
         {
-            userId: user?.id
+            userId: user?.id,
+            email: user?.email,
+            username: user?.username,
+            isAdmin: user?.isAdmin
         },
         accessTokenSecret,
         {

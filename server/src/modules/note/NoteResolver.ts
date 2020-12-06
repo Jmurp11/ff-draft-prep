@@ -15,7 +15,7 @@ export class NoteResolver {
         private _notes: NoteService
     ) { }
 
-    @UseMiddleware(logger)
+    @UseMiddleware()
     @Query(() => [Note])
     async notes(
         @Arg('input') {
@@ -39,8 +39,12 @@ export class NoteResolver {
 
         switch (filterType) {
             case 'byCurrentUser':
-                where = await this._notes.byCurrentUser(ctx);
-                return filterQuery(query, where).getMany();
+                if (ctx.payload?.userId) {
+                    console.log('Notes: ' + ctx.payload.userId);
+                    where = await this._notes.byCurrentUser(ctx);
+                    return filterQuery(query, where).getMany();
+                }
+                return [];
             case 'byUser':
                 where = await this._notes.byUser(user);
                 return filterQuery(query, where).getMany();

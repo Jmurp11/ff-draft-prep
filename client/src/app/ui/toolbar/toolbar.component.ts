@@ -38,7 +38,7 @@ export class ToolbarComponent implements OnInit, OnDestroy {
     this.userSub = this.authStore.stateChanged
       .subscribe(state => {
         if (state.currentUser) {
-          this.isAuth = state.currentUser.data.me ? true : false;
+          this.isAuth = state.currentUser ? true : false;
         } else {
           this.isAuth = false;
         }

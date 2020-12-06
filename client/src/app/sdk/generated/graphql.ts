@@ -56,10 +56,6 @@ export type LoginSuccess = {
   message: Scalars['String'];
 };
 
-export type LogoutInput = {
-  userId: Scalars['String'];
-};
-
 export type Mutation = {
   __typename?: 'Mutation';
   addScore: Result;
@@ -77,7 +73,6 @@ export type Mutation = {
   confirmUser: Result;
   forgotPassword: Result;
   changePassword: Result;
-  revokeRefreshTokensForUser: Scalars['Boolean'];
   logout: Scalars['Boolean'];
   updateUserProfileImage: Result;
   updateStadiums: Result;
@@ -147,11 +142,6 @@ export type MutationForgotPasswordArgs = {
 
 export type MutationChangePasswordArgs = {
   input: ChangePasswordInput;
-};
-
-
-export type MutationRevokeRefreshTokensForUserArgs = {
-  userId: Scalars['String'];
 };
 
 
@@ -621,7 +611,6 @@ export type User = {
   lastLoggedIn: Scalars['DateTime'];
   isAdmin: Scalars['Boolean'];
   profileImage?: Maybe<Scalars['String']>;
-  tokenVersion: Scalars['Float'];
   notes?: Maybe<Array<Note>>;
   score?: Maybe<Array<Score>>;
   targets?: Maybe<Array<Target>>;

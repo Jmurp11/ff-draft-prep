@@ -7,6 +7,10 @@ import { switchMap, map, tap } from 'rxjs/operators';
 import { NavStoreService } from 'src/app/ui/nav-store.service';
 import { PlayerStoreService } from 'src/app/players/player-store.service';
 
+enum TypeOption {
+  PUBLIC = 'Public',
+  USER = 'user'
+}
 @Component({
   selector: 'app-note-list',
   templateUrl: './note-list.component.html',
@@ -30,14 +34,13 @@ export class NoteListComponent implements OnInit {
     private apolloSdk: ApolloAngularSDK,
     private navStore: NavStoreService,
     private playerStore: PlayerStoreService
-  ) {
-    this.typeOptions = [
-      'Public',
-      'User'
-    ];
-  }
+  ) { }
 
   ngOnInit(): void {
+    this.typeOptions = [
+      TypeOption.PUBLIC,
+      TypeOption.USER
+    ];
 
     this.form = new FormGroup({
       noteType: new FormControl(null, {
@@ -56,10 +59,12 @@ export class NoteListComponent implements OnInit {
             filterType: null
           };
 
+          // Think of a configuration service for this rather than if / else
+
           if (output2.currentRoute) {
             if (!output2.currentRoute.includes('landing') && !output2.currentRoute.includes('players')) {
               input = {
-                filterType: null // will be current user
+                filterType: null
               };
             } else if (output2.currentRoute.includes('landing')) {
               input = {
@@ -72,7 +77,7 @@ export class NoteListComponent implements OnInit {
               };
             }
             return this.apolloSdk.notesWatch({ data: input })
-            .valueChanges;
+              .valueChanges;
           }
         })
       ).pipe(
