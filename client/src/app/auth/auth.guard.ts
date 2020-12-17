@@ -25,7 +25,6 @@ export class AuthGuard implements CanActivate {
       .pipe(
         map(res => {
           if (res) {
-            console.log('GUARD: ' + res);
             return true;
           } else {
             this.router.navigate(['/landing'], {

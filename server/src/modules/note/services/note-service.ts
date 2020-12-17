@@ -42,7 +42,6 @@ export class NoteService {
     }
 
     async byCurrentUser(ctx: MyContext): Promise<Where | undefined> {
-        console.log(ctx.payload?.userId);
         const fields: Fields = {
             fieldTable: 'notes',
             fieldName: 'user',

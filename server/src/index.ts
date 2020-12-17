@@ -47,6 +47,6 @@ import Container from './container';
   const port = process.env.PORT || 4000;
 
   httpServer.listen(port, async () => {
-    console.log(chalk.magentaBright('🏈  Draft Shark server is running on ') + chalk.greenBright('127.0.0.1:4000') + chalk.magentaBright('...'));
+    console.log(chalk.blueBright('🏈  Draft Shark server is running on ') + chalk.greenBright('127.0.0.1:4000') + chalk.greenBright('...'));
   });
 })();

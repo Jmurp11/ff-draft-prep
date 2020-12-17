@@ -1,5 +1,5 @@
 import { Secret, sign } from 'jsonwebtoken';
-import { User } from '../entity'
+import { User } from '../entity/User'
 
 export const createTokens = (user: User) => {
     const accessTokenSecret: Secret = process.env.ACCESS_TOKEN_SECRET!;

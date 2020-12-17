@@ -57,7 +57,6 @@ export class ProjectionResolver {
         });
 
         if (player) {
-            console.log(player.id);
             await Projection.create({
                 player: player.id,
                 completions,

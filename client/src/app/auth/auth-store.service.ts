@@ -22,11 +22,12 @@ export class AuthStoreService extends ObservableStore<StoreState> {
     const initalState = {
       currentUser: null
     };
-    this.setState(initalState, 'INIT_STATE');
+    this.setState(initalState, 'INIT_AUTH_STATE');
   }
 
   getCurrentUser(): Observable<User> {
     const currentUser = this.getState().currentUser;
+
     if (currentUser) {
       return of(currentUser);
     } else {
@@ -34,11 +35,13 @@ export class AuthStoreService extends ObservableStore<StoreState> {
         .valueChanges
         .pipe(
           map(res => {
-            const user: User = res.data.me;
-            this.setState({ currentUser: user }, 'GET_CURRENT_USER');
-            return user;
+            if (res.data.me) {
+              const user: User = res.data.me;
+              this.setState({ currentUser: user }, 'GET_CURRENT_USER');
+              return user
+            }
           })
-        );
+        )
     }
   }
 
@@ -48,10 +51,12 @@ export class AuthStoreService extends ObservableStore<StoreState> {
       password
     };
 
-    return this.apolloSdk.login({ data: input })
+    return this.apolloSdk.login(
+      { data: input }
+    )
       .pipe(
         map((res: any) => {
-          this.setState({ currentUser: res.user }, 'LOGIN');
+          this.setState({ currentUser: res.data.login.success.user }, 'LOGIN');
           this.router.navigate(['/dashboard']);
           return res;
         })
@@ -61,14 +66,7 @@ export class AuthStoreService extends ObservableStore<StoreState> {
 
   logout(): Subscription {
     return this.apolloSdk.logout(
-      {},
-      {
-        refetchQueries: [
-          {
-            query: MeDocument
-          }
-        ]
-      }
+      {}
     )
       .subscribe(() => {
         this.setState({ currentUser: null }, 'LOGOUT');

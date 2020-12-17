@@ -1,7 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AuthStoreService } from 'src/app/auth/auth-store.service';
 import { Subscription } from 'rxjs';
-import { Router } from '@angular/router';
+import { User } from '../../shared/user';
+import { switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-layout',
@@ -10,43 +11,29 @@ import { Router } from '@angular/router';
 })
 export class LayoutComponent implements OnInit, OnDestroy {
 
-  isLoading: boolean;
-  sidenavLeftOpened: boolean;
-  sidenavRightOpened: boolean;
-  isAuth: boolean; // temporary, can delete
-  userSub: Subscription;
+  subSink: Subscription;
+  user: User;
+  appTitle: string = 'DraftShark';
 
   constructor(
-    private authStore: AuthStoreService,
-    private router: Router
+    private authStore: AuthStoreService
   ) { }
 
   ngOnInit() {
-    this.userSub = this.authStore.stateChanged
-      .subscribe(state => {
-        if (state.currentUser) {
-          if (state.currentUser) {
-            this.sidenavLeftOpened = true;
-            this.sidenavRightOpened = true;
-            this.isAuth = true;
-          } else {
-            this.sidenavLeftOpened = false;
-            this.sidenavRightOpened = false;
-            this.isAuth = false;
-          }
-        } else {
-          this.sidenavLeftOpened = false;
-          this.sidenavRightOpened = false;
-          this.isAuth = false;
-        }
-      });
+    this.subSink = new Subscription();
+
+    this.subSink.add(
+      this.authStore.stateChanged
+        .pipe(
+          switchMap(() => this.authStore.getCurrentUser())
+        )
+        .subscribe(currentUser => {
+          this.user = currentUser;
+        })
+    );
   }
 
-  navigate(val: string) {
-    return this.router.navigate([`/${val}`]);
-  }
-
-  ngOnDestroy() {
-    this.userSub.unsubscribe();
+  ngOnDestroy(): void {
+    this.subSink.unsubscribe();
   }
 }

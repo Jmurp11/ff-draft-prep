@@ -40,7 +40,6 @@ export class TargetResolver {
             case 'byCurrentUser':
                 case 'byCurrentUser':
                     if (ctx.payload?.userId) {
-                        console.log('Targets: ' + ctx.payload.userId);
                         where = await this._targets.byCurrentUser(ctx);
                         return filterQuery(query, where).getMany();
                     }

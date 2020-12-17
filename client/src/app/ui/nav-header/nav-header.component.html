@@ -1,0 +1,5 @@
+<div class="padding">
+  <img [src]="currentUser?.profileImage ? currentUser.profileImage : defaultImage" alt="Avatar" class="avatar"
+    [matTooltip]="currentUser?.username" (click)="_navigate.navigate('profile')">
+    <mat-divider></mat-divider>
+</div>

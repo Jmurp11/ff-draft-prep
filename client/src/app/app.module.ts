@@ -1,12 +1,9 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
-import { FlexLayoutModule } from '@angular/flex-layout';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { AppMaterialModule } from './app-material.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { GraphQLModule } from './graphql.module';
 import { HttpClientModule } from '@angular/common/http';
 import { RegisterComponent } from './auth/register/register.component';
 import { LoginComponent } from './auth//login/login.component';
@@ -14,13 +11,10 @@ import { LandingComponent } from './landing/landing.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ToolbarComponent } from './ui/toolbar/toolbar.component';
 import { LayoutComponent } from './ui/layout/layout.component';
-import { BreadcrumbComponent } from './ui/breadcrumb/breadcrumb.component';
-import { LoadingComponent } from './shared/loading/loading.component';
 import { FooterComponent } from './ui/footer/footer.component';
 import { ThemeService } from './ui/theme.service';
 import { RoutePartsService } from './ui/router-parts.service';
 import { TargetComponent } from './target/target.component';
-import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { NotesComponent } from './notes/notes.component';
 import { NoteCardComponent } from './notes/note-card/note-card.component';
 import { NoteListComponent } from './notes/note-list/note-list.component';
@@ -44,11 +38,13 @@ import { AdminComponent } from './admin/admin.component';
 import { UsersComponent } from './admin/users/users.component';
 import { AdminFunctionsComponent } from './admin/admin-functions/admin-functions.component';
 import { SidenavContentComponent } from './ui/sidenav-content/sidenav-content.component';
+import { NavHeaderComponent } from './ui/nav-header/nav-header.component';
+import { NavContentComponent } from './ui/nav-content/nav-content.component';
+import { SearchbarComponent } from './ui/searchbar/searchbar.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    BreadcrumbComponent,
     RegisterComponent,
     LoginComponent,
     LandingComponent,
@@ -78,7 +74,10 @@ import { SidenavContentComponent } from './ui/sidenav-content/sidenav-content.co
     AdminComponent,
     UsersComponent,
     AdminFunctionsComponent,
-    SidenavContentComponent
+    SidenavContentComponent,
+    NavHeaderComponent,
+    NavContentComponent,
+    SearchbarComponent
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,33 @@
+table {
+  width: 100%;
+}
+
+th, td {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mat-cell {
+  padding-right: 12px !important;
+  padding-top: 8px !important;
+  padding-bottom: 8px !important;
+}
+
+.table-container {
+  width: 100%;
+  text-align: center;
+}
+
+.button-ctnr {
+  text-align: right;
+  padding: 0.313em;
+}
+
+td {
+  cursor: pointer;
+}
+
+[hidden] {
+  display: none !important;
+}

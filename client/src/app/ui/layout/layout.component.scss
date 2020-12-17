@@ -1,22 +1,15 @@
-.sidenavLeft {
-  height: 100%;
-  width: 5%;
-}
-
-.sidenavRight {
-  height: 100%;
-  width: 25%;
-}
-
 .container {
-  height: 87.25%;
+  height: 100%;
   width: 100%;
 }
 
-.nav-container {
-  text-align: center;
+.sidenav {
+  height: 100%;
+  width: 10%;
+  background-color: #82b1ff;
 }
 
-.nav-button-container {
-  padding: .5em;
+.orange {
+  background-color: #ffab40;
+  width: 100%;
 }

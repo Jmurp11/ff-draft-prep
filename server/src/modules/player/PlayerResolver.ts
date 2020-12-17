@@ -1,6 +1,6 @@
-import { Resolver, Query, Mutation, Arg, UseMiddleware, Ctx } from 'type-graphql';
+import { Resolver, Query, Mutation, Arg, UseMiddleware } from 'type-graphql';
 import { Player } from '../../entity';
-import { Result, MyContext } from '../../shared';
+import { Result } from '../../shared';
 import { getRepository, SelectQueryBuilder } from 'typeorm';
 import { filterQuery } from '../../utils/filterQuery';
 import { PlayerArgs } from './inputs/PlayerArgs';
@@ -18,7 +18,6 @@ export class PlayerResolver {
     @UseMiddleware(logger)
     @Query(() => [Player])
     async players(
-        @Ctx() ctx: MyContext,
         @Arg('input', { nullable: true }) {
             filterType,
             team,
@@ -30,7 +29,6 @@ export class PlayerResolver {
     ): Promise<Player[] | undefined> {
         let where;
 
-        console.log('Context', ctx.payload?.userId);
         const query: SelectQueryBuilder<Player> = getRepository(Player)
             .createQueryBuilder('players')
             .leftJoinAndSelect('players.team', 'team')
@@ -101,6 +99,7 @@ export class PlayerResolver {
         }
     }
 
+    // TODO: SHOULD BE ISADMIN, ISAUTH
     @UseMiddleware(logger)
     @Mutation(() => Result)
     async updatePlayers(): Promise<Result> {
@@ -126,7 +125,6 @@ export class PlayerResolver {
 
 
                     if (playerExists) {
-                        console.log('update');
                         await Player.update(
                             {
                                 id: player.PlayerID
@@ -140,7 +138,6 @@ export class PlayerResolver {
                             averageDraftPosition: player.AverageDraftPosition
                         });
                     } else {
-                        console.log('create');
                         await Player.create({
                             id: player.PlayerID,
                             firstName: player.FirstName,
