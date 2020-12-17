@@ -14,6 +14,9 @@ import { ObjectType, Field } from 'type-graphql';
  * remove player, change to subject
  * fields for fantasy / gambling
  * field for sport (NFL, MLB, NHL etc)
+ * 
+ * potential issues: 
+ *  ** joins on player
  */
 @Entity('notes')
 @ObjectType()

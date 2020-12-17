@@ -1,49 +1,16 @@
-<app-toolbar></app-toolbar>
-<mat-sidenav-container class="container">
-  <mat-sidenav #sidenav [(opened)]="sidenavLeftOpened" mode="side" class="sidenavLeft">
-    <div class="nav-container">
-      <mat-divider></mat-divider>
-      <div class="nav-button-container">
-        <button class="nav-button" mat-mini-fab color="primary" matTooltip="Dashboard" (click)="navigate('dashboard')">
-          <mat-icon>home</mat-icon>
-        </button>
+<mat-sidenav-container class="container" autosize>
+  <mat-sidenav color="primary" class="sidenav" mode="side" [(opened)]="user">
+    <div style="height: 100%; width: 100%;" fxLayout="column" fxLayoutAlign="space-between center" fxLayoutGap="0.5%">
+      <div fxFlex="15%">
+        <app-nav-header [user]="user"></app-nav-header>
       </div>
-      <mat-divider></mat-divider>
-      <div class="nav-button-container">
-        <button class="nav-button" mat-mini-fab color="primary" matTooltip="Profile" (click)="navigate('profile')">
-          <mat-icon>person</mat-icon>
-        </button>
+      <div fxFlex="30%">
+        <app-nav-content></app-nav-content>
       </div>
-      <mat-divider></mat-divider>
-      <div class="nav-button-container">
-        <button class="nav-button" mat-mini-fab color="primary" matTooltip="Draft Tools" (click)="navigate('drafts')">
-          <mat-icon>laptop</mat-icon>
-        </button>
-      </div>
-      <mat-divider></mat-divider>
-      <div class="nav-button-container">
-        <button class="nav-button" mat-mini-fab color="primary" matTooltip="Players" (click)="navigate('players')">
-          <mat-icon>people</mat-icon>
-        </button>
-      </div>
-      <mat-divider></mat-divider>
-      <div class="nav-button-container">
-        <button class="nav-button" mat-mini-fab color="primary" matTooltip="Admin" (click)="navigate('admin')">
-          <mat-icon>check_circle</mat-icon>
-        </button>
-      </div>
-      <mat-divider></mat-divider>
+      <div fxFlex="55%"></div>
     </div>
   </mat-sidenav>
-  <mat-sidenav #targetList [(opened)]="sidenavRightOpened" mode="side" class="sidenavRight" position="end">
-    <app-sidenav-content></app-sidenav-content>
-  </mat-sidenav>
-  <app-breadcrumb></app-breadcrumb>
-
-  <app-loading *ngIf="isLoading"></app-loading>
-
-  <router-outlet *ngIf="!isLoading"></router-outlet>
-
+  <app-toolbar [currentUser]="user" [title]="appTitle"></app-toolbar>
+  <router-outlet></router-outlet>
+  <app-footer></app-footer>
 </mat-sidenav-container>
-
-<app-footer></app-footer>

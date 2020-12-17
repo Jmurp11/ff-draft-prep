@@ -4,7 +4,6 @@ import { User } from '../../entity';
 import { MyContext } from '../../shared';
 import { verify } from 'jsonwebtoken';
 
-
 @Resolver()
 export class MeResolver {
   @UseMiddleware(logger)
@@ -40,13 +39,6 @@ export class MeResolver {
     }
 
     return User.findOne({
-      relations: [
-        'score',
-        'score.user',
-        'score.note',
-        'notes',
-        'targets'
-      ],
       where: {
         id: user.id
       }

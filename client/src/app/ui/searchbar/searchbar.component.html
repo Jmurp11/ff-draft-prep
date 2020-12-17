@@ -1,0 +1,21 @@
+<form class="example-form">
+  <mat-form-field class="full-width font">
+    <input type="text" placeholder="Search...." aria-label="Search" matInput [formControl]="searchInput"
+      [matAutocomplete]="auto">
+    <button mat-icon-button matSuffix color="accent" (click)="clearSearch()" *ngIf="searchInput.value">
+      <mat-icon>close</mat-icon>
+    </button>
+    <mat-autocomplete #auto="matAutocomplete" class="scrollable">
+      <mat-option *ngFor="let option of filteredOptions | async" [value]="option.symbol">
+        <div fxLayout="column" fxLayoutAlign="space-between" fxLayoutGap="0.5%" (click)="onSelect(option.symbol)">
+          <div fxFlex="50%" class="mat-h3">
+            {{ option.symbol }}
+          </div>
+          <div fxFlex="50%" class="mat-caption">
+            {{ option.name }}
+          </div>
+        </div>
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+</form>

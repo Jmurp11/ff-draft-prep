@@ -1,13 +1,12 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ThemeService } from '../theme.service';
+import { Component, OnInit, OnDestroy, SimpleChanges, Input } from '@angular/core';
 import { AuthStoreService } from '../../auth/auth-store.service';
 import { Subscription } from 'rxjs';
 import { LoginComponent } from '../../auth/login/login.component';
 import { MatDialogRef, MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { RegisterComponent } from '../../auth/register/register.component';
-import { ApolloAngularSDK, RegisterInput } from '../../sdk/generated/graphql';
-import { Router } from '@angular/router';
+import { ApolloAngularSDK, RegisterInput, User } from '../../sdk/generated/graphql';
+import { NavigateService } from '../../shared/navigate.service';
 
 @Component({
   selector: 'app-toolbar',
@@ -16,42 +15,41 @@ import { Router } from '@angular/router';
 })
 export class ToolbarComponent implements OnInit, OnDestroy {
 
-  menuItems: any[];
-  themes: any;
-  layoutConf: any;
-  isAuth: boolean;
-  userSub: Subscription;
-  registerSub: Subscription;
+  @Input()
+  currentUser: User;
+
+  @Input()
+  title: string;
+
+  subSink: Subscription;
+  user: User;
 
   constructor(
-    private themeService: ThemeService,
     private authStore: AuthStoreService,
     private apolloSdk: ApolloAngularSDK,
+    public _navigate: NavigateService,
     private dialog: MatDialog,
-    private snack: MatSnackBar,
-    private router: Router
-  ) {
-    this.isAuth = true;
+    private snack: MatSnackBar
+  ) { }
+
+  ngOnInit(): void {
+    this.subSink = new Subscription();
   }
 
-  ngOnInit() {
-    this.userSub = this.authStore.stateChanged
-      .subscribe(state => {
-        if (state.currentUser) {
-          this.isAuth = state.currentUser ? true : false;
-        } else {
-          this.isAuth = false;
+  ngOnChanges(changes: SimpleChanges): void {
+    for (const propName in changes) {
+      if (changes.hasOwnProperty(propName)) {
+        switch (propName) {
+          case 'currentUser': {
+            this.user = this.currentUser;
+            break;
+          }
         }
-      });
-
-    this.themes = this.themeService.themes;
+      }
+    }
   }
 
-  changeTheme(prevTheme, theme) {
-    return this.themeService.changeTheme(prevTheme, theme.name);
-  }
-
-  openLoginDialog() {
+  openLoginDialog(): void {
     const dialogRef: MatDialogRef<any> = this.dialog.open(LoginComponent, {
       width: '40em',
       disableClose: true
@@ -63,22 +61,21 @@ export class ToolbarComponent implements OnInit, OnDestroy {
           return;
         }
 
-        const loginSub = this.authStore.login(
+        this.subSink.add(this.authStore.login(
           res.email,
           res.password
-        );
-
-        loginSub.subscribe(val => {
+        ).subscribe(val => {
           if (val.data.login.success) {
             this.snack.open(`Welcome back ${val.data.login.success.user.username.toUpperCase()}!`, 'Dismiss', { duration: 4000 });
+            this._navigate.navigate('dashboard');
           } else {
             this.snack.open(`${val.data.login.errors.message}`, 'Dismiss', { duration: 4000 });
           }
-        });
+        }));
       });
   }
 
-  openRegisterDialog() {
+  openRegisterDialog(): void {
     const dialogRef: MatDialogRef<any> = this.dialog.open(RegisterComponent, {
       width: '40em',
       disableClose: true
@@ -96,7 +93,7 @@ export class ToolbarComponent implements OnInit, OnDestroy {
           password: res.password
         };
 
-        this.registerSub = this.apolloSdk.register({
+        this.subSink.add(this.apolloSdk.register({
           data: registerInput
         }).subscribe(val => {
           if (val.data.register.success) {
@@ -104,23 +101,15 @@ export class ToolbarComponent implements OnInit, OnDestroy {
           } else {
             this.snack.open(`${val.data.register.errors[0].message}`, 'Dismiss', { duration: 4000 });
           }
-        });
+        }));
       });
   }
 
-  navigateToDashboard() {
-    if (!this.isAuth) {
-      return;
-    }
-
-    return this.router.navigate(['dashboard']);
-  }
-
-  signOut() {
+  signOut(): void {
     this.authStore.logout();
   }
 
-  ngOnDestroy() {
-    this.userSub.unsubscribe();
+  ngOnDestroy(): void {
+    this.subSink.unsubscribe();
   }
 }

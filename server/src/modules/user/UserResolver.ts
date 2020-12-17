@@ -5,10 +5,10 @@ import { v4 } from 'uuid';
 import { User } from '../../entity';
 import { RegisterInput, LoginInput, AdminInput } from './inputs';
 import { Result } from '../../shared';
-import { registerSuccess, loginFailed, confirmEmailError, forgotPasswordLockError } from './messages/messages';
+import { registerSuccess, loginFailed, forgotPasswordLockError } from './messages/messages';
 import { MyContext } from '../../shared';
 import { isAuth, logger, isAdmin } from '../../middleware';
-import { sendEmail, createConfirmationUrl } from '../../utils';
+import { sendEmail } from '../../utils';
 import { redis } from '../../redis';
 import { baseUrl, forgotPasswordPrefix, confirmationPrefix } from '../../constants/constants';
 import { ChangePasswordInput } from './inputs/ChangePasswordInput';
@@ -54,39 +54,6 @@ export class UserResolver {
         }
     }
 
-    @UseMiddleware(isAuth, logger)
-    @Query(() => User)
-    async user(
-        @Arg('input') {
-            filterType,
-            id,
-            username,
-            email
-        }: UserArgs
-    ) {
-        let where;
-
-        const query: SelectQueryBuilder<User> = getRepository(User)
-            .createQueryBuilder('users')
-            .leftJoinAndSelect('users.notes', 'notes')
-            .leftJoinAndSelect('user.targets', 'targets')
-            .orderBy('user.username', 'ASC')
-
-        switch (filterType) {
-            case 'byCurrentUser':
-                where = await this._users.byId(id);
-                return filterQuery(query, where).getOne();
-            case 'byUser':
-                where = await this._users.byEmail(email);
-                return filterQuery(query, where).getOne();
-            case 'byPlayer':
-                where = await this._users.byUsername(username);
-                return filterQuery(query, where).getOne();
-            default:
-                return null;
-        }
-    }
-
     @Mutation(() => Result)
     async register(
         @Arg('input') { email, password, username, profileImage }: RegisterInput
@@ -103,7 +70,9 @@ export class UserResolver {
             lastLoggedIn: creationTime
         }).save();
 
-        await sendEmail(email, await createConfirmationUrl(user.id), 'Confirm');
+        console.log(user);
+
+        // await sendEmail(email, await createConfirmationUrl(user.id), 'Confirm');
 
         return {
             success: [
@@ -154,18 +123,18 @@ export class UserResolver {
                 ]
             }
         }
-
-        if (!user.confirmed) {
-            return {
-                errors: [
-                    {
-                        path: 'login',
-                        message: confirmEmailError
+        /**
+                if (!user.confirmed) {
+                    return {
+                        errors: [
+                            {
+                                path: 'login',
+                                message: confirmEmailError
+                            }
+                        ]
                     }
-                ]
-            }
-        }
-
+                }
+        */
         if (user.forgotPasswordLock) {
             return {
                 errors: [
@@ -368,6 +337,7 @@ export class UserResolver {
 
         return true;
     };
+
 
     @UseMiddleware(isAuth, logger)
     @Mutation(() => Result)
