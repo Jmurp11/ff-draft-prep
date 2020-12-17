@@ -6,6 +6,7 @@ mutation login($data: LoginInput!) {
         email
         username
         isAdmin
+        profileImage
       }
     }
     errors {

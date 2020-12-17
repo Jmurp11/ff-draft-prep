@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { NavStoreService } from './ui/nav-store.service';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -8,14 +6,9 @@ import { Router } from '@angular/router';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  title = 'client';
+  title = 'DraftShark';
 
-  constructor(
-    private router: Router,
-    private navStore: NavStoreService
-  ) { }
+  constructor() { }
 
-  ngOnInit() {
-    this.navStore.updateCurrentRoute(this.router.url);
-  }
+  ngOnInit() { }
 }

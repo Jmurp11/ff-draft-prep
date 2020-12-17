@@ -639,7 +639,7 @@ export type LoginMutation = (
       { __typename?: 'LoginSuccess' }
       & { user?: Maybe<(
         { __typename?: 'User' }
-        & Pick<User, 'id' | 'email' | 'username' | 'isAdmin'>
+        & Pick<User, 'id' | 'email' | 'username' | 'isAdmin' | 'profileImage'>
       )> }
     )>, errors?: Maybe<Array<(
       { __typename?: 'Response' }
@@ -1194,6 +1194,7 @@ export const LoginDocument = gql`
         email
         username
         isAdmin
+        profileImage
       }
     }
     errors {

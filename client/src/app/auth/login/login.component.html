@@ -1,7 +1,9 @@
 <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="1.0%">
-  <h1 matDialogTitle>{{ title | titlecase }}</h1>
+  <div fxFlex="10%">
+    <h1 matDialogTitle>{{ title | titlecase }}</h1>
+  </div>
 
-  <div class="form-container" fxFlex="100%">
+  <div class="form-container" fxFlex="90%">
 
     <form [formGroup]="form" class="form">
 

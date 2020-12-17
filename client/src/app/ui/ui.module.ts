@@ -1,24 +1,31 @@
-/**
-import { NgModule } from '@angular/core';
+/* import { NgModule } from '@angular/core';
 import { SharedModule } from '../shared/shared.module';
-import { BreadcrumbComponent } from './breadcrumb/breadcrumb.component';
 import { FooterComponent } from './footer/footer.component';
 import { LayoutComponent } from './layout/layout.component';
 import { ToolbarComponent } from './toolbar/toolbar.component';
-import { ThemeService } from './theme.service';
-import { RoutePartsService } from './router-parts.service';
+import { GenericTableComponent } from './generic-table/generic-table.component';
+import { NavHeaderComponent } from './nav-header/nav-header.component';
+import { NavContentComponent } from './nav-content/nav-content.component';
+import { SearchbarComponent } from './searchbar/searchbar.component';
+import { MatchMediaService } from './match-media.service';
 
 @NgModule({
   declarations: [
-    BreadcrumbComponent,
+    GenericTableComponent,
+    NavHeaderComponent,
+    NavContentComponent,
     FooterComponent,
     LayoutComponent,
+    SearchbarComponent,
     ToolbarComponent
   ],
   exports: [
-    BreadcrumbComponent,
+    GenericTableComponent,
+    NavHeaderComponent,
+    NavContentComponent,
     FooterComponent,
     LayoutComponent,
+    SearchbarComponent,
     ToolbarComponent
   ],
   imports: [
@@ -26,9 +33,8 @@ import { RoutePartsService } from './router-parts.service';
   ],
   entryComponents: [],
   providers: [
-    RoutePartsService,
-    ThemeService
+    MatchMediaService
   ]
 })
 export class UIModule { }
-*/
+ */

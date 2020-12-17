@@ -13,6 +13,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
 
   subSink: Subscription;
   user: User;
+  profileImage: string;
   appTitle: string = 'DraftShark';
 
   constructor(
@@ -22,6 +23,8 @@ export class LayoutComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.subSink = new Subscription();
 
+    this.profileImage = null;
+
     this.subSink.add(
       this.authStore.stateChanged
         .pipe(
@@ -29,6 +32,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
         )
         .subscribe(currentUser => {
           this.user = currentUser;
+          this.profileImage = this.user ? this.user.profileImage : null;
         })
     );
   }
