@@ -1,0 +1,38 @@
+<mat-card class="card">
+  <mat-card-header fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="0.5%">
+    <div fxFlex="65%">
+      <img [src]="note.user.profileImage" alt="user-image" class="avatar card-avatar">
+    </div>
+    <div fxFlex="20%">
+      <span class="title bold">
+        {{ note.title | uppercase}}
+      </span>
+    </div>
+    <div>
+      <span class="subtitle">{{ note.player.name | uppercase }}</span>
+    </div>
+  </mat-card-header>
+  <mat-card-content fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="0.5%">
+    {{ note?.body }}
+  </mat-card-content>
+
+  <mat-card-actions fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="0.5%">
+    <div fxLayout="row" fxLayoutAlign="space-evenly space-evenly" fxLayoutGap="5.0%">
+      <div class="action-btn" fxFlex="50%">
+        <button mat-icon-button color="accent">
+          <mat-icon>share</mat-icon>
+        </button>
+      </div>
+      <div class="action-btn" fxFlex="50%">
+        <button mat-icon-button color="warn" (click)="deleteNote(note.id)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
+    </div>
+  </mat-card-actions>
+  <mat-card-footer>
+    <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="0.5%">
+      <div>{{ note?.creationTime | date }}</div>
+    </div>
+  </mat-card-footer>
+</mat-card>

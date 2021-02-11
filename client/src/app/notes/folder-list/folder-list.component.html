@@ -1,0 +1,9 @@
+<div *ngIf="showLoadingSpinner">
+  <app-loading-spinner></app-loading-spinner>
+</div>
+
+<div *ngIf="!showLoadingSpinner">
+  <div *ngFor="let folder of folders">
+    {{ folder.name }}, {{ folder.creationTime | date }}
+  </div>
+</div>

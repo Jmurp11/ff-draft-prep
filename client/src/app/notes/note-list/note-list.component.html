@@ -1,0 +1,21 @@
+<div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="0.1%" style="width: 100%;">
+  <div *ngIf="!(notes$ | async)">
+    <app-loading-spinner></app-loading-spinner>
+  </div>
+</div>
+
+<div class="scrollable" [style.height.vh]="100" *ngIf="(notes$ | async) as notes"
+  fxLayout="row wrap" fxLayoutAlign="center" fxLayoutGap="0.5%" #scrollable style="width: 100%;">
+  <div *ngIf="notes.length > 0">
+    <div *ngFor="let note of notes" style="padding: 1em;">
+      <app-note [noteInput]="note"></app-note>
+    </div>
+  </div>
+  <div *ngIf="notes.length === 0">
+    <mat-card>
+      <mat-card-content>
+        There are no notes for this player.
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
