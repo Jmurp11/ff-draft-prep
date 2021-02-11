@@ -2,7 +2,7 @@ import 'dotenv/config';
 import { Resolver, Query, Mutation, Arg, Ctx, UseMiddleware } from 'type-graphql';
 import bcrypt from 'bcryptjs';
 import { v4 } from 'uuid';
-import { User } from '../../entity';
+import { User } from '../../entity/User';
 import { RegisterInput, LoginInput, AdminInput } from './inputs';
 import { Result } from '../../shared';
 import { registerSuccess, loginFailed, forgotPasswordLockError } from './messages/messages';
@@ -40,8 +40,7 @@ export class UserResolver {
 
         const query: SelectQueryBuilder<User> = getRepository(User)
             .createQueryBuilder('users')
-            .leftJoinAndSelect('users.notes', 'notes')
-            .leftJoinAndSelect('users.targets', 'targets')
+            .leftJoinAndSelect('user.folders', 'folders')
             .take(take)
             .skip(skip)
             .orderBy('users.username', 'ASC');
@@ -51,6 +50,38 @@ export class UserResolver {
             return filterQuery(query, where).getMany();
         } else {
             return query.getMany();
+        }
+    }
+
+    @UseMiddleware(isAuth, logger)
+    @Query(() => User)
+    async user(
+        @Arg('input') {
+            filterType,
+            id,
+            username,
+            email
+        }: UserArgs
+    ) {
+        let where;
+
+        const query: SelectQueryBuilder<User> = getRepository(User)
+            .createQueryBuilder('users')
+            .leftJoinAndSelect('user.folders', 'folders')
+            .leftJoinAndSelect('user.folders.notes', 'folders')
+
+        switch (filterType) {
+            case 'byId':
+                where = await this._users.byId(id);
+                return filterQuery(query, where).getOne();
+            case 'byEmail':
+                where = await this._users.byEmail(email);
+                return filterQuery(query, where).getOne();
+            case 'byUsername':
+                where = await this._users.byUsername(username);
+                return filterQuery(query, where).getOne();
+            default:
+                return null;
         }
     }
 

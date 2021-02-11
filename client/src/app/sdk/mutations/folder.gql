@@ -1,0 +1,21 @@
+mutation createFolder($data: FolderArgs!) {
+  createFolder(input: $data) {
+    success {
+      message
+    }
+    errors {
+      message
+    }
+  }
+}
+
+mutation deleteFolder($data: FolderArgs!) {
+  deleteFolder(input: $data) {
+    success {
+      message
+    }
+    errors {
+      message
+    }
+  }
+}

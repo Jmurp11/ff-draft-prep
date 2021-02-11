@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, SimpleChanges, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy, SimpleChanges, Input, Output, EventEmitter } from '@angular/core';
 import { AuthStoreService } from '../../auth/auth-store.service';
 import { Subscription } from 'rxjs';
 import { LoginComponent } from '../../auth/login/login.component';
@@ -20,6 +20,9 @@ export class ToolbarComponent implements OnInit, OnDestroy {
 
   @Input()
   title: string;
+
+  @Output()
+  public sidenavToggle = new EventEmitter;
 
   subSink: Subscription;
   user: User;
@@ -107,6 +110,10 @@ export class ToolbarComponent implements OnInit, OnDestroy {
 
   signOut(): void {
     this.authStore.logout();
+  }
+
+  toggleSidenav() {
+    this.sidenavToggle.emit();
   }
 
   ngOnDestroy(): void {

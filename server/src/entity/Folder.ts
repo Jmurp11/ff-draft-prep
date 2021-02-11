@@ -4,37 +4,36 @@ import {
     BaseEntity,
     JoinColumn,
     PrimaryGeneratedColumn,
-    ManyToOne
+    ManyToOne,
+    OneToMany
 } from 'typeorm';
-import { Note, User } from './index';
+import { Note } from './Note';
+import { User } from './User';
 import { ObjectType, Field } from 'type-graphql';
 
-@Entity('score')
+@Entity('folders')
 @ObjectType()
-export class Score extends BaseEntity {
+export class Folder extends BaseEntity {
     @Field()
     @PrimaryGeneratedColumn('uuid')
     id!: string;
 
-    @ManyToOne(() => User, user => user.score, {
-        onDelete: 'CASCADE'
-    })
+    @ManyToOne(() => User)
     @JoinColumn({ name: 'user' })
     @Field(() => User)
     @Column('uuid')
     user!: string;
 
-    @ManyToOne(() => Note, note => note.score, {
-        onDelete: 'CASCADE'
-    })
-    @JoinColumn({ name: 'note' })
-    @Field(() => Note)
-    @Column('uuid')
-    note!: string;
-
     @Field()
-    @Column('boolean')
-    response: boolean;
+    @Column('text')
+    name!: string;
+    
+    @Field(() => [Note], { nullable: true })
+    @OneToMany(() => Note, note => note.folder, {
+        onDelete: 'CASCADE',
+        eager: true
+    })
+    notes: Note[];
 
     @Field(() => Date)
     @Column('timestamp')

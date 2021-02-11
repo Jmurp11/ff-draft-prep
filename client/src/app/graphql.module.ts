@@ -6,7 +6,6 @@ import { ApolloLink } from 'apollo-link';
 import { setContext } from 'apollo-link-context';
 import { AuthStoreService } from './auth/auth-store.service';
 import { CookieService } from 'ngx-cookie-service';
-import { switchMap } from 'rxjs/operators';
 
 // const uri = 'https://draftshark-api.herokuapp.com/'; UAT
 const uri = 'http://127.0.0.1:4000/graphql'; // DEV

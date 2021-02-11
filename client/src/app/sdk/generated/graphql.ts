@@ -38,6 +38,24 @@ export type DeleteTargetArgs = {
   id?: Maybe<Scalars['String']>;
 };
 
+export type Folder = {
+  __typename?: 'Folder';
+  id: Scalars['String'];
+  user: User;
+  name: Scalars['String'];
+  notes?: Maybe<Array<Note>>;
+  creationTime: Scalars['DateTime'];
+};
+
+export type FolderArgs = {
+  filterType?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']>;
+  user?: Maybe<Scalars['String']>;
+  take?: Maybe<Scalars['Float']>;
+  skip?: Maybe<Scalars['Float']>;
+};
+
 export type LoginInput = {
   email?: Maybe<Scalars['String']>;
   username?: Maybe<Scalars['String']>;
@@ -58,7 +76,8 @@ export type LoginSuccess = {
 
 export type Mutation = {
   __typename?: 'Mutation';
-  addScore: Result;
+  createFolder: Result;
+  deleteFolder: Result;
   createNote: Result;
   deleteNote: Result;
   updatePlayers: Result;
@@ -80,8 +99,13 @@ export type Mutation = {
 };
 
 
-export type MutationAddScoreArgs = {
-  input: ScoreInput;
+export type MutationCreateFolderArgs = {
+  input: FolderArgs;
+};
+
+
+export type MutationDeleteFolderArgs = {
+  input: FolderArgs;
 };
 
 
@@ -154,10 +178,10 @@ export type Note = {
   id: Scalars['String'];
   user: User;
   player: Player;
+  folder?: Maybe<Folder>;
   title: Scalars['String'];
   body: Scalars['String'];
   isPrivate: Scalars['Boolean'];
-  score?: Maybe<Array<Score>>;
   creationTime: Scalars['DateTime'];
 };
 
@@ -165,6 +189,7 @@ export type NoteArgs = {
   filterType?: Maybe<Scalars['String']>;
   player?: Maybe<Scalars['Float']>;
   user?: Maybe<Scalars['String']>;
+  folder?: Maybe<Scalars['String']>;
   take?: Maybe<Scalars['Float']>;
   skip?: Maybe<Scalars['Float']>;
 };
@@ -172,6 +197,7 @@ export type NoteArgs = {
 export type NoteInput = {
   player: Scalars['Float'];
   title: Scalars['String'];
+  folder: Scalars['String'];
   body: Scalars['String'];
   isPrivate: Scalars['Boolean'];
 };
@@ -269,12 +295,9 @@ export type ProjectionInput = {
 
 export type Query = {
   __typename?: 'Query';
-  scores: Array<Score>;
-  score: Score;
-  totalScores: Scalars['Int'];
-  noteScore: Scalars['Int'];
-  userScoresCount: Scalars['Int'];
-  userGeneratedScoresCount: Scalars['Int'];
+  folders: Array<Folder>;
+  folder: Folder;
+  folderCount: Scalars['Int'];
   notes: Array<Note>;
   note: Note;
   noteCount: Scalars['Int'];
@@ -298,32 +321,17 @@ export type Query = {
 };
 
 
-export type QueryScoresArgs = {
-  user: Scalars['String'];
+export type QueryFoldersArgs = {
+  input: FolderArgs;
 };
 
 
-export type QueryScoreArgs = {
-  id: Scalars['String'];
+export type QueryFolderArgs = {
+  input: FolderArgs;
 };
 
 
-export type QueryTotalScoresArgs = {
-  noteId: Scalars['String'];
-};
-
-
-export type QueryNoteScoreArgs = {
-  noteId: Scalars['String'];
-};
-
-
-export type QueryUserScoresCountArgs = {
-  user: Scalars['String'];
-};
-
-
-export type QueryUserGeneratedScoresCountArgs = {
+export type QueryFolderCountArgs = {
   user: Scalars['String'];
 };
 
@@ -421,21 +429,6 @@ export type Result = {
   errors?: Maybe<Array<Response>>;
 };
 
-export type Score = {
-  __typename?: 'Score';
-  id: Scalars['String'];
-  user: User;
-  note: Note;
-  response: Scalars['Boolean'];
-  creationTime: Scalars['DateTime'];
-};
-
-export type ScoreInput = {
-  user: Scalars['String'];
-  note: Scalars['String'];
-  response: Scalars['Boolean'];
-};
-
 export type Stadium = {
   __typename?: 'Stadium';
   id: Scalars['String'];
@@ -476,11 +469,6 @@ export type Subscription = {
 
 export type SubscriptionNewNotificationArgs = {
   user: Scalars['String'];
-};
-
-export type SubscriptionInput = {
-  user: Scalars['String'];
-  note: Scalars['String'];
 };
 
 export type Target = {
@@ -611,8 +599,7 @@ export type User = {
   lastLoggedIn: Scalars['DateTime'];
   isAdmin: Scalars['Boolean'];
   profileImage?: Maybe<Scalars['String']>;
-  notes?: Maybe<Array<Note>>;
-  score?: Maybe<Array<Score>>;
+  folders?: Maybe<Array<Folder>>;
   targets?: Maybe<Array<Target>>;
 };
 
@@ -675,14 +662,14 @@ export type LogoutMutation = (
   & Pick<Mutation, 'logout'>
 );
 
-export type ConfirmUserMutationVariables = Exact<{
-  data: Scalars['String'];
+export type CreateFolderMutationVariables = Exact<{
+  data: FolderArgs;
 }>;
 
 
-export type ConfirmUserMutation = (
+export type CreateFolderMutation = (
   { __typename?: 'Mutation' }
-  & { confirmUser: (
+  & { createFolder: (
     { __typename?: 'Result' }
     & { success?: Maybe<Array<(
       { __typename?: 'Response' }
@@ -694,33 +681,14 @@ export type ConfirmUserMutation = (
   ) }
 );
 
-export type ForgotPasswordMutationVariables = Exact<{
-  data: Scalars['String'];
+export type DeleteFolderMutationVariables = Exact<{
+  data: FolderArgs;
 }>;
 
 
-export type ForgotPasswordMutation = (
+export type DeleteFolderMutation = (
   { __typename?: 'Mutation' }
-  & { forgotPassword: (
-    { __typename?: 'Result' }
-    & { success?: Maybe<Array<(
-      { __typename?: 'Response' }
-      & Pick<Response, 'message'>
-    )>>, errors?: Maybe<Array<(
-      { __typename?: 'Response' }
-      & Pick<Response, 'message'>
-    )>> }
-  ) }
-);
-
-export type ChangePasswordMutationVariables = Exact<{
-  data: ChangePasswordInput;
-}>;
-
-
-export type ChangePasswordMutation = (
-  { __typename?: 'Mutation' }
-  & { changePassword: (
+  & { deleteFolder: (
     { __typename?: 'Result' }
     & { success?: Maybe<Array<(
       { __typename?: 'Response' }
@@ -933,6 +901,40 @@ export type UpdateUserProfileImageMutation = (
   ) }
 );
 
+export type FoldersQueryVariables = Exact<{
+  data: FolderArgs;
+}>;
+
+
+export type FoldersQuery = (
+  { __typename?: 'Query' }
+  & { folders: Array<(
+    { __typename?: 'Folder' }
+    & Pick<Folder, 'id' | 'name' | 'creationTime'>
+    & { notes?: Maybe<Array<(
+      { __typename?: 'Note' }
+      & Pick<Note, 'id' | 'title' | 'creationTime'>
+    )>> }
+  )> }
+);
+
+export type FolderQueryVariables = Exact<{
+  data: FolderArgs;
+}>;
+
+
+export type FolderQuery = (
+  { __typename?: 'Query' }
+  & { folder: (
+    { __typename?: 'Folder' }
+    & Pick<Folder, 'id' | 'name' | 'creationTime'>
+    & { notes?: Maybe<Array<(
+      { __typename?: 'Note' }
+      & Pick<Note, 'id' | 'title' | 'creationTime'>
+    )>> }
+  ) }
+);
+
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -1001,7 +1003,7 @@ export type PlayersQuery = (
   { __typename?: 'Query' }
   & { players: Array<(
     { __typename?: 'Player' }
-    & Pick<Player, 'id' | 'name' | 'status' | 'position' | 'height' | 'weight' | 'averageDraftPosition' | 'depthChart' | 'birthDate' | 'photoUrl'>
+    & Pick<Player, 'id' | 'name' | 'status' | 'position' | 'height' | 'weight' | 'averageDraftPosition' | 'depthChart' | 'birthDate' | 'college' | 'photoUrl'>
     & { projection?: Maybe<(
       { __typename?: 'Projection' }
       & Pick<Projection, 'id' | 'completions' | 'attempts' | 'passTd' | 'passYards' | 'interception' | 'carries' | 'rushYards' | 'rushTd' | 'fumbles' | 'receptions' | 'receivingYards' | 'receivingTd' | 'touches' | 'halfPPRTotalPoints' | 'pprTotalPoints' | 'totalPoints' | 'completionPercentage' | 'yardsPerAttempt' | 'yardsPerCarry' | 'yardsPerReception'>
@@ -1244,9 +1246,9 @@ export const LogoutDocument = gql`
     document = LogoutDocument;
     
   }
-export const ConfirmUserDocument = gql`
-    mutation confirmUser($data: String!) {
-  confirmUser(token: $data) {
+export const CreateFolderDocument = gql`
+    mutation createFolder($data: FolderArgs!) {
+  createFolder(input: $data) {
     success {
       message
     }
@@ -1260,13 +1262,13 @@ export const ConfirmUserDocument = gql`
   @Injectable({
     providedIn: 'root'
   })
-  export class ConfirmUserGQL extends Apollo.Mutation<ConfirmUserMutation, ConfirmUserMutationVariables> {
-    document = ConfirmUserDocument;
+  export class CreateFolderGQL extends Apollo.Mutation<CreateFolderMutation, CreateFolderMutationVariables> {
+    document = CreateFolderDocument;
     
   }
-export const ForgotPasswordDocument = gql`
-    mutation forgotPassword($data: String!) {
-  forgotPassword(email: $data) {
+export const DeleteFolderDocument = gql`
+    mutation deleteFolder($data: FolderArgs!) {
+  deleteFolder(input: $data) {
     success {
       message
     }
@@ -1280,28 +1282,8 @@ export const ForgotPasswordDocument = gql`
   @Injectable({
     providedIn: 'root'
   })
-  export class ForgotPasswordGQL extends Apollo.Mutation<ForgotPasswordMutation, ForgotPasswordMutationVariables> {
-    document = ForgotPasswordDocument;
-    
-  }
-export const ChangePasswordDocument = gql`
-    mutation changePassword($data: ChangePasswordInput!) {
-  changePassword(input: $data) {
-    success {
-      message
-    }
-    errors {
-      message
-    }
-  }
-}
-    `;
-
-  @Injectable({
-    providedIn: 'root'
-  })
-  export class ChangePasswordGQL extends Apollo.Mutation<ChangePasswordMutation, ChangePasswordMutationVariables> {
-    document = ChangePasswordDocument;
+  export class DeleteFolderGQL extends Apollo.Mutation<DeleteFolderMutation, DeleteFolderMutationVariables> {
+    document = DeleteFolderDocument;
     
   }
 export const CreateNoteDocument = gql`
@@ -1524,6 +1506,50 @@ export const UpdateUserProfileImageDocument = gql`
     document = UpdateUserProfileImageDocument;
     
   }
+export const FoldersDocument = gql`
+    query folders($data: FolderArgs!) {
+  folders(input: $data) {
+    id
+    name
+    creationTime
+    notes {
+      id
+      title
+      creationTime
+    }
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class FoldersGQL extends Apollo.Query<FoldersQuery, FoldersQueryVariables> {
+    document = FoldersDocument;
+    
+  }
+export const FolderDocument = gql`
+    query folder($data: FolderArgs!) {
+  folder(input: $data) {
+    id
+    name
+    creationTime
+    notes {
+      id
+      title
+      creationTime
+    }
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class FolderGQL extends Apollo.Query<FolderQuery, FolderQueryVariables> {
+    document = FolderDocument;
+    
+  }
 export const MeDocument = gql`
     query me {
   me {
@@ -1623,6 +1649,7 @@ export const PlayersDocument = gql`
     averageDraftPosition
     depthChart
     birthDate
+    college
     photoUrl
     projection {
       id
@@ -2083,9 +2110,8 @@ export const UserDocument = gql`
       private loginGql: LoginGQL,
       private registerGql: RegisterGQL,
       private logoutGql: LogoutGQL,
-      private confirmUserGql: ConfirmUserGQL,
-      private forgotPasswordGql: ForgotPasswordGQL,
-      private changePasswordGql: ChangePasswordGQL,
+      private createFolderGql: CreateFolderGQL,
+      private deleteFolderGql: DeleteFolderGQL,
       private createNoteGql: CreateNoteGQL,
       private deleteNoteGql: DeleteNoteGQL,
       private updatePlayersGql: UpdatePlayersGQL,
@@ -2097,6 +2123,8 @@ export const UserDocument = gql`
       private addTeamStatsGql: AddTeamStatsGQL,
       private updateTeamsGql: UpdateTeamsGQL,
       private updateUserProfileImageGql: UpdateUserProfileImageGQL,
+      private foldersGql: FoldersGQL,
+      private folderGql: FolderGQL,
       private meGql: MeGQL,
       private notesGql: NotesGQL,
       private noteGql: NoteGQL,
@@ -2123,16 +2151,12 @@ export const UserDocument = gql`
       return this.logoutGql.mutate(variables, options)
     }
     
-    confirmUser(variables: ConfirmUserMutationVariables, options?: MutationOptionsAlone<ConfirmUserMutation, ConfirmUserMutationVariables>) {
-      return this.confirmUserGql.mutate(variables, options)
+    createFolder(variables: CreateFolderMutationVariables, options?: MutationOptionsAlone<CreateFolderMutation, CreateFolderMutationVariables>) {
+      return this.createFolderGql.mutate(variables, options)
     }
     
-    forgotPassword(variables: ForgotPasswordMutationVariables, options?: MutationOptionsAlone<ForgotPasswordMutation, ForgotPasswordMutationVariables>) {
-      return this.forgotPasswordGql.mutate(variables, options)
-    }
-    
-    changePassword(variables: ChangePasswordMutationVariables, options?: MutationOptionsAlone<ChangePasswordMutation, ChangePasswordMutationVariables>) {
-      return this.changePasswordGql.mutate(variables, options)
+    deleteFolder(variables: DeleteFolderMutationVariables, options?: MutationOptionsAlone<DeleteFolderMutation, DeleteFolderMutationVariables>) {
+      return this.deleteFolderGql.mutate(variables, options)
     }
     
     createNote(variables: CreateNoteMutationVariables, options?: MutationOptionsAlone<CreateNoteMutation, CreateNoteMutationVariables>) {
@@ -2177,6 +2201,22 @@ export const UserDocument = gql`
     
     updateUserProfileImage(variables: UpdateUserProfileImageMutationVariables, options?: MutationOptionsAlone<UpdateUserProfileImageMutation, UpdateUserProfileImageMutationVariables>) {
       return this.updateUserProfileImageGql.mutate(variables, options)
+    }
+    
+    folders(variables: FoldersQueryVariables, options?: QueryOptionsAlone<FoldersQueryVariables>) {
+      return this.foldersGql.fetch(variables, options)
+    }
+    
+    foldersWatch(variables: FoldersQueryVariables, options?: WatchQueryOptionsAlone<FoldersQueryVariables>) {
+      return this.foldersGql.watch(variables, options)
+    }
+    
+    folder(variables: FolderQueryVariables, options?: QueryOptionsAlone<FolderQueryVariables>) {
+      return this.folderGql.fetch(variables, options)
+    }
+    
+    folderWatch(variables: FolderQueryVariables, options?: WatchQueryOptionsAlone<FolderQueryVariables>) {
+      return this.folderGql.watch(variables, options)
     }
     
     me(variables?: MeQueryVariables, options?: QueryOptionsAlone<MeQueryVariables>) {

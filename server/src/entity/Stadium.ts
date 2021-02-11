@@ -5,7 +5,7 @@ import {
     OneToMany,
     PrimaryColumn
 } from 'typeorm';
-import { Team } from './index';
+import { Team } from './Team';
 import { ObjectType, Field } from 'type-graphql';
 
 @Entity('stadium')

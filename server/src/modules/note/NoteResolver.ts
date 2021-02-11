@@ -1,5 +1,5 @@
 import { Resolver, Query, Mutation, Arg, UseMiddleware, Int, Ctx } from 'type-graphql';
-import { Note } from '../../entity';
+import { Note } from '../../entity/Note';
 import { Result, MyContext } from '../../shared';
 import { NoteInput } from './inputs/NoteInput';
 import { getRepository, SelectQueryBuilder } from 'typeorm';
@@ -40,7 +40,6 @@ export class NoteResolver {
         switch (filterType) {
             case 'byCurrentUser':
                 if (ctx.payload?.userId) {
-                    console.log('Notes: ' + ctx.payload.userId);
                     where = await this._notes.byCurrentUser(ctx);
                     return filterQuery(query, where).getMany();
                 }
@@ -49,8 +48,10 @@ export class NoteResolver {
                 where = await this._notes.byUser(user);
                 return filterQuery(query, where).getMany();
             case 'byPlayer':
-                console.log(player);
                 where = await this._notes.byPlayer(player);
+                return filterQuery(query, where).getMany();
+            case 'byUserAndPlayer':
+                where = await this._notes.byUserAndPlayer(user, player);
                 return filterQuery(query, where).getMany();
             default:
                 return query.getMany()
@@ -94,6 +95,7 @@ export class NoteResolver {
         @Ctx() ctx: MyContext,
         @Arg('input') {
             player,
+            folder,
             title,
             body,
             isPrivate
@@ -104,6 +106,7 @@ export class NoteResolver {
         const titleExists = await Note.findOne({
             where: {
                 user,
+                folder,
                 player,
                 title
             },
@@ -126,6 +129,7 @@ export class NoteResolver {
         await Note.create({
             user,
             player,
+            folder,
             creationTime,
             title,
             body,

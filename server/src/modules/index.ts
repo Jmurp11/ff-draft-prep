@@ -1,4 +1,3 @@
-export { ScoreResolver } from './score/ScoreResolver';
 export { NoteResolver } from './note/NoteResolver';
 export { PlayerResolver } from './player/PlayerResolver';
 export { ProjectionResolver } from './projection/ProjectionResolver';

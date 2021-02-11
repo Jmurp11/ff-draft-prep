@@ -1,0 +1,66 @@
+<mat-card class="player-card">
+  <mat-card-header fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="0.5%">
+    <div fxFlex="65%">
+      <img [src]="player.photoUrl" alt="player-image" class="avatar card-avatar">
+    </div>
+    <div fxFlex="20%">
+      <span class="title bold">
+        {{ player.name | uppercase}}
+      </span>
+      <span class="subtitle">{{ player.position }}</span>
+    </div>
+    <div fxFlex="15%">
+      <span class="chip bold"
+        [style.backgroundColor]="player.team ? '#'+player.team.secondaryColor : freeAgentSecondaryColor"
+        [style.color]="player.team ? '#'+player.team.primaryColor : freeAgentPrimaryColor">
+        {{ player.team ? player.team.fullName : freeAgent }}
+      </span>
+      <span style="padding: .2em;"></span>
+      <span class="chip" [style.backgroundColor]="player.status === activeStatus ? 'green' : 'red'">
+        {{ player.status }}
+      </span>
+    </div>
+  </mat-card-header>
+  <mat-card-content>
+    <div class="summary-card">
+      <mat-card>
+        <div fxLayout="column" fxLayoutAlign="center center">
+          <div class="full-width" fxLayout="row" fxLayoutAlign="space-evenly" fxLayoutGap="25%">
+            <div fxFlex="30%">
+              <span style="font-weight: bold">Height: </span> {{ player.height }}
+            </div>
+            <div fxFlex="30%">
+              <span style="font-weight: bold">Weight: </span> {{ player.weight }}
+            </div>
+            <div fxFlex="30%">
+              <span style="font-weight: bold">Age: </span> {{ getAge(player.birthDate) }}
+            </div>
+          </div>
+        </div>
+      </mat-card>
+    </div>
+    <app-accordion [player]="player"></app-accordion>
+  </mat-card-content>
+  <mat-card-actions fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="0.5%">
+    <div fxLayout="row" fxLayoutAlign="space-evenly" fxLayoutGap="75%">
+      <div fxFlex="30%">
+        <button mat-mini-fab color="primary" (click)="openCreateNoteDialog(player)">
+          <mat-icon>note_add</mat-icon>
+        </button>
+      </div>
+
+      <div fxFlex="30%">
+        <button mat-mini-fab color="warn" (click)="openCreateTargetDialog(player)">
+          <mat-icon>gps_fixed</mat-icon>
+        </button>
+      </div>
+
+      <div fxFlex="30%">
+        <button mat-mini-fab color="accent" (click)="openNoteList(player.id)">
+          <mat-icon>notes</mat-icon>
+        </button>
+      </div>
+
+    </div>
+  </mat-card-actions>
+</mat-card>

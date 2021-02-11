@@ -9,6 +9,7 @@ query players($data: PlayerArgs!) {
     averageDraftPosition
     depthChart
     birthDate
+    college
     photoUrl
     projection {
       id

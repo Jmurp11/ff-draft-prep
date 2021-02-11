@@ -1,5 +1,5 @@
 import { Resolver, Query, Mutation, Arg, UseMiddleware } from 'type-graphql';
-import { Standings } from '../../entity';
+import { Standings } from '../../entity/Standings';
 import { Result } from '../../shared';
 import { logger } from '../../middleware';
 

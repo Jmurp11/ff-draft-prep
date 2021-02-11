@@ -7,6 +7,9 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { AuthGuard } from './auth/auth.guard';
 import { LayoutComponent } from './ui/layout/layout.component';
 import { ProfileComponent } from './profile/profile.component';
+import { FolderListComponent } from './notes/folder-list/folder-list.component';
+import { PlayersComponent } from './players/players.component';
+import { PlayerListComponent } from './players/player-list/player-list.component';
 
 
 
@@ -34,7 +37,22 @@ const routes: Routes = [
         component: ProfileComponent,
         canActivate: [AuthGuard]
       },
-
+      {
+        path: 'players',
+        component: PlayersComponent,
+        canActivate: [AuthGuard],
+        children: [
+          {
+            path: 'list',
+            component: PlayerListComponent
+          }
+        ]
+      },
+      {
+        path: 'folder-list',
+        component: FolderListComponent,
+        canActivate: [AuthGuard]
+      },
       {
         path: 'landing',
         component: LandingComponent

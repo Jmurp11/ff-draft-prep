@@ -29,36 +29,3 @@ mutation register($data: RegisterInput!) {
 mutation logout {
   logout
 }
-
-mutation confirmUser($data: String!) {
-  confirmUser(token: $data) {
-    success {
-      message
-    }
-    errors {
-      message
-    }
-  }
-}
-
-mutation forgotPassword($data: String!) {
-  forgotPassword(email: $data) {
-    success {
-      message
-    }
-    errors {
-      message
-    }
-  }
-}
-
-mutation changePassword($data: ChangePasswordInput!) {
-  changePassword(input: $data) {
-    success {
-      message
-    }
-    errors {
-      message
-    }
-  }
-}

@@ -6,7 +6,7 @@ import {
     OneToOne,
     PrimaryColumn
 } from 'typeorm';
-import { Team } from './index';
+import { Team } from './Team';
 import { ObjectType, Field, Root } from 'type-graphql';
 
 @Entity('standings')

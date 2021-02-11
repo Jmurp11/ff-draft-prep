@@ -1,0 +1,25 @@
+query folders($data: FolderArgs!) {
+  folders(input: $data) {
+    id
+    name
+    creationTime
+    notes {
+      id
+      title
+      creationTime
+    }
+  }
+}
+
+query folder($data: FolderArgs!) {
+  folder(input: $data) {
+    id
+    name
+    creationTime
+    notes {
+      id
+      title
+      creationTime
+    }
+  }
+}

@@ -1,5 +1,5 @@
 import { Resolver, Mutation, UseMiddleware, Query } from 'type-graphql';
-import { Stadium } from '../../entity';
+import { Stadium } from '../../entity/Stadium';
 import { Result } from '../../shared';
 import { logger } from '../../middleware';
 import { getRepository } from 'typeorm';

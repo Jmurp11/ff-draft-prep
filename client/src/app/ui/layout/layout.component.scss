@@ -3,12 +3,29 @@
   width: 100%;
 }
 
-.sidenav {
-  height: 100%;
-  width: 10%;
-  background-color: #82b1ff;
+@media only screen and (max-width: 768px) {
+  .sidenav {
+    height: 100%;
+    width: 50%;
+  }
+
+  .sidenav-right {
+    height: 100%;
+    width: 80%;
+  }
 }
 
+@media only screen and (min-width: 769px) {
+  .sidenav {
+    height: 100%;
+    width: 25%;
+  }
+
+  .sidenav-right {
+    height: 100%;
+    width: 25%;
+  }
+}
 .orange {
   background-color: #ffab40;
   width: 100%;

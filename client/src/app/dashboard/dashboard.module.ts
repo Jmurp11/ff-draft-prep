@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { NotesModule } from '../notes/notes.module';
 import { SharedModule } from '../shared/shared.module';
 import { DashboardComponent } from './dashboard.component';
 
@@ -11,6 +12,7 @@ import { DashboardComponent } from './dashboard.component';
     DashboardComponent
   ],
   imports: [
+    NotesModule,
     RouterModule,
     SharedModule
   ],

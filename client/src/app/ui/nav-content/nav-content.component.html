@@ -1,28 +1,19 @@
-<div style="height: 100%;" fxLayout="column" fxLayoutAlign="space-between center" fxLayoutGap="0.5%">
+<mat-nav-list>
 
+    <a class="nav-item" mat-list-item routerLink="/dashboard" (click)="closeSidenav()">
+      <mat-icon>dashboard</mat-icon><span class="nav-caption">Dashboard</span>
+    </a>
 
-  <div fxFlex="25%">
-    <button mat-fab color="accent" matTooltip="Dashboard" (click)="_navigate.navigate('dashboard')">
-      <mat-icon>dashboard</mat-icon>
-    </button>
-  </div>
+    <a class="nav-item" mat-list-item routerLink="/players/list" (click)="closeSidenav()">
+      <mat-icon>supervisor_account</mat-icon><span class="nav-caption">Players</span>
+    </a>
 
-  <div fxFlex="25%">
-    <button mat-fab color="accent" matTooltip="Draft Tools">
-      <mat-icon>build</mat-icon>
-    </button>
-  </div>
+    <a class="nav-item" mat-list-item routerLink="/folder-list" (click)="closeSidenav()">
+      <mat-icon>folder</mat-icon><span class="nav-caption">Notes</span>
+    </a>
 
-  <div fxFlex="25%">
-    <button mat-fab color="accent" matTooltip="Player List">
-      <mat-icon>list</mat-icon>
-    </button>
-  </div>
+    <a class="nav-item" mat-list-item routerLink="/folder-list" (click)="closeSidenav()">
+      <mat-icon>settings</mat-icon><span class="nav-caption">Settings</span>
+    </a>
 
-  <div fxFlex="25%">
-    <button mat-fab color="accent" matTooltip="Settings">
-      <mat-icon>settings</mat-icon>
-    </button>
-  </div>
-
-</div>
+</mat-nav-list>

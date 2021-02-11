@@ -1,5 +1,5 @@
 import { Resolver, Query, Mutation, Arg, UseMiddleware } from 'type-graphql';
-import { Team } from '../../entity';
+import { Team } from '../../entity/Team';
 import { Result } from '../../shared';
 import { SelectQueryBuilder, getRepository } from 'typeorm';
 import { filterQuery } from '../../utils/filterQuery';

@@ -9,6 +9,9 @@ export class NoteInput {
     @Field()
     title: string;
 
+    @Field({ nullable: true })
+    folder: string;
+
     @Field()
     body: string;
 

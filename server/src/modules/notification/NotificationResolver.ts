@@ -1,6 +1,6 @@
 import { Resolver, Arg, UseMiddleware, Subscription, Root } from 'type-graphql';
 import { isAuth, logger } from '../../middleware';
-import { Notification } from '../../entity';
+import { Notification } from '../../entity/Notification';
 
 @Resolver()
 export class NotificationResolver {

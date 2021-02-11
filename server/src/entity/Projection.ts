@@ -6,7 +6,7 @@ import {
     PrimaryGeneratedColumn,
     ManyToOne
 } from 'typeorm';
-import { Player } from './index';
+import { Player } from './Player';
 import { ObjectType, Field, Root } from 'type-graphql';
 
 @Entity('projections')

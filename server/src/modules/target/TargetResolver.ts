@@ -1,5 +1,5 @@
 import { Resolver, Query, Mutation, Arg, UseMiddleware, Float, Ctx } from 'type-graphql';
-import { Target } from '../../entity';
+import { Target } from '../../entity/Target';
 import { Result, MyContext } from '../../shared';
 import { TargetInput } from './inputs/TargetInput';
 import { getRepository, SelectQueryBuilder } from 'typeorm';

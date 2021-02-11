@@ -1,6 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { NavigateService } from '../../shared/navigate.service';
-
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 @Component({
   selector: 'app-nav-content',
   templateUrl: './nav-content.component.html',
@@ -8,9 +6,15 @@ import { NavigateService } from '../../shared/navigate.service';
 })
 export class NavContentComponent implements OnInit {
 
-  constructor(public _navigate: NavigateService) { }
+  @Output()
+  sidenavClose = new EventEmitter();
+
+  constructor() { }
 
   ngOnInit(): void {
   }
 
+  closeSidenav() {
+    this.sidenavClose.emit();
+  }
 }

@@ -1,23 +1,32 @@
 <mat-toolbar>
+  <div fxHide fxShow.lt-md *ngIf="user">
+    <button mat-icon-button color="accent" (click)="toggleSidenav()">
+      <mat-icon>menu</mat-icon>
+    </button>
+  </div>
   <button mat-button color="accent" (click)="_navigate.navigate('dashboard')">
     <h2>{{ title }}</h2>
   </button>
-  <span class="spacer"></span>
-  <span fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="0.5%">
-    <span fxFlex="50%">
-      <button mat-flat-button color="accent" (click)="openLoginDialog()" *ngIf="!user">Sign In</button>
+  <div class="spacer"></div>
+
+  <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="0.5%" *ngIf="user" fxHide fxShow.gt-sm>
+    <span fxFlex="30%">
+      <button mat-button color="accent"(click)="_navigate.navigate('players/list')">Players</button>
     </span>
-    <span fxFlex="50%">
-      <button mat-flat-button color="accent" (click)="openRegisterDialog()" *ngIf="!user">Sign Up</button>
+    <span fxFlex="30%">
+      <button mat-button color="accent" (click)="_navigate.navigate('folder-list')">Notes</button>
     </span>
-  </span>
-  <span fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="0.5%" *ngIf="user">
+    <span fxFlex="30%">
+      <button mat-button color="accent">Tools</button>
+    </span>
+  </div>
+  <div class="spacer"></div>
+  <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="0.5%" *ngIf="user" fxHide fxShow.gt-sm>
     <span fxFlex="80%">
       <app-searchbar></app-searchbar>
     </span>
     <span fxFlex="20%">
-      <button mat-icon-button class="icon" color="accent" [matMenuTriggerFor]="menu"
-        aria-label="Account Menu">
+      <button mat-icon-button class="icon" color="accent" [matMenuTriggerFor]="menu" aria-label="Account Menu">
         <mat-icon>more_vert</mat-icon>
       </button>
       <mat-menu #menu="matMenu">
@@ -27,5 +36,13 @@
         </button>
       </mat-menu>
     </span>
-  </span>
+  </div>
+  <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="0.5%" *ngIf="!user">
+    <span fxFlex="50%">
+      <button mat-flat-button color="accent" (click)="openLoginDialog()">Sign In</button>
+    </span>
+    <span fxFlex="50%">
+      <button mat-flat-button color="accent" (click)="openRegisterDialog()">Sign Up</button>
+    </span>
+  </div>
 </mat-toolbar>

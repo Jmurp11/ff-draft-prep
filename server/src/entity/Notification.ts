@@ -1,5 +1,6 @@
 import { ObjectType, Field } from 'type-graphql';
-import { Note, User } from './';
+import { Note } from './Note';
+import { User } from './User';
 
 @ObjectType()
 export class Notification {

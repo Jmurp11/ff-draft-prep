@@ -9,7 +9,9 @@ import {
   PrimaryColumn
 } from 'typeorm';
 import { ObjectType, Field, Root } from 'type-graphql';
-import { Team, Projection, Note } from './index';
+import { Team } from './Team';
+import { Note } from './Note';
+import { Projection } from './Projection';
 
 @Entity('players')
 @ObjectType()

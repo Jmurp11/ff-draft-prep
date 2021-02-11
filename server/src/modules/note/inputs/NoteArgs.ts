@@ -12,6 +12,9 @@ export class NoteArgs {
     user: string;
 
     @Field({ nullable: true })
+    folder: string;
+
+    @Field({ nullable: true })
     take: number;
 
     @Field({ nullable: true })

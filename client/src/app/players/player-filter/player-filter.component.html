@@ -1,0 +1,39 @@
+<mat-card>
+  <mat-card-content>
+    <form [formGroup]="form" class="form">
+      <div *ngIf="searchVisible.isSearchVisible | async" fxLayout="column" fxLayoutAlign="center" fxLayoutGap="0.5%">
+
+        <div fxFlex="80%" fxLayout="row" fxLayout.lt-md="column" fxLayoutAlign="center" fxLayoutGap="0.5%">
+          <div fxFlex="30%"></div>
+
+          <div fxFlex="30%" fxLayout="row" fxLayoutAlign="center center">
+            <mat-form-field appearance="standard">
+              <input matInput placeholder="Search" formControlName="searchBar">
+            </mat-form-field>
+          </div>
+
+          <div fxFlex="30%" fxLayout="row" fxLayoutAlign="end center">
+            <mat-radio-group aria-label="Scoring System" fxLayout="row" fxLayoutAlign="center center"
+              formControlName="scoringType">
+              <mat-radio-button *ngFor="let type of scoringTypes;" [value]="type" [checked]="type === 'Standard'"
+                style="padding: .250em;">
+                {{ type }}
+              </mat-radio-button>
+            </mat-radio-group>
+          </div>
+        </div>
+
+        <div fxFlex="20%" fxLayout="row" fxLayoutAlign="space-evenly center">
+          <button mat-icon-button (click)="toggleSearchBar()" matTooltip="Hide Search Section">
+            <mat-icon>keyboard_arrow_up</mat-icon>
+          </button>
+        </div>
+      </div>
+      <div *ngIf="!(searchVisible.isSearchVisible | async)">
+        <button mat-icon-button (click)="toggleSearchBar()" matTooltip="Show Search Section">
+          <mat-icon>keyboard_arrow_down</mat-icon>
+        </button>
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card>

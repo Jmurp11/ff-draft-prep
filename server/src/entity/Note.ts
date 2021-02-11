@@ -4,11 +4,12 @@ import {
     BaseEntity,
     JoinColumn,
     PrimaryGeneratedColumn,
-    ManyToOne,
-    OneToMany
+    ManyToOne
 } from 'typeorm';
-import { Score, Player, User } from './index';
+import { Player } from './Player';
+import { User } from './User';
 import { ObjectType, Field } from 'type-graphql';
+import { Folder } from './Folder';
 
 /**
  * remove player, change to subject
@@ -39,6 +40,12 @@ export class Note extends BaseEntity {
     @Column('int')
     player!: number;
 
+    @ManyToOne(() => Folder)
+    @JoinColumn({ name: 'folder' })
+    @Field(() => Folder, { nullable: true})
+    @Column('uuid', { nullable: true })
+    folder: string;
+
     @Field()
     @Column('text')
     title!: string;
@@ -50,13 +57,6 @@ export class Note extends BaseEntity {
     @Field()
     @Column('boolean', { default: false })
     isPrivate!: boolean;
-
-    @Field(() => [Score], { nullable: true })
-    @OneToMany(() => Score, score => score.note, {
-        eager: true,
-        onDelete: 'CASCADE'
-    })
-    score: Score[];
 
     @Field(() => Date)
     @Column('timestamp')

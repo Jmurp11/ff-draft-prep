@@ -7,7 +7,8 @@ import {
     ManyToOne
 } from 'typeorm';
 import { ObjectType, Field } from 'type-graphql';
-import { Player, User } from './';
+import { User } from './User';
+import { Player } from './Player';
 
 @Entity('targets')
 @ObjectType()

@@ -1,0 +1,23 @@
+<div>
+  <app-player-filter></app-player-filter>
+</div>
+
+<div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="0.1%">
+  <div *ngIf="!(visiblePlayers$ | async)">
+    <app-loading-spinner></app-loading-spinner>
+  </div>
+</div>
+
+<div class="scrollable" [style.height.vh]="mainDivHeight" *ngIf="(visiblePlayers$ | async) as visiblePlayers"
+  fxLayout="row wrap" fxLayoutAlign="center" fxLayoutGap="0.5%" #scrollable>
+  <div *ngFor="let player of visiblePlayers | slice:pageStartingIndex:pageEndingIndex" style="padding: 1em;">
+    <app-player-card [input]="player"></app-player-card>
+  </div>
+</div>
+
+<div *ngIf="(visiblePlayers$ | async) as visiblePlayers" fxLayout="row" fxLayoutAlign="start" fxLayoutGap="1%" style="position: relative; bottom: 0;">
+  <mat-card class="p-0">
+    <mat-paginator *ngIf="(visiblePlayers)?.length > 0" [length]="(visiblePlayers)?.length" [pageSize]="15"
+      [pageSizeOptions]="pageSizeOptions" (page)="onPaginateChange($event)" (click)="scrollToTop()"></mat-paginator>
+  </mat-card>
+</div>

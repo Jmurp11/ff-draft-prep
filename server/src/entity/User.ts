@@ -8,7 +8,8 @@ import {
     OneToMany
 } from 'typeorm';
 import { ObjectType, Field } from 'type-graphql';
-import { Score, Note, Target } from './index';
+import { Target } from './Target';
+import { Folder } from './Folder';
 
 @Entity('users')
 @ObjectType()
@@ -57,17 +58,12 @@ export class User extends BaseEntity {
     @Column('text', { nullable: true })
     profileImage: string;
 
-    @Field(() => [Note], { nullable: true })
-    @OneToMany(() => Note, note => note.user, {
-        onDelete: 'CASCADE'
+    @Field(() => [Folder], { nullable: true })
+    @OneToMany(() => Folder, folder => folder.user, {
+        onDelete: 'CASCADE',
+        eager: true
     })
-    notes: Note[];
-
-    @Field(() => [Score], { nullable: true })
-    @OneToMany(() => Score, score => score.user, {
-        onDelete: 'CASCADE'
-    })
-    score: Score[];
+    folders: Folder[];
 
     @Field(() => [Target], { nullable: true })
     @OneToMany(() => Target, target => target.user, {

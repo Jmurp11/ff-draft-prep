@@ -1,6 +1,7 @@
 import { Resolver, Query, Mutation, Arg } from 'type-graphql';
 import { getRepository } from 'typeorm';
-import { Team, TeamStats } from '../../entity';
+import { Team } from '../../entity/Team';
+import { TeamStats } from '../../entity/Team-Stats';
 import { Result } from '../../shared';
 import { TeamStatsInput } from './inputs/TeamStatsInput';
 

@@ -1,5 +1,5 @@
 import { registerDecorator, ValidationOptions, ValidatorConstraint, ValidatorConstraintInterface } from "class-validator";
-import { Team } from '../../../entity';
+import { Team } from '../../../entity/Team';
 
 @ValidatorConstraint({ async: true })
 export class TeamExistsConstraint implements ValidatorConstraintInterface {

@@ -1,6 +1,6 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { NavigateService } from 'src/app/shared/navigate.service';
+import { NavigateService } from '../../shared/navigate.service';
 
 @Component({
   selector: 'app-nav-header',
@@ -11,12 +11,15 @@ export class NavHeaderComponent implements OnInit, OnChanges {
   @Input()
   image: string;
 
+  @Output()
+  sidenavClose = new EventEmitter();
+
   subSink: Subscription;
   defaultImage: string = 'https://www.w3schools.com/howto/img_avatar.png';
   profileImage: string;
 
   constructor(
-    public _navigate: NavigateService
+    private _navigate: NavigateService
   ) { }
 
   ngOnInit(): void { }
@@ -32,5 +35,14 @@ export class NavHeaderComponent implements OnInit, OnChanges {
         }
       }
     }
+  }
+
+  closeSidenav() {
+    this.sidenavClose.emit();
+  }
+
+  onProfileClick() {
+    this._navigate.navigate('profile');
+    this.closeSidenav();
   }
 }

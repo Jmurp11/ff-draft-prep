@@ -1,5 +1,5 @@
-  
-import { 
+
+import {
     Entity,
     Column,
     BaseEntity,
@@ -8,7 +8,9 @@ import {
     ManyToOne
 } from 'typeorm';
 import { ObjectType, Field, Root } from 'type-graphql';
-import { TeamStats, Stadium, Standings } from './index';
+import { Standings } from './Standings';
+import { Stadium } from './Stadium';
+import { TeamStats } from './Team-Stats';
 
 @Entity('teams')
 @ObjectType()
@@ -27,7 +29,7 @@ export class Team extends BaseEntity {
 
     @Field()
     fullName(@Root() parent: Team): string {
-      return `${parent.city} ${parent.nickname}`;
+        return `${parent.city} ${parent.nickname}`;
     }
 
     @Field()
@@ -41,7 +43,7 @@ export class Team extends BaseEntity {
     @Field()
     @Column('text')
     logoUrl!: string;
-    
+
     @Field()
     @Column('text')
     primaryColor!: string;
