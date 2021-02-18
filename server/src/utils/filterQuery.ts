@@ -75,27 +75,27 @@ const handleArgs = (
                     break;
                 }
                 case "contains": {
-                    query[andOr](`${fieldName} LIKE '%${value}%'`);
+                    query[andOr](`${fieldName} ILIKE '%${value}%'`);
                     break;
                 }
                 case "notContains": {
-                    query[andOr](`${fieldName} NOT LIKE '%${value}%'`);
+                    query[andOr](`${fieldName} NOT ILIKE '%${value}%'`);
                     break;
                 }
                 case "startsWith": {
-                    query[andOr](`${fieldName} LIKE '${value}%'`);
+                    query[andOr](`${fieldName} ILIKE '${value}%'`);
                     break;
                 }
                 case "notStartsWith": {
-                    query[andOr](`${fieldName} NOT LIKE '${value}%'`);
+                    query[andOr](`${fieldName} NOT ILIKE '${value}%'`);
                     break;
                 }
                 case "endsWith": {
-                    query[andOr](`${fieldName} LIKE '%${value}'`);
+                    query[andOr](`${fieldName} ILIKE '%${value}'`);
                     break;
                 }
                 case "notEndsWith": {
-                    query[andOr](`${fieldName} LIKE '%${value}'`);
+                    query[andOr](`${fieldName} ILIKE '%${value}'`);
                     break;
                 }
                 default: {

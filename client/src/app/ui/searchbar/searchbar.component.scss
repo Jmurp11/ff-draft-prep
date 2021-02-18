@@ -2,3 +2,12 @@
   color: #FFAB40 !important;
   font-size: medium !important;
 }
+
+.image {
+  margin-top: 1em;
+  height: 2em;
+  width: 2em;
+  border-radius: 50%;
+  flex-shrink: 0;
+  object-fit: cover;
+}

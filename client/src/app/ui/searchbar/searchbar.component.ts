@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Observable, of, Subscription } from 'rxjs';
 import { debounceTime, map, startWith, switchMap } from 'rxjs/operators';
-import { ApolloAngularSDK, Exact } from '../../sdk/generated/graphql';
+import { ApolloAngularSDK, Exact, PlayerArgs } from '../../sdk/generated/graphql';
 import { NavigateService } from '../../shared/navigate.service';
 
 @Component({
@@ -14,7 +14,7 @@ export class SearchbarComponent implements OnInit, OnDestroy {
   subSink: Subscription;
   searchInput = new FormControl(null, { updateOn: 'change' });
   filteredOptions: Observable<any[]>;
-  navigatePath: string = '/company/company-info/';
+  navigatePath: string = '/players/';
 
   constructor(
     private apolloSdk: ApolloAngularSDK,
@@ -24,12 +24,38 @@ export class SearchbarComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.subSink = new Subscription();
 
-    this.filteredOptions = of([]);
+    this.filteredOptions = this.searchInput
+      .valueChanges
+      .pipe(
+        debounceTime(500)
+      )
+      .pipe(
+        startWith(''),
+        switchMap(value => {
+          const searchInput: PlayerArgs = {
+            filterType: 'byName',
+            lastName: value
+          };
+
+          if (value && value.length > 0) {
+            return this.apolloSdk.playersWatch({ data: searchInput })
+              .valueChanges
+              .pipe(
+                map(res => {
+                  return res.data.players;
+                }
+                )
+              );
+          } else {
+            return of([]);
+          }
+        })
+      );;
   }
 
-  onSelect(symbol: string) {
+  onSelect(player: string) {
+    this._navigate.navigate(`${this.navigatePath}${player}`);
     this.clearSearch();
-    this._navigate.navigate(`${this.navigatePath}${symbol}`);
   }
 
   clearSearch(): void {

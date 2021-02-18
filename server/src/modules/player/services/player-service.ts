@@ -40,27 +40,19 @@ export class PlayerService {
         return filters;
     }
 
-    async byName(firstName: string, lastName: string): Promise<Where | undefined> {
+    async byName(lastName: string): Promise<Where | undefined> {
+
         const lastNameFields: Fields = {
             fieldTable: 'players',
             fieldName: 'lastName',
             fieldOptions: {
-                is: `'${lastName}'`
-            }
-        };
-
-        const firstNameFields: Fields = {
-            fieldTable: 'players',
-            fieldName: 'firstName',
-            fieldOptions: {
-                is: `'${firstName}'`
+                contains: `${lastName}`
             }
         };
 
         const filters: Where = {
             AND: [
-                lastNameFields,
-                firstNameFields
+                lastNameFields
             ]
         }
 
@@ -148,20 +140,12 @@ export class PlayerService {
         return filters;
     }
 
-    async byNameAndPosition(firstName: string, lastName: string, position: string): Promise<Where | undefined> {
+    async byNameAndPosition(lastName: string, position: string): Promise<Where | undefined> {
         const lastNameFields: Fields = {
             fieldTable: 'players',
             fieldName: 'lastName',
             fieldOptions: {
-                is: `'${lastName}'`
-            }
-        };
-
-        const firstNameFields: Fields = {
-            fieldTable: 'players',
-            fieldName: 'firstName',
-            fieldOptions: {
-                is: `'${firstName}'`
+                contains: `${lastName}`
             }
         };
 
@@ -176,7 +160,6 @@ export class PlayerService {
         const filters: Where = {
             AND: [
                 lastNameFields,
-                firstNameFields,
                 positionFields
             ]
         }

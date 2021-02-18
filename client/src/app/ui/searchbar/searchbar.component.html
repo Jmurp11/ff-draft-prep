@@ -6,16 +6,26 @@
       <mat-icon>close</mat-icon>
     </button>
     <mat-autocomplete #auto="matAutocomplete" class="scrollable">
-      <mat-option *ngFor="let option of filteredOptions | async" [value]="option.symbol">
-        <div fxLayout="column" fxLayoutAlign="space-between" fxLayoutGap="0.5%" (click)="onSelect(option.symbol)">
-          <div fxFlex="50%" class="mat-h3">
-            {{ option.symbol }}
-          </div>
-          <div fxFlex="50%" class="mat-caption">
-            {{ option.name }}
+      <mat-option *ngFor="let option of filteredOptions | async" [value]="option.id">
+        <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="0.5%" (click)="onSelect(option.id)">
+          <div fxFlex="100%">
+            <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="0.5%">
+              <div fxFlex="20%" fxFlex.lt-md="20%">
+                <img [src]="option.photoUrl" alt="player-image" class="avatar image">
+              </div>
+              <div fxFlex="80%" fxFlex.lt-md="80%" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap=".5%">
+                <div fxFlex="50%">
+                  <span class="mat-h4">
+                    {{ option.name | uppercase}}
+                  </span>
+                  <span class="mat-caption">{{ option.position }}</span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </mat-option>
     </mat-autocomplete>
   </mat-form-field>
 </form>
+

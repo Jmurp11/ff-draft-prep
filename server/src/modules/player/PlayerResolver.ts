@@ -20,6 +20,7 @@ export class PlayerResolver {
     async players(
         @Arg('input', { nullable: true }) {
             filterType,
+            lastName,
             team,
             position,
             status,
@@ -49,6 +50,9 @@ export class PlayerResolver {
             case 'byPosition':
                 where = await this._player.byPosition(position);
                 return filterQuery(query, where).getMany();
+            case 'byName':
+                where = await this._player.byName(lastName);
+                return filterQuery(query, where).getMany();
             case 'byStatus':
                 where = await this._player.byStatus(status);
                 return filterQuery(query, where).getMany();
@@ -67,10 +71,7 @@ export class PlayerResolver {
     @Query(() => Player)
     async player(@Arg('input') {
         filterType,
-        id,
-        firstName,
-        lastName,
-        position
+        id
     }: PlayerArgs): Promise<Player | undefined> {
         let where;
 
@@ -87,12 +88,6 @@ export class PlayerResolver {
         switch (filterType) {
             case 'byId':
                 where = await this._player.byId(id);
-                return filterQuery(query, where).getOne();
-            case 'byName':
-                where = await this._player.byName(firstName, lastName);
-                return filterQuery(query, where).getOne();
-            case 'byNameAndPosition':
-                where = await this._player.byNameAndPosition(firstName, lastName, position);
                 return filterQuery(query, where).getOne();
             default:
                 return undefined;

@@ -124,7 +124,7 @@ export class PlayerFilterComponent implements OnInit, OnDestroy {
     this.subSink.add(
       this.form.get('filterType')
         .valueChanges
-        .subscribe(value => {
+        .subscribe(() => {
           this.form.get('searchBar').setValue(this.form.get('searchBar').value);
         }));
 
