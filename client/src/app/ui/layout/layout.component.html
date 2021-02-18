@@ -1,13 +1,18 @@
 <mat-sidenav-container class="container" autosize>
   <mat-sidenav #sidenav class="sidenav" mode="over" role="navigation" position="start">
     <div style="height: 100%; width: 100%;" fxLayout="column" fxLayoutAlign="space-between center" fxLayoutGap="0.5%">
-      <div fxFlex="15%">
+      <div fxFlex="5%"></div>
+      <div fxFlex="5%">
+        <app-searchbar></app-searchbar>
+      </div>
+      <div fxFlex="5%">
         <app-nav-header [image]="profileImage" (sidenavClose)="sidenav.toggle()"></app-nav-header>
       </div>
+      <div fxFlex="10%"></div>
       <div fxFlex="30%">
         <app-nav-content (sidenavClose)="sidenav.toggle()"></app-nav-content>
       </div>
-      <div fxFlex="55%"></div>
+      <div fxFlex="40%"></div>
     </div>
   </mat-sidenav>
   <mat-sidenav color="accent" #sidenav2 class="sidenav-right" mode="over" position="end" [(opened)]="rightNavState">
