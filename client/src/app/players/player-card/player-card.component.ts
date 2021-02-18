@@ -10,7 +10,9 @@ import { PlayerStoreService } from '../player-store.service';
 import { UIStoreService } from '../../ui/ui-store.service';
 import { NoteStoreService } from '../../notes/note-store.service';
 import { AuthStoreService } from '../../auth/auth-store.service';
+import { Chart } from '../../ui/chart/chart.model';
 import { switchMap } from 'rxjs/operators';
+import { NavigateService } from '../../shared/navigate.service';
 
 @Component({
   selector: 'app-player-card',
@@ -32,10 +34,13 @@ export class PlayerCardComponent implements OnInit {
   receivingTableConfig: TableConfig;
   rushingTableConfig: TableConfig;
   kickingTableConfig: TableConfig;
+  chartInput: Chart;
+  additionalInfo: any;
 
   constructor(
     private apolloSdk: ApolloAngularSDK,
     private dialog: MatDialog,
+    public _navigate: NavigateService,
     private noteStore: NoteStoreService,
     private playerStore: PlayerStoreService,
     private snack: MatSnackBar,
@@ -53,6 +58,23 @@ export class PlayerCardComponent implements OnInit {
         switch (propName) {
           case 'input': {
             this.player = this.input;
+
+            const passingPoints = parseFloat((((this.player.projection?.passYards / 25) + (this.player.projection?.passTd * 4)) - (this.player.projection?.interception * 2)).toFixed(2));
+            const rushingPoints = parseFloat((((this.player.projection?.rushYards / 10) + (this.player.projection?.rushTd * 6)) - (this.player.projection?.fumbles * 2)).toFixed(2));
+            const receivingPoints = parseFloat((((this.player.projection?.receivingYards / 10) + (this.player.projection?.receivingTd * 6))).toFixed(2));
+
+            this.additionalInfo = {
+              sum: passingPoints + rushingPoints + receivingPoints
+            };
+
+            this.chartInput = {
+              type: 'doughnut',
+              dataset: [{ data: [passingPoints, rushingPoints, receivingPoints] }],
+              labels: ['Pass Points', 'Rush Points', 'Rec Points'],
+              legend: true,
+              color: null
+            };
+
             break;
           }
         }
@@ -81,8 +103,6 @@ export class PlayerCardComponent implements OnInit {
         }
         )
     );
-
-
   }
 
   getAge(birthdate: string) {

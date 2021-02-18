@@ -197,7 +197,7 @@ export type NoteArgs = {
 export type NoteInput = {
   player: Scalars['Float'];
   title: Scalars['String'];
-  folder: Scalars['String'];
+  folder?: Maybe<Scalars['String']>;
   body: Scalars['String'];
   isPrivate: Scalars['Boolean'];
 };
@@ -226,6 +226,7 @@ export type Player = {
   depthChart?: Maybe<Scalars['Float']>;
   photoUrl: Scalars['String'];
   birthDate?: Maybe<Scalars['String']>;
+  age: Scalars['Float'];
   college?: Maybe<Scalars['String']>;
   draftYear?: Maybe<Scalars['Float']>;
   draftRound?: Maybe<Scalars['Float']>;
@@ -1003,7 +1004,7 @@ export type PlayersQuery = (
   { __typename?: 'Query' }
   & { players: Array<(
     { __typename?: 'Player' }
-    & Pick<Player, 'id' | 'name' | 'status' | 'position' | 'height' | 'weight' | 'averageDraftPosition' | 'depthChart' | 'birthDate' | 'college' | 'photoUrl'>
+    & Pick<Player, 'id' | 'name' | 'status' | 'position' | 'height' | 'weight' | 'averageDraftPosition' | 'depthChart' | 'birthDate' | 'college' | 'photoUrl' | 'draftYear' | 'draftRound' | 'draftPick'>
     & { projection?: Maybe<(
       { __typename?: 'Projection' }
       & Pick<Projection, 'id' | 'completions' | 'attempts' | 'passTd' | 'passYards' | 'interception' | 'carries' | 'rushYards' | 'rushTd' | 'fumbles' | 'receptions' | 'receivingYards' | 'receivingTd' | 'touches' | 'halfPPRTotalPoints' | 'pprTotalPoints' | 'totalPoints' | 'completionPercentage' | 'yardsPerAttempt' | 'yardsPerCarry' | 'yardsPerReception'>
@@ -1033,7 +1034,7 @@ export type PlayerQuery = (
   { __typename?: 'Query' }
   & { player: (
     { __typename?: 'Player' }
-    & Pick<Player, 'id' | 'name' | 'status' | 'position' | 'height' | 'weight' | 'averageDraftPosition' | 'depthChart' | 'birthDate' | 'photoUrl'>
+    & Pick<Player, 'id' | 'name' | 'status' | 'position' | 'height' | 'weight' | 'averageDraftPosition' | 'depthChart' | 'birthDate' | 'age' | 'college' | 'photoUrl' | 'draftYear' | 'draftRound' | 'draftPick'>
     & { projection?: Maybe<(
       { __typename?: 'Projection' }
       & Pick<Projection, 'id' | 'completions' | 'attempts' | 'passTd' | 'passYards' | 'interception' | 'carries' | 'rushYards' | 'rushTd' | 'fumbles' | 'receptions' | 'receivingYards' | 'receivingTd' | 'touches' | 'halfPPRTotalPoints' | 'pprTotalPoints' | 'totalPoints' | 'completionPercentage' | 'yardsPerAttempt' | 'yardsPerCarry' | 'yardsPerReception'>
@@ -1651,6 +1652,9 @@ export const PlayersDocument = gql`
     birthDate
     college
     photoUrl
+    draftYear
+    draftRound
+    draftPick
     projection {
       id
       completions
@@ -1742,7 +1746,12 @@ export const PlayerDocument = gql`
     averageDraftPosition
     depthChart
     birthDate
+    age
+    college
     photoUrl
+    draftYear
+    draftRound
+    draftPick
     projection {
       id
       completions

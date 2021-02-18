@@ -4,7 +4,11 @@
       <div *ngIf="searchVisible.isSearchVisible | async" fxLayout="column" fxLayoutAlign="center" fxLayoutGap="0.5%">
 
         <div fxFlex="80%" fxLayout="row" fxLayout.lt-md="column" fxLayoutAlign="center" fxLayoutGap="0.5%">
-          <div fxFlex="30%"></div>
+
+          <div fxFlex="30%" fxLayout="column" fxLayoutAlign="center center">
+            <mat-label class="bold">{{ scoringTypeLabel }}</mat-label>
+            <mat-slider max=2 min=0 step=1 formControlName="scoringType"></mat-slider>
+          </div>
 
           <div fxFlex="30%" fxLayout="row" fxLayoutAlign="center center">
             <mat-form-field appearance="standard">
@@ -12,14 +16,12 @@
             </mat-form-field>
           </div>
 
-          <div fxFlex="30%" fxLayout="row" fxLayoutAlign="end center">
-            <mat-radio-group aria-label="Scoring System" fxLayout="row" fxLayoutAlign="center center"
-              formControlName="scoringType">
-              <mat-radio-button *ngFor="let type of scoringTypes;" [value]="type" [checked]="type === 'Standard'"
-                style="padding: .250em;">
-                {{ type }}
-              </mat-radio-button>
-            </mat-radio-group>
+          <div fxFlex="30%" fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="1.0%">
+            <mat-form-field appearance="standard">
+              <select matNativeControl required formControlName="displayData">
+                <option *ngFor="let option of dataOptions">{{ option }}</option>
+              </select>
+            </mat-form-field>
           </div>
         </div>
 

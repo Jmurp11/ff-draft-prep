@@ -11,6 +11,9 @@ query players($data: PlayerArgs!) {
     birthDate
     college
     photoUrl
+    draftYear
+    draftRound
+    draftPick
     projection {
       id
       completions
@@ -93,7 +96,12 @@ query player($data: PlayerArgs!) {
     averageDraftPosition
     depthChart
     birthDate
+    age
+    college
     photoUrl
+    draftYear
+    draftRound
+    draftPick
     projection {
       id
       completions

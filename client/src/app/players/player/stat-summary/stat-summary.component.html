@@ -1,0 +1,22 @@
+<div class="full-width" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="0.5%">
+  <div class="full-width" fxLayout="row wrap" fxLayout.lt-md="column" fxLayoutAlign="space-evenly center" fxLayoutAlign.lt-md="space-between center"fxLayoutGap="0.5%">
+    <div fxFlex="15%">
+      <app-touches-card [playerInput]="player"></app-touches-card>
+    </div>
+    <div fxFlex="15%">
+      <app-ppg-card [playerInput]="player"></app-ppg-card>
+    </div>
+    <div fxFlex="15%">
+      <app-td-card [playerInput]="player"></app-td-card>
+    </div>
+    <div fxFlex="15%" *ngIf="player?.position !== 'QB'">
+      <app-target-share-card [playerInput]="player"></app-target-share-card>
+    </div>
+    <div fxFlex="15%" *ngIf="player?.position === 'QB'">
+      <app-passing-card [playerInput]="player"></app-passing-card>
+    </div>
+    <div fxFlex="15%">
+      <app-yards-card [playerInput]="player"></app-yards-card>
+    </div>
+  </div>
+</div>

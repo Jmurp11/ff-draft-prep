@@ -1,0 +1,67 @@
+<mat-card class="header" fxLayout="row" fxLayout.lt-md="column" fxLayoutAlign="space-between center" fxLayoutGap="0.5%">
+  <div fxFlex="25%" fxFlex.lt-md="65%" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="0.5%">
+    <div fxFlex="2%" fxFlex.lt-md="0%"></div>
+    <div fxFlex="15%" fxFlex.lt-md="20%">
+      <img [src]="player?.photoUrl" alt="player-image" class="avatar image">
+    </div>
+    <div fxFlex="65%" fxFlex.lt-md="80%" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap=".5%">
+      <div fxFlex="50%">
+        <span class="title bold">
+          {{ player?.name | uppercase}}
+        </span>
+        <span class="subtitle">{{ player?.position }}</span>
+      </div>
+      <div fxFlex="50%">
+        <span class="chip bold"
+          [style.backgroundColor]="player?.team ? '#'+player?.team.secondaryColor : freeAgentSecondaryColor"
+          [style.color]="player?.team ? '#'+player?.team.primaryColor : freeAgentPrimaryColor">
+          {{ player?.team ? player?.team.fullName : freeAgent }}
+        </span>
+        <span style="padding: .2em;"></span>
+        <span class="chip" [style.backgroundColor]="player?.status === activeStatus ? 'green' : 'red'">
+          {{ player?.status }}
+        </span>
+      </div>
+    </div>
+  </div>
+  <div fxFlex="25%" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="0.5%" fxHide.lt-md>
+    <div fxFlex="50%">
+      <span class="bold">Height / Weight: </span>
+      <span>{{ player?.height }} / {{ player?.weight }}</span>
+    </div>
+    <div fxFlex="50%">
+      <span class="bold">Date of Birth: </span>
+      <span> {{ player?.birthDate | date }} ({{ player?.age }}) </span>
+    </div>
+  </div>
+  <div fxFlex="25%" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="0.5%" fxHide.lt-md>
+    <div fxFlex="50%">
+      <span class="bold">College: </span>
+      <span>{{ player?.college }}</span>
+    </div>
+    <div fxFlex="50%">
+      <span class="bold">Drafted: </span>
+      <span>{{ player?.draftYear }} / Rd {{ player?.draftRound }} / Pick {{ player?.draftPick }}</span>
+    </div>
+  </div>
+  <div fxFlex="13%" fxFlex.lt-md="35%" fxLayout="row" fxLayoutAlign="end center" fxLayoutAlign.lt-md="center center"
+    fxLayoutGap="0.5%" fxLayoutGap.lt-md="75%">
+    <div fxFlex="30%">
+      <button mat-mini-fab color="primary" (click)="openCreateNoteDialog(player)">
+        <mat-icon>note_add</mat-icon>
+      </button>
+    </div>
+
+    <div fxFlex="30%">
+      <button mat-mini-fab color="warn" (click)="openCreateTargetDialog(player)">
+        <mat-icon>gps_fixed</mat-icon>
+      </button>
+    </div>
+
+    <div fxFlex="30%">
+      <button mat-mini-fab color="accent" (click)="openNoteList(player?.id)">
+        <mat-icon>notes</mat-icon>
+      </button>
+    </div>
+  </div>
+</mat-card>

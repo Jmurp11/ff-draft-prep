@@ -16,6 +16,7 @@ export class NoteComponent implements OnInit {
   noteInput: any;
 
   note: any;
+  backgroundImage: string;
   subSink: Subscription = new Subscription();
 
   constructor(
@@ -31,6 +32,7 @@ export class NoteComponent implements OnInit {
         switch (propName) {
           case 'noteInput': {
             this.note = this.noteInput;
+            this.backgroundImage = `url('${this.note.user.profileImage}')`;
             break;
           }
         }

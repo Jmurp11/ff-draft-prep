@@ -1,7 +1,3 @@
-mat-card-header {
-  flex-direction: column;
-}
-
 .title {
   font-size: x-large;
 }
@@ -15,5 +11,9 @@ mat-card-header {
 }
 
 .card {
-  width: 28.5em;
+  width: 30em;
+}
+
+#body {
+  font-size: medium;
 }

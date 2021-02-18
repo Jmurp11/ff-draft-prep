@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ProjectionDataComponent } from './projection-data.component';
+import { PpgCardComponent } from './ppg-card.component';
 
-describe('ProjectionDataComponent', () => {
-  let component: ProjectionDataComponent;
-  let fixture: ComponentFixture<ProjectionDataComponent>;
+describe('PpgCardComponent', () => {
+  let component: PpgCardComponent;
+  let fixture: ComponentFixture<PpgCardComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ProjectionDataComponent ]
+      declarations: [ PpgCardComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ProjectionDataComponent);
+    fixture = TestBed.createComponent(PpgCardComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

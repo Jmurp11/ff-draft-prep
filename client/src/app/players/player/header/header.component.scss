@@ -1,0 +1,44 @@
+.chip {
+  color: white;
+  padding: 0.55em;
+  border-radius: 0.938em;
+  text-align: center;
+}
+
+.title {
+  font-size: x-large;
+}
+
+.subtitle {
+  font-size: medium;
+}
+
+.container {
+  padding: 1em;
+}
+
+.image {
+  height: 6em;
+  width: 6em;
+  border-radius: 50%;
+  flex-shrink: 0;
+  object-fit: cover;
+}
+
+.header {
+  height: 8em;
+}
+
+@media only screen and (min-width: 375px) {
+  .header {
+    height: 10.5em;
+  }
+
+  .title {
+    font-size: large;
+  }
+
+  .subtitle {
+    font-size: small;
+  }
+}

@@ -1,29 +1,23 @@
 <mat-card class="card">
-  <mat-card-header fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="0.5%">
-    <div fxFlex="65%">
-      <img [src]="note.user.profileImage" alt="user-image" class="avatar card-avatar">
-    </div>
-    <div fxFlex="20%">
-      <span class="title bold">
-        {{ note.title | uppercase}}
-      </span>
-    </div>
-    <div>
-      <span class="subtitle">{{ note.player.name | uppercase }}</span>
-    </div>
+  <mat-card-header>
+    <div mat-card-avatar class="avatar" [style.backgroundImage]="backgroundImage"></div>
+    <mat-card-title>{{ note?.title }}</mat-card-title>
+    <mat-card-subtitle>{{ note?.player.name }} {{ note?.player.position }}</mat-card-subtitle>
   </mat-card-header>
-  <mat-card-content fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="0.5%">
-    {{ note?.body }}
+  <mat-card-content>
+    <div id="body">
+      {{ note?.body }}
+    </div>
   </mat-card-content>
 
   <mat-card-actions fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="0.5%">
-    <div fxLayout="row" fxLayoutAlign="space-evenly space-evenly" fxLayoutGap="5.0%">
-      <div class="action-btn" fxFlex="50%">
+    <div fxLayout="row" fxLayoutAlign="space-evenly center" fxLayoutGap="0.5%">
+      <div fxFlex="50%">
         <button mat-icon-button color="accent">
           <mat-icon>share</mat-icon>
         </button>
       </div>
-      <div class="action-btn" fxFlex="50%">
+      <div fxFlex="50%">
         <button mat-icon-button color="warn" (click)="deleteNote(note.id)">
           <mat-icon>delete</mat-icon>
         </button>

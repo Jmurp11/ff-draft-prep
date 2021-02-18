@@ -4,10 +4,12 @@
       <img [src]="player.photoUrl" alt="player-image" class="avatar card-avatar">
     </div>
     <div fxFlex="20%">
-      <span class="title bold">
-        {{ player.name | uppercase}}
-      </span>
-      <span class="subtitle">{{ player.position }}</span>
+      <button mat-button (click)="_navigate.navigate('players/' + player.id)">
+        <span class="title bold">
+          {{ player.name | uppercase}}
+        </span>
+        <span class="subtitle">{{ player.position }}</span>
+      </button>
     </div>
     <div fxFlex="15%">
       <span class="chip bold"
@@ -21,25 +23,8 @@
       </span>
     </div>
   </mat-card-header>
-  <mat-card-content>
-    <div class="summary-card">
-      <mat-card>
-        <div fxLayout="column" fxLayoutAlign="center center">
-          <div class="full-width" fxLayout="row" fxLayoutAlign="space-evenly" fxLayoutGap="25%">
-            <div fxFlex="30%">
-              <span style="font-weight: bold">Height: </span> {{ player.height }}
-            </div>
-            <div fxFlex="30%">
-              <span style="font-weight: bold">Weight: </span> {{ player.weight }}
-            </div>
-            <div fxFlex="30%">
-              <span style="font-weight: bold">Age: </span> {{ getAge(player.birthDate) }}
-            </div>
-          </div>
-        </div>
-      </mat-card>
-    </div>
-    <app-accordion [player]="player"></app-accordion>
+  <mat-card-content matTooltip="Fantasy Points">
+    <app-chart [chartInput]="chartInput" [additionalInfo]="additionalInfo"></app-chart>
   </mat-card-content>
   <mat-card-actions fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="0.5%">
     <div fxLayout="row" fxLayoutAlign="space-evenly" fxLayoutGap="75%">

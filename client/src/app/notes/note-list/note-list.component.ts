@@ -33,7 +33,6 @@ export class NoteListComponent implements OnInit, OnChanges {
         switch (propName) {
           case 'notesInput': {
             const input = this.notesInput;
-            console.log(this.notesInput);
             this.subSink.add(
               this.apolloSdk.notesWatch({ data: input })
                 .valueChanges

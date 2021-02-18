@@ -25,12 +25,16 @@ export class PlayerFilterComponent implements OnInit, OnDestroy {
   searchFilters = SearchFilters;
   filterModeOptions = FilterMode;
   scoringTypes: string[];
-  scoringType: string;
+  scoringType: number;
+  scoringTypeLabel: string;
   theEnd: boolean;
   batchSize = 300;
   teamProperty = 'team.fullName';
   selected: string;
-
+  dataOptions: string[] = [
+    `${new Date().getFullYear()} Projections`,
+    `${new Date().getFullYear() - 1} Statistics`
+  ];
   filters: Filter[] = [];
   filterTypeList: FilterType[] = [
     { displayName: this.searchFilters.any, propertyName: this.searchFilters.any },
@@ -54,6 +58,7 @@ export class PlayerFilterComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
+
     this.subSink = new Subscription();
 
     this.subSink.add(this.getPlayers()
@@ -66,6 +71,8 @@ export class PlayerFilterComponent implements OnInit, OnDestroy {
 
     this.scoringTypes = this.playerStore.getScoringTypes();
 
+    this.scoringTypeLabel = this.scoringTypes[0];
+
     this.subSink.add(this.filterService.filterValue
       .subscribe(value => this._filter(value)));
 
@@ -77,6 +84,9 @@ export class PlayerFilterComponent implements OnInit, OnDestroy {
         updateOn: 'change'
       }),
       filterMode: new FormControl(null, {
+        updateOn: 'change'
+      }),
+      displayData: new FormControl(null, {
         updateOn: 'change'
       }),
       scoringType: new FormControl(null, {
@@ -120,7 +130,10 @@ export class PlayerFilterComponent implements OnInit, OnDestroy {
 
     this.form.get('scoringType')
       .valueChanges
-      .subscribe(val => this.playerStore.updateScoringType(val));
+      .subscribe(val => {
+        this.scoringTypeLabel = this.scoringTypes[val];
+        this.playerStore.updateScoringType(this.scoringTypes[val]);
+      });
   }
 
   getPlayers() {

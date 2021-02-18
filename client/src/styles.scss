@@ -128,3 +128,17 @@ body {
   flex-shrink: 0;
   object-fit: cover;
 }
+
+.stat-card {
+  height: 11em;
+  width: 20em;
+}
+
+.stat-subtitle {
+  font-size: small;
+  color: lightslategray;
+}
+
+.stat-title {
+  font-size: medium;
+}

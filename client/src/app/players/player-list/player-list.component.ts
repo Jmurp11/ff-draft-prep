@@ -63,7 +63,6 @@ export class PlayerListComponent implements OnInit {
     if (windowAlias) {
       if (isSearchVisible) {
         return WindowHeightTargetPercent[windowAlias.alias] * 100;
-
       } else {
         return (WindowHeightTargetPercent[windowAlias.alias] + .07) * 100;
       }

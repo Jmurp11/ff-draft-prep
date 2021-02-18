@@ -10,6 +10,7 @@ import { ProfileComponent } from './profile/profile.component';
 import { FolderListComponent } from './notes/folder-list/folder-list.component';
 import { PlayersComponent } from './players/players.component';
 import { PlayerListComponent } from './players/player-list/player-list.component';
+import { PlayerComponent } from './players/player/player.component';
 
 
 
@@ -45,6 +46,10 @@ const routes: Routes = [
           {
             path: 'list',
             component: PlayerListComponent
+          },
+          {
+            path: ':id',
+            component: PlayerComponent
           }
         ]
       },
