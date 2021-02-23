@@ -9,7 +9,7 @@ export class FolderArgs {
     id: string;
 
     @Field({ nullable: true })
-    name: string;
+    title: string;
 
     @Field({ nullable: true })
     user: string;

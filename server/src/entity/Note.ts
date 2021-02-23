@@ -42,7 +42,7 @@ export class Note extends BaseEntity {
 
     @ManyToOne(() => Folder)
     @JoinColumn({ name: 'folder' })
-    @Field(() => Folder, { nullable: true})
+    @Field(() => Folder, { nullable: true })
     @Column('uuid', { nullable: true })
     folder: string;
 
@@ -61,4 +61,8 @@ export class Note extends BaseEntity {
     @Field(() => Date)
     @Column('timestamp')
     creationTime!: string;
+
+    @Field(() => Date)
+    @Column('timestamp')
+    updatedTime!: string;
 }

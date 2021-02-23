@@ -6,6 +6,9 @@ export class NoteArgs {
     filterType: string;
 
     @Field({ nullable: true })
+    id: string;
+    
+    @Field({ nullable: true })
     player: number;
 
     @Field({ nullable: true })

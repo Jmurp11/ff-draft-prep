@@ -1,0 +1,30 @@
+.chip {
+  color: white;
+  padding: 0.55em;
+  border-radius: 0.938em;
+  text-align: center;
+}
+
+.title {
+  font-size: large;
+}
+
+.subtitle {
+  font-size: small;
+}
+
+.container {
+  padding: 1em;
+}
+
+.image {
+  height: 5.5em;
+  width: 5.5em;
+  border-radius: 50%;
+  flex-shrink: 0;
+  object-fit: cover;
+}
+
+.player-name:hover {
+  background-color: lightgray;
+}

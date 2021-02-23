@@ -20,7 +20,7 @@ export class FolderResolver {
             filterType,
             user,
             id,
-            name,
+            title,
             skip,
             take
         }: FolderArgs,
@@ -33,7 +33,7 @@ export class FolderResolver {
             .leftJoinAndSelect('folders.notes', 'folder')
             .take(take)
             .skip(skip)
-            .orderBy('folders.creationTime', 'DESC')
+            .orderBy('folders.updatedTime', 'DESC')
 
         switch (filterType) {
             case 'byCurrentUser':
@@ -48,8 +48,8 @@ export class FolderResolver {
             case 'byId':
                 where = await this._folder.byId(id);
                 return filterQuery(query, where).getMany();
-            case 'byName':
-                where = await this._folder.byName(name);
+            case 'byTitle':
+                where = await this._folder.byTitle(title);
                 return filterQuery(query, where).getMany();
             default:
                 return query.getMany()
@@ -68,14 +68,12 @@ export class FolderResolver {
     ) {
         let where;
         const query: SelectQueryBuilder<Folder> = getRepository(Folder)
-            .createQueryBuilder('notes')
-            .leftJoinAndSelect('notes.user', 'user')
-            .leftJoinAndSelect('folder.notes', 'folder')
-            .leftJoinAndSelect('notes.player', 'player')
-            .leftJoinAndSelect('player.team', 'team')
+            .createQueryBuilder('folders')
+            .leftJoinAndSelect('folders.user', 'user')
+            .leftJoinAndSelect('folders.notes', 'folder')
             .take(take)
             .skip(skip)
-            .orderBy('notes.creationTime', 'DESC')
+            .orderBy('folders.updatedTime', 'DESC')
 
         switch (filterType) {
             case 'byId':
@@ -102,7 +100,7 @@ export class FolderResolver {
     async createFolder(
         @Ctx() ctx: MyContext,
         @Arg('input') {
-            name
+            title
         }: FolderArgs
     ): Promise<Result> {
         const user = ctx.payload?.userId;
@@ -110,7 +108,7 @@ export class FolderResolver {
         const titleExists = await Folder.findOne({
             where: {
                 user,
-                name
+                title
             },
             select: ['id']
         });
@@ -120,18 +118,20 @@ export class FolderResolver {
                 errors: [
                     {
                         path: 'folder',
-                        message: 'User has already created folder with this name!'
+                        message: 'User has already created folder with this title!'
                     }
                 ]
             }
         }
 
         const creationTime = new Date().toISOString();
+        const updatedTime = new Date().toISOString();
 
         await Folder.create({
             user,
-            name,
-            creationTime
+            title,
+            creationTime,
+            updatedTime
         }).save();
 
         return {
@@ -139,6 +139,63 @@ export class FolderResolver {
                 {
                     path: 'folder',
                     message: 'Successfully added folder!'
+                }
+            ]
+        }
+    }
+
+    @UseMiddleware(isAuth, logger)
+    @Mutation(() => Result)
+    async editFolder(
+        @Ctx() ctx: MyContext,
+        @Arg('input') {
+            id,
+            title,
+        }: FolderArgs
+    ): Promise<Result> {
+        const user = ctx.payload?.userId;
+
+        const folder = await Folder.findOne({
+            where: {
+                id
+            }
+        });
+
+        if (folder?.user !== user) {
+            return {
+                errors: [
+                    {
+                        path: 'folder',
+                        message: 'This user cannot edit this folder!'
+                    }
+                ]
+            }
+        }
+
+        if (!folder) {
+            return {
+                errors: [
+                    {
+                        path: 'folder',
+                        message: 'This folder no longer exists!'
+                    }
+                ]
+            }
+        }
+
+        const updatedTime = new Date().toISOString();
+
+        await Folder.update({ id },
+            {
+                title,
+                updatedTime
+            });
+
+        return {
+            success: [
+                {
+                    path: 'folder',
+                    message: 'Successfully updated folder!'
                 }
             ]
         }

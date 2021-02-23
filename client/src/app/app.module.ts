@@ -38,6 +38,10 @@ import { TargetShareCardComponent } from './players/player/stat-summary/target-s
 import { TouchesCardComponent } from './players/player/stat-summary/touches-card/touches-card.component';
 import { PassingCardComponent } from './players/player/stat-summary/passing-card/passing-card.component';
 import { ScheduleComponent } from './players/player/schedule/schedule.component';
+import { CreateFolderComponent } from './notes/create-folder/create-folder.component';
+import { DetailCardComponent } from './players/detail-card/detail-card.component';
+import { DetailPopUpComponent } from './players/player/stat-summary/detail-pop-up/detail-pop-up.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -67,7 +71,10 @@ import { ScheduleComponent } from './players/player/schedule/schedule.component'
     TargetShareCardComponent,
     TouchesCardComponent,
     PassingCardComponent,
-    ScheduleComponent
+    ScheduleComponent,
+    CreateFolderComponent,
+    DetailCardComponent,
+    DetailPopUpComponent
   ],
   imports: [
     AuthModule,

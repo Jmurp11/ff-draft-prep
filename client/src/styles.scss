@@ -31,6 +31,10 @@ body {
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
+.cursor {
+  cursor: pointer;
+}
+
 .container {
   display: flex;
   justify-content: center;
@@ -131,7 +135,7 @@ body {
 
 .stat-card {
   height: 11em;
-  width: 20em;
+  width: 15.5em;
 }
 
 .stat-subtitle {

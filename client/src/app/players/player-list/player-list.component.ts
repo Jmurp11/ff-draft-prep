@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { MatchMediaService } from '../../ui/match-media.service';
 import { FilteredDataService } from '../player-filter/filtered-data.service';
@@ -19,7 +19,7 @@ enum WindowHeightTargetPercent {
   templateUrl: './player-list.component.html',
   styleUrls: ['./player-list.component.scss']
 })
-export class PlayerListComponent implements OnInit {
+export class PlayerListComponent implements OnInit, OnDestroy {
 
   subSink: Subscription;
   visiblePlayers$: Observable<any[]>;

@@ -9,6 +9,17 @@ mutation createFolder($data: FolderArgs!) {
   }
 }
 
+mutation editFolder($data: FolderArgs!) {
+  editFolder(input: $data) {
+    success {
+      message
+    }
+    errors {
+      message
+    }
+  }
+}
+
 mutation deleteFolder($data: FolderArgs!) {
   deleteFolder(input: $data) {
     success {

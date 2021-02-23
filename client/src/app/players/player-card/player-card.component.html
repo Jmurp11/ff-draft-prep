@@ -29,7 +29,7 @@
   <mat-card-actions fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="0.5%">
     <div fxLayout="row" fxLayoutAlign="space-evenly" fxLayoutGap="75%">
       <div fxFlex="30%">
-        <button mat-mini-fab color="primary" (click)="openCreateNoteDialog(player)">
+        <button mat-mini-fab color="primary" (click)="_popupService.openCreateNoteDialog(player, true, null)">
           <mat-icon>note_add</mat-icon>
         </button>
       </div>

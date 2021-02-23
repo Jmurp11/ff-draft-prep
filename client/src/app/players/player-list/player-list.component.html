@@ -1,4 +1,4 @@
-<div>
+<div style="height: 5%;">
   <app-player-filter></app-player-filter>
 </div>
 
@@ -8,14 +8,24 @@
   </div>
 </div>
 
-<div class="scrollable" [style.height.vh]="mainDivHeight" *ngIf="(visiblePlayers$ | async) as visiblePlayers"
-  fxLayout="row wrap" fxLayoutAlign="center" fxLayoutGap="0.5%" #scrollable>
+<div fxHide.gt-sm class="scrollable" [style.height.vh]="mainDivHeight"
+  *ngIf="(visiblePlayers$ | async) as visiblePlayers" fxLayout="row wrap" fxLayoutAlign="center" fxLayoutGap="0.5%"
+  #scrollable>
   <div *ngFor="let player of visiblePlayers | slice:pageStartingIndex:pageEndingIndex" style="padding: 1em;">
     <app-player-card [input]="player"></app-player-card>
   </div>
 </div>
 
-<div *ngIf="(visiblePlayers$ | async) as visiblePlayers" fxLayout="row" fxLayoutAlign="start" fxLayoutGap="1%" style="position: relative; bottom: 0;">
+<div fxHide.lt-md class="scrollable full-width" style="margin-top: 1em;" [style.height.vh]="mainDivHeight"
+  *ngIf="(visiblePlayers$ | async) as visiblePlayers" fxLayout="column" fxLayoutAlign="start center" fxLayoutGap=".5%"
+  #scrollable>
+  <div class="full-width" *ngFor="let player of visiblePlayers | slice:pageStartingIndex:pageEndingIndex">
+    <app-detail-card [input]="player"></app-detail-card>
+  </div>
+</div>
+
+<div *ngIf="(visiblePlayers$ | async) as visiblePlayers" fxLayout="row" fxLayoutAlign="start" fxLayoutGap="1%"
+  style="position: relative; bottom: 0;">
   <mat-card class="p-0">
     <mat-paginator *ngIf="(visiblePlayers)?.length > 0" [length]="(visiblePlayers)?.length" [pageSize]="15"
       [pageSizeOptions]="pageSizeOptions" (page)="onPaginateChange($event)" (click)="scrollToTop()"></mat-paginator>

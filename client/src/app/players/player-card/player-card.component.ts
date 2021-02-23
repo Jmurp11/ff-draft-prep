@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { TableConfig } from '../../ui/generic-table/generic-table-config.model';
 import { ApolloAngularSDK, Exact, NoteInput, NotesDocument, Player, TargetInput } from '../../sdk/generated/graphql';
 import { CreateNoteComponent } from '../../notes/create-note/create-note.component';
@@ -13,13 +13,14 @@ import { AuthStoreService } from '../../auth/auth-store.service';
 import { Chart } from '../../ui/chart/chart.model';
 import { switchMap } from 'rxjs/operators';
 import { NavigateService } from '../../shared/navigate.service';
+import { PopUpService } from 'src/app/shared/pop-up.service';
 
 @Component({
   selector: 'app-player-card',
   templateUrl: './player-card.component.html',
   styleUrls: ['./player-card.component.scss']
 })
-export class PlayerCardComponent implements OnInit {
+export class PlayerCardComponent implements OnInit, OnDestroy {
 
   @Input()
   input: Player;
@@ -41,6 +42,7 @@ export class PlayerCardComponent implements OnInit {
     private apolloSdk: ApolloAngularSDK,
     private dialog: MatDialog,
     public _navigate: NavigateService,
+    public _popupService: PopUpService,
     private noteStore: NoteStoreService,
     private playerStore: PlayerStoreService,
     private snack: MatSnackBar,
@@ -115,65 +117,6 @@ export class PlayerCardComponent implements OnInit {
     age /= (60 * 60 * 24);
 
     return Math.abs(Math.round(age / 365.25));
-  }
-
-  openCreateNoteDialog(player: any): void {
-    const data = {
-      player
-    };
-
-    const dialogRef: MatDialogRef<any> = this.dialog.open(CreateNoteComponent, {
-      width: '50em',
-      disableClose: true,
-      data: { payload: data }
-    });
-
-    dialogRef.afterClosed()
-      .subscribe(res => {
-        if (!res) {
-          return;
-        }
-
-        const folder = res.folder ? res.folder.id : null;
-
-        const note: Exact<NoteInput> = {
-          player: res.player.id,
-          title: res.title,
-          folder,
-          body: res.content,
-          isPrivate: true
-        };
-
-        this.subSink.add(
-          this.noteStore.stateChanged
-            .pipe(
-              switchMap(() => this.noteStore.getNoteInput()),
-              switchMap(noteArgs => {
-                return this.apolloSdk.createNote({
-                  data: note
-                }, {
-                  refetchQueries: [
-                    {
-                      query: NotesDocument,
-                      variables: {
-                        data: noteArgs
-                      }
-                    }
-                  ]
-                })
-              })
-            )
-            .subscribe(({ data }) => {
-              if (data.createNote.success) {
-                this.snack.open(data.createNote.success[0].message, 'Dismiss', { duration: 5000 });
-              }
-
-              if (data.createNote.errors) {
-                this.snack.open(data.createNote.errors[0].message, 'Dismiss', { duration: 5000 });
-              }
-            })
-        );
-      });
   }
 
   openCreateTargetDialog(player: any): void {

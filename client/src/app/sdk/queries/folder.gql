@@ -1,12 +1,14 @@
 query folders($data: FolderArgs!) {
   folders(input: $data) {
     id
-    name
+    title
     creationTime
+    updatedTime
     notes {
       id
       title
       creationTime
+      updatedTime
     }
   }
 }
@@ -14,12 +16,14 @@ query folders($data: FolderArgs!) {
 query folder($data: FolderArgs!) {
   folder(input: $data) {
     id
-    name
+    title
     creationTime
+    updatedTime
     notes {
       id
       title
       creationTime
+      updatedTime
     }
   }
 }

@@ -9,6 +9,18 @@ mutation createNote($data: NoteInput!) {
   }
 }
 
+mutation editNote($data: NoteInput!) {
+  editNote(input: $data) {
+    success {
+      message
+    }
+    errors {
+      message
+    }
+  }
+}
+
+
 mutation deleteNote($data: DeleteNoteInput!) {
   deleteNote(input: $data) {
     success {

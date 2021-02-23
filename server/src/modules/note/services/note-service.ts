@@ -23,6 +23,24 @@ export class NoteService {
         return filters;
     }
 
+    async byId(id: string): Promise<Where | undefined> {
+        const fields: Fields = {
+            fieldTable: 'notes',
+            fieldName: 'id',
+            fieldOptions: {
+                is: `'${id}'`
+            }
+        };
+
+        const filters: Where = {
+            AND: [
+                fields
+            ]
+        }
+
+        return filters;
+    }
+
     async byUser(user: string): Promise<Where | undefined> {
         const fields: Fields = {
             fieldTable: 'notes',
@@ -58,6 +76,53 @@ export class NoteService {
 
         return filters;
     }
+
+    async byCurrentUserAndNoFolder(ctx: MyContext): Promise<Where | undefined> {
+        const userFields: Fields = {
+            fieldTable: 'notes',
+            fieldName: 'user',
+            fieldOptions: {
+                is: `'${ctx.payload?.userId}'`
+            }
+        };
+
+        const folderFields: Fields = {
+            fieldTable: 'notes',
+            fieldName: 'folder',
+            fieldOptions: {
+                isNull: null
+            }
+        };
+
+        const filters: Where = {
+            AND: [
+                userFields,
+                folderFields
+            ]
+        }
+
+        return filters;
+    }
+
+    async byFolder(folder: string): Promise<Where | undefined> {
+
+        const fields: Fields = {
+            fieldTable: 'notes',
+            fieldName: 'folder',
+            fieldOptions: {
+                is: `'${folder}'`
+            }
+        };
+
+        const filters: Where = {
+            AND: [
+                fields
+            ]
+        }
+
+        return filters;
+    }
+
 
     async byUserAndPlayer(user: string, player: number): Promise<Where | undefined> {
         const userFields: Fields = {

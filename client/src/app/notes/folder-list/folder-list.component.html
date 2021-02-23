@@ -2,8 +2,105 @@
   <app-loading-spinner></app-loading-spinner>
 </div>
 
-<div *ngIf="!showLoadingSpinner">
-  <div *ngFor="let folder of folders">
-    {{ folder.name }}, {{ folder.creationTime | date }}
+<div style="margin-top: 1%;" *ngIf="!showLoadingSpinner" fxLayout="column" fxLayoutAlign="center center"
+  fxLayoutGap="0.5%">
+  <div fxFlex="5%" class="full-width" fxLayout="row" fxLayoutAlign="space-evenly center" fxLayoutGap="0.5%">
+    <div fxLayout="row" fxLayoutAlign="space-evenly center" fxLayoutGap="25.0%">
+      <div fxFlex="50%">
+        <button mat-raised-button color="primary" (click)="_popupService.openCreateFolderDialog(true, null)" matTooltip="Create Folder">
+          Create Folder
+        </button>
+      </div>
+      <div fxFlex="50%">
+        <button mat-raised-button color="primary" (click)="_popupService.openCreateNoteDialog(null, true, null)" matTooltip="Create Note">
+          Create Note
+        </button>
+      </div>
+    </div>
   </div>
+  <mat-card fxFlex="95%" style="width: 80%;">
+    <mat-list>
+      <div mat-subheader>Folders</div>
+      <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
+        <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
+          <button mat-icon-button disabled></button>
+          <mat-list-item class="cursor">
+            <mat-icon mat-list-icon color="primary" *ngIf="node.level === 0">folder</mat-icon>
+            <mat-icon mat-list-icon color="accent" *ngIf="node.level !== 0">note</mat-icon>
+            <div mat-line class="title" (click)="openNoteList(false, node.id)">
+              {{ node.title }}
+            </div>
+            <div mat-line style="color: gray;">{{node.updatedTime | date}}</div>
+              <div fxLayout="column" fxLayoutAlign="center center">
+                <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="5%">
+                  <div fxFlex>
+                    <button mat-icon-button color='accent' (click)="_popupService.openCreateFolderDialog(false, node.id)" disabled="node.level !== 0">
+                      <mat-icon>edit</mat-icon>
+                    </button>
+                  </div>
+                  <div fxFlex>
+                    <button mat-icon-button color='warn' (click)="deleteItem(node.level, node.id)">
+                      <mat-icon>delete</mat-icon>
+                    </button>
+                  </div>
+                </div>
+              </div>
+          </mat-list-item>
+        </mat-tree-node>
+        <mat-tree-node *matTreeNodeDef="let node;when: hasChild" matTreeNodePadding>
+          <button mat-icon-button matTreeNodeToggle [attr.aria-label]="'Toggle ' + node.title">
+            <mat-icon class="mat-icon-rtl-mirror">
+              {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+            </mat-icon>
+          </button>
+          <mat-list-item class="cursor">
+            <mat-icon mat-list-icon color="primary">folder</mat-icon>
+            <div mat-line class="title" (click)="openNoteList(true, node.id)">
+              {{ node.title }}
+            </div>
+            <div mat-line style="color: gray;">{{node.updatedTime | date}}</div>
+            <div fxLayout="column" fxLayoutAlign="center center">
+                <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="5%">
+                  <div fxFlex>
+                    <button mat-icon-button color='accent' (click)="_popupService.openCreateFolderDialog(false, node.id)">
+                      <mat-icon>edit</mat-icon>
+                    </button>
+                  </div>
+                  <div fxFlex>
+                    <button mat-icon-button color='warn' (click)="deleteItem(node.level, node.id)">
+                      <mat-icon>delete</mat-icon>
+                    </button>
+                  </div>
+                </div>
+              </div>
+          </mat-list-item>
+        </mat-tree-node>
+      </mat-tree>
+      <mat-divider></mat-divider>
+      <div mat-subheader>Notes</div>
+      <mat-list-item class="cursor full-width" *ngFor="let note of notes">
+        <mat-icon mat-list-icon color="accent">note</mat-icon>
+        <div mat-line>
+          <div class="title" (click)="openNoteList(false, note.id)">
+            {{note.title}}
+          </div>
+        </div>
+        <div mat-line style="color: gray;">{{note.updatedTime | date}}</div>
+        <div fxLayout="column" fxLayoutAlign="center center">
+          <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="5%">
+            <div fxFlex>
+              <button mat-icon-button color='accent' (click)="_popupService.openCreateNoteDialog(null, false, note.id)">
+                <mat-icon>edit</mat-icon>
+              </button>
+            </div>
+            <div fxFlex>
+              <button mat-icon-button color='warn' (click)="deleteNote(note.id)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+      </mat-list-item>
+    </mat-list>
+  </mat-card>
 </div>

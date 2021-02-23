@@ -1,46 +1,46 @@
-import { OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
+import { AuthStoreService } from 'src/app/auth/auth-store.service';
+import { CreateNoteComponent } from 'src/app/notes/create-note/create-note.component';
+import { NoteStoreService } from 'src/app/notes/note-store.service';
+import { ApolloAngularSDK, Exact, NoteInput, NotesDocument, TargetInput } from 'src/app/sdk/generated/graphql';
+import { NavigateService } from 'src/app/shared/navigate.service';
 import { PopUpService } from 'src/app/shared/pop-up.service';
-import { AuthStoreService } from '../../../auth/auth-store.service';
-import { CreateNoteComponent } from '../../../notes/create-note/create-note.component';
-import { NoteStoreService } from '../../../notes/note-store.service';
-import { ApolloAngularSDK, Exact, NoteInput, NotesDocument, TargetInput } from '../../../sdk/generated/graphql';
-import { NavigateService } from '../../../shared/navigate.service';
-import { CreateTargetComponent } from '../../../targets/create-target/create-target.component';
-import { UIStoreService } from '../../../ui/ui-store.service';
-import { PlayerStoreService } from '../../player-store.service';
+import { CreateTargetComponent } from 'src/app/targets/create-target/create-target.component';
+import { UIStoreService } from 'src/app/ui/ui-store.service';
+import { PlayerStoreService } from '../player-store.service';
 
 @Component({
-  selector: 'app-header',
-  templateUrl: './header.component.html',
-  styleUrls: ['./header.component.scss']
+  selector: 'app-detail-card',
+  templateUrl: './detail-card.component.html',
+  styleUrls: ['./detail-card.component.scss']
 })
-export class HeaderComponent implements OnInit, OnChanges, OnDestroy {
+export class DetailCardComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input()
-  playerInput: any;
+  input: any;
 
   subSink: Subscription = new Subscription();
-  player: any;
   freeAgent: string = 'Free Agent';
   freeAgentPrimaryColor: string = '#d1d1e0'
   freeAgentSecondaryColor: string = '#48486a';
   activeStatus: string = 'Active';
+  player: any;
+  status: string;
 
   constructor(
     private apolloSdk: ApolloAngularSDK,
-    private dialog: MatDialog,
-    public _navigate: NavigateService,
-    public _popupService: PopUpService,
-    private noteStore: NoteStoreService,
-    private playerStore: PlayerStoreService,
     private snack: MatSnackBar,
     private authStore: AuthStoreService,
+    public _navigate: NavigateService,
+    public _popupService: PopUpService,
+    private dialog: MatDialog,
+    private noteStore: NoteStoreService,
     private uiStore: UIStoreService,
+    private playerStore: PlayerStoreService
   ) { }
 
   ngOnInit(): void {
@@ -50,9 +50,10 @@ export class HeaderComponent implements OnInit, OnChanges, OnDestroy {
     for (const propName in changes) {
       if (changes.hasOwnProperty(propName)) {
         switch (propName) {
-          case 'playerInput': {
-            this.player = this.playerInput;
+          case 'input': {
+            this.player = this.input;
 
+            this.status = (this.player.status !== 'Injured Reserve') ? this.player.status : 'Injured Res'
           }
         }
       }
@@ -81,6 +82,7 @@ export class HeaderComponent implements OnInit, OnChanges, OnDestroy {
         )
     );
   }
+
 
   openCreateTargetDialog(player: any): void {
     const data = {
@@ -128,6 +130,6 @@ export class HeaderComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.subSink.unsubscribe();
+    this.subSink.unsubscribe()
   }
 }

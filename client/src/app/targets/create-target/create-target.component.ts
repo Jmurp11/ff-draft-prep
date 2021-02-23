@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
@@ -11,7 +11,7 @@ import { ApolloAngularSDK, PlayerArgs } from '../../sdk/generated/graphql';
   templateUrl: './create-target.component.html',
   styleUrls: ['./create-target.component.scss']
 })
-export class CreateTargetComponent implements OnInit {
+export class CreateTargetComponent implements OnInit, OnDestroy {
 
   subSink: Subscription;
   form: FormGroup;
@@ -87,5 +87,9 @@ export class CreateTargetComponent implements OnInit {
 
   displayPlayer(player: any) {
     return player && player.name ? `${player.name} ${player.position} - ${player.team.abbreviation}` : '';
+  }
+
+  ngOnDestroy() {
+    this.subSink.unsubscribe();
   }
 }

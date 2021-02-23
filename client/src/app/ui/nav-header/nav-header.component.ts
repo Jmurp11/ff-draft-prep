@@ -14,7 +14,6 @@ export class NavHeaderComponent implements OnInit, OnChanges {
   @Output()
   sidenavClose = new EventEmitter();
 
-  subSink: Subscription;
   defaultImage: string = 'https://www.w3schools.com/howto/img_avatar.png';
   profileImage: string;
 

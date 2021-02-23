@@ -1,7 +1,9 @@
-import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
+import { NavigateService } from 'src/app/shared/navigate.service';
+import { UIStoreService } from 'src/app/ui/ui-store.service';
 import { Exact, DeleteNoteInput, ApolloAngularSDK, NotesDocument } from '../../sdk/generated/graphql';
 import { NoteStoreService } from '../note-store.service';
 
@@ -10,7 +12,7 @@ import { NoteStoreService } from '../note-store.service';
   templateUrl: './note.component.html',
   styleUrls: ['./note.component.scss']
 })
-export class NoteComponent implements OnInit {
+export class NoteComponent implements OnInit, OnDestroy {
 
   @Input()
   noteInput: any;
@@ -22,6 +24,8 @@ export class NoteComponent implements OnInit {
   constructor(
     private apolloSdk: ApolloAngularSDK,
     private noteStore: NoteStoreService,
+    private _navigate: NavigateService,
+    private uiStore: UIStoreService,
     private snack: MatSnackBar,) { }
 
   ngOnInit(): void { }
@@ -74,5 +78,14 @@ export class NoteComponent implements OnInit {
           }
         })
     );
+  }
+
+  navigate(player: number) {
+    this._navigate.navigate(`/players/${player}`);
+    this.uiStore.updateRightNavState(false);
+  }
+
+  ngOnDestroy() {
+    this.subSink.unsubscribe();
   }
 }

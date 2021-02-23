@@ -1,19 +1,19 @@
 <mat-card class="stat-card">
-  <mat-card-header fxLayout="row" fxLayoutAlign="space-between center">
-    <div fxFlex="50%" fxLayout="column" fxLayoutAlign="center center">
-      <div class="stat-title bold">1.2</div>
+  <mat-card-content fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10%">
+    <div fxFlex="30%" fxLayout="column" fxLayoutAlign="center center">
+      <div class="title bold">11</div>
+      <div class="stat-subtitle">
+        Total Touchdowns
+      </div>
+    </div>
+    <div fxFlex="30%" fxLayout="column" fxLayoutAlign="center center">
+      <div class="title bold">1.7</div>
       <div class="stat-subtitle">
         Avg TD Per Game
       </div>
     </div>
-    <div fxFlex="50%" fxLayout="column" fxLayoutAlign="center center">
-      <div class="stat-title bold">10</div>
-      <div class="stat-subtitle">
-        Total TD
-      </div>
+    <div fxFlex="30%" fxLayout="column" fxLayoutAlign="center center">
+      <button mat-raised-button color="primary" (click)="openDetailDialog(player)">Touchdown Details</button>
     </div>
-  </mat-card-header>
-  <mat-card-content >
-    <app-chart [chartInput]="tdChart"></app-chart>
   </mat-card-content>
 </mat-card>

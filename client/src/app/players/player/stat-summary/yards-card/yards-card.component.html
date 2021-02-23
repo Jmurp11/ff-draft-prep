@@ -1,19 +1,19 @@
 <mat-card class="stat-card">
-  <mat-card-header fxLayout="row" fxLayoutAlign="space-between center">
-    <div fxFlex="50%" fxLayout="column" fxLayoutAlign="center center">
-      <div class="stat-title bold">100.5</div>
-      <div class="stat-subtitle">
-        Avg Yards Per Game
-      </div>
-    </div>
-    <div fxFlex="50%" fxLayout="column" fxLayoutAlign="center center">
-      <div class="stat-title bold">1100</div>
+  <mat-card-content fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10%">
+    <div fxFlex="30%" fxLayout="column" fxLayoutAlign="center center">
+      <div class="title bold">1000</div>
       <div class="stat-subtitle">
         Total Yards
       </div>
     </div>
-  </mat-card-header>
-  <mat-card-content >
-    <app-chart [chartInput]="yardsChart"></app-chart>
+    <div fxFlex="30%" fxLayout="column" fxLayoutAlign="center center">
+      <div class="title bold">100.7</div>
+      <div class="stat-subtitle">
+        Avg Yards Per Game
+      </div>
+    </div>
+    <div fxFlex="30%" fxLayout="column" fxLayoutAlign="center center">
+      <button mat-raised-button color="primary" (click)="openDetailDialog(player)">Yards Details</button>
+    </div>
   </mat-card-content>
 </mat-card>

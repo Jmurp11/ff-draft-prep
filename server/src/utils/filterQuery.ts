@@ -15,6 +15,8 @@ export interface FieldOptions {
     notContains?: any;
     notStartsWith?: any;
     notEndsWith?: any;
+    isNull?: any;
+    isNotNull?: any;
 }
 
 export interface Fields {
@@ -96,6 +98,14 @@ const handleArgs = (
                 }
                 case "notEndsWith": {
                     query[andOr](`${fieldName} ILIKE '%${value}'`);
+                    break;
+                }
+                case "isNull": {
+                    query[andOr](`${fieldName} is NULL`);
+                    break;
+                }
+                case "isNotNull": {
+                    query[andOr](`${fieldName} is NOT NULL`);
                     break;
                 }
                 default: {

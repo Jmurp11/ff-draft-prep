@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnInit, OnChanges, SimpleChanges, OnDestroy } from '@angular/core';
 import { Observable, of, Subscription } from 'rxjs';
 import { LoadingService } from '../../shared/loading-spinner/loading.service';
 import { ApolloAngularSDK, NoteArgs } from '../../sdk/generated/graphql';
@@ -8,7 +8,7 @@ import { ApolloAngularSDK, NoteArgs } from '../../sdk/generated/graphql';
   templateUrl: './note-list.component.html',
   styleUrls: ['./note-list.component.scss']
 })
-export class NoteListComponent implements OnInit, OnChanges {
+export class NoteListComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input()
   notesInput: NoteArgs;
@@ -46,5 +46,9 @@ export class NoteListComponent implements OnInit, OnChanges {
         }
       }
     }
+  }
+
+  ngOnDestroy() {
+    this.subSink.unsubscribe();
   }
 }

@@ -1,0 +1,74 @@
+<div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="1.0%">
+  <div fxFlex="10%">
+    <h1 matDialogTitle>{{ input.payload.title | titlecase }}</h1>
+  </div>
+
+  <div fxFlex="90%" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="1.0%">
+
+    <div fxFlex fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="10%">
+      <mat-card class="stat-card">
+        <mat-card-content class="full-width" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="1.0%">
+          <div fxFlex fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="1.0%">
+            <div fxFlex="50%" fxLayout="column" fxLayoutAlign="center center">
+              <div class="title bold">0</div>
+              <div class="stat-subtitle">
+                Pass Long
+              </div>
+            </div>
+            <div fxFlex="50%" fxLayout="column" fxLayoutAlign="center center">
+              <div class="title bold">0</div>
+              <div class="stat-subtitle">
+                Pass Avg Per Game
+              </div>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+      <mat-card class="stat-card">
+        <mat-card-content class="full-width" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="1.0%">
+          <div fxFlex fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="1.0%">
+            <div fxFlex="50%" fxLayout="column" fxLayoutAlign="center center">
+              <div class="title bold">57</div>
+              <div class="stat-subtitle">
+                Rush Long
+              </div>
+            </div>
+            <div fxFlex="50%" fxLayout="column" fxLayoutAlign="center center">
+              <div class="title bold">1.7</div>
+              <div class="stat-subtitle">
+                Rush Avg Per Game
+              </div>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+      <mat-card class="stat-card">
+        <mat-card-content class="full-width" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="1.0%">
+          <div fxFlex fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="1.0%">
+            <div fxFlex="50%" fxLayout="column" fxLayoutAlign="center center">
+              <div class="title bold">25</div>
+              <div class="stat-subtitle">
+                Rec Long
+              </div>
+            </div>
+            <div fxFlex="50%" fxLayout="column" fxLayoutAlign="center center">
+              <div class="title bold">0.4</div>
+              <div class="stat-subtitle">
+                Rec Avg Per Game
+              </div>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div fxFlex style="height: 35%; width: 100%">
+      <mat-card>
+        <app-chart [chartInput]="input.payload.chart"></app-chart>
+      </mat-card>
+    </div>
+
+    <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="1.0%">
+      <button mat-button color="warn" type="button" (click)="dialogRef.close(false)">Close</button>
+    </div>
+  </div>
+</div>

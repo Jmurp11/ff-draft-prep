@@ -42,15 +42,16 @@ export type Folder = {
   __typename?: 'Folder';
   id: Scalars['String'];
   user: User;
-  name: Scalars['String'];
+  title: Scalars['String'];
   notes?: Maybe<Array<Note>>;
   creationTime: Scalars['DateTime'];
+  updatedTime: Scalars['DateTime'];
 };
 
 export type FolderArgs = {
   filterType?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['String']>;
-  name?: Maybe<Scalars['String']>;
+  title?: Maybe<Scalars['String']>;
   user?: Maybe<Scalars['String']>;
   take?: Maybe<Scalars['Float']>;
   skip?: Maybe<Scalars['Float']>;
@@ -77,8 +78,10 @@ export type LoginSuccess = {
 export type Mutation = {
   __typename?: 'Mutation';
   createFolder: Result;
+  editFolder: Result;
   deleteFolder: Result;
   createNote: Result;
+  editNote: Result;
   deleteNote: Result;
   updatePlayers: Result;
   createProjection: Result;
@@ -104,12 +107,22 @@ export type MutationCreateFolderArgs = {
 };
 
 
+export type MutationEditFolderArgs = {
+  input: FolderArgs;
+};
+
+
 export type MutationDeleteFolderArgs = {
   input: FolderArgs;
 };
 
 
 export type MutationCreateNoteArgs = {
+  input: NoteInput;
+};
+
+
+export type MutationEditNoteArgs = {
   input: NoteInput;
 };
 
@@ -183,10 +196,12 @@ export type Note = {
   body: Scalars['String'];
   isPrivate: Scalars['Boolean'];
   creationTime: Scalars['DateTime'];
+  updatedTime: Scalars['DateTime'];
 };
 
 export type NoteArgs = {
   filterType?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['String']>;
   player?: Maybe<Scalars['Float']>;
   user?: Maybe<Scalars['String']>;
   folder?: Maybe<Scalars['String']>;
@@ -195,6 +210,7 @@ export type NoteArgs = {
 };
 
 export type NoteInput = {
+  id?: Maybe<Scalars['String']>;
   player: Scalars['Float'];
   title: Scalars['String'];
   folder?: Maybe<Scalars['String']>;
@@ -682,6 +698,25 @@ export type CreateFolderMutation = (
   ) }
 );
 
+export type EditFolderMutationVariables = Exact<{
+  data: FolderArgs;
+}>;
+
+
+export type EditFolderMutation = (
+  { __typename?: 'Mutation' }
+  & { editFolder: (
+    { __typename?: 'Result' }
+    & { success?: Maybe<Array<(
+      { __typename?: 'Response' }
+      & Pick<Response, 'message'>
+    )>>, errors?: Maybe<Array<(
+      { __typename?: 'Response' }
+      & Pick<Response, 'message'>
+    )>> }
+  ) }
+);
+
 export type DeleteFolderMutationVariables = Exact<{
   data: FolderArgs;
 }>;
@@ -709,6 +744,25 @@ export type CreateNoteMutationVariables = Exact<{
 export type CreateNoteMutation = (
   { __typename?: 'Mutation' }
   & { createNote: (
+    { __typename?: 'Result' }
+    & { success?: Maybe<Array<(
+      { __typename?: 'Response' }
+      & Pick<Response, 'message'>
+    )>>, errors?: Maybe<Array<(
+      { __typename?: 'Response' }
+      & Pick<Response, 'message'>
+    )>> }
+  ) }
+);
+
+export type EditNoteMutationVariables = Exact<{
+  data: NoteInput;
+}>;
+
+
+export type EditNoteMutation = (
+  { __typename?: 'Mutation' }
+  & { editNote: (
     { __typename?: 'Result' }
     & { success?: Maybe<Array<(
       { __typename?: 'Response' }
@@ -911,10 +965,10 @@ export type FoldersQuery = (
   { __typename?: 'Query' }
   & { folders: Array<(
     { __typename?: 'Folder' }
-    & Pick<Folder, 'id' | 'name' | 'creationTime'>
+    & Pick<Folder, 'id' | 'title' | 'creationTime' | 'updatedTime'>
     & { notes?: Maybe<Array<(
       { __typename?: 'Note' }
-      & Pick<Note, 'id' | 'title' | 'creationTime'>
+      & Pick<Note, 'id' | 'title' | 'creationTime' | 'updatedTime'>
     )>> }
   )> }
 );
@@ -928,10 +982,10 @@ export type FolderQuery = (
   { __typename?: 'Query' }
   & { folder: (
     { __typename?: 'Folder' }
-    & Pick<Folder, 'id' | 'name' | 'creationTime'>
+    & Pick<Folder, 'id' | 'title' | 'creationTime' | 'updatedTime'>
     & { notes?: Maybe<Array<(
       { __typename?: 'Note' }
-      & Pick<Note, 'id' | 'title' | 'creationTime'>
+      & Pick<Note, 'id' | 'title' | 'creationTime' | 'updatedTime'>
     )>> }
   ) }
 );
@@ -956,8 +1010,11 @@ export type NotesQuery = (
   { __typename?: 'Query' }
   & { notes: Array<(
     { __typename?: 'Note' }
-    & Pick<Note, 'id' | 'title' | 'body' | 'isPrivate' | 'creationTime'>
-    & { user: (
+    & Pick<Note, 'id' | 'title' | 'body' | 'isPrivate' | 'creationTime' | 'updatedTime'>
+    & { folder?: Maybe<(
+      { __typename?: 'Folder' }
+      & Pick<Folder, 'id' | 'title'>
+    )>, user: (
       { __typename?: 'User' }
       & Pick<User, 'id' | 'username' | 'profileImage'>
     ), player: (
@@ -980,8 +1037,11 @@ export type NoteQuery = (
   { __typename?: 'Query' }
   & { note: (
     { __typename?: 'Note' }
-    & Pick<Note, 'id' | 'title' | 'body' | 'isPrivate' | 'creationTime'>
-    & { user: (
+    & Pick<Note, 'id' | 'title' | 'body' | 'isPrivate' | 'creationTime' | 'updatedTime'>
+    & { folder?: Maybe<(
+      { __typename?: 'Folder' }
+      & Pick<Folder, 'id' | 'title'>
+    )>, user: (
       { __typename?: 'User' }
       & Pick<User, 'id' | 'username' | 'profileImage'>
     ), player: (
@@ -1267,6 +1327,26 @@ export const CreateFolderDocument = gql`
     document = CreateFolderDocument;
     
   }
+export const EditFolderDocument = gql`
+    mutation editFolder($data: FolderArgs!) {
+  editFolder(input: $data) {
+    success {
+      message
+    }
+    errors {
+      message
+    }
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class EditFolderGQL extends Apollo.Mutation<EditFolderMutation, EditFolderMutationVariables> {
+    document = EditFolderDocument;
+    
+  }
 export const DeleteFolderDocument = gql`
     mutation deleteFolder($data: FolderArgs!) {
   deleteFolder(input: $data) {
@@ -1305,6 +1385,26 @@ export const CreateNoteDocument = gql`
   })
   export class CreateNoteGQL extends Apollo.Mutation<CreateNoteMutation, CreateNoteMutationVariables> {
     document = CreateNoteDocument;
+    
+  }
+export const EditNoteDocument = gql`
+    mutation editNote($data: NoteInput!) {
+  editNote(input: $data) {
+    success {
+      message
+    }
+    errors {
+      message
+    }
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class EditNoteGQL extends Apollo.Mutation<EditNoteMutation, EditNoteMutationVariables> {
+    document = EditNoteDocument;
     
   }
 export const DeleteNoteDocument = gql`
@@ -1511,12 +1611,14 @@ export const FoldersDocument = gql`
     query folders($data: FolderArgs!) {
   folders(input: $data) {
     id
-    name
+    title
     creationTime
+    updatedTime
     notes {
       id
       title
       creationTime
+      updatedTime
     }
   }
 }
@@ -1533,12 +1635,14 @@ export const FolderDocument = gql`
     query folder($data: FolderArgs!) {
   folder(input: $data) {
     id
-    name
+    title
     creationTime
+    updatedTime
     notes {
       id
       title
       creationTime
+      updatedTime
     }
   }
 }
@@ -1576,8 +1680,13 @@ export const NotesDocument = gql`
     id
     title
     body
+    folder {
+      id
+      title
+    }
     isPrivate
     creationTime
+    updatedTime
     user {
       id
       username
@@ -1610,8 +1719,13 @@ export const NoteDocument = gql`
     id
     title
     body
+    folder {
+      id
+      title
+    }
     isPrivate
     creationTime
+    updatedTime
     user {
       id
       username
@@ -2120,8 +2234,10 @@ export const UserDocument = gql`
       private registerGql: RegisterGQL,
       private logoutGql: LogoutGQL,
       private createFolderGql: CreateFolderGQL,
+      private editFolderGql: EditFolderGQL,
       private deleteFolderGql: DeleteFolderGQL,
       private createNoteGql: CreateNoteGQL,
+      private editNoteGql: EditNoteGQL,
       private deleteNoteGql: DeleteNoteGQL,
       private updatePlayersGql: UpdatePlayersGQL,
       private createProjectionGql: CreateProjectionGQL,
@@ -2164,12 +2280,20 @@ export const UserDocument = gql`
       return this.createFolderGql.mutate(variables, options)
     }
     
+    editFolder(variables: EditFolderMutationVariables, options?: MutationOptionsAlone<EditFolderMutation, EditFolderMutationVariables>) {
+      return this.editFolderGql.mutate(variables, options)
+    }
+    
     deleteFolder(variables: DeleteFolderMutationVariables, options?: MutationOptionsAlone<DeleteFolderMutation, DeleteFolderMutationVariables>) {
       return this.deleteFolderGql.mutate(variables, options)
     }
     
     createNote(variables: CreateNoteMutationVariables, options?: MutationOptionsAlone<CreateNoteMutation, CreateNoteMutationVariables>) {
       return this.createNoteGql.mutate(variables, options)
+    }
+    
+    editNote(variables: EditNoteMutationVariables, options?: MutationOptionsAlone<EditNoteMutation, EditNoteMutationVariables>) {
+      return this.editNoteGql.mutate(variables, options)
     }
     
     deleteNote(variables: DeleteNoteMutationVariables, options?: MutationOptionsAlone<DeleteNoteMutation, DeleteNoteMutationVariables>) {

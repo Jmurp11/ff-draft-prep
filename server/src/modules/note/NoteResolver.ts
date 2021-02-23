@@ -8,6 +8,7 @@ import { DeleteNoteInput } from './inputs/DeleteNoteInput';
 import { filterQuery } from '../../utils/filterQuery';
 import { NoteArgs } from './inputs/NoteArgs';
 import { NoteService } from './services/note-service';
+import { Folder } from '../../entity/Folder';
 
 @Resolver()
 export class NoteResolver {
@@ -15,13 +16,15 @@ export class NoteResolver {
         private _notes: NoteService
     ) { }
 
-    @UseMiddleware()
+    @UseMiddleware(isAuth, logger)
     @Query(() => [Note])
     async notes(
         @Arg('input') {
             filterType,
+            id,
             user,
             player,
+            folder,
             skip,
             take
         }: NoteArgs,
@@ -32,6 +35,7 @@ export class NoteResolver {
             .createQueryBuilder('notes')
             .leftJoinAndSelect('notes.user', 'user')
             .leftJoinAndSelect('notes.player', 'player')
+            .leftJoinAndSelect('notes.folder', 'folder')
             .leftJoinAndSelect('player.team', 'team')
             .take(take)
             .skip(skip)
@@ -44,6 +48,18 @@ export class NoteResolver {
                     return filterQuery(query, where).getMany();
                 }
                 return [];
+            case 'byCurrentUserAndNoFolder':
+                if (ctx.payload?.userId) {
+                    where = await this._notes.byCurrentUserAndNoFolder(ctx);
+                    return filterQuery(query, where).getMany();
+                }
+                return [];
+            case 'byFolder':
+                where = await this._notes.byFolder(folder);
+                return filterQuery(query, where).getMany();
+            case 'byId':
+                where = await this._notes.byId(id);
+                return filterQuery(query, where).getMany();
             case 'byUser':
                 where = await this._notes.byUser(user);
                 return filterQuery(query, where).getMany();
@@ -62,8 +78,7 @@ export class NoteResolver {
     @Query(() => Note)
     async note(
         @Arg('input') {
-            user,
-            player
+            id
         }: NoteArgs
     ) {
         let where;
@@ -72,9 +87,10 @@ export class NoteResolver {
             .createQueryBuilder('notes')
             .leftJoinAndSelect('notes.user', 'user')
             .leftJoinAndSelect('notes.player', 'player')
+            .leftJoinAndSelect('notes.folder', 'folder')
             .leftJoinAndSelect('player.team', 'team');
 
-        where = await this._notes.byUserAndPlayer(user, player);
+        where = await this._notes.byId(id);
         return filterQuery(query, where).getOne();
     }
 
@@ -125,22 +141,100 @@ export class NoteResolver {
         }
 
         const creationTime = new Date().toISOString();
+        const updatedTime = new Date().toISOString();
 
         await Note.create({
             user,
             player,
             folder,
             creationTime,
+            updatedTime,
             title,
             body,
             isPrivate
         }).save();
+
+        if (folder) {
+            await Folder.update({ id: folder }, {
+                updatedTime
+            });
+        }
 
         return {
             success: [
                 {
                     path: 'note',
                     message: 'Successfully added note!'
+                }
+            ]
+        }
+    }
+
+    @UseMiddleware(isAuth, logger)
+    @Mutation(() => Result)
+    async editNote(
+        @Ctx() ctx: MyContext,
+        @Arg('input') {
+            id,
+            folder,
+            title,
+            body,
+            isPrivate
+        }: NoteInput
+    ): Promise<Result> {
+        const user = ctx.payload?.userId;
+
+        const note = await Note.findOne({
+            where: {
+                id
+            }
+        });
+
+        if (note?.user !== user) {
+            return {
+                errors: [
+                    {
+                        path: 'note',
+                        message: 'This user cannot edit this note!'
+                    }
+                ]
+            }
+        }
+
+        if (!note) {
+            return {
+                errors: [
+                    {
+                        path: 'note',
+                        message: 'This note no longer exists!'
+                    }
+                ]
+            }
+        }
+
+        const updatedTime = new Date().toISOString();
+
+
+        await Note.update({ id },
+            {
+                folder,
+                title,
+                body,
+                updatedTime,
+                isPrivate
+            });
+
+        if (folder) {
+            await Folder.update({ id: folder }, {
+                updatedTime
+            });
+        }
+
+        return {
+            success: [
+                {
+                    path: 'note',
+                    message: 'Successfully updated note!'
                 }
             ]
         }
@@ -158,7 +252,7 @@ export class NoteResolver {
             where: {
                 id
             },
-            select: ['id', 'user']
+            select: ['id', 'user', 'folder']
         });
 
         if (!note!.id) {
@@ -181,6 +275,14 @@ export class NoteResolver {
                     }
                 ]
             }
+        }
+
+        if (note!.folder) {
+            const updatedTime = new Date().toISOString();
+
+            await Folder.update({ id: note!.folder }, {
+                updatedTime
+            });
         }
 
         await Note.delete({ id });

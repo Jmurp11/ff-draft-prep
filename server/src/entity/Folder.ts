@@ -26,7 +26,7 @@ export class Folder extends BaseEntity {
 
     @Field()
     @Column('text')
-    name!: string;
+    title!: string;
     
     @Field(() => [Note], { nullable: true })
     @OneToMany(() => Note, note => note.folder, {
@@ -38,4 +38,8 @@ export class Folder extends BaseEntity {
     @Field(() => Date)
     @Column('timestamp')
     creationTime!: string;
+
+    @Field(() => Date)
+    @Column('timestamp')
+    updatedTime!: string;
 }

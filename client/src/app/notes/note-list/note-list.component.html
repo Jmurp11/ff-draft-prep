@@ -1,14 +1,15 @@
-<div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="0.1%" style="width: 100%;">
+<div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="0.1%" class="full-width">
   <div *ngIf="!(notes$ | async)">
     <app-loading-spinner></app-loading-spinner>
   </div>
 </div>
 
-<div *ngIf="(notes$ | async) as notes"
-  fxLayout="row wrap" fxLayoutAlign="center" fxLayoutGap="0.5%" #scrollable style="width: 100%;">
-  <div *ngIf="notes.length > 0">
-    <div *ngFor="let note of notes" style="padding: 1em;">
-      <app-note [noteInput]="note"></app-note>
+<div *ngIf="(notes$ | async) as notes" #scrollable class="full-width">
+  <div *ngIf="notes.length > 0" class="full-width">
+    <div *ngFor="let note of notes" class="full-width" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="0.5%">
+      <div fxFlex="100%" style="width: 80%;">
+        <app-note [noteInput]="note"></app-note>
+      </div>
     </div>
   </div>
   <div *ngIf="notes.length === 0">

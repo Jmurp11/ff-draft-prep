@@ -59,12 +59,12 @@ export class FolderService {
         return filters;
     }
 
-    async byName(name: string): Promise<Where | undefined> {
+    async byTitle(title: string): Promise<Where | undefined> {
         const fields: Fields = {
             fieldTable: 'folders',
-            fieldName: 'user',
+            fieldName: 'title',
             fieldOptions: {
-                is: `'${name}'`
+                is: `'${title}'`
             }
         };
 

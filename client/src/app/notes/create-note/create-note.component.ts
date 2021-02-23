@@ -3,7 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { switchMap, startWith, map } from 'rxjs/operators';
-import { _filter, findItemWithPropertyValue } from 'src/app/util/lib/objects';
+import { _filter, findItemWithPropertyValue } from '../../util/lib/objects';
 import { ApolloAngularSDK, Folder, PlayerArgs } from '../../sdk/generated/graphql';
 
 @Component({
@@ -18,7 +18,7 @@ export class CreateNoteComponent implements OnInit {
   isLoading: boolean;
   title: string;
   players: any[];
-  folders: Pick<Folder, 'id' | 'name'>[];
+  folders: Pick<Folder, 'id' | 'title'>[];
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public input: any,
@@ -51,6 +51,27 @@ export class CreateNoteComponent implements OnInit {
 
     if (this.input) {
       this.form.get('player').setValue(this.input.payload.player);
+    }
+
+    if (!this.input.payload.isNew && this.input.payload.id) {
+      console.log('in')
+      this.isLoading = true;
+      this.subSink.add(
+        this.apolloSdk.noteWatch(
+          {
+            data: {
+              id: this.input.payload.id
+            }
+          }
+        ).valueChanges
+        .subscribe(({ data, loading }) => {
+          this.isLoading = loading;
+          this.form.get('title').setValue(data.note.title);
+          this.form.get('player').setValue(data.note.player);
+          this.form.get('folder').setValue(data.note.folder);
+          this.form.get('content').setValue(data.note.body);
+        })
+      );
     }
 
     this.subSink.add(
@@ -117,12 +138,17 @@ export class CreateNoteComponent implements OnInit {
   }
 
   displayFolder(folder: any) {
-    return folder && folder.name ? `${folder.name}` : '';
+    return folder && folder.title ? `${folder.title}` : '';
   }
 
 
   onSubmit() {
-    this.dialogRef.close(this.form.value);
+    const returnData = {
+      form: this.form.value,
+      id: this.input.payload.id,
+    };
+
+    this.dialogRef.close(returnData);
   }
 
   ngOnDestroy() {

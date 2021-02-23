@@ -35,7 +35,10 @@ export class PpgCardComponent implements OnInit, OnChanges {
               dataset: ppgData,
               labels: ['', '', '', '', ''],
               legend: false,
-              color: null
+              color: [{
+                borderColor: 'transparent',
+                backgroundColor: '#5494BE'
+              }]
             };
           }
         }

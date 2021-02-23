@@ -47,7 +47,7 @@
   <div fxFlex="13%" fxFlex.lt-md="35%" fxLayout="row" fxLayoutAlign="end center" fxLayoutAlign.lt-md="center center"
     fxLayoutGap="0.5%" fxLayoutGap.lt-md="75%">
     <div fxFlex="30%">
-      <button mat-mini-fab color="primary" (click)="openCreateNoteDialog(player)">
+      <button mat-mini-fab color="primary" (click)="_popupService.openCreateNoteDialog(player, true, null)">
         <mat-icon>note_add</mat-icon>
       </button>
     </div>

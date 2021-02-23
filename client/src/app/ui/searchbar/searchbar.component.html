@@ -1,6 +1,6 @@
 <form>
   <mat-form-field class="full-width font">
-    <input type="text" placeholder="Search By Last Name...." aria-label="Search" matInput [formControl]="searchInput"
+    <input type="text" placeholder="Search..." aria-label="Search" matInput [formControl]="searchInput"
       [matAutocomplete]="auto">
     <button mat-icon-button matSuffix color="accent" (click)="clearSearch()" *ngIf="searchInput.value">
       <mat-icon>close</mat-icon>

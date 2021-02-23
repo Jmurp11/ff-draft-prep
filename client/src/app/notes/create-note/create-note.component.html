@@ -1,4 +1,8 @@
-<div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="1.0%">
+<div *ngIf="isLoading">
+  <app-loading-spinner></app-loading-spinner>
+</div>
+
+<div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="1.0%" *ngIf="!isLoading">
   <div fxFlex="10%">
     <h1 matDialogTitle>{{ title | titlecase }}</h1>
   </div>
@@ -38,7 +42,7 @@
           </button>
           <mat-autocomplete #folderAuto="matAutocomplete" [displayWith]="displayFolder">
             <mat-option *ngFor="let folder of folders | slice: 0:5" [value]="folder">
-              {{folder.name}}
+              {{folder.title}}
             </mat-option>
           </mat-autocomplete>
         </mat-form-field>

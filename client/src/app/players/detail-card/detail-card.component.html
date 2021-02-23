@@ -1,0 +1,49 @@
+<mat-card fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="0.5%">
+  <div class="full-width" fxFlex="20%" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="0.5%">
+    <div fxFlex="2%"></div>
+    <div fxFlex="15%">
+      <img [src]="player?.photoUrl" alt="player-image" class="avatar image">
+    </div>
+    <div fxFlex="83%" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap=".5%">
+      <div fxFlex="40%" class="cursor player-name" (click)="_navigate.navigate('/players/'+player?.id)">
+        <span class="title bold">
+          {{ player?.name | uppercase}}
+        </span>
+        <span class="subtitle">{{ player?.position }}</span>
+      </div>
+      <div fxFlex="40%">
+        <span class="chip bold"
+          [style.backgroundColor]="player?.team ? '#'+player?.team.secondaryColor : freeAgentSecondaryColor"
+          [style.color]="player?.team ? '#'+player?.team.primaryColor : freeAgentPrimaryColor">
+          {{ player?.team ? player?.team.fullName : freeAgent }}
+        </span>
+        <span style="padding: .2em;"></span>
+        <span class="chip" [style.backgroundColor]="player?.status === activeStatus ? 'green' : 'red'">
+          {{ status }}
+        </span>
+      </div>
+      <div fxFlex="20" fxLayout="row" fxLayoutAlign="space-evenly" fxLayoutGap="5.0%">
+        <div fxFlex="30%">
+          <button mat-icon-button color="primary" (click)="_popupService.openCreateNoteDialog(player, true, null)">
+            <mat-icon>note_add</mat-icon>
+          </button>
+        </div>
+
+        <div fxFlex="30%">
+          <button mat-icon-button color="warn" (click)="openCreateTargetDialog(player)">
+            <mat-icon>gps_fixed</mat-icon>
+          </button>
+        </div>
+
+        <div fxFlex="30%">
+          <button mat-icon-button color="accent" (click)="openNoteList(player.id)">
+            <mat-icon>notes</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div fxFlex="80%">
+    <app-stat-summary [playerInput]="player"></app-stat-summary>
+  </div>
+</mat-card>
