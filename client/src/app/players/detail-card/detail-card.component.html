@@ -4,7 +4,7 @@
     <div fxFlex="15%">
       <img [src]="player?.photoUrl" alt="player-image" class="avatar image">
     </div>
-    <div fxFlex="83%" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap=".5%">
+    <div fxFlex="83%" class="full-width" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap=".5%">
       <div fxFlex="40%" class="cursor player-name" (click)="_navigate.navigate('/players/'+player?.id)">
         <span class="title bold">
           {{ player?.name | uppercase}}
@@ -22,23 +22,31 @@
           {{ status }}
         </span>
       </div>
-      <div fxFlex="20" fxLayout="row" fxLayoutAlign="space-evenly" fxLayoutGap="5.0%">
-        <div fxFlex="30%">
-          <button mat-icon-button color="primary" (click)="_popupService.openCreateNoteDialog(player, true, null)">
-            <mat-icon>note_add</mat-icon>
-          </button>
-        </div>
+      <div fxFlex="20%" style="width: 80%;" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="0.1%">
+        <div fxFlex class="full-width" fxLayout="row wrap" fxLayoutAlign="space-between center">
+          <div fxFlex>
+            <button mat-icon-button color="accent" (click)="_popupService.openCreateNoteDialog(player, true, null)">
+              <mat-icon>note_add</mat-icon>
+            </button>
+          </div>
 
-        <div fxFlex="30%">
-          <button mat-icon-button color="warn" (click)="openCreateTargetDialog(player)">
-            <mat-icon>gps_fixed</mat-icon>
-          </button>
-        </div>
+          <div fxFlex>
+            <button mat-icon-button color="accent" (click)="openCreateTargetDialog(player)">
+              <mat-icon>gps_fixed</mat-icon>
+            </button>
+          </div>
 
-        <div fxFlex="30%">
-          <button mat-icon-button color="accent" (click)="openNoteList(player.id)">
-            <mat-icon>notes</mat-icon>
-          </button>
+          <div fxFlex>
+            <button mat-icon-button color="accent">
+              <mat-icon>calendar_today</mat-icon>
+            </button>
+          </div>
+
+          <div fxFlex>
+            <button mat-icon-button color="accent" (click)="openNoteList(player.id)">
+              <mat-icon>notes</mat-icon>
+            </button>
+          </div>
         </div>
       </div>
     </div>

@@ -45,20 +45,26 @@
     </div>
   </div>
   <div fxFlex="13%" fxFlex.lt-md="35%" fxLayout="row" fxLayoutAlign="end center" fxLayoutAlign.lt-md="center center"
-    fxLayoutGap="0.5%" fxLayoutGap.lt-md="75%">
-    <div fxFlex="30%">
-      <button mat-mini-fab color="primary" (click)="_popupService.openCreateNoteDialog(player, true, null)">
+    fxLayoutGap="0.5%" fxLayoutGap.lt-md="25%">
+    <div fxFlex>
+      <button mat-mini-fab color="accent" (click)="_popupService.openCreateNoteDialog(player, true, null)">
         <mat-icon>note_add</mat-icon>
       </button>
     </div>
 
-    <div fxFlex="30%">
-      <button mat-mini-fab color="warn" (click)="openCreateTargetDialog(player)">
+    <div fxFlex>
+      <button mat-mini-fab color="accent" (click)="openCreateTargetDialog(player)">
         <mat-icon>gps_fixed</mat-icon>
       </button>
     </div>
 
-    <div fxFlex="30%">
+    <div fxFlex>
+      <button mat-mini-fab color="accent">
+        <mat-icon>calendar_today</mat-icon>
+      </button>
+    </div>
+
+    <div fxFlex>
       <button mat-mini-fab color="accent" (click)="openNoteList(player?.id)">
         <mat-icon>notes</mat-icon>
       </button>
