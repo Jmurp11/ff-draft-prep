@@ -1,7 +1,7 @@
 import { Resolver, Query, Mutation, Arg, UseMiddleware, Int, Ctx } from 'type-graphql';
 import { Note } from '../../entity/Note';
 import { Result, MyContext } from '../../shared';
-import { NoteInput } from './inputs/NoteInput';
+import { NoteInput, PlayerReferenceInput } from './inputs/NoteInput';
 import { getRepository, SelectQueryBuilder } from 'typeorm';
 import { isAuth, logger } from '../../middleware';
 import { DeleteNoteInput } from './inputs/DeleteNoteInput';
@@ -9,6 +9,7 @@ import { filterQuery } from '../../utils/filterQuery';
 import { NoteArgs } from './inputs/NoteArgs';
 import { NoteService } from './services/note-service';
 import { Folder } from '../../entity/Folder';
+import { NoteReference } from '../../entity/NoteReference';
 
 @Resolver()
 export class NoteResolver {
@@ -34,9 +35,8 @@ export class NoteResolver {
         const query: SelectQueryBuilder<Note> = getRepository(Note)
             .createQueryBuilder('notes')
             .leftJoinAndSelect('notes.user', 'user')
-            .leftJoinAndSelect('notes.player', 'player')
             .leftJoinAndSelect('notes.folder', 'folder')
-            .leftJoinAndSelect('player.team', 'team')
+            .leftJoinAndSelect('notes.noteConnection', 'nc')
             .take(take)
             .skip(skip)
             .orderBy('notes.creationTime', 'DESC')
@@ -86,9 +86,8 @@ export class NoteResolver {
         const query: SelectQueryBuilder<Note> = getRepository(Note)
             .createQueryBuilder('notes')
             .leftJoinAndSelect('notes.user', 'user')
-            .leftJoinAndSelect('notes.player', 'player')
             .leftJoinAndSelect('notes.folder', 'folder')
-            .leftJoinAndSelect('player.team', 'team');
+            .leftJoinAndSelect('notes.noteConnection', 'nc');
 
         where = await this._notes.byId(id);
         return filterQuery(query, where).getOne();
@@ -110,12 +109,12 @@ export class NoteResolver {
     async createNote(
         @Ctx() ctx: MyContext,
         @Arg('input') {
-            player,
             folder,
             title,
             body,
             isPrivate
-        }: NoteInput
+        }: NoteInput,
+        @Arg('references', _type => [PlayerReferenceInput]) references: PlayerReferenceInput[]
     ): Promise<Result> {
         const user = ctx.payload?.userId;
 
@@ -123,7 +122,6 @@ export class NoteResolver {
             where: {
                 user,
                 folder,
-                player,
                 title
             },
             select: ['id']
@@ -134,7 +132,7 @@ export class NoteResolver {
                 errors: [
                     {
                         path: 'note',
-                        message: 'User has already created note with this title for this player!'
+                        message: 'User has already created note with this title!'
                     }
                 ]
             }
@@ -143,9 +141,8 @@ export class NoteResolver {
         const creationTime = new Date().toISOString();
         const updatedTime = new Date().toISOString();
 
-        await Note.create({
+        const createdNote = await Note.create({
             user,
-            player,
             folder,
             creationTime,
             updatedTime,
@@ -153,6 +150,14 @@ export class NoteResolver {
             body,
             isPrivate
         }).save();
+
+        references.forEach(async (player) => {
+            const playerId = player.player;
+            await NoteReference.create({
+                playerId,
+                noteId: createdNote.id
+            }).save();
+        });
 
         if (folder) {
             await Folder.update({ id: folder }, {

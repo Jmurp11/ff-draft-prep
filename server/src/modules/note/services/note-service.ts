@@ -7,7 +7,7 @@ import { MyContext } from '../../../shared';
 export class NoteService {
     async byPlayer(player: number): Promise<Where | undefined> {
         const fields: Fields = {
-            fieldTable: 'notes',
+            fieldTable: 'notesReferences',
             fieldName: 'player',
             fieldOptions: {
                 is: player

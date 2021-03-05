@@ -4,12 +4,15 @@ import {
     BaseEntity,
     JoinColumn,
     PrimaryGeneratedColumn,
-    ManyToOne
+    ManyToOne,
+    OneToMany
 } from 'typeorm';
 import { Player } from './Player';
 import { User } from './User';
-import { ObjectType, Field } from 'type-graphql';
+import { ObjectType, Field, Ctx } from 'type-graphql';
 import { Folder } from './Folder';
+import { NoteReference } from './NoteReference';
+import { MyContext } from '../shared';
 
 /**
  * remove player, change to subject
@@ -31,14 +34,6 @@ export class Note extends BaseEntity {
     @Field(() => User)
     @Column('uuid')
     user!: string;
-
-    @ManyToOne(() => Player, {
-        eager: true
-    })
-    @JoinColumn({ name: 'player' })
-    @Field(() => Player)
-    @Column('int')
-    player!: number;
 
     @ManyToOne(() => Folder)
     @JoinColumn({ name: 'folder' })
@@ -65,4 +60,14 @@ export class Note extends BaseEntity {
     @Field(() => Date)
     @Column('timestamp')
     updatedTime!: string;
+
+    @OneToMany(() => NoteReference, nr => nr.note, {
+        onDelete: 'CASCADE'
+    })
+    noteConnection: Promise<NoteReference>;
+
+    @Field(() => [Player], { nullable: true })
+    async references(@Ctx() { playersLoader }: MyContext): Promise<Player[]> {
+        return playersLoader.load(this.id);
+    }
 }

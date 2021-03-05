@@ -7,9 +7,6 @@ export class NoteInput {
     id: string;
 
     @Field()
-    player: number;
-
-    @Field()
     title: string;
 
     @Field({ nullable: true })
@@ -20,4 +17,10 @@ export class NoteInput {
 
     @Field()
     isPrivate: boolean;
+}
+
+@InputType()
+export class PlayerReferenceInput {
+    @Field({ nullable: true })
+    player: number;
 }

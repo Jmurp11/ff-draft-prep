@@ -37,7 +37,7 @@ export class PlayerResolver {
             .leftJoinAndSelect('team.stats', 'stats')
             .leftJoinAndSelect('team.standings', 'standings')
             .leftJoinAndSelect('players.projection', 'projection')
-            .leftJoinAndSelect('players.notes', 'notes')
+            .leftJoinAndSelect('players.playerConnection', 'pc')
             .take(take)
             .skip(skip)
             .orderBy('players.averageDraftPosition', 'ASC')
@@ -82,8 +82,7 @@ export class PlayerResolver {
             .leftJoinAndSelect('team.stats', 'stats')
             .leftJoinAndSelect('team.standings', 'standings')
             .leftJoinAndSelect('players.projection', 'projection')
-            .leftJoinAndSelect('players.notes', 'notes');
-
+            .leftJoinAndSelect('players.playerConnection', 'pc')
 
         switch (filterType) {
             case 'byId':

@@ -9,6 +9,8 @@ import { buildSchema } from 'type-graphql';
 import cookieParser from 'cookie-parser';
 import { baseUrl } from './constants/constants';
 import Container from './container';
+import { createNotesLoader } from './utils/notesLoader';
+import { createPlayersLoader } from './utils/playersLoader';
 
 (async () => {
   const app = express();
@@ -35,7 +37,12 @@ import Container from './container';
       container: Container,
       dateScalarMode: "isoDate"
     }),
-    context: ({ req, res }) => ({ req, res })
+    context: ({ req, res }) => ({ 
+      req,
+      res,
+      notesLoader: createNotesLoader(),
+      playersLoader: createPlayersLoader()
+    })
   });
 
   apolloServer.applyMiddleware({ app, cors: corOptions });
