@@ -2,8 +2,8 @@
   <mat-card-header>
     <div mat-card-avatar class="avatar" [style.backgroundImage]="backgroundImage"></div>
     <mat-card-title>{{ note?.title }}</mat-card-title>
-    <mat-card-subtitle class="cursor" (click)="navigate(note.player?.id)">
-      {{ note?.player.name }} {{ note?.player.position }}</mat-card-subtitle>
+    <mat-card-subtitle class="cursor">
+      {{ note?.author }}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
     <div id="body">

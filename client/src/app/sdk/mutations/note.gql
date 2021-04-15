@@ -1,5 +1,7 @@
-mutation createNote($data: NoteInput!) {
-  createNote(input: $data) {
+mutation createNote(
+  $data: NoteInput!,
+  $references: [PlayerReferenceInput!]!) {
+  createNote(input: $data, references: $references) {
     success {
       message
     }

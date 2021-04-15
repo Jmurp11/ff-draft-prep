@@ -4,10 +4,11 @@
   </div>
 </div>
 
-<div *ngIf="(notes$ | async) as notes" #scrollable class="full-width">
-  <div *ngIf="notes.length > 0" class="full-width">
-    <div *ngFor="let note of notes" class="full-width" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="0.5%">
-      <div fxFlex="100%" style="width: 80%;">
+<div *ngIf="(notes$ | async) as notes" #scrollable>
+  <div *ngIf="notes.length > 0">
+    <div *ngFor="let note of notes" class="full-width" fxLayout="column" fxLayoutAlign="center center"
+      fxLayoutGap="0.5%">
+      <div fxFlex="100%" class="card-div">
         <app-note [noteInput]="note"></app-note>
       </div>
     </div>

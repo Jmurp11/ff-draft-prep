@@ -4,7 +4,6 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { AuthStoreService } from 'src/app/auth/auth-store.service';
-import { CreateNoteComponent } from 'src/app/notes/create-note/create-note.component';
 import { NoteStoreService } from 'src/app/notes/note-store.service';
 import { ApolloAngularSDK, Exact, NoteInput, NotesDocument, TargetInput } from 'src/app/sdk/generated/graphql';
 import { NavigateService } from 'src/app/shared/navigate.service';

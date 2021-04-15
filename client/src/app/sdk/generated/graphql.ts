@@ -118,6 +118,7 @@ export type MutationDeleteFolderArgs = {
 
 
 export type MutationCreateNoteArgs = {
+  references: Array<PlayerReferenceInput>;
   input: NoteInput;
 };
 
@@ -190,13 +191,13 @@ export type Note = {
   __typename?: 'Note';
   id: Scalars['String'];
   user: User;
-  player: Player;
   folder?: Maybe<Folder>;
   title: Scalars['String'];
   body: Scalars['String'];
   isPrivate: Scalars['Boolean'];
   creationTime: Scalars['DateTime'];
   updatedTime: Scalars['DateTime'];
+  references?: Maybe<Array<Player>>;
 };
 
 export type NoteArgs = {
@@ -211,7 +212,6 @@ export type NoteArgs = {
 
 export type NoteInput = {
   id?: Maybe<Scalars['String']>;
-  player: Scalars['Float'];
   title: Scalars['String'];
   folder?: Maybe<Scalars['String']>;
   body: Scalars['String'];
@@ -250,7 +250,7 @@ export type Player = {
   isUndrafted: Scalars['Boolean'];
   averageDraftPosition?: Maybe<Scalars['Float']>;
   projection?: Maybe<Projection>;
-  notes?: Maybe<Array<Note>>;
+  references?: Maybe<Array<Note>>;
 };
 
 export type PlayerArgs = {
@@ -263,6 +263,10 @@ export type PlayerArgs = {
   status?: Maybe<Scalars['String']>;
   take?: Maybe<Scalars['Float']>;
   skip?: Maybe<Scalars['Float']>;
+};
+
+export type PlayerReferenceInput = {
+  player?: Maybe<Scalars['Float']>;
 };
 
 export type Projection = {
@@ -738,6 +742,7 @@ export type DeleteFolderMutation = (
 
 export type CreateNoteMutationVariables = Exact<{
   data: NoteInput;
+  references: Array<PlayerReferenceInput>;
 }>;
 
 
@@ -1017,14 +1022,10 @@ export type NotesQuery = (
     )>, user: (
       { __typename?: 'User' }
       & Pick<User, 'id' | 'username' | 'profileImage'>
-    ), player: (
+    ), references?: Maybe<Array<(
       { __typename?: 'Player' }
-      & Pick<Player, 'id' | 'name' | 'position' | 'photoUrl'>
-      & { team?: Maybe<(
-        { __typename?: 'Team' }
-        & Pick<Team, 'id' | 'abbreviation'>
-      )> }
-    ) }
+      & Pick<Player, 'id' | 'name' | 'position'>
+    )>> }
   )> }
 );
 
@@ -1044,14 +1045,10 @@ export type NoteQuery = (
     )>, user: (
       { __typename?: 'User' }
       & Pick<User, 'id' | 'username' | 'profileImage'>
-    ), player: (
+    ), references?: Maybe<Array<(
       { __typename?: 'Player' }
-      & Pick<Player, 'id' | 'name' | 'position' | 'photoUrl'>
-      & { team?: Maybe<(
-        { __typename?: 'Team' }
-        & Pick<Team, 'id' | 'abbreviation'>
-      )> }
-    ) }
+      & Pick<Player, 'id' | 'name' | 'position'>
+    )>> }
   ) }
 );
 
@@ -1368,8 +1365,8 @@ export const DeleteFolderDocument = gql`
     
   }
 export const CreateNoteDocument = gql`
-    mutation createNote($data: NoteInput!) {
-  createNote(input: $data) {
+    mutation createNote($data: NoteInput!, $references: [PlayerReferenceInput!]!) {
+  createNote(input: $data, references: $references) {
     success {
       message
     }
@@ -1692,15 +1689,10 @@ export const NotesDocument = gql`
       username
       profileImage
     }
-    player {
+    references {
       id
       name
       position
-      photoUrl
-      team {
-        id
-        abbreviation
-      }
     }
   }
 }
@@ -1731,15 +1723,10 @@ export const NoteDocument = gql`
       username
       profileImage
     }
-    player {
+    references {
       id
       name
       position
-      photoUrl
-      team {
-        id
-        abbreviation
-      }
     }
   }
 }

@@ -1,7 +1,6 @@
 import { Component, Input, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { TableConfig } from '../../ui/generic-table/generic-table-config.model';
 import { ApolloAngularSDK, Exact, NoteInput, NotesDocument, Player, TargetInput } from '../../sdk/generated/graphql';
-import { CreateNoteComponent } from '../../notes/create-note/create-note.component';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CreateTargetComponent } from '../../targets/create-target/create-target.component';

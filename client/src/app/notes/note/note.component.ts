@@ -4,7 +4,7 @@ import { Subscription } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { NavigateService } from 'src/app/shared/navigate.service';
 import { UIStoreService } from 'src/app/ui/ui-store.service';
-import { Exact, DeleteNoteInput, ApolloAngularSDK, NotesDocument } from '../../sdk/generated/graphql';
+import { Exact, DeleteNoteInput, ApolloAngularSDK, NotesDocument, FoldersDocument } from '../../sdk/generated/graphql';
 import { NoteStoreService } from '../note-store.service';
 
 @Component({
@@ -62,6 +62,21 @@ export class NoteComponent implements OnInit, OnDestroy {
                   query: NotesDocument,
                   variables: {
                     data: noteArgs
+                  }
+                }, {
+                  query: NotesDocument,
+                  variables: {
+                    data: {
+                      filterType: 'byCurrentUserAndNoFolder'
+                    }
+                  }
+                },
+                {
+                  query: FoldersDocument,
+                  variables: {
+                    data: {
+                      filterType: 'byCurrentUser'
+                    }
                   }
                 }
               ]

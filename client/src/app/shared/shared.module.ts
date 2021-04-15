@@ -6,6 +6,7 @@ import { GraphQLModule } from '../graphql.module';
 import { AppMaterialModule } from '../app-material.module';
 import { RouterModule } from '@angular/router';
 import { LoadingSpinnerComponent } from './loading-spinner/loading-spinner.component';
+import { MentionModule } from 'angular-mentions';
 
 @NgModule({
   declarations: [LoadingSpinnerComponent],
@@ -15,6 +16,7 @@ import { LoadingSpinnerComponent } from './loading-spinner/loading-spinner.compo
     FlexLayoutModule,
     FormsModule,
     GraphQLModule,
+    MentionModule,
     ReactiveFormsModule,
     RouterModule
   ],
@@ -25,6 +27,7 @@ import { LoadingSpinnerComponent } from './loading-spinner/loading-spinner.compo
     FormsModule,
     GraphQLModule,
     LoadingSpinnerComponent,
+    MentionModule,
     ReactiveFormsModule
   ]
 })

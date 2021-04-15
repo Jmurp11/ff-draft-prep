@@ -6,7 +6,6 @@ import { Subscription } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { PopUpService } from 'src/app/shared/pop-up.service';
 import { AuthStoreService } from '../../../auth/auth-store.service';
-import { CreateNoteComponent } from '../../../notes/create-note/create-note.component';
 import { NoteStoreService } from '../../../notes/note-store.service';
 import { ApolloAngularSDK, Exact, NoteInput, NotesDocument, TargetInput } from '../../../sdk/generated/graphql';
 import { NavigateService } from '../../../shared/navigate.service';

@@ -1,4 +1,4 @@
-query notes($data: NoteArgs!){
+query notes($data: NoteArgs!) {
   notes(input: $data) {
     id
     title
@@ -15,21 +15,15 @@ query notes($data: NoteArgs!){
       username
       profileImage
     }
-    player {
+    references {
       id
       name
       position
-      photoUrl
-      team {
-        id
-        abbreviation
-      }
     }
   }
 }
 
-
-query note($data: NoteArgs!){
+query note($data: NoteArgs!) {
   note(input: $data) {
     id
     title
@@ -46,15 +40,10 @@ query note($data: NoteArgs!){
       username
       profileImage
     }
-    player {
+    references {
       id
       name
       position
-      photoUrl
-      team {
-        id
-        abbreviation
-      }
     }
   }
 }
